@@ -36,3 +36,35 @@
     transform: rotate(360deg);
   }
 }
+
+.debit{
+  background-color: red;
+}
+
+.credit {
+  background-color: green;
+}
+
+.TransactionList{
+  align-items: center;
+  justify-content: center;
+}
+
+button {
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  padding: 0 16px;
+  background-color: #fff;
+  border-radius: 0.25rem;
+  border: 1px solid #0070d2;
+  color: #0070d2;
+  font-size: 13px;
+  line-height: 30px;
+  font-weight: 400;
+  text-align: center;
+}
+
+button :hover {
+    background-color: #f4f6f9; 
+} 
