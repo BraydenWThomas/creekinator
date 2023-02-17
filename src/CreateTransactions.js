@@ -1,48 +1,61 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-const CreateTransaction = ({ onSubmitForm }) => {
-    const [description, setDescription] = useState("");
-    const [amount, setAmount] = useState(0);
-    const [category, setCategory] = useState('Food');
-    const [type, setType] = useState('credit');
-  
-    const onSubmit = (e) => {
-      e.preventDefault();
-  
-      const newTransaction = {
-        id: Math.floor(Math.random() * 10000),
-        description,
-        amount: type === 'debit' ? -Math.abs(amount) : Math.abs(amount),
-        category,
-        date: new Date().toISOString(),
-      };
+const CreateTransaction = ({ setTransactions, transactions }) => {
+  const [description, setDescription] = useState('');
+  const [amount, setAmount] = useState('');
+  const [category, setCategory] = useState('');
 
-      onSubmitForm(newTransaction)
-  
-      setDescription('');
-      setAmount(0);
-      setCategory('Food');
-      setType('credit');
+  const createTransactionHandler = () => {
+    const date = new Date().toISOString();
+    const newTransaction = {
+      id: transactions.length+10,
+      description,
+      amount: parseFloat(amount),
+      category,
+      date,
     };
-  
-    return (
-      <div>
-        <form onSubmit={onSubmit}>
+    setTransactions([...transactions, newTransaction]);
+    setDescription('');
+    setAmount('');
+    setCategory('');
+  };
+
+  return (
+    <div>
+      <h2>New Transaction</h2>
       <label>
         Description:
-        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+        <input
+          type="text"
+          placeholder='Enter Description'
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
       </label>
+      <br />
       <label>
         Amount:
-        <input type="number" value={amount} onChange={(e) => setAmount(parseFloat(e.target.value))} />
+        <input
+          type="number"
+          placeholder='Enter Amount'
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
       </label>
+      <br />
       <label>
         Category:
-        <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} />
+        <input 
+          type="text"
+          placeholder='Enter Category'
+          value={category} 
+          onChange={(e) => setCategory(e.target.value)}>
+        </input>
       </label>
-      <button type="submit">Add</button>
-    </form>
-      </div>
-    );
-}
+      <br />
+      <button onClick={createTransactionHandler}>Add Transaction</button>
+    </div>
+  );
+};
+
 export default CreateTransaction;

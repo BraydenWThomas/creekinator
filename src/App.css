@@ -52,19 +52,18 @@
 
 button {
   display: inline-block;
-  outline: none;
+  outline: 0;
+  border: none;
   cursor: pointer;
-  padding: 0 16px;
-  background-color: #fff;
-  border-radius: 0.25rem;
-  border: 1px solid #0070d2;
-  color: #0070d2;
-  font-size: 13px;
-  line-height: 30px;
-  font-weight: 400;
-  text-align: center;
+  height: 32px;
+  padding: 0px 16px;
+  border-radius: 50px;
+  background-color: #2222220d;
+  color: #222;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 button :hover {
-    background-color: #f4f6f9; 
+  background-color: #2222221a;
 } 

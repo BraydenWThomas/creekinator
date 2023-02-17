@@ -1,8 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
-import { onAdd } from 'react';
 import CreateTransaction from './CreateTransactions';
+import EditTransaction from './EditTransaction';
+
+
 
 const App = () => {
   const [transactions, setTransactions] = useState(
@@ -58,14 +60,22 @@ const App = () => {
     ]
   )
 
-  const addTransaction = (transaction) => {
-    setTransactions([...transactions, transaction]);
-  }
+  const [editing, setEditing] = useState(false);
+  const [transactionToEdit, setTransactionToEdit] = useState(null);
+  
+  const deleteTransaction = (id) => {
+    setTransactions((transactions) => transactions.filter((transactions) => transactions.id !== id));
+  };
+
+  const editTransaction = (transaction) => {
+    setEditing(true);
+    setTransactions(transaction);
+  };
 
   return (
     <div class="App">
-      <h1>Transactions</h1>
-      <CreateTransaction  />
+      <h1>Transactions</h1> 
+      <CreateTransaction setTransactions={setTransactions} transactions={transactions}/>
       <div class="TransactionList">
       <table class = "table">
         <thead>
@@ -75,6 +85,8 @@ const App = () => {
             <th>AMOUNT</th>
             <th>CATEGORY</th>
             <th>DATE</th>
+            <th>UPDATE</th>
+            <th>DELETE</th>
           </tr>
         </thead>
         <tbody>
@@ -86,14 +98,21 @@ const App = () => {
                 ${transaction.amount}</td>
               <td>{transaction.category}</td>
               <td>{transaction.date}</td>
-              <button>Update</button>
-              <button>Delete</button>
+              <td><button onClick={() => editTransaction(transaction.id)}>Update</button></td>
+              <td><button onClick={() => deleteTransaction(transaction.id)}>Delete</button></td>
             </tr>
         ))}
         </tbody>
       </table>
-
       </div>
+      {editing ? (
+      <EditTransaction
+        transactions={transactions}
+        editTransaction={editTransaction}
+        transactionToEdit={transactionToEdit}
+        setEditing={setEditing}
+      />
+    ) : null}
     </div>
   );
 }
