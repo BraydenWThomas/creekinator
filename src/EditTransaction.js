@@ -5,18 +5,6 @@ const EditTransaction = ({ transaction, updateTransaction, setShowEditForm }) =>
   const [amount, setAmount] = useState(transaction.amount);
   const [category, setCategory] = useState(transaction.category);
 
-  const handleDescriptionChange = (e) => {
-    setDescription(e.target.value);
-  };
-
-  const handleAmountChange = (e) => {
-    setAmount(e.target.value);
-  };
-
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     updateTransaction({ id: transaction.id, description, amount, category });
@@ -29,26 +17,15 @@ const EditTransaction = ({ transaction, updateTransaction, setShowEditForm }) =>
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Edit transaction</h2>
-      <label>
-        Description:
-        <input type="text" value={description} onChange={handleDescriptionChange} />
-      </label>
-      <br />
-      <label>
-        Amount:
-        <input type="number" step="0.01" value={amount} onChange={handleAmountChange} />
-      </label>
-      <br />
-      <label>
-        Category:
-        <input type="text" value={category} onChange={handleCategoryChange} />
-      </label>
-      <br />
-      <button type="submit">Save</button>
-      <button type="button" onClick={handleCancel}>
-        Cancel
-      </button>
+      <h2>Edit Transaction</h2>
+      <label>Description: </label>
+        <input type="text" placeholder='Enter Description' value={description} onChange={(e) => setDescription(e.target.value)}/>
+      <label>Amount: </label>
+        <input type="text" placeholder='Enter Amount' value={amount} onChange={(e) => setAmount(e.target.value)}/>
+      <label>Category: </label>
+      <input type="text" value={category} placeholder='Enter Category' onChange={(e) => setCategory(e.target.value)}/>
+      <button onClick={handleSubmit}>Save</button>
+      <button onClick={handleCancel}>Cancel</button>
     </form>
   );
 };

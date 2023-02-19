@@ -1,60 +1,42 @@
 import { useState } from 'react';
+import axios from 'axios';
 
 const CreateTransaction = ({ setTransactions, transactions }) => {
   const [description, setDescription] = useState('');
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState(0);
   const [category, setCategory] = useState('');
 
-  const createTransactionHandler = () => {
-    const date = new Date().toISOString();
-    const newTransaction = {
-      id: transactions.length+10,
-      description,
-      amount: parseFloat(amount),
-      category,
-      date,
-    };
-    setTransactions([...transactions, newTransaction]);
-    setDescription('');
-    setAmount('');
-    setCategory('');
+  const apiUrl = "http://58.105.209.166:7772/api/trainees/5/transactions";
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(apiUrl, {
+        description,
+        amount: parseInt(amount),
+        category
+      });
+      setTransactions([...transactions, response.data]);
+      setDescription('');
+      setAmount('');
+      setCategory('');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <div>
-      <h2>New Transaction</h2>
-      <label>
-        Description:
-        <input
-          type="text"
-          placeholder='Enter Description'
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </label>
-      <br />
-      <label>
-        Amount:
-        <input
-          type="number"
-          placeholder='Enter Amount'
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-      </label>
-      <br />
-      <label>
-        Category:
-        <input 
-          type="text"
-          placeholder='Enter Category'
-          value={category} 
-          onChange={(e) => setCategory(e.target.value)}>
-        </input>
-      </label>
-      <br />
-      <button onClick={createTransactionHandler}>Add Transaction</button>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <h2>Create Transaction</h2>
+      <label>Description:</label>
+      <input type="text" placeholder='Enter Description' value={description} onChange={(e) => setDescription(e.target.value)}/>
+      <label>Amount:</label>
+      <input type="number" placeholder='Enter Amount' value={amount} onChange={(e) => setAmount(e.target.value)}/>
+      <label>Category:</label>
+      <input type="text" placeholder='Enter Category' value={category} onChange={(e) => setCategory(e.target.value)}/>
+      <button type="submit">Create Transaction</button>
+    </form>
   );
 };
 
