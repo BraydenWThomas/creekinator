@@ -60,24 +60,46 @@ const App = () => {
     ]
   )
 
-  const [editing, setEditing] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
   const [transactionToEdit, setTransactionToEdit] = useState(null);
   
   const deleteTransaction = (id) => {
     setTransactions((transactions) => transactions.filter((transactions) => transactions.id !== id));
   };
 
-  const editTransaction = (transaction) => {
-    setEditing(true);
-    setTransactions(transaction);
+  const updateTransaction = (updatedTransaction) => {
+    const updatedTransactions = transactions.map((transaction) => {
+      if (transaction.id === updatedTransaction.id) {
+        return updatedTransaction;
+      }
+      return transaction;
+    });
+
+    setTransactions(updatedTransactions);
   };
 
+  const handleEdit = (transaction) => {
+    setTransactionToEdit(transaction);
+    setShowEditForm(true);
+  };
+
+  const handleFormClose = () => {
+    setTransactionToEdit(null);
+    setShowEditForm(false);
+  };
   return (
-    <div class="App">
+    <div className="App">
       <h1>Transactions</h1> 
       <CreateTransaction setTransactions={setTransactions} transactions={transactions}/>
-      <div class="TransactionList">
-      <table class = "table">
+      {showEditForm && (
+        <EditTransaction
+          transaction={transactionToEdit}
+          updateTransaction={updateTransaction}
+          setShowEditForm={setShowEditForm}
+        />
+      )}
+      <div className="TransactionList">
+      <table className = "table">
         <thead>
           <tr>
             <th>ID</th>
@@ -98,21 +120,13 @@ const App = () => {
                 ${transaction.amount}</td>
               <td>{transaction.category}</td>
               <td>{transaction.date}</td>
-              <td><button onClick={() => editTransaction(transaction.id)}>Update</button></td>
+              <td><button onClick={() => handleEdit(transaction)}>Update</button></td>
               <td><button onClick={() => deleteTransaction(transaction.id)}>Delete</button></td>
             </tr>
         ))}
         </tbody>
       </table>
       </div>
-      {editing ? (
-      <EditTransaction
-        transactions={transactions}
-        editTransaction={editTransaction}
-        transactionToEdit={transactionToEdit}
-        setEditing={setEditing}
-      />
-    ) : null}
     </div>
   );
 }
