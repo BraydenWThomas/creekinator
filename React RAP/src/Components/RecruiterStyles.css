@@ -1,0 +1,142 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.pageSection {
+    height: 100vh;
+
+}
+
+nav {
+
+    background-color: rgb(101, 158, 236);
+
+    float: left;
+
+    width: calc(100% - 75%);
+    font-size: 50px;
+    height: 100vh;
+
+    border-right: 2px solid black;
+
+
+}
+
+nav ul {
+    list-style-type: none;
+
+}
+
+nav li a {
+    padding-left: 20px;
+    padding-top: 20px;
+    display: block;
+    color: white;
+    text-decoration: none;
+
+}
+
+li a:hover {
+    color: black
+}
+
+
+
+.bellAndAvatar,
+h1,
+p {
+    display: inline;
+    padding: 4px;
+
+}
+
+/* Ps ARE PLACE HOLDERS */
+.bellAndAvatar p {
+    float: right;
+}
+
+
+.bodySection {
+    text-align: top;
+    float: right;
+    width: 75%;
+    background-color: rgb(144, 27, 249);
+    height: 100%;
+}
+
+hr {
+    clear: both;
+    display: block;
+    height: 10px;
+    border: 0;
+    border-top: 1px solid black;
+    margin: 1em 0;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.recruiterToolBar {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.recruiterToolBar button,
+.recruiterToolBar input[type=text] {
+    padding: 10px;
+
+}
+
+.recruiterToolBar button:hover {
+    color: aliceblue;
+    background-color: black;
+}
+
+.applicantToolBar {
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 10px;
+
+}
+
+.candidateSelectBox {
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: white
+}
+
+.candidateDetails{
+    float: right;
+    background-color: white;
+    font-weight: 20px;
+    font-size: 20px;
+    border: none
+}
+
+.candidateDetails:hover, .addCandidate:hover {
+    transform: scale(1.3)
+}
+
+.addCandidate {
+    float: right;
+    font-size: 20px;
+    border: none;
+    background-color: transparent;
+    color: white
+}
+.acDetails {
+    float: right;
+    background-color: transparent;
+    font-weight: 20px;
+    font-size: 20px;
+    border: none
+}
+.streamInfo{
+    background-color: rgb(214, 214, 214);
+    margin: 20px 20px 0px 20px;
+    padding: 10px;
+    border: solid;
+    border-color: rgb(136, 136, 136);
+}
