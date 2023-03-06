@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import fdm from './fdm-logo.png';
 
 const AdminDashboard = () => {
@@ -16,7 +16,7 @@ const AdminDashboard = () => {
   // For filter
   const [selection, setSelection] = useState('All');
   const [filteredUsers, setFilteredUsers] = useState([]);
-
+ 
   const handleSubmit = () => {
     const newUser = { username, password, email, role };
     setUsers([...users, newUser]);
@@ -30,16 +30,19 @@ const AdminDashboard = () => {
     setSelection(filter);
 
     if (selection === "Recruiter") {
+      console.log(selection)
       const filteredUsers = users.filter(user =>
         user.role === selection);
 
       setFilteredUsers(filteredUsers);
     } else if (selection === "Interviewer") {
+      console.log(selection)
       const filteredUsers = users.filter(user =>
         user.role === selection);
 
       setFilteredUsers(filteredUsers);
     } else {
+      console.log(selection)
       setFilteredUsers(users);
     }
   }
@@ -55,7 +58,6 @@ const AdminDashboard = () => {
 
       <div className='Dashboard' style={{ float: 'left', width: '80%' }}>
         <h1>Dashboard</h1>
-        <form onSubmit={handleSubmit}>
           <label htmlFor='username'>Username:</label>
           <input type='text' id='username' onChange={(event) => setUsername(event.target.value)} />
 
@@ -72,12 +74,11 @@ const AdminDashboard = () => {
           </select>
 
           <button type='submit'>Create User</button>
-        </form>
 
         <div>
           <h1> Users </h1>
           <select
-            id='filter' onChange={(event) => handleFilter(event.target.value)}>
+            id='filter' onChange={(event) => setSelection(event.target.value)}>
             <option value='All'> All </option>
             <option value='Recruiter'> Recruiter </option>
             <option value='Interviewer'> Interviewer </option>
