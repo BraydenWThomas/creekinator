@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import fdm from './fdm-logo.png';
+import Button from '@mui/material/Button';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import TuneIcon from '@mui/icons-material/Tune';
 
 const AdminDashboard = () => {
   const [username, setUsername] = useState('');
@@ -13,9 +17,12 @@ const AdminDashboard = () => {
     { username: "Alice Smith", email: 'alicesmith@fdm.com', role: "Interviewer" },
   ]);
 
+  
+
+
   // For filter
-  const [selection, setSelection] = useState('All');
-  const [filteredUsers, setFilteredUsers] = useState([]);
+const [selection, setSelection] = useState('All');
+const [filteredUsers, setFilteredUsers] = useState([]);
 
   const handleSubmit = () => {
     const newUser = { username, password, email, role };
@@ -26,21 +33,18 @@ const AdminDashboard = () => {
     setRole('Recruiter')
   }
 
-  const handleFilter = (filter) => {
+  const handleFilter = (event) => {
+    const filter = event.target.value
     setSelection(filter);
 
-    if (selection === "Recruiter") {
-      const filteredUsers = users.filter(user =>
-        user.role === selection);
-
-      setFilteredUsers(filteredUsers);
-    } else if (selection === "Interviewer") {
-      const filteredUsers = users.filter(user =>
-        user.role === selection);
-
-      setFilteredUsers(filteredUsers);
+    if (filter === "Recruiter") {
+      //console.log("Recruiter");
+      setFilteredUsers(users.filter(user => user.role === filter));
+    } else if (filter === "Interviewer") {
+        //console.log("Interviewers")
+      setFilteredUsers(users.filter(user => user.role === filter));
     } else {
-      setFilteredUsers(users);
+      console.log("Else called in filter"); //There is an issues if this is being called :))
     }
   }
 
@@ -49,13 +53,15 @@ const AdminDashboard = () => {
       <div className='NavSide' style={{ float: 'left', width: '20%' }}>
         <img src={fdm} alt="FDM Logo" />
         <h1>
-          <a href='Dashboard'> Dashboard </a>
+          <a href='Dashboard'> <DashboardIcon /> Dashboard </a>
+          <a href='Calendar'> <CalendarMonthIcon /> Calendar </a>
+          <a href='Settings'> <TuneIcon /> Settings</a>
         </h1>
       </div>
 
       <div className='Dashboard' style={{ float: 'left', width: '80%' }}>
         <h1>Dashboard</h1>
-        <form onSubmit={handleSubmit}>
+        <hr class="solid"></hr>
           <label htmlFor='username'>Username:</label>
           <input type='text' id='username' onChange={(event) => setUsername(event.target.value)} />
 
@@ -70,14 +76,12 @@ const AdminDashboard = () => {
             <option value="Recruiter">Recruiter</option>
             <option value="Interviewer">Interviewer</option>
           </select>
-
-          <button type='submit'>Create User</button>
-        </form>
+          <Button variant='outlined' size='small' type='button' onClick={handleSubmit}>Create User</Button>
 
         <div>
-          <h1> Users </h1>
+          <h1>Users</h1>
           <select
-            id='filter' onChange={(event) => handleFilter(event.target.value)}>
+            id='filter' onChange={(event) => handleFilter(event)}>
             <option value='All'> All </option>
             <option value='Recruiter'> Recruiter </option>
             <option value='Interviewer'> Interviewer </option>
@@ -86,15 +90,15 @@ const AdminDashboard = () => {
 
         {selection === "All"
           ? <ul>
-            {users.map((user) => (
-              <li key={user.username}>{user.username} ({user.role})</li>
-            ))}
-          </ul>
+              {users.map((user) => (
+                <li key={user.username}>{user.username} ({user.role})</li>
+              ))}
+            </ul>
           : <ul>
-            {filteredUsers.map((user) => (
-              <li key={user.username}>{user.username} ({user.role})</li>
-            ))}
-          </ul>
+              {filteredUsers.map((filteredUser) => (
+                <li key={filteredUser.username}>{filteredUser.username} ({filteredUser.role})</li>
+              ))}
+            </ul>
         }
       </div>
     </div>
