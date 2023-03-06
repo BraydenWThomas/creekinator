@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import fdm from './fdm-logo.png';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import TuneIcon from '@mui/icons-material/Tune';
+import TextField from '@mui/material/TextField';
+import Divider from '@mui/material/Divider';
+import NavBar from './NavBar';
 
 const AdminDashboard = () => {
   const [username, setUsername] = useState('');
@@ -16,9 +15,6 @@ const AdminDashboard = () => {
     { username: "Bob Smith", email: 'bobsm@fdm.com', role: "Recruiter" },
     { username: "Alice Smith", email: 'alicesmith@fdm.com', role: "Interviewer" },
   ]);
-
-  
-
 
   // For filter
 const [selection, setSelection] = useState('All');
@@ -50,34 +46,39 @@ const [filteredUsers, setFilteredUsers] = useState([]);
 
   return (
     <div>
-      <div className='NavSide' style={{ float: 'left', width: '20%' }}>
-        <img src={fdm} alt="FDM Logo" />
-        <h1>
-          <a href='Dashboard'> <DashboardIcon /> Dashboard </a>
-          <a href='Calendar'> <CalendarMonthIcon /> Calendar </a>
-          <a href='Settings'> <TuneIcon /> Settings</a>
-        </h1>
-      </div>
-
+      <NavBar />
       <div className='Dashboard' style={{ float: 'left', width: '80%' }}>
         <h1>Dashboard</h1>
-        <hr class="solid"></hr>
-          <label htmlFor='username'>Username:</label>
-          <input type='text' id='username' onChange={(event) => setUsername(event.target.value)} />
-
-          <label htmlFor='password'>Password:</label>
-          <input type='password' id='password' onChange={(event) => setPassword(event.target.value)} />
-
-          <label htmlFor='email'>Email:</label>
-          <input type="email" id='email' value={email} onChange={(event) => setEmail(event.target.value)} />
-
+        <Divider variant='middle'/>
+        <div className='CreateUser' style={{padding: '3%'}}>
+          <TextField
+          id="outlined-username-input"
+          label="Username"
+          type="text"
+          autoComplete="current-username"
+          onChange={(event) => setUsername(event.target.value)}
+        />
+          <TextField
+          id="outlined-password-input"
+          label="Password"
+          type="password"
+          autoComplete="current-password"
+          onChange={(event) => setPassword(event.target.value)}
+        />
+        <TextField
+          id="outlined-email-input"
+          label="Email"
+          type="email"
+          autoComplete="current-email"
+          onChange={(event) => setEmail(event.target.value)}
+        />
           <label htmlFor='role'>Job Role:</label>
           <select id='role' onChange={(event) => setRole(event.target.value)}>
             <option value="Recruiter">Recruiter</option>
             <option value="Interviewer">Interviewer</option>
           </select>
           <Button variant='outlined' size='small' type='button' onClick={handleSubmit}>Create User</Button>
-
+    </div>
         <div>
           <h1>Users</h1>
           <select

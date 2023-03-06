@@ -1,15 +1,19 @@
+import React from 'react';
+import fdm from './fdm-logo.png';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import TuneIcon from '@mui/icons-material/Tune';
 
 const NavBar = () => {
     return (
-        <div >
-            <nav>
-            <svg src="src/logo.svg" alt='FDM Logo' height='200px' width='200px'/>
-                <ul>
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Calender</a></li>
-                <li><a href="#">To Do</a></li>
-                <li><a href="#">Settings</a></li>
-                </ul>
+        <div>
+            <nav className='NavSide' style={{ float: 'left', width: '20%' }}>
+                <img src={fdm} alt="FDM Logo" />
+                <h1>
+                <a href='Dashboard'> <DashboardIcon /> Dashboard </a>
+                <a href='Calendar'> <CalendarMonthIcon /> Calendar </a>
+                <a href='Settings'> <TuneIcon /> Settings</a>
+                </h1>
             </nav>
         </div>
     )

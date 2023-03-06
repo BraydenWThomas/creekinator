@@ -4,7 +4,7 @@ const LoginPage = () => {
   return (
     <div>
       <img alt="placeholder"/>
-      
+
       <label htmlFor='username'>Username:</label>
       <input type='text' id='username' placeholder='Enter email address'/>
 
