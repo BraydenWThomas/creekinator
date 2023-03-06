@@ -10,21 +10,6 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -32,6 +17,10 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.AdminDashboard{
+  background-color: grey;
 }
 
 button {
@@ -52,94 +41,18 @@ button:hover {
   background-color: #772ce8;
 }
 
-h1 {
-  background-color: #abb0ba;
-  color: black;
-  padding-top: 40px;
-  padding-left: 20px;
-  font-size: 50px;
-}
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: 16px;
-}
-
-th, td {
-  text-align: left;
-  padding: 12px;
-}
-
-th {
-  background-color: #f5f5f5;
-  font-weight: bold;
-}
-
-tr:nth-child(even) {
+.Dashboard[style*="float: left; width: 80%"] {
   background-color: #f2f2f2;
-}
-
-tr:hover {
-  background-color: #ddd;
-}
-
-.container {
-  display: flex;
-}
-
-.create-transaction-form label {
-  font-weight: bold;
-  margin-right: 10px;
-}
-
-.create-transaction-form input {
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
-
-.create-transaction-form button {
-  padding: 5px;
-  border-radius: 4px;
-  border: none;
-}
-
-.transaction-table {
-  flex: 1;
-}
-
-.create-transaction-form {
-  width: 200px;
-  background-color: #a3adc2;
-  display: flex;
-  flex-direction: column;
   padding: 20px;
+  box-sizing: border-box;
 }
 
-.create-transaction-form label {
-  font-size: 12px;
-}
-.create-transaction-form input {
-  padding: 5px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  font-size: 14px;
+.NavSide {
+  background-color: white;
 }
 
-.edit-transaction {
-  display: flex;
-  align-items: center;
-  margin: 10px;
-}
-
-.edit-transaction label {
-  font-weight: bold;
-}
-
-.edit-transaction input {
-  padding: 5px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  margin-right: 10px;
+img{
+  height: 100%;
+  width: 80%;
 }

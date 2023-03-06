@@ -1,11 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
-
+import AdminDashboard from './Components/AdminDashboard';
 
 const App = () => {
   
   return (
-    <p1>fdsfd</p1>
+    <AdminDashboard />
   )
 }
 
