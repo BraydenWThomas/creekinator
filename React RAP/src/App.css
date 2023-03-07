@@ -19,21 +19,6 @@
   }
 }
 
-.AdminDashboard{
-  background-color: grey;
-}
-
-
-.Dashboard {
-  background-color: #f2f2f2;
-  width: 80%;
-  box-sizing: border-box;
-}
-
-h1{
-  padding-left: 20px
-}
-
 .NavSide {
   width: 20%;
   background-color: white;
