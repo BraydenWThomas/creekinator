@@ -63,7 +63,7 @@ const Recruiter = () => {
 
                 {/* <Router>
             <Routes>
-              <Route path='CandidateInformation' element={<CandidateInformation />} />
+              <Route path='/CandidateInformation' element={<CandidateInformation />} />
               </Routes>
 
           </Router> */}

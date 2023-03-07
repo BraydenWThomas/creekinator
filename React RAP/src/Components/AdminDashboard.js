@@ -3,8 +3,10 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 import NavBar from './NavBar';
+import { useParams } from 'react-router-dom';
 
 const AdminDashboard = () => {
+  const {abc} = useParams()
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -32,6 +34,7 @@ const [filteredUsers, setFilteredUsers] = useState([]);
   const handleFilter = (event) => {
     const filter = event.target.value
     setSelection(filter);
+    console.log(abc);
 
     if (filter === "Recruiter") {
       //console.log("Recruiter");

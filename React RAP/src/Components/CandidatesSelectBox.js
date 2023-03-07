@@ -8,7 +8,7 @@ const CandidateSelectBox = (props) => {
 
     return (
        
-            //<Link to='CandidateInformation'>
+    // <Link to='/CandidateInformation'>
                
        <div className='candidateSelectBox' style={{ clear: "both" }}>
             
@@ -29,7 +29,7 @@ const CandidateSelectBox = (props) => {
                 </div>
             </div>
         </div>
-        //</Link>
+    // </Link>
 
         
             
