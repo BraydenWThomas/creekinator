@@ -1,47 +1,14 @@
 * {
     margin: 0;
     padding: 0;
+    
 }
+/* a:hover { text-decoration: none !important; } */
 
 .pageSection {
     height: 100vh;
 
 }
-
-nav {
-
-    background-color: rgb(101, 158, 236);
-
-    float: left;
-
-    width: calc(100% - 75%);
-    font-size: 50px;
-    height: 100vh;
-
-    border-right: 2px solid black;
-
-
-}
-
-nav ul {
-    list-style-type: none;
-
-}
-
-nav li a {
-    padding-left: 20px;
-    padding-top: 20px;
-    display: block;
-    color: white;
-    text-decoration: none;
-
-}
-
-li a:hover {
-    color: black
-}
-
-
 
 .bellAndAvatar,
 h1,
@@ -60,7 +27,7 @@ p {
 .bodySection {
     text-align: top;
     float: right;
-    width: 75%;
+    width: 80%;
     background-color: rgb(144, 27, 249);
     height: 100%;
 }
@@ -92,7 +59,7 @@ hr {
     background-color: black;
 }
 
-.applicantToolBar {
+.applicantToolBar, .assessmentToolBar {
     margin-left: 20px;
     margin-right: 20px;
     padding: 10px;
@@ -106,25 +73,43 @@ hr {
     margin-top: 20px;
     background-color: white
 }
+.candidateSelectBox:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.575);
+    text-align: center;
+}
 
-.candidateDetails{
+.candidateDelete{
     float: right;
     background-color: white;
-    font-weight: 20px;
+    font-weight: 30px;
     font-size: 20px;
     border: none
 }
 
-.candidateDetails:hover, .addCandidate:hover {
+.candidateDelete:hover {
     transform: scale(1.3)
 }
 
+.candidateAdd, .candidateSort, .leftIcon, .rightIcon{
+    background-color: transparent;
+    font-weight: 30px;
+    font-size: 20px;
+   
+    border: none
+}
+
+
+.candidateAdd:hover, .candidateSort:hover, .leftIcon:hover, .rightIcon:hover{
+    color: white;
+}
 .addCandidate {
     float: right;
     font-size: 20px;
     border: none;
     background-color: transparent;
-    color: white
+    color: white;
+    
+    
 }
 .acDetails {
     float: right;
@@ -139,4 +124,9 @@ hr {
     padding: 10px;
     border: solid;
     border-color: rgb(136, 136, 136);
+}
+.assessmentToolBar {
+   
+    margin-right: 20px; 
+    margin-top: 20px;
 }

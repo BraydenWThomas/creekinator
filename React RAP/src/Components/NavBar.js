@@ -6,8 +6,8 @@ import TuneIcon from '@mui/icons-material/Tune';
 
 const NavBar = () => {
     return (
-        <div>
-            <nav className='NavSide' style={{ float: 'left', width: '20%' }}>
+        <div className='navBar'>
+            <nav className='NavSide' style={{ float: 'left', width: '20%', height: '10%'}}>
                 <img src={fdm} alt="FDM Logo" />
                 <h1>
                 <a href='Dashboard'> <DashboardIcon /> Dashboard </a>

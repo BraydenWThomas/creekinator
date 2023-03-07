@@ -3,8 +3,8 @@ import './RecruiterStyles.css';
 const AssessmentCentreInfo = () => {
 
     return (
-        <div className='assessmentCentreInfo'>
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <div className='assessmentCentreInfo' style={{clear: "both"}}>
+           
 
             <div className="streamInfo">
                 <button className='acDetails'>....</button>
@@ -55,7 +55,7 @@ const AssessmentCentreInfo = () => {
                     </ul>
                 </div>
                 <div style={{ display: "flex", clear: "both" }}>
-                    <i className="glyphicon glyphicon-user" style={{ fontSize: "50px", position: "relative", marginRight: "20px" }} />
+                    
                     <h3>NAME</h3>
                 </div>
 
