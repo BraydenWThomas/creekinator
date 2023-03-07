@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
-import NavBar from './NavBar';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Avatar from '@mui/material/Avatar';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,9 +16,9 @@ const AdminDashboard = () => {
   const [role, setRole] = useState('Recruiter');
   const [users, setUsers] = useState([
     { username: "John Doe", email: 'johndoe@fdm.com', role: "Recruiter" },
-    { username: "Jane Doe", email: 'janedoe@fdm.com', role: "Interviewer" },
+    { username: "Jane Doe", email: 'janedoe@fdm.com', role: "Sales Interviewer" },
     { username: "Bob Smith", email: 'bobsm@fdm.com', role: "Recruiter" },
-    { username: "Alice Smith", email: 'alicesmith@fdm.com', role: "Interviewer" },
+    { username: "Alice Smith", email: 'alicesmith@fdm.com', role: "Technical Interviewer" },
   ]);
 
   // For filter
@@ -42,7 +41,7 @@ const AdminDashboard = () => {
     if (filter === "Recruiter") {
       //console.log("Recruiter");
       setFilteredUsers(users.filter(user => user.role === filter));
-    } else if (filter === "Interviewer") {
+    } else if (filter === "Sales Interviewer" || filter === "Technical Interviewer") {
       //console.log("Interviewers")
       setFilteredUsers(users.filter(user => user.role === filter));
     } else {
@@ -52,7 +51,6 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <NavBar />
       <div className='Content' style={{ float: 'left', width: '80%', backgroundColor: "#f2f2f2" }}>
         <div className="header" style={{ display: "flex" }}>
           <h1 style={{ flex: 1, margin: '1%' }}>Admin Dashboard</h1>
@@ -103,7 +101,8 @@ const AdminDashboard = () => {
                 onChange={(event) => setRole(event.target.value)}
               >
                 <MenuItem value={"Recruiter"}>Recruiter</MenuItem>
-                <MenuItem value={"Interviewer"}>Interviewer</MenuItem>
+                <MenuItem value={"Interviewer"}>Sales Interviewer</MenuItem>
+                <MenuItem value={"Interviewer"}>Technical Interviewer</MenuItem>
               </Select>
             </FormControl>
             <div className='create-button-row'>
@@ -125,11 +124,12 @@ const AdminDashboard = () => {
               onChange={(event) => handleFilter(event)}>
               <MenuItem value={"All"}>All</MenuItem>
               <MenuItem value={"Recruiter"}>Recruiter</MenuItem>
-              <MenuItem value={"Interviewer"}>Interviewer</MenuItem>
+              <MenuItem value={"Sales Interviewer"}>Sales Interviewer</MenuItem>
+              <MenuItem value={"Technical Interviewer"}>Technical Interviewer</MenuItem>
             </Select>
           </FormControl>
         </div>
-
+        <div style={{paddingLeft:'40px'}}>
         {selection === "All"
           ? <ul>
             {users.map((user) => (
@@ -142,6 +142,7 @@ const AdminDashboard = () => {
             ))}
           </ul>
         }
+        </div>
       </div>
     </div>
   )

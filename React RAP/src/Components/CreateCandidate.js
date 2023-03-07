@@ -54,7 +54,6 @@ const CreateCandidate = () => {
 
     return (
         <div className="create-candidate">
-            <NavBar />
             <div className="content" style={{ float: 'left', width: '80%', backgroundColor: "#f2f2f2" }}>
                 <div className="header" style={{ display: "flex" }}>
                     <h1 style={{ flex: 1, margin: '1%' }}>Create Candidate</h1>
@@ -141,7 +140,7 @@ const CreateCandidate = () => {
                             label="Address"
                             type="text"
                             autoComplete="current-address"
-                            sx={{ m: 2 }}
+                            sx={{ m: 2, minWidth: 500}}
                             onChange={(event) => setAddress(event.target.value)}
                         />
                     </div>

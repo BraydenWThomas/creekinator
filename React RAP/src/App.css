@@ -19,27 +19,11 @@
   }
 }
 
-.NavSide {
-  width: 20%;
-  background-color: white;
+*{
+  margin: 0;
+  padding: 0;
 }
 
-.NavSide a{
-  padding: 8px 8px 8px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #212221;
-  display: block;
-  transition: 0.3s;
-}
-
-.NavSide a:hover{
-  color: #44449B;
-}
-
-img{
-  height: 70%;
-  width: 50%;
-  padding: 5%;
-  margin-left: 50px;
+body {
+  background-color: #f2f2f2;
 }
