@@ -1,10 +1,11 @@
 import './App.css';
 import AdminDashboard from './Components/AdminDashboard';
+import CreateCandidate from './Components/CandidateCreate';
 
 const App = () => {
   
   return (
-    <AdminDashboard />
+    <CreateCandidate />
   )
 }
 
