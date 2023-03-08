@@ -1,30 +1,25 @@
-// Components
+import React, { useState } from 'react';
 import NavBar from './NavBar';
 
-// React
-import React, { useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-
-// Material UI
-import { Divider,
-         TextField,
-         Button,
-         InputLabel,
-         MenuItem,
-         FormControl,
-         FormControlLabel,
-         Select,
-         IconButton,
-         Box,
-         FormGroup,
-         Checkbox } from "@mui/material";
+import { Divider, TextField } from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
+import IconButton from '@mui/material/IconButton';
+import Box from '@mui/material/Box';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
-const CreateAC = () => {
+const UpdateAC = () => {
   // AC Details
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
@@ -51,10 +46,10 @@ const CreateAC = () => {
       <NavBar />
 
       <div className="Dashboard" style={{ float: 'left', width: '80%' }}>
-        <h1> Create Assessment Centre </h1>
+        <h1> Update Assessment Centre </h1>
 
         <Divider variant="middle" />
-
+         
         <div className="ac-details" style={{ padding: '2.5%' }}>
           <h2> Time </h2>
           <TextField
@@ -220,7 +215,7 @@ const CreateAC = () => {
                 <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
                 <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
               </FormGroup>
-
+              
             </Box>
 
           </div>
@@ -254,14 +249,17 @@ const CreateAC = () => {
               <MenuItem value={"Technical pack B"}> Technical Pack B </MenuItem>
             </Select>
           </FormControl>
-
+        
           <Button variant="contained" sx={{ float: 'right' }}>
-            Create
+            Cancel
           </Button>
+          <Button variant="contained" sx={{ float: 'right' }}>
+            Save
+          </Button> 
         </div>
       </div>
     </div>
   )
 }
 
-export default CreateAC;
+export default UpdateAC;
