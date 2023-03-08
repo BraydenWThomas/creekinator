@@ -1,20 +1,25 @@
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
 import AdminDashboard from './Components/AdminDashboard';
-import CreateAC from './Components/CreateAC';
-import CreateCandidate from './Components/CandidateCreate';
-import ViewPastAC from './Components/ViewPastAC';
-import UpdateAC from './Components/UpdateAC';
-import ViewUpcomingAC from './Components/ViewUpcomingAC';
+import Recruiter from './Components/Recruiter';
 
 const App = () => {
-  
+  const router = createBrowserRouter([
+    {
+      path:"/",
+      element: <Recruiter />
+    },
+    {
+      path:"/admin/:abc",
+      element: <AdminDashboard />
+    }
+    
+  ]);
+
+
   return (
-    // <AdminDashboard />;
-    // <CreateCandidate />
-    // <CreateAC/>
-    // <ViewPastAC />
-    <ViewUpcomingAC/>
-    // <UpdateAC/>
+    <RouterProvider router = {router} />
+
   )
 
 }

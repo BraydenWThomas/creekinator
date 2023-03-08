@@ -1,0 +1,27 @@
+.NavSide{
+    float: 'left';
+    width: '200px'; 
+    height: '1290px'; 
+    background-color: white;
+}
+
+.NavSide a{
+    padding: 8px 8px 8px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #212221;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .NavSide a:hover{
+    color: #44449B;
+  }
+  
+  img{
+    height: 70px;
+    width: 150px;
+    margin-top: 10px;
+    margin-left: 30px;
+    margin-bottom: 20px;
+  }
