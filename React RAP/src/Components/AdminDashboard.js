@@ -2,8 +2,14 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
-import NavBar from './NavBar';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import Avatar from '@mui/material/Avatar';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
 import { useParams } from 'react-router-dom';
+import NavBar from './NavBar';
 
 const AdminDashboard = () => {
   const {abc} = useParams()
@@ -49,6 +55,7 @@ const AdminDashboard = () => {
 
   return (
     <div>
+      <NavBar />
       <div className='Content' style={{ float: 'left', width: '80%', backgroundColor: "#f2f2f2" }}>
         <div className="header" style={{ display: "flex" }}>
           <h1 style={{ flex: 1, margin: '1%' }}>Admin Dashboard</h1>

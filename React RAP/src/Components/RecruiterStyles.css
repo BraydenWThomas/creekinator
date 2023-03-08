@@ -3,60 +3,9 @@
     padding: 0;
     
 }
-/* a:hover { text-decoration: none !important; } */
 
 .pageSection {
     height: 100vh;
-
-}
-
-.bellAndAvatar,
-h1,
-p {
-    display: inline;
-    padding: 4px;
-
-}
-
-/* Ps ARE PLACE HOLDERS */
-.bellAndAvatar p {
-    float: right;
-}
-
-
-.bodySection {
-    text-align: top;
-    float: right;
-    width: 80%;
-    background-color: rgb(144, 27, 249);
-    height: 100%;
-}
-
-hr {
-    clear: both;
-    display: block;
-    height: 10px;
-    border: 0;
-    border-top: 1px solid black;
-    margin: 1em 0;
-    margin-left: 20px;
-    margin-right: 20px;
-}
-
-.recruiterToolBar {
-    margin-left: 20px;
-    margin-right: 20px;
-}
-
-.recruiterToolBar button,
-.recruiterToolBar input[type=text] {
-    padding: 10px;
-
-}
-
-.recruiterToolBar button:hover {
-    color: aliceblue;
-    background-color: black;
 }
 
 .applicantToolBar, .assessmentToolBar {
@@ -102,6 +51,7 @@ hr {
 .candidateAdd:hover, .candidateSort:hover, .leftIcon:hover, .rightIcon:hover{
     color: white;
 }
+
 .addCandidate {
     float: right;
     font-size: 20px;
