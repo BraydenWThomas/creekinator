@@ -1,27 +1,32 @@
-.NavSide{
-    float: 'left';
-    width: '200px'; 
-    height: '1290px'; 
-    background-color: white;
+img{
+  height:65px;
+  width: 130px;
 }
 
-.NavSide a{
-    padding: 8px 8px 8px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #212221;
-    display: block;
-    transition: 0.3s;
-  }
-  
-  .NavSide a:hover{
-    color: #44449B;
-  }
-  
-  img{
-    height: 70px;
-    width: 150px;
-    margin-top: 10px;
-    margin-left: 30px;
-    margin-bottom: 20px;
-  }
+.nav-container {
+  float: left;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: white;
+}
+
+.nav-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
+  padding: 20px;
+}
+
+.nav-links {
+  list-style: none;
+  padding: 20px;
+  margin: 50px 0 0;
+  font-size: 25px;
+  line-height: 1.5;
+  color: #333;
+}
+
+
+
