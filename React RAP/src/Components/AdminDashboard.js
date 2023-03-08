@@ -9,12 +9,8 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import { useParams } from 'react-router-dom';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import Avatar from '@mui/material/Avatar';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
+import NavBar from './NavBar';
+
 const AdminDashboard = () => {
   const {abc} = useParams()
   const [username, setUsername] = useState('');
@@ -59,7 +55,6 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <NavBar />
       <div className='Content' style={{ float: 'left', width: '80%', backgroundColor: "#f2f2f2" }}>
         <div className="header" style={{ display: "flex" }}>
           <h1 style={{ flex: 1, margin: '1%' }}>Admin Dashboard</h1>
@@ -110,8 +105,8 @@ const AdminDashboard = () => {
                 onChange={(event) => setRole(event.target.value)}
               >
                 <MenuItem value={"Recruiter"}>Recruiter</MenuItem>
-                <MenuItem value={"Interviewer"}>Sales Interviewer</MenuItem>
-                <MenuItem value={"Interviewer"}>Technical Interviewer</MenuItem>
+                <MenuItem value={"Sales Interviewer"}>Sales Interviewer</MenuItem>
+                <MenuItem value={"Technical Interviewer"}>Technical Interviewer</MenuItem>
               </Select>
             </FormControl>
             <div className='create-button-row'>

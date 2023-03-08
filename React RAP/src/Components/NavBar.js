@@ -21,10 +21,11 @@ const NavBar = () => {
                 orientation="vertical" 
                 variant="scrollable" 
                 value={value} 
+                sx={{minWidth: '120%'}}
                 onChange={handleChange}>
-                    <Tab label={<><DashboardIcon /> Dashboard</>} style={{flexDirection:'row'}} />
-                    <Tab label={<><CalendarMonthIcon /> Calendar</>} style={{flexDirection:'row'}} />
-                    <Tab label={<><TuneIcon /> Settings</>} style={{flexDirection:'row'}} />
+                    <Tab label={<><DashboardIcon /> Dashboard</>} style={{ flexDirection:'row', padding:'10%'}} />
+                    <Tab label={<><CalendarMonthIcon /> Calendar</>} style={{flexDirection:'row', padding:'10%'}} />
+                    <Tab label={<><TuneIcon /> Settings</>} style={{flexDirection:'row', padding:'10%'}} />
                 </Tabs>
             </nav>
         </div>

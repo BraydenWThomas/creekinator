@@ -54,6 +54,7 @@ const UpdateCandidate = () => {
 
     return (
         <div className="update-candidate">
+            <NavBar />
             <div className="content" style={{ float: 'left', width: '80%', backgroundColor: "#f2f2f2" }}>
                 <div className="header" style={{ display: "flex" }}>
                     <h1 style={{ flex: 1, margin: '1%' }}>Candidate Profile</h1>
