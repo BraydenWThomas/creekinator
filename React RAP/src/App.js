@@ -2,16 +2,42 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
 import AdminDashboard from './Components/AdminDashboard';
 import Recruiter from './Components/Recruiter';
-
+import Interviewer from './Components/Interviewer';
+import CreateCandidate from './Components/CreateCandidate';
+import UpdateCandidate from './Components/UpdateCandidate';
+import CandidateInformation from './Components/CandidateInformation';
+import ViewAC from './Components/ViewAC';
 const App = () => {
   const router = createBrowserRouter([
     {
       path:"/",
-      element: <Recruiter />
+      element: <AdminDashboard />
     },
     {
-      path:"/admin/:abc",
-      element: <AdminDashboard />
+      path:"/Recruiter",
+      element: <Recruiter />
+    },
+   
+    {
+      path:"/interviewer",
+      element: <Interviewer />
+    }
+,
+    {
+      path:"/createcandidate",
+      element: <CreateCandidate />
+    },
+    {
+      path:"/updatecandidate",
+      element: <UpdateCandidate />
+    },
+    {
+      path:"/candidateinformation/:abc",
+      element: <CandidateInformation />
+    },
+    {
+      path:"/viewac/:abc",
+      element: <ViewAC />
     }
     
   ]);
@@ -19,7 +45,6 @@ const App = () => {
 
   return (
     <RouterProvider router = {router} />
-
   )
 }
 

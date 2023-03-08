@@ -8,7 +8,9 @@ import './NavBar.css';
 const NavBar = () => {
     return (
         <div>
-            <nav className='NavSide' style={{ float: 'left', width: '200px', height: '1290px', borderRight: '1px solid black' }}>
+            {/* Have to check block sizes for fixed units, 
+            USE responsive  units: vh, %, em instead */}
+            <nav className='NavSide' style={{ float: 'left', width: '20%', minWidth: "200px", height: '100vh' }}>
                 <img src={fdm} alt="FDM Logo" />
                 <h1>
                     <a href='Dashboard'> <DashboardIcon /> Dashboard </a>
