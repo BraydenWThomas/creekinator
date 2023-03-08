@@ -2,13 +2,17 @@ import CandidateSelectBox from './CandidatesSelectBox';
 import AssessmentCentreInfo from './AssessmentCentreInfo';
 import './RecruiterStyles.css';
 import NavBar from './NavBar';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import CandidateInformation from './CandidateInformation';
+import React, { useState } from 'react';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import AddIcon from '@mui/icons-material/Add';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import Avatar from '@mui/material/Avatar';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
 
 const Recruiter = () => {
 
@@ -33,27 +37,29 @@ const Recruiter = () => {
     const addCandidateBox = () => {
         setInputList(inputList.concat(<CandidateSelectBox />));
     }
+
+
     return (
         <div className="pageSection">
 
             <NavBar />
-
-            <div className='bodySection'>
-
-                <div className='bellAndAvatar'>
-                    <h1 style={{ paddingLeft: "20px", paddingTop: "20px" }}>Dashboard</h1>
-                    <p>BELL ICON</p>
-                    <p>AVATAR</p>
+            <div className='Content' style={{ float: 'left', width: '80%', backgroundColor: "#f2f2f2" }}>
+                <div className="header" style={{ display: "flex" }}>
+                    <h1 style={{ flex: 1, margin: '1%' }}>Dashboard</h1>
+                    <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
+                        <NotificationsIcon fontSize="large" />
+                        <Avatar src="/broken-image.jpg" />
+                    </div>
                 </div>
-
-                <hr />
+                <Divider variant='middle' />
 
                 <div className='recruiterToolBar'>
-                    <div style={{ float: "left" }}>
-                        <button value={"Candidate"} onClick={() => changeDisplay("Candidate")}>Applications</button>
-                        <button value={"AC_Centre"} onClick={() => changeDisplay("AC_Centre")}>Assessment Centres</button>
-                    </div>
-
+                    <Box sx={{m: 2, width: '100%' }}>
+                        <Tabs value={displayState} aria-label="basic tabs example">
+                            <Tab value="Candidate" label="Applications" onClick={() => changeDisplay("Candidate")} />
+                            <Tab value="AC_Centre" label="Assessment Centre" onClick={() => changeDisplay("AC_Centre")} />
+                        </Tabs>
+                    </Box>
                 </div>
 
                 {/* <div className='applicantToolBar' style={{clear: "both"}}>
@@ -66,7 +72,7 @@ const Recruiter = () => {
               <Route path='/CandidateInformation' element={<CandidateInformation />} />
               </Routes>
 
-          </Router> */}
+            </Router> */}
 
                 <div className='candidatesInfo' style={{ marginTop: "30px" }}>
 
@@ -74,8 +80,7 @@ const Recruiter = () => {
                         ?
                         <div style={{ clear: "both" }}>
                             <div className='applicantToolBar'>
-                                <h4 style={{ float: "left" }}>Applied</h4>
-
+                                <h2 style={{ float: "left", paddingBottom: "10px" }}>Applied</h2>
                                 <div style={{ float: 'right' }}>
                                     <button className='candidateSort'><SortByAlphaIcon /></button>
                                     <select placeholder='filter' id='filterCandidate' style={{ textAlign: 'center', height: "20px", padding: "10px" }}>
@@ -94,12 +99,11 @@ const Recruiter = () => {
 
                         <div style={{ clear: "both" }}>
                             <div className='assessmentToolBar'>
-                                <h4 style={{ float: "left" }}>Upcomming</h4>
+                                <h2 style={{ float: "left", paddingBottom: "10px" }}>Upcomming</h2>
 
                                 <div style={{ float: 'right' }}>
                                     <button className='candidateSort'><SortByAlphaIcon /></button>
                                     <select id='filterCandidate' style={{ textAlign: 'center', height: "20px", padding: "10px" }}>
-
                                         <option value="Name">Name</option>
                                         <option value="Stream">Stream</option>
                                         <option value="GradYear">Year of Graduation</option>
@@ -114,7 +118,7 @@ const Recruiter = () => {
                             </div>
 
                             <div className='assessmentToolBar'>
-                                <h4 style={{ float: "left" }}>Past</h4>
+                                <h2 style={{ float: "left", marginBottom:"10px" }}>Past</h2>
                                 <div style={{ float: 'right' }}>
                                     <button className='candidateSort'><SortByAlphaIcon /></button>
                                     <select placeholder='filter' id='filterCandidate' style={{ textAlign: 'center', height: "20px", padding: "10px" }}>
@@ -126,17 +130,15 @@ const Recruiter = () => {
                                 </div>
                             </div>
                             <AssessmentCentreInfo />
-                            <div className="scrollArrows" style={{ float: "right", marginRight: "20px", marginTop: "20px" }}>
+                            <div className="scrollArrows" style={{ float: "right", marginRight: "20px", marginTop: "10px" }}>
                                 <button className="leftIcon"><ChevronLeftIcon /></button>
                                 <button className="rightIcon"><ChevronRightIcon /></button>
                             </div>
                         </div>
                     }
                 </div>
-
             </div>
-
-        </div>
+        </div >
 
     )
 }
