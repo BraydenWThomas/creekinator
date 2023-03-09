@@ -57,6 +57,7 @@ public class AssessmentCenter {
 	//@JsonIgnoreProperties("assessmentCenters")
 	@JsonIgnore
 	private Recruiter recruiter;
+	//#TODO this needs to be changed into a list
 	
 	private String title;
 	

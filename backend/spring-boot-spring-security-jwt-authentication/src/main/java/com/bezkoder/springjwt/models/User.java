@@ -8,6 +8,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 @Entity
 @Table(name = "users", 
     uniqueConstraints = { 
@@ -33,6 +36,10 @@ public class User {
   private String password;
   
   private String name;
+  
+//  @NotFound(action=NotFoundAction.IGNORE)
+//  private Interviewer interviewer;
+//	private Recruiter recruiter;
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(  name = "user_roles", 
@@ -51,8 +58,26 @@ public class User {
   }
   
   
+  
+  
+//
+//  public Interviewer getInterviewer() {
+//	return interviewer;
+//}
+//
+//public void setInterviewer(Interviewer interviewer) {
+//	this.interviewer = interviewer;
+//}
+//
+//public Recruiter getRecruiter() {
+//	return recruiter;
+//}
+//
+//public void setRecruiter(Recruiter recruiter) {
+//	this.recruiter = recruiter;
+//}
 
-  public String getName() {
+public String getName() {
 	return name;
 }
 

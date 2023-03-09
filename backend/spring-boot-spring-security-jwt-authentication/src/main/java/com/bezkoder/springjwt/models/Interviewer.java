@@ -33,15 +33,35 @@ public class Interviewer {
 	
 	private String name;
 	
+	//#TODO Sales or Tech etc.. 
+	//private String role;
+	
+//	@OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_id", referencedColumnName = "id")
+//	private User user;
+	
 	public Interviewer() {
 		
 	}
+	
 	
 	public Interviewer(String name) {
 		this.name = name;
 	}
 
 	
+	
+	
+//	public User getUser() {
+//		return user;
+//	}
+//
+//
+//	public void setUser(User user) {
+//		this.user = user;
+//	}
+
+
 	public int getId() {
 		return this.id;
 	}
