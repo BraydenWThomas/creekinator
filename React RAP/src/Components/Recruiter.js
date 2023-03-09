@@ -15,7 +15,7 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 
 const Recruiter = () => {
-
+   
     const [displayState, setDisplayState] = useState("Candidate");
     const [inputList, setInputList] = useState([<CandidateSelectBox />]);
     // USE THIS FOR LATER
@@ -108,16 +108,16 @@ const Recruiter = () => {
                                         <option value="Stream">Stream</option>
                                         <option value="GradYear">Year of Graduation</option>
                                     </select>
-                                    <button className='candidateAdd'><AddIcon /></button>
+                                    <a href='/createcandidate' target="_blank"><button className='candidateAdd'><AddIcon /></button></a>
                                 </div>
                             </div>
-                            <AssessmentCentreInfo />
+                            <AssessmentCentreInfo statustype="upcome" />
                             <div className="scrollArrows" style={{ float: "right", marginRight: "20px", marginTop: "20px" }}>
                                 <button className="leftIcon"><ChevronLeftIcon /></button>
                                 <button className="rightIcon"><ChevronRightIcon /></button>
                             </div>
 
-                            <div className='assessmentToolBar'>
+                            <div className='assessmentToolBar' style={{clear: "both"}}>
                                 <h2 style={{ float: "left", marginBottom:"10px" }}>Past</h2>
                                 <div style={{ float: 'right' }}>
                                     <button className='candidateSort'><SortByAlphaIcon /></button>
@@ -129,7 +129,7 @@ const Recruiter = () => {
                                     </select>
                                 </div>
                             </div>
-                            <AssessmentCentreInfo />
+                            <AssessmentCentreInfo statustype="past" />
                             <div className="scrollArrows" style={{ float: "right", marginRight: "20px", marginTop: "10px" }}>
                                 <button className="leftIcon"><ChevronLeftIcon /></button>
                                 <button className="rightIcon"><ChevronRightIcon /></button>
