@@ -72,6 +72,10 @@ public class AuthController {
                          userDetails.getName(),
                          roles));
   }
+  
+//  @PostMapping("/role")
+//  public void 
+//  
 
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {

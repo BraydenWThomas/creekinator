@@ -97,17 +97,6 @@ public Long getId() {
   }
 
   public void setRoles(Set<Role> roles) {
-	  
-	  for (Role role : roles) {
-	  if (role.getName() == ERole.ROLE_SALES) {
-		  System.out.println(this.getId());
-	  }
-	  if (role.getName() == ERole.ROLE_TECH) {
-		  System.out.println(this.getId());
-	  }
-  }
-
-	  
     this.roles = roles;
   }
   
