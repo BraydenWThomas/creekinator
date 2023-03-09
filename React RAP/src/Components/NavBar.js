@@ -1,6 +1,6 @@
 import React from 'react';
 import fdm from './fdm-logo.png';
-import { Tabs, Tab } from '@mui/material';
+import { Tabs, Tab, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import TuneIcon from '@mui/icons-material/Tune';
@@ -12,6 +12,29 @@ const NavBar = () => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    const mainListItems = (
+        <React.Fragment>
+          <ListItemButton>
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="Dashboard" />
+          </ListItemButton>
+          <ListItemButton>
+            <ListItemIcon>
+              <CalendarMonthIcon />
+            </ListItemIcon>
+            <ListItemText primary="Calendar" />
+          </ListItemButton>
+          <ListItemButton>
+            <ListItemIcon>
+              <TuneIcon />
+            </ListItemIcon>
+            <ListItemText primary="Settings" />
+          </ListItemButton>
+        </React.Fragment>
+      );
 
     return (
         <div className="nav-container">
@@ -28,6 +51,9 @@ const NavBar = () => {
                     <Tab label={<><TuneIcon /> Settings</>} style={{flexDirection:'row', padding:'10%'}} />
                 </Tabs>
             </nav>
+            <Tabs component="nav" orientation='vertical'>
+            {mainListItems}
+          </Tabs>
         </div>
     );
 };

@@ -7,6 +7,8 @@ import CreateCandidate from './Components/CreateCandidate';
 import UpdateCandidate from './Components/UpdateCandidate';
 import CandidateInformation from './Components/CandidateInformation';
 import ViewAC from './Components/ViewAC';
+import LoginPage from './Components/LoginPage';
+
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -38,6 +40,10 @@ const App = () => {
     {
       path:"/viewac/:abc",
       element: <ViewAC />
+    },
+    {
+      path:"/login",
+      element: <LoginPage />
     }
     
   ]);
