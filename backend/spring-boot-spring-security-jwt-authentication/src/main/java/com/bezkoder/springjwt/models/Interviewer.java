@@ -23,6 +23,15 @@ public class Interviewer {
 	@JsonIgnore
 	private List<Interview> interviews; // an array list
 	
+	public void addInterview(Interview interview) {
+		this.interviews.add(interview);
+		interview.setInterviewer(this);
+	}
+	public void removeInterview(Interview interview) {
+		this.interviews.remove(interview);
+		interview.setInterviewer(null);
+	}
+	
 	@ManyToMany
 	@JoinTable(name = "assessmentCenter_interviewer", 
 	       		joinColumns = @JoinColumn(name = "interviewer_id"), 

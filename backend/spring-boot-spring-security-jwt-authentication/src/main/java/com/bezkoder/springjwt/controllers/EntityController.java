@@ -15,13 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bezkoder.springjwt.models.AssessmentCenter;
-import com.bezkoder.springjwt.models.Candidate;
-import com.bezkoder.springjwt.models.Interview;
-import com.bezkoder.springjwt.models.Interviewer;
-import com.bezkoder.springjwt.models.Pack;
-import com.bezkoder.springjwt.models.Recruiter;
+import com.bezkoder.springjwt.models.*;
 import com.bezkoder.springjwt.repository.AssessmentCenterRepository;
+import com.bezkoder.springjwt.repository.AuthorRepository;
+import com.bezkoder.springjwt.repository.BookRepository;
 import com.bezkoder.springjwt.repository.CandidateRepository;
 import com.bezkoder.springjwt.repository.InterviewerRepository;
 import com.bezkoder.springjwt.repository.InterviewsRepository;
@@ -43,12 +40,16 @@ public class EntityController {
 	InterviewsRepository interviewRepository;
 	PacksRepository packsRepository;
 	RecruiterRepository recruiterRepository;
+	BookRepository bookRepository;
+	AuthorRepository authorRepository;
 	
 	
 	
 	public EntityController(AssessmentCenterRepository assessmentCenterRepository, CandidateRepository candidateRepository ,
 			InterviewerRepository interviewerRepository, InterviewsRepository interviewRepository, 
-			PacksRepository packsRepository,RecruiterRepository recruiterRepository) {
+			PacksRepository packsRepository,RecruiterRepository recruiterRepository,
+			BookRepository bookRepository,
+			AuthorRepository authorRepository) {
 		super();
 		this.assessmentCenterRepository = assessmentCenterRepository;
 		this.candidateRepository = candidateRepository;
@@ -56,9 +57,15 @@ public class EntityController {
 		this.interviewRepository = interviewRepository;
 		this.packsRepository = packsRepository;
 		this.recruiterRepository = recruiterRepository;
+		this.bookRepository = bookRepository;
+		this.authorRepository = authorRepository;
 	}
 	
-
+	
+	
+	
+	
+	
 	/* --- Assessment Center --- CRUD */
 	
 	// Get all AC
@@ -80,6 +87,32 @@ public class EntityController {
 		if (assessmentCenterRepository.findById(acId).isEmpty()) {
 			throw new NotFoundException("Can't find transaction with id: " + acId);
 		}
+		
+		/* --- remove all bidirectional dependencies to avoid delete bug --- */
+		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(acId).orElseThrow(()->
+											new NotFoundException("Can't find transaction with id: " + acId));
+		List<Interviewer> interviewers = assessmentCenter.getInterviewers();
+		List<Interview> interviews = assessmentCenter.getInterviews();
+		List<Candidate> candidates = assessmentCenter.getCandidates();
+		
+		// remove all interviewers
+		while (! interviewers.isEmpty()) {
+			assessmentCenter.removeInterviewer(interviewers.get(interviewers.size() - 1));
+		}
+		// remove all interviews
+		while (! interviews.isEmpty()) {
+			assessmentCenter.removeInterview(interviews.get(interviews.size() - 1));
+		}
+		// remove all candidates
+		while (! candidates.isEmpty()) {
+			assessmentCenter.removeCandidate(candidates.get(candidates.size() - 1));
+		}
+		assessmentCenterRepository.save(assessmentCenter);
+		interviewerRepository.saveAll(interviewers);
+		interviewRepository.saveAll(interviews);
+		candidateRepository.saveAll(candidates);
+		/* --- end of remove all bidirectional dependencies to avoid delete bug --- */
+		
 		assessmentCenterRepository.deleteById(acId);
 	}	
 	
@@ -102,6 +135,10 @@ public class EntityController {
 	/* --- End of Assessment Center --- */	
 	
 	
+	
+	
+	
+	
 	/* --- Candidate --- */
 	
 	// Get all Candidate
@@ -122,6 +159,17 @@ public class EntityController {
 		if (candidateRepository.findById(candidateId).isEmpty()) {
 			throw new NotFoundException("Can't find transaction with id: " + candidateId);
 		}
+		
+		/* remove dependency before deletion */
+		Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + candidateId));
+		List<Interview> interviews = candidate.getInterviews();
+		while (! interviews.isEmpty()) {
+			candidate.removeInterview(interviews.get(interviews.size() - 1));
+		}
+		candidateRepository.save(candidate);
+		interviewRepository.saveAll(interviews);
+		/* End of remove dependency before deletion */
+		
 		candidateRepository.deleteById(candidateId);
 	}	
 	
@@ -144,6 +192,10 @@ public class EntityController {
 	/* --- End of Candidate --- */
 	
 	
+	
+	
+	
+	
 	/* --- Interviewer --- */
 	
 	// Get all Interviewer
@@ -164,6 +216,18 @@ public class EntityController {
 		if (interviewerRepository.findById(interviewerId).isEmpty()) {
 			throw new NotFoundException("Can't find transaction with id: " + interviewerId);
 		}
+		
+		/* --- remove all bidirectional dependencies to avoid delete bug --- */
+		Interviewer interviewer = interviewerRepository.findById(interviewerId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " +interviewerId));
+		List<Interview> interviews = interviewer.getInterviews();
+		// remove interviews
+		while (! interviews.isEmpty()) {
+			interviewer.removeInterview(interviews.get(interviews.size()-1)); // remove from last
+		}
+		interviewerRepository.save(interviewer);
+		interviewRepository.saveAll(interviews);
+		/* --- end of remove all bidirectional dependencies to avoid delete bug --- */
+		
 		interviewerRepository.deleteById(interviewerId);
 	}	
 	
@@ -184,6 +248,11 @@ public class EntityController {
 		return interviewerRepository.save(interviewer);
 	}
 	/* --- End of Interviewer --- */
+	
+	
+	
+	
+	
 	
 	
 	/* --- Interviews --- */
@@ -228,6 +297,12 @@ public class EntityController {
 	/* --- End of Interviews --- */
 	
 	
+	
+	
+	
+	
+	
+	
 	/* --- Packs --- */
 	
 	// Get all Packs
@@ -248,6 +323,18 @@ public class EntityController {
 		if (packsRepository.findById(packId).isEmpty()) {
 			throw new NotFoundException("Can't find transaction with id: " + packId);
 		}
+		
+		/* --- remove all bidirectional dependencies to avoid delete bug --- */
+		Pack pack = packsRepository.findById(packId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " +packId));
+		// remove interviews
+		List<AssessmentCenter> assessmentCenters = pack.getAssessmentCenters();
+		while (! assessmentCenters.isEmpty()) {
+			pack.removeAssessmentCenter(assessmentCenters.get(assessmentCenters.size() - 1));
+		}
+		this.packsRepository.save(pack);
+		this.assessmentCenterRepository.saveAll(assessmentCenters);
+		/* --- end of remove all bidirectional dependencies to avoid delete bug --- */
+		
 		packsRepository.deleteById(packId);
 	}	
 	
@@ -270,6 +357,11 @@ public class EntityController {
 	/* --- End of Packs --- */
 	
 	
+	
+	
+	
+	
+	
 	/* --- Recruiter --- */
 	
 	// Get all Recruiter
@@ -290,6 +382,18 @@ public class EntityController {
 		if (recruiterRepository.findById(recruiterId).isEmpty()) {
 			throw new NotFoundException("Can't find transaction with id: " + recruiterId);
 		}
+		
+		/* --- remove all bidirectional dependencies to avoid delete bug --- */
+		Recruiter recruiter = recruiterRepository.findById(recruiterId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " +recruiterId));
+		// remove assessmentCenter
+		List<AssessmentCenter> assessmentCenters = recruiter.getAssessmentCenters();
+		while (! assessmentCenters.isEmpty()) {
+			recruiter.removeAssessmentCenter(assessmentCenters.get(assessmentCenters.size() - 1));
+		}
+		this.recruiterRepository.save(recruiter);
+		this.assessmentCenterRepository.saveAll(assessmentCenters);
+		/* --- end of remove all bidirectional dependencies to avoid delete bug --- */
+		
 		recruiterRepository.deleteById(recruiterId);
 	}	
 	
@@ -310,6 +414,100 @@ public class EntityController {
 		return recruiterRepository.save(recruiter);
 	}
 	/* --- End of Recruiter --- */
+	
+	
+	
+	
+	
+	
+	
+	/* --- Book --- */
+	
+	// Get all Recruiter
+	@GetMapping("/book")
+	public List<Book> getAllBook() {
+		return bookRepository.findAll();
+	}
+	
+	// Get specific Recruiter
+	@GetMapping("/book/{id}")
+	public Book getBookbyId(@PathVariable int id) {
+		return bookRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
+	}
+	
+	// Delete Recruiter
+	@DeleteMapping("/book/{id}")
+	public void deleteBookById(@PathVariable int id) {
+		if (bookRepository.findById(id).isEmpty()) {
+			throw new NotFoundException("Can't find transaction with id: " + id);
+		}
+		bookRepository.deleteById(id);
+	}	
+	
+	//Create Recruiter
+	@PostMapping("/book")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Book createBook(@RequestBody Book book) {
+		return bookRepository.save(book);
+	}
+	
+	//Modify Recruiter
+	@PutMapping("/book")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Book modifyBook(@RequestBody Book book) {
+		if (bookRepository.findById(book.getId()).isEmpty()) {
+			throw new NotFoundException("Can't find transaction with id: " + book.getId());
+		}
+		return bookRepository.save(book);
+	}
+	/* --- End of Book --- */
+	
+	
+	
+	
+	
+	
+	
+	/* --- Author --- */
+	
+	// Get all Recruiter
+	@GetMapping("/author")
+	public List<Author> getAllAuthor() {
+		return authorRepository.findAll();
+	}
+	
+	// Get specific Recruiter
+	@GetMapping("/author/{id}")
+	public Author getAuthorbyId(@PathVariable int id) {
+		return authorRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
+	}
+	
+	// Delete Recruiter
+	@DeleteMapping("/author/{id}")
+	public void deleteAuthorById(@PathVariable int id) {
+		if (authorRepository.findById(id).isEmpty()) {
+			throw new NotFoundException("Can't find transaction with id: " + id);
+		}
+		authorRepository.deleteById(id);
+	}	
+	
+	//Create Recruiter
+	@PostMapping("/author")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Author createAuthor(@RequestBody Author author) {
+		return authorRepository.save(author);
+	}
+	
+	//Modify Recruiter
+	@PutMapping("/author")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Author modifyAuthor(@RequestBody Author author) {
+		if (authorRepository.findById(author.getId()).isEmpty()) {
+			throw new NotFoundException("Can't find transaction with id: " + author.getId());
+		}
+		return authorRepository.save(author);
+	}
+	/* --- End of Author --- */
 	
 	
 	

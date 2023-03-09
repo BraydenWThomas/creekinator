@@ -34,17 +34,42 @@ public class AssessmentCenter {
 	//@JsonIgnoreProperties("assessmentCenters")
 	private List<Interviewer> interviewers;
 	
+	public void addInterviewer(Interviewer interviewer) {
+		this.interviewers.add(interviewer);
+		interviewer.getAssessmentCenters().add(this);
+	}
+	public void removeInterviewer(Interviewer interviewer) {
+		this.interviewers.remove(interviewer);
+		interviewer.getAssessmentCenters().remove(this);
+	}
 	
 	@OneToMany(mappedBy = "assessmentCenter")
 	//@JsonIgnoreProperties("assessmentCenter")
 	@JsonIgnore
 	private List<Interview> interviews;
 	
+	public void addInterview(Interview interview) {
+		this.interviews.add(interview);
+		interview.setAssessmentCenter(this);
+	}
+	public void removeInterview(Interview interview) {
+		this.interviews.remove(interview);
+		interview.setAssessmentCenter(null);
+	}
 	
 	@ManyToMany(mappedBy = "assessmentCenters")
 	//@JsonIgnoreProperties("assessmentCenters")
 	@JsonIgnore
 	private List<Candidate> candidates;
+	
+	public void addCandidate(Candidate candidate) {
+		this.candidates.add(candidate);
+		candidate.getAssessmentCenters().add(this);
+	}
+	public void removeCandidate(Candidate candidate) {
+		this.candidates.remove(candidate);
+		candidate.getAssessmentCenters().remove(this);
+	}
 	
 	@ManyToOne
 	@JoinColumn(name = "FK_PACK_NO")
