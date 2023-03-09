@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -86,19 +87,29 @@ public class EntityController {
 	//Create AC
 	@PostMapping("/ac")
 	@ResponseStatus(HttpStatus.CREATED)
-	public AssessmentCenter createCandidate(@RequestBody AssessmentCenter assessmentCenter) {
+	public AssessmentCenter createAc(@RequestBody AssessmentCenter assessmentCenter) {
 		return assessmentCenterRepository.save(assessmentCenter);
 	}
 	
 	//Modify AC
 	@PutMapping("/ac")
 	@ResponseStatus(HttpStatus.CREATED)
-	public AssessmentCenter modifyCandidate(@RequestBody AssessmentCenter assessmentCenter) {
+	public AssessmentCenter modifyAc(@RequestBody AssessmentCenter assessmentCenter) {
 		if (assessmentCenterRepository.findById(assessmentCenter.getId()).isEmpty()) {
 			throw new NotFoundException("Can't find transaction with id: " + assessmentCenter.getId());
 		}
 		return assessmentCenterRepository.save(assessmentCenter);
 	}
+	
+	//Add Pack to AC
+	@PutMapping("/ac/{acId}/addPack")
+	public AssessmentCenter addPackToAc(@PathVariable int acId,@RequestParam int packId) {
+		
+		AssessmentCenter tempAC = assessmentCenterRepository.getReferenceById(acId);
+		tempAC.setPack(packsRepository.getReferenceById(packId));
+		return assessmentCenterRepository.save(tempAC);
+	}
+	
 	/* --- End of Assessment Center --- */	
 	
 	
@@ -106,7 +117,12 @@ public class EntityController {
 	
 	// Get all Candidate
 	@GetMapping("/candidate")
-	public List<Candidate> getAllCandidate() {
+	public List<Candidate> getAllCandidate(@RequestParam (required=false) String firstName,
+			@RequestParam (required=false) String lastName,
+			@RequestParam (required=false) String appliedStream) {
+		
+		
+		
 		return candidateRepository.findAll();
 	}
 	

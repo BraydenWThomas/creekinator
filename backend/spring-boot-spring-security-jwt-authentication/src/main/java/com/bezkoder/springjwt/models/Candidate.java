@@ -18,7 +18,7 @@ import java.util.List;
 public class Candidate {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String title;
 	private String first_name;
