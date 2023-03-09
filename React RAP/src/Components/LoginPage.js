@@ -37,7 +37,7 @@ const LoginPage = () => {
         <Container component="main" maxWidth="xs">
           <Box
             sx={{
-              marginTop: 10,
+              marginTop: 20,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center'
@@ -83,7 +83,7 @@ const LoginPage = () => {
                 <Button><a href="/admin"><h4>Admin</h4></a></Button>
             </Box>
             <Grid item
-              sx={{ mt: 12 }}>
+              sx={{ mt: 35 }}>
               <img src={fdm} alt="FDM Logo" />
             </Grid>
           </Box>
