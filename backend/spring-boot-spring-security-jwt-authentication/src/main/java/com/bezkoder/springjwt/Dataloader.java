@@ -215,18 +215,22 @@ public class Dataloader implements ApplicationRunner{
 		rolesList.add(new Role());
 		rolesList.add(new Role());
 		rolesList.add(new Role());
+		rolesList.add(new Role());
+		rolesList.add(new Role());
 		rolesList.get(0).setName(ERole.ROLE_ADMIN);
 		rolesList.get(1).setName(ERole.ROLE_INTERVIEWER);
 		rolesList.get(2).setName(ERole.ROLE_RECRUITER);
+		rolesList.get(3).setName(ERole.ROLE_TECH);
+		rolesList.get(4).setName(ERole.ROLE_SALES);
 		this.roleRepository.saveAll(rolesList);
 		
 		// Auth Sign-In
 		List<User> userList = new ArrayList<>();
-		userList.add(new User("admin","admin@gmail.com","admin"));
+		userList.add(new User("admin","admin@gmail.com","admin","a"));
 		userList.get(0).addRole(rolesList.get(0));
-		userList.add(new User("interviewer","interviewer@gmail.com","interviewer"));
+		userList.add(new User("interviewer","interviewer@gmail.com","interviewer","a"));
 		userList.get(1).addRole(rolesList.get(1));
-		userList.add(new User("recruiter","recruiter@gmail.com","recruiter"));
+		userList.add(new User("recruiter","recruiter@gmail.com","recruiter","a"));
 		userList.get(2).addRole(rolesList.get(2));
 		this.userRepository.saveAll(userList);
 	

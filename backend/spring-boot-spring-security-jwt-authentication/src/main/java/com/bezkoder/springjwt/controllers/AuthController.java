@@ -68,7 +68,8 @@ public class AuthController {
     return ResponseEntity.ok(new JwtResponse(jwt, 
                          userDetails.getId(), 
                          userDetails.getUsername(), 
-                         userDetails.getEmail(), 
+                         userDetails.getEmail(),
+                         userDetails.getName(),
                          roles));
   }
 
@@ -89,7 +90,8 @@ public class AuthController {
     // Create new user's account
     User user = new User(signUpRequest.getUsername(), 
                signUpRequest.getEmail(),
-               encoder.encode(signUpRequest.getPassword()));
+               encoder.encode(signUpRequest.getPassword()),
+               signUpRequest.getName());
 
     Set<String> strRoles = signUpRequest.getRole();
     Set<Role> roles = new HashSet<>();
@@ -110,13 +112,6 @@ public class AuthController {
 
           break;
           
-        case "mod":
-          Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(modRole);
-
-          break;
-        
         case "recruiter":
         	Role recruiterRole = roleRepository.findByName(ERole.ROLE_RECRUITER)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -128,6 +123,20 @@ public class AuthController {
         	Role interviewerRole = roleRepository.findByName(ERole.ROLE_INTERVIEWER)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(interviewerRole);
+
+            break;
+            
+        case "tech_interviewer":
+        	Role techInterviewerRole = roleRepository.findByName(ERole.ROLE_TECH)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(techInterviewerRole);
+
+            break;
+            
+        case "sales_interviewer":
+        	Role salesInterviewerRole = roleRepository.findByName(ERole.ROLE_SALES)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(salesInterviewerRole);
 
             break;
             
