@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
@@ -11,16 +11,17 @@ import InputLabel from '@mui/material/InputLabel';
 import { useParams } from 'react-router-dom';
 
 const AdminDashboard = () => {
-  const {abc} = useParams()
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [role, setRole] = useState('Recruiter');
+  const {abc} = useParams();
+  const [fullname, setFullname] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
   const [users, setUsers] = useState([
-    { username: "John Doe", email: 'johndoe@fdm.com', role: "Recruiter" },
-    { username: "Jane Doe", email: 'janedoe@fdm.com', role: "Sales Interviewer" },
-    { username: "Bob Smith", email: 'bobsm@fdm.com', role: "Recruiter" },
-    { username: "Alice Smith", email: 'alicesmith@fdm.com', role: "Technical Interviewer" },
+    { fullname: "John Doe", username: "johndoe2", email: "johndoe@fdm.com", role: "Recruiter" },
+    { fullname: "Jane Doe", username: "janedoe23", email: "janedoe@fdm.com", role: "Sales Interviewer" },
+    { fullname: "Bob Smith", username: "bobsmith123", email: "bobsm@fdm.com", role: "Recruiter" },
+    { fullname: "Alice Smith", username: "alicesmithi2", email: "alicesmith@fdm.com", role: "Technical Interviewer" },
   ]);
 
   // For filter
@@ -28,24 +29,44 @@ const AdminDashboard = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
 
   const handleSubmit = () => {
-    const newUser = { username, password, email, role };
+    const newUser = { fullname, username, password, email, role };
     setUsers([...users, newUser]);
-    setUsername('');
-    setPassword('');
-    setEmail('');
-    setRole('Recruiter')
+    setFullname("");
+    setUsername("");
+    setPassword("");
+    setEmail("");
+    setRole("")
+
+    // console.log("Submit clicked")
+
+    const body =
+      JSON.stringify({
+        username: username,
+        email: email,
+        password: password,
+        role: [role.toLowerCase()]
+      });
+
+    const requestOptions = {
+      method: 'POST',
+      body: body,
+      redirect: 'follow',
+      headers: { 'content-type': 'application/json' }
+    };
+
+    fetch("http://localhost:8080/api/auth/signup", requestOptions)
+      .then(response => response.json())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
   }
 
   const handleFilter = (event) => {
     const filter = event.target.value
     setSelection(filter);
-    console.log(abc);
 
     if (filter === "Recruiter") {
-      //console.log("Recruiter");
       setFilteredUsers(users.filter(user => user.role === filter));
     } else if (filter === "Sales Interviewer" || filter === "Technical Interviewer") {
-      //console.log("Interviewers")
       setFilteredUsers(users.filter(user => user.role === filter));
     } else {
       console.log("Else called in filter"); //There is an issues if this is being called :))
@@ -65,13 +86,27 @@ const AdminDashboard = () => {
         <Divider variant='middle' />
         <div className="create-user">
           <h2 style={{ margin: '1%' }}>Create User</h2>
-          <div className='CreateUser' style={{}}>
+          <div className='CreateUser'>
+            <FormControl>
+              <TextField
+                required
+                id="outlined-fullname-input"
+                label="Full Name"
+                type="text"
+                autoComplete="current-fullname"
+                value={fullname}
+                sx={{ m: 2 }}
+                onChange={(event) => setFullname(event.target.value)}
+              />
+            </FormControl>
+            
             <TextField
               required
               id="outlined-username-input"
               label="Username"
               type="text"
               autoComplete="current-username"
+              value={username}
               sx={{ m: 2 }}
               onChange={(event) => setUsername(event.target.value)}
             />
@@ -79,8 +114,10 @@ const AdminDashboard = () => {
               required
               id="outlined-password-input"
               label="Password"
-              type="password"
+              type="text"
               autoComplete="current-password"
+              helperText="Minimum password length of 6"
+              value={password}
               sx={{ m: 2 }}
               onChange={(event) => setPassword(event.target.value)}
             />
@@ -90,6 +127,7 @@ const AdminDashboard = () => {
               label="Email"
               type="email"
               autoComplete="current-email"
+              value={email}
               sx={{ m: 2 }}
               onChange={(event) => setEmail(event.target.value)}
             />
@@ -132,19 +170,19 @@ const AdminDashboard = () => {
             </Select>
           </FormControl>
         </div>
-        <div style={{paddingLeft:'40px'}}>
-        {selection === "All"
-          ? <ul>
-            {users.map((user) => (
-              <li key={user.username}>{user.username} ({user.role})</li>
-            ))}
-          </ul>
-          : <ul>
-            {filteredUsers.map((filteredUser) => (
-              <li key={filteredUser.username}>{filteredUser.username} ({filteredUser.role})</li>
-            ))}
-          </ul>
-        }
+        <div style={{ paddingLeft: '40px' }}>
+          {selection === "All"
+            ? <ul>
+              {users.map((user) => (
+                <li key={user.fullname}>{user.fullname} ({user.role})</li>
+              ))}
+            </ul>
+            : <ul>
+              {filteredUsers.map((filteredUser) => (
+                <li key={filteredUser.fullname}>{filteredUser.fullname} ({filteredUser.role})</li>
+              ))}
+            </ul>
+          }
         </div>
       </div>
     </div>

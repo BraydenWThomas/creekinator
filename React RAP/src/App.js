@@ -31,7 +31,7 @@ const App = () => {
       element: <LoginPage />
     },
     {
-      path:"/Recruiter",
+      path:"/recruiter",
       element: <Recruiter />
     },
    
