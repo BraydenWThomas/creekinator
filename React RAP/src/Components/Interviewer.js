@@ -71,7 +71,7 @@ const Interviewer = () => {
 
 
     return (
-        <div className="pageSection">
+        <div className="pageSection" >
 
             <NavBar />
 
@@ -99,9 +99,9 @@ const Interviewer = () => {
 
 
 
-                    <div style={{ clear: "both" }}>
+                    <div>
                         <div className='assessmentToolBar'>
-                            <h3 style={{ float: "left" }}>Upcomming</h3>
+                            <h3>Upcomming</h3>
 
                             <div style={{ float: 'right' }}>
                                 <button className='candidateSort'><SortByAlphaIcon /></button>
@@ -115,8 +115,9 @@ const Interviewer = () => {
 
                             </div>
                         </div>
-                        {acList[pos]}
-                        <div className="scrollArrows" style={{float: "right", marginRight: "20px", marginTop: "20px"}}>
+                        
+                        <AssessmentCentreInfo statustype="upcomeInterviewer" />
+                        <div className="scrollArrows" style={{ float: "right", marginRight: "20px", marginTop: "20px"}}>
                             <button onClick={moveLeft} className="leftIcon"><ChevronLeftIcon /></button>
                             <button onClick={moveRight} className="rightIcon"><ChevronRightIcon /></button>
                         </div>
@@ -134,7 +135,7 @@ const Interviewer = () => {
                                 </select>
                             </div>
                         </div>
-                        {doneACList[donepos]}
+                        <AssessmentCentreInfo statustype="pastInterviewer" />
                         <div className="scrollArrows" style={{float: "right", marginRight: "20px", marginTop: "20px"}}>
                           <button onClick={moveDoneLeft} className="leftIcon"><ChevronLeftIcon /></button>
                             <button onClick={moveDoneRight} className="rightIcon"><ChevronRightIcon /></button>

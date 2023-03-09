@@ -9,12 +9,25 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextareaAutosize from "@mui/material/TextareaAutosize";
-const ViewAC = () => {
-    const [value, setValue] = React.useState('one');
+import { margin } from "@mui/system";
 
+const ViewAC = () => {
+    const [value, setValue] = React.useState(0);
+    const candidates = ["John", "Robert", "Bob", "Joe"]
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+    const showTextArea = (user) => {
+        console.log("dsfsd")
+        return (
+
+            <textarea placeholder={user} rows={"5"} cols={"100"} style={{ resize: "none" }} />
+
+        )
+    };
+
+
+
 
     return (
 
@@ -33,7 +46,7 @@ const ViewAC = () => {
 
                 </div>
 
-                <hr/>
+                <hr />
 
                 <div className="subHeader" style={{ clear: "both", marginBottom: "80px" }}>
                     <div style={{ float: "left" }}>
@@ -47,7 +60,7 @@ const ViewAC = () => {
                     {/*something to do with float*/}
                 </div>
 
-                <hr/>
+                <hr />
 
                 <div>
                     <h2>Assigned Candidates</h2>
@@ -61,28 +74,114 @@ const ViewAC = () => {
                         aria-label="secondary tabs example"
                         centered
                         variant="fullWidth"
-
-
                     >
-                        <Tab value="one" label="Candidate One" style={{ fontWeight: 'bold', fontSize: "20px", textTransform: "none" }} />
+
+                        {/* <Tab value="one" label="Candidate One" style={{ fontWeight: 'bold', fontSize: "20px", textTransform: "none" }} />
                         <Tab value="two" label="Candidate Two" style={{ fontWeight: 'bold', fontSize: "20px", textTransform: "none" }} />
                         <Tab value="three" label="Candidate Three" style={{ fontWeight: 'bold', fontSize: "20px", textTransform: "none" }} />
-                        <Tab value="four" label="Candidate Three" style={{ fontWeight: 'bold', fontSize: "20px", textTransform: "none" }} />
+                        <Tab value="four" label="Candidate Four" style={{ fontWeight: 'bold', fontSize: "20px", textTransform: "none" }} /> */}
+                        {candidates.map((user, index) => <Tab value={index} label={user} style={{ fontWeight: 'bold', fontSize: "20px", textTransform: "none" }} key={index} />
+
+                        )
+                        }
+                    
+
                     </Tabs>
+                    <Box sx={{display: "block" }} >
+                            {value === 0 && (
+                                <Box>
+                                    <textarea placeholder="1111" rows={"5"} cols={"100"} style={{ resize: "none" }} />
+                                </Box>
+                            )}
+                            {value === 1 && (
+                                <Box>
+                                    <textarea placeholder="2222" rows={"5"} cols={"100"} style={{ resize: "none" }} />
+                                </Box>
+                            )}
+                            {value === 2 && (
+                                <Box>
+                                    <textarea placeholder="3333" rows={"5"} cols={"100"} style={{ resize: "none" }} />
+                                </Box>
+                            )}
+                            {value === 3 && (
+                                <Box>
+                                    <textarea placeholder="44444" rows={"5"} cols={"100"} style={{ resize: "none" }} />
+                                </Box>
+                            )}
+
+                        </Box>
                 </Box>
-                <Button variant="contained" component="label" sx={{ m: 5 }} style={{ float: 'right' }}>View Profile</Button>
-                <Button variant="contained" component="label" sx={{ m: 5 }} style={{ float: 'right' }}>View Interview Form</Button>
-                
-                {/* <label>Comment</label> */}
-                <textarea rows={"4"} cols={"50"} resize={"none"}/>
+                <div style={{ clear: "both", padding: "20px 0 0 0" }}>
 
-                <hr/>
 
+                    <div style={{ float: "right" }}>
+                        <a href="/candidateinformation/:abc" target="_blank"><Button variant="contained" component="label" sx={{ m: 5 }}>View Profile</Button></a>
+                        <Button variant="contained" component="label" sx={{ m: 5 }}>View Interview Form</Button>
+                    </div>
+                </div>
+
+
+                <div style={{ clear: "both" }}>
+                    <hr />
+                    <h2>Assigned Interviewers</h2>
+
+                    <div className="assignedInterviewers" style={{ width: "80%" }}>
+                        <div className="salesColumn" style={{ float: "left" }}>
+                            <div>
+                                <h3>Sales Interviewer 1</h3>
+                                <p>Sal Innervewer</p>
+                                <h4>Assigned Candidates</h4>
+                                <ul style={{ listStyleType: "none" }}>
+                                    <li>John Doe</li>
+                                    <li>Jon Doe</li>
+                                    <li>Joe Doe</li>
+                                    <li>Do Doe</li>
+                                </ul>
+                            </div>
+                            <div style={{ marginTop: "6px" }}>
+                                <h3>Sales Interviewer 2</h3>
+                                <p>Sal Innervewer</p>
+                                <h4>Assigned Candidates</h4>
+                                <ul style={{ listStyleType: "none" }}>
+                                    <li>John Doe</li>
+                                    <li>Jon Doe</li>
+                                    <li>Joe Doe</li>
+                                    <li>Do Doe</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div className="techColumn" style={{ float: "right" }}>
+                            <div>
+                                <h3>Techinical Interviewer 1</h3>
+                                <p>Sal Innervewer</p>
+                                <h4>Assigned Candidates</h4>
+                                <ul style={{ listStyleType: "none" }}>
+                                    <li>John Doe</li>
+                                    <li>Jon Doe</li>
+                                    <li>Joe Doe</li>
+                                    <li>Do Doe</li>
+                                </ul>
+                            </div>
+                            <div style={{ marginTop: "6px" }}>
+                                <h3>Techinical Interviewer 2</h3>
+                                <p>Sal Innervewer</p>
+                                <h4>Assigned Candidates</h4>
+                                <ul style={{ listStyleType: "none" }}>
+                                    <li>John Doe</li>
+                                    <li>Jon Doe</li>
+                                    <li>Joe Doe</li>
+                                    <li>Do Doe</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div style={{ float: "right", clear: "both" }}>
+                        <Button variant="contained" component="label" sx={{ m: 5 }}>Back</Button>
+                    </div>
+                </div>
             </div>
-
-            {
-
-            }
 
 
         </div>

@@ -4,6 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import com.bezkoder.springjwt.repository.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -22,9 +27,21 @@ public class Pack {
 	private String tech_pack;
 	private String sales_pack;
 	
-	//@OneToMany(mappedBy = "pack")
-	//@JsonIgnoreProperties("pack")
-	//private List<AssessmentCenter> assessmentCenters;
+	@OneToMany(mappedBy = "pack")
+	@JsonIgnore
+	private List<AssessmentCenter> assessmentCenters;
+	
+	public void addAssessmentCenter(AssessmentCenter assessmentCenter) {
+		this.assessmentCenters.add(assessmentCenter);
+		assessmentCenter.setPack(this);
+	}
+	public void removeAssessmentCenter(AssessmentCenter assessmentCenter) {
+		// System.out.println("wadwadAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWdawd")
+		
+		this.assessmentCenters.remove(assessmentCenter);
+		assessmentCenter.setPack(null);
+		
+	}
 	/* --- End of Attributes --- */
 	
 	/* --- Constructors --- */
@@ -66,6 +83,12 @@ public class Pack {
 	}
 	public void setSales_pack(String sales_pack) {
 		this.sales_pack = sales_pack;
+	}
+	public void setAssessmentCenters(List<AssessmentCenter> assessmentCenters) {
+		this.assessmentCenters = assessmentCenters;
+	}
+	public List<AssessmentCenter> getAssessmentCenters() {
+		return this.assessmentCenters;
 	}
 	/* --- End of Getters and setters --- */
 }

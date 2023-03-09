@@ -11,6 +11,19 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { blue } from '@mui/material/colors';
+
+
+
+const FDMtheme = createTheme({
+    palette: {
+        primary: {
+            main: '#6f00ff',
+        },
+        secondary: blue,
+    },
+});
 
 const CreateCandidate = () => {
   // Details
