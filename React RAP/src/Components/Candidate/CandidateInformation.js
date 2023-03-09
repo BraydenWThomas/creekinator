@@ -1,6 +1,6 @@
 import { Divider, TextField } from "@mui/material";
 import { useState } from "react";
-import NavBar from "./NavBar";
+import NavBar from "../NavBar";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Avatar from '@mui/material/Avatar';
 import { LocalizationProvider } from '@mui/x-date-pickers';

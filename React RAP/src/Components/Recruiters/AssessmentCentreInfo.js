@@ -1,5 +1,6 @@
 import React from 'react';
-import './RecruiterStyles.css';
+import '../Styling/RecruiterStyles.css';
+
 const AssessmentCentreInfo = (props) => {
     
     

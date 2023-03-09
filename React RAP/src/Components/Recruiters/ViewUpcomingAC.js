@@ -1,5 +1,5 @@
 // Components
-import NavBar from './NavBar';
+import NavBar from '../NavBar';
 
 // React
 import React, { useState } from 'react';

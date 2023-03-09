@@ -4,7 +4,7 @@ import { Tabs, Tab, List, ListItemButton, ListItemIcon, ListItemText } from '@mu
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import TuneIcon from '@mui/icons-material/Tune';
-import './NavBar.css';
+import './Styling/NavBar.css';
 
 
 const NavBar = () => {

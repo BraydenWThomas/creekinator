@@ -9,9 +9,10 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import { useParams } from 'react-router-dom';
+import { Box, Container } from '@mui/material';
 
 const AdminDashboard = () => {
-  const {abc} = useParams();
+  const { abc } = useParams();
   const [fullname, setFullname] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -75,116 +76,124 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <div className='Content' style={{ float: 'left', width: '80%', backgroundColor: "#f2f2f2" }}>
-        <div className="header" style={{ display: "flex" }}>
-          <h1 style={{ flex: 1, margin: '1%' }}>Admin Dashboard</h1>
-          <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
-            <NotificationsIcon fontSize="large" />
-            <Avatar src="/broken-image.jpg" />
+      <Container component="main" maxWidth="xl">
+          <div className="header" style={{ display: "flex" }}>
+            <h1 style={{ flex: 1, margin: '1%' }}>Admin Dashboard</h1>
+            <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
+              <NotificationsIcon fontSize="large" />
+              <Avatar src="/broken-image.jpg" />
+            </div>
           </div>
-        </div>
-        <Divider variant='middle' />
-        <div className="create-user">
-          <h2 style={{ margin: '1%' }}>Create User</h2>
-          <div className='CreateUser'>
-            <FormControl>
+          <Divider variant='middle' />
+      <Box
+            sx={{
+              marginTop: 10,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}>
+          <div className="create-user">
+            <h2 style={{ margin: '1%' }}>Create User</h2>
+            <div className='CreateUser'>
+              <FormControl>
+                <TextField
+                  required
+                  id="outlined-fullname-input"
+                  label="Full Name"
+                  type="text"
+                  autoComplete="current-fullname"
+                  value={fullname}
+                  sx={{ m: 2 }}
+                  onChange={(event) => setFullname(event.target.value)}
+                />
+              </FormControl>
+
               <TextField
                 required
-                id="outlined-fullname-input"
-                label="Full Name"
+                id="outlined-username-input"
+                label="Username"
                 type="text"
-                autoComplete="current-fullname"
-                value={fullname}
+                autoComplete="current-username"
+                value={username}
                 sx={{ m: 2 }}
-                onChange={(event) => setFullname(event.target.value)}
+                onChange={(event) => setUsername(event.target.value)}
               />
-            </FormControl>
-            
-            <TextField
-              required
-              id="outlined-username-input"
-              label="Username"
-              type="text"
-              autoComplete="current-username"
-              value={username}
-              sx={{ m: 2 }}
-              onChange={(event) => setUsername(event.target.value)}
-            />
-            <TextField
-              required
-              id="outlined-password-input"
-              label="Password"
-              type="text"
-              autoComplete="current-password"
-              helperText="Minimum password length of 6"
-              value={password}
-              sx={{ m: 2 }}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-            <TextField
-              required
-              id="outlined-email-input"
-              label="Email"
-              type="email"
-              autoComplete="current-email"
-              value={email}
-              sx={{ m: 2 }}
-              onChange={(event) => setEmail(event.target.value)}
-            />
-            <FormControl required sx={{ m: 2, minWidth: 90 }}>
-              <InputLabel id="role-select-label">Role</InputLabel>
+              <TextField
+                required
+                id="outlined-password-input"
+                label="Password"
+                type="text"
+                autoComplete="current-password"
+                helperText="Minimum password length of 6"
+                value={password}
+                sx={{ m: 2 }}
+                onChange={(event) => setPassword(event.target.value)}
+              />
+              <TextField
+                required
+                id="outlined-email-input"
+                label="Email"
+                type="email"
+                autoComplete="current-email"
+                value={email}
+                sx={{ m: 2 }}
+                onChange={(event) => setEmail(event.target.value)}
+              />
+              <FormControl required sx={{ m: 2, minWidth: 90 }}>
+                <InputLabel id="role-select-label">Role</InputLabel>
+                <Select
+                  required
+                  labelId="role-select-label"
+                  id="role-select"
+                  value={role}
+                  label="Role"
+                  onChange={(event) => setRole(event.target.value)}
+                >
+                  <MenuItem value={"Recruiter"}>Recruiter</MenuItem>
+                  <MenuItem value={"Sales Interviewer"}>Sales Interviewer</MenuItem>
+                  <MenuItem value={"Technical Interviewer"}>Technical Interviewer</MenuItem>
+                </Select>
+              </FormControl>
+              <div className='create-button-row'>
+                <Button variant='contained' type='button' sx={{ m: 2 }} onClick={handleSubmit}>Create</Button>
+              </div>
+            </div>
+          </div>
+          <Divider variant='middle' style={{ paddingTop: '2%' }} />
+          <div className='users-list'>
+            <h2 style={{ margin: '1%' }}>Users</h2>
+            <FormControl sx={{ m: 2, minWidth: 150 }}>
+              <InputLabel id="users-list-filter">Filter</InputLabel>
               <Select
                 required
-                labelId="role-select-label"
-                id="role-select"
-                value={role}
-                label="Role"
-                onChange={(event) => setRole(event.target.value)}
-              >
+                labelId="filter-select-label"
+                id="filter"
+                value={selection}
+                label="Filter by"
+                onChange={(event) => handleFilter(event)}>
+                <MenuItem value={"All"}>All</MenuItem>
                 <MenuItem value={"Recruiter"}>Recruiter</MenuItem>
                 <MenuItem value={"Sales Interviewer"}>Sales Interviewer</MenuItem>
                 <MenuItem value={"Technical Interviewer"}>Technical Interviewer</MenuItem>
               </Select>
             </FormControl>
-            <div className='create-button-row'>
-              <Button variant='contained' type='button' sx={{ m: 2 }} onClick={handleSubmit}>Create</Button>
-            </div>
           </div>
-        </div>
-        <Divider variant='middle' style={{ paddingTop: '2%' }} />
-        <div className='users-list'>
-          <h2 style={{ margin: '1%' }}>Users</h2>
-          <FormControl sx={{ m: 2, minWidth: 150 }}>
-            <InputLabel id="users-list-filter">Filter</InputLabel>
-            <Select
-              required
-              labelId="filter-select-label"
-              id="filter"
-              value={selection}
-              label="Filter by"
-              onChange={(event) => handleFilter(event)}>
-              <MenuItem value={"All"}>All</MenuItem>
-              <MenuItem value={"Recruiter"}>Recruiter</MenuItem>
-              <MenuItem value={"Sales Interviewer"}>Sales Interviewer</MenuItem>
-              <MenuItem value={"Technical Interviewer"}>Technical Interviewer</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-        <div style={{ paddingLeft: '40px' }}>
-          {selection === "All"
-            ? <ul>
-              {users.map((user) => (
-                <li key={user.fullname}>{user.fullname} ({user.role})</li>
-              ))}
-            </ul>
-            : <ul>
-              {filteredUsers.map((filteredUser) => (
-                <li key={filteredUser.fullname}>{filteredUser.fullname} ({filteredUser.role})</li>
-              ))}
-            </ul>
-          }
-        </div>
-      </div>
+          <div style={{ paddingLeft: '40px' }}>
+            {selection === "All"
+              ? <ul>
+                {users.map((user) => (
+                  <li key={user.fullname}>{user.fullname} ({user.role})</li>
+                ))}
+              </ul>
+              : <ul>
+                {filteredUsers.map((filteredUser) => (
+                  <li key={filteredUser.fullname}>{filteredUser.fullname} ({filteredUser.role})</li>
+                ))}
+              </ul>
+            }
+          </div>
+          </Box>
+      </Container>
     </div>
   )
 }

@@ -1,7 +1,7 @@
-import CandidateSelectBox from './CandidatesSelectBox';
+import CandidateSelectBox from '../Candidate/CandidatesSelectBox';
 import AssessmentCentreInfo from './AssessmentCentreInfo';
-import './RecruiterStyles.css';
-import NavBar from './NavBar';
+import '../Styling/RecruiterStyles.css';
+import NavBar from '../NavBar';
 import React, { useState } from 'react';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import AddIcon from '@mui/icons-material/Add';

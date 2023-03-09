@@ -1,5 +1,5 @@
 import React from 'react';
-import './RecruiterStyles.css';
+import '../Styling/RecruiterStyles.css';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import CandidateInformation from './CandidateInformation';

@@ -1,10 +1,10 @@
-import CandidateSelectBox from './CandidatesSelectBox';
-import AssessmentCentreInfo from './AssessmentCentreInfo';
-import './RecruiterStyles.css';
-import NavBar from './NavBar';
+import CandidateSelectBox from '../Candidate/CandidatesSelectBox';
+import AssessmentCentreInfo from '../Recruiters/AssessmentCentreInfo';
+import '../Styling/RecruiterStyles.css';
+import NavBar from '../NavBar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import CandidateInformation from './CandidateInformation';
+import CandidateInformation from '../Candidate/CandidateInformation';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import AddIcon from '@mui/icons-material/Add';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -101,7 +101,7 @@ const Interviewer = () => {
 
                     <div>
                         <div className='assessmentToolBar'>
-                            <h3>Upcomming</h3>
+                            <h3>Upcoming</h3>
 
                             <div style={{ float: 'right' }}>
                                 <button className='candidateSort'><SortByAlphaIcon /></button>

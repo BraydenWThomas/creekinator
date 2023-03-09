@@ -1,14 +1,14 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
 import AdminDashboard from './Components/AdminDashboard';
-import Recruiter from './Components/Recruiter';
-import Interviewer from './Components/Interviewer';
-import CreateCandidate from './Components/CreateCandidate';
-import UpdateCandidate from './Components/UpdateCandidate';
-import CandidateInformation from './Components/CandidateInformation';
-import ViewAC from './Components/ViewAC';
-import ViewUpcomingAC from './Components/ViewUpcomingAC';
-import ViewPastAC from './Components/ViewPastAC';
+import Recruiter from './Components/Recruiters/Recruiter';
+import Interviewer from './Components/Interviewers/Interviewer';
+import CreateCandidate from './Components/Candidate/CreateCandidate';
+import UpdateCandidate from './Components/Candidate/UpdateCandidate';
+import CandidateInformation from './Components/Candidate/CandidateInformation';
+import ViewAC from './Components/Interviewers/ViewAC';
+import ViewUpcomingAC from './Components/Recruiters/ViewUpcomingAC';
+import ViewPastAC from './Components/Recruiters/ViewPastAC';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';

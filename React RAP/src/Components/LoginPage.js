@@ -10,7 +10,7 @@ import Container from '@mui/material/Container';
 import fdm from './fdm-logo.png';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
-import './LoginPageStyle.css'
+import './Styling/LoginPageStyle.css'
 
 const FDMtheme = createTheme({
   palette: {
