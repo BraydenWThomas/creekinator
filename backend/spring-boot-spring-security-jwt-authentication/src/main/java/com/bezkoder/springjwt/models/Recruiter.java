@@ -26,6 +26,15 @@ public class Recruiter {
 	//@JsonIgnoreProperties("recruiter")
 	@JsonIgnore
 	private List<AssessmentCenter> assessmentCenters;
+	
+	public void addAssessmentCenter(AssessmentCenter assessmentCenter) {
+		this.assessmentCenters.add(assessmentCenter);
+		assessmentCenter.setRecruiter(this);
+	}
+	public void removeAssessmentCenter(AssessmentCenter assessmentCenter) {
+		this.assessmentCenters.remove(assessmentCenter);
+		assessmentCenter.setRecruiter(null);
+	}
 	/* --- End of Attributes --- */
 	
 	/* --- Constructors --- */
