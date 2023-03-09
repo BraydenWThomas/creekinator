@@ -28,7 +28,7 @@ const CandidateInformation = () => {
             <NavBar />
             <div className="content" style={{ float: 'left', width: '80%', backgroundColor: "#f2f2f2" }}>
                 <div className="header" style={{ display: "flex" }}>
-                    <h1 style={{ flex: 1, margin: '1%' }}>Create Candidate</h1>
+                    <h1 style={{ flex: 1, margin: '1%' }}>Candidate INFORMATION</h1>
                     <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
                         <NotificationsIcon fontSize="large" />
                         <Avatar src="/broken-image.jpg" />
@@ -183,14 +183,14 @@ const CandidateInformation = () => {
                             onChange={(event) => setRecruitmentPhase(event.target.value)}
                         />
 
-                        <TextField
+                        {/* <TextField
                             disabled
                             id="past-ac-result-input"
                             label="Past AC Result"
                             type="text"
                             sx={{ m: 2 }}
                             onChange={(event) => setPastACResult(event.target.value)}
-                        />
+                        /> */}
                     </div>
                     <div className="create-button-row">
                         <Button variant="contained" component="label" sx={{ m: 5 }} style={{ float: 'right' }}>Back</Button>

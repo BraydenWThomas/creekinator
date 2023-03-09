@@ -7,13 +7,15 @@ import CreateCandidate from './Components/CreateCandidate';
 import UpdateCandidate from './Components/UpdateCandidate';
 import CandidateInformation from './Components/CandidateInformation';
 import ViewAC from './Components/ViewAC';
-import LoginPage from './Components/LoginPage';
+import ViewUpcomingAC from './Components/ViewUpcomingAC';
+import ViewPastAC from './Components/ViewPastAC';
+import BudgetHomePage from './Components/BudgetHomePage';
 
 const App = () => {
   const router = createBrowserRouter([
     {
       path:"/",
-      element: <AdminDashboard />
+      element: <BudgetHomePage />
     },
     {
       path:"/Recruiter",
@@ -42,8 +44,13 @@ const App = () => {
       element: <ViewAC />
     },
     {
-      path:"/login",
-      element: <LoginPage />
+      path:"/viewupcomingac/:abc",
+      element: <ViewUpcomingAC />
+    }
+    ,
+    {
+      path:"/viewpastac/:abc",
+      element: <ViewPastAC />
     }
     
   ]);
