@@ -9,7 +9,6 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import { useParams } from 'react-router-dom';
-import NavBar from './NavBar';
 
 const AdminDashboard = () => {
   const {abc} = useParams()

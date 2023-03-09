@@ -1,17 +1,91 @@
 import React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import fdm from './fdm-logo.png';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { blue } from '@mui/material/colors';
+import './LoginPageStyle.css'
+
+const FDMtheme = createTheme({
+  palette: {
+    primary: {
+      main: '#6f00ff',
+    },
+    secondary: blue,
+  },
+});
 
 const LoginPage = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      username: data.get('username'),
+      password: data.get('password'),
+    });
+  };
+
   return (
-    <div>
-      <img alt="placeholder"/>
-
-      <label htmlFor='username'>Username:</label>
-      <input type='text' id='username' placeholder='Enter email address'/>
-
-      <label htmlFor='password'>Password:</label>
-      <input type='password' id='password' placeholder='Enter password'/>
-
-      <button> Login </button>
+    <div className='login-container'>
+      <ThemeProvider theme={FDMtheme}>
+        <Container component="main" maxWidth="xs">
+          <Box
+            sx={{
+              marginTop: 10,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}>
+            <Avatar src="/broken-image.jpg" sx={{ width: 350, height: 350 }} />
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 10 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                color='primary'
+                fullWidth
+                variant="contained"
+                size='large'
+                disableElevation
+                sx={{ mt: 2, mb: 2, }}>
+                Login
+              </Button>
+            </Box>
+            <Grid item
+              sx={{ mt: 12 }}>
+              <img src={fdm} alt="FDM Logo" />
+            </Grid>
+          </Box>
+        </Container>
+      </ThemeProvider>
     </div>
   )
 }
