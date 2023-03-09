@@ -78,6 +78,9 @@ const LoginPage = () => {
                 sx={{ mt: 2, mb: 2, }}>
                 Login
               </Button>
+                <Button><a href="/recruiter"><h4>Rercruiter</h4></a></Button>
+                <Button><a href="/interviewer"><h4>Interviewer</h4></a></Button>
+                <Button><a href="/admin"><h4>Admin</h4></a></Button>
             </Box>
             <Grid item
               sx={{ mt: 12 }}>

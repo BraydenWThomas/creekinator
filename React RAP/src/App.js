@@ -9,13 +9,26 @@ import CandidateInformation from './Components/CandidateInformation';
 import ViewAC from './Components/ViewAC';
 import ViewUpcomingAC from './Components/ViewUpcomingAC';
 import ViewPastAC from './Components/ViewPastAC';
-import BudgetHomePage from './Components/BudgetHomePage';
+
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { blue } from '@mui/material/colors';
+import LoginPage from './Components/LoginPage';
+
+
+const FDMtheme = createTheme({
+  palette: {
+    primary: {
+      main: '#6f00ff',
+    },
+    secondary: blue,
+  },
+});
 
 const App = () => {
   const router = createBrowserRouter([
     {
       path:"/",
-      element: <BudgetHomePage />
+      element: <LoginPage />
     },
     {
       path:"/Recruiter",
@@ -25,7 +38,12 @@ const App = () => {
     {
       path:"/interviewer",
       element: <Interviewer />
-    }
+    },
+
+    {
+      path:"/admin",
+      element: <AdminDashboard />
+    },
 ,
     {
       path:"/createcandidate",
@@ -57,7 +75,9 @@ const App = () => {
 
 
   return (
+    <ThemeProvider theme={FDMtheme}>
     <RouterProvider router = {router} />
+    </ThemeProvider>
   )
 
 }
