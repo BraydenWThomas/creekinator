@@ -51,7 +51,7 @@ const CreateCandidate = () => {
     }
 
 
-
+    // Turn into form later
     return (
         <div className="create-candidate">
             <NavBar />

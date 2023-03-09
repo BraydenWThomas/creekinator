@@ -1,13 +1,33 @@
 import React from 'react';
 import './RecruiterStyles.css';
-const AssessmentCentreInfo = () => {
-
+const AssessmentCentreInfo = (props) => {
+    
+    
     return (
         <div className='assessmentCentreInfo' style={{clear: "both"}}>
            
 
             <div className="streamInfo">
+            {props.statustype == "upcome" ? 
+            <a href="/viewupcomingac/:abc" target={"_blank"}>
                 <button className='acDetails'>....</button>
+                </a> : 
+                (props.statustype == "past" ?
+                 <a href="/viewpastac/:abc" target={"_blank"}>
+                <button className='acDetails'>....</button>
+                </a>:
+                (
+                    props.statustype == "upcomeInterviewer" ?   
+                    <a href="/viewac/:abc" target={"_blank"}>
+                    <button className='acDetails'>....</button>
+                    </a> :  <button className='acDetails'>....</button>
+                  
+                )
+                ) 
+                
+                
+                
+                }
                 <h2>Stream Name</h2>
                 <h4>Stream Name</h4>
             </div>

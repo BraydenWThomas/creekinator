@@ -7,6 +7,7 @@ import TuneIcon from '@mui/icons-material/Tune';
 import './NavBar.css';
 
 const NavBar = () => {
+    //Logo should link back to dashboard to corresponding user
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
