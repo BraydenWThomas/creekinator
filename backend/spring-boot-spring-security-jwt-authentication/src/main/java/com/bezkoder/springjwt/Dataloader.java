@@ -21,7 +21,10 @@ import com.bezkoder.springjwt.models.Pack;
 import com.bezkoder.springjwt.models.Recruiter;
 import com.bezkoder.springjwt.models.Role;
 import com.bezkoder.springjwt.models.User;
+import com.bezkoder.springjwt.models.*;
 import com.bezkoder.springjwt.repository.AssessmentCenterRepository;
+import com.bezkoder.springjwt.repository.AuthorRepository;
+import com.bezkoder.springjwt.repository.BookRepository;
 import com.bezkoder.springjwt.repository.CandidateRepository;
 import com.bezkoder.springjwt.repository.InterviewerRepository;
 import com.bezkoder.springjwt.repository.InterviewsRepository;
@@ -43,11 +46,15 @@ public class Dataloader implements ApplicationRunner{
 	private RecruiterRepository recruiterRepository;
 	private UserRepository userRepository;
 	private RoleRepository roleRepository;
+	private BookRepository bookRepository;
+	private AuthorRepository authorRepository;
+	
 	
 	@Autowired
 	public Dataloader(AssessmentCenterRepository assessmentCenterRepository, CandidateRepository candidateRepository ,
 			InterviewerRepository interviewerRepository, InterviewsRepository interviewRepository, 
-			PacksRepository packsRepository,RecruiterRepository recruiterRepository,UserRepository userRepository,RoleRepository roleRepository) {
+			PacksRepository packsRepository,RecruiterRepository recruiterRepository,UserRepository userRepository,RoleRepository roleRepository, 
+			AuthorRepository authorRepository, BookRepository bookRepository) {
 		super();
 		this.assessmentCenterRepository = assessmentCenterRepository;
 		this.candidateRepository = candidateRepository;
@@ -57,6 +64,8 @@ public class Dataloader implements ApplicationRunner{
 		this.recruiterRepository = recruiterRepository;
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
+		this.authorRepository = authorRepository;
+		this.bookRepository = bookRepository;
 	}
 	
 	@Override
@@ -229,6 +238,33 @@ public class Dataloader implements ApplicationRunner{
 		userList.add(new User("recruiter","recruiter@gmail.com","recruiter"));
 		userList.get(2).addRole(rolesList.get(2));
 		this.userRepository.saveAll(userList);
+		
+		// Author test 1-1
+		List<Book> bookList = new ArrayList<>();
+		List<Author> authorList = new ArrayList<>();
+		Author author1 = new Author("A", 10);
+		Author author2 = new Author("B", 20);
+		Author author3 = new Author("C", 30);
+		Book book1 = new Book("A", 10);
+		Book book2 = new Book("B", 20);
+		Book book3 = new Book("C", 30);
+		bookList.add(book1);
+		bookList.add(book2);
+		bookList.add(book3);
+		authorList.add(author1);
+		authorList.add(author2);
+		authorList.add(author3);
+		this.bookRepository.saveAll(bookList);
+		this.authorRepository.saveAll(authorList);
+		author1.setBook(book1);
+		author2.setBook(book2);
+		author3.setBook(book3);
+		book1.setAuthor(author1);
+		book2.setAuthor(author2);
+		book3.setAuthor(author3);
+		this.bookRepository.saveAll(bookList);
+		this.authorRepository.saveAll(authorList);
+		
 	
 		
 		// Update all changes

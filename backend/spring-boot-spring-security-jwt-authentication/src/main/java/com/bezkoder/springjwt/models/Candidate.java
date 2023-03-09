@@ -69,6 +69,18 @@ public class Candidate {
 	//@JsonIgnoreProperties("candidates")
 	private List<AssessmentCenter> assessmentCenters;
 	
+	@OneToMany(mappedBy = "candidate")
+	@JsonIgnore
+	private List<Interview> interviews;
+	public void addInterview(Interview interview) {
+		this.interviews.add(interview);
+		interview.setCandidate(this);
+	}
+	public void removeInterview(Interview interview) {
+		this.interviews.remove(interview);
+		interview.setCandidate(null);
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -165,6 +177,14 @@ public class Candidate {
 	public void setPast_ac_result(String past_ac_result) {
 		this.past_ac_result = past_ac_result;
 	}
+	
+	public List<Interview> getInterviews() {
+		return this.interviews;
+	}
+	
+	public void setInterviews(List<Interview> interviews) {
+		this.interviews = interviews;
+	}
 
 	public List<AssessmentCenter> getAssessmentCenters() {
 		return assessmentCenters;
@@ -178,6 +198,8 @@ public class Candidate {
 		assessmentCentersList.add(assessmentCenters);
 		this.assessmentCenters = assessmentCentersList;
 	}
+	
+	
 	
 	
 	
