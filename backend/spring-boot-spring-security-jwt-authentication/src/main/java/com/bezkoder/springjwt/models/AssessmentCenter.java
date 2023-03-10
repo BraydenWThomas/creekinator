@@ -16,6 +16,8 @@ import javax.persistence.*;
 import java.util.List;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.sql.Time;
 import java.time.LocalDate;
 
 
@@ -82,14 +84,15 @@ public class AssessmentCenter {
 	//@JsonIgnoreProperties("assessmentCenters")
 	@JsonIgnore
 	private Recruiter recruiter;
+	//#TODO this needs to be changed into a list
 	
 	private String title;
 	
 	private LocalDate date;
 	
-	private LocalDateTime start_time;
+	private LocalTime start_time;
 	
-	private LocalDateTime finish_time;
+	private LocalTime finish_time;
 	
 	private boolean completed;
 	/* --- End of fields --- */
@@ -102,7 +105,7 @@ public class AssessmentCenter {
 	}
 
 	public AssessmentCenter(String title, LocalDate date,
-			LocalDateTime start_time, LocalDateTime finish_time, boolean completed) {
+			LocalTime start_time, LocalTime finish_time, boolean completed) {
 		// super();
 		this.title = title;
 		this.date = date;
@@ -111,7 +114,7 @@ public class AssessmentCenter {
 		this.completed = completed;
 	}
 	public AssessmentCenter(String title, LocalDate date,
-			LocalDateTime start_time, LocalDateTime finish_time, boolean completed,Pack pack) {
+			LocalTime start_time, LocalTime finish_time, boolean completed,Pack pack) {
 		// super();
 		this.title = title;
 		this.date = date;
@@ -189,19 +192,19 @@ public class AssessmentCenter {
 		this.date = date;
 	}
 
-	public LocalDateTime getStart_time() {
+	public LocalTime getStart_time() {
 		return start_time;
 	}
 
-	public void setStart_time(LocalDateTime start_time) {
+	public void setStart_time(LocalTime start_time) {
 		this.start_time = start_time;
 	}
 
-	public LocalDateTime getFinish_time() {
+	public LocalTime getFinish_time() {
 		return finish_time;
 	}
 
-	public void setFinish_time(LocalDateTime finish_time) {
+	public void setFinish_time(LocalTime finish_time) {
 		this.finish_time = finish_time;
 	}
 

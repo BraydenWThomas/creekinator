@@ -1,5 +1,6 @@
 package com.bezkoder.springjwt.models;
 
+import java.sql.Blob;
 import java.time.LocalDateTime;
 
 import javax.persistence.*;
@@ -17,7 +18,7 @@ import java.util.List;
 public class Candidate {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String title;
 	private String first_name;
@@ -27,12 +28,12 @@ public class Candidate {
 	private String email;
 	private LocalDateTime date_of_birth;
 	private String address;
-	private LocalDateTime graduation_year; 
+	private int graduation_year; 
 	private String degree;
 	private String university;
-	private String resume;
+	private String resume; //#TODO Blob
 	private String applied_stream;
-	private String recruit_phase;
+	private String recruit_phase; //#TODO delete ??
 	private String past_ac_result;
 	
 	public Candidate() {
@@ -41,7 +42,7 @@ public class Candidate {
 	}
 	
 	public Candidate(String title, String first_name, String middle_name, String last_name, String mobile_number,
-			String email, LocalDateTime date_of_birth, String address, LocalDateTime graduation_year, String degree,
+			String email, LocalDateTime date_of_birth, String address, int graduation_year, String degree,
 			String university, String resume, String applied_stream, String recruit_phase, String past_ac_result) {
 		super();
 		this.title = title;
@@ -135,10 +136,10 @@ public class Candidate {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public LocalDateTime getGraduation_year() {
+	public int getGraduation_year() {
 		return graduation_year;
 	}
-	public void setGraduation_year(LocalDateTime graduation_year) {
+	public void setGraduation_year(int graduation_year) {
 		this.graduation_year = graduation_year;
 	}
 	public String getDegree() {
