@@ -36,41 +36,22 @@ public class Interviewer {
 	@JoinTable(name = "assessmentCenter_interviewer", 
 	       		joinColumns = @JoinColumn(name = "interviewer_id"), 
 	       		inverseJoinColumns = @JoinColumn(name = "AC_id"))
+	
 	//@JsonIgnoreProperties("interviewers")
 	@JsonIgnore
 	private List<AssessmentCenter> assessmentCenters;
 	
 	private String name;
 	
-	//#TODO Sales or Tech etc.. 
-	//private String role;
-	
-//	@OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "user_id", referencedColumnName = "id")
-//	private User user;
-	
 	public Interviewer() {
 		
 	}
-	
 	
 	public Interviewer(String name) {
 		this.name = name;
 	}
 
 	
-	
-	
-//	public User getUser() {
-//		return user;
-//	}
-//
-//
-//	public void setUser(User user) {
-//		this.user = user;
-//	}
-
-
 	public int getId() {
 		return this.id;
 	}
