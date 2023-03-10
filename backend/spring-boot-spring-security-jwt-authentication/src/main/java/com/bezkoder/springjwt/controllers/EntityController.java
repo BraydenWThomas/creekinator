@@ -134,14 +134,16 @@ public class EntityController {
 		return assessmentCenterRepository.save(assessmentCenter);
 	}
 	
+	/*
 	//Add Pack to AC
 	@PutMapping("/ac/{acId}/addPack")
 	public AssessmentCenter addPackToAc(@PathVariable int acId,@RequestParam int packId) {
 		
 		AssessmentCenter tempAC = assessmentCenterRepository.getReferenceById(acId);
-		tempAC.setPack(packsRepository.getReferenceById(packId));
+		//tempAC.setPack(packsRepository.getReferenceById(packId));
 		return assessmentCenterRepository.save(tempAC);
 	}
+	*/
 	
 //	//Add Pack to AC
 //	@PutMapping("/ac/{acId}/addRecruiter")
@@ -352,12 +354,12 @@ public class EntityController {
 		/* --- remove all bidirectional dependencies to avoid delete bug --- */
 		Pack pack = packsRepository.findById(packId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " +packId));
 		// remove interviews
-		List<AssessmentCenter> assessmentCenters = pack.getAssessmentCenters();
-		while (! assessmentCenters.isEmpty()) {
-			pack.removeAssessmentCenter(assessmentCenters.get(assessmentCenters.size() - 1));
+		List<Interview> interviews = pack.getInterviews();
+		while (! interviews.isEmpty()) {
+			pack.removeInterviews(interviews.get(interviews.size() - 1));
 		}
 		this.packsRepository.save(pack);
-		this.assessmentCenterRepository.saveAll(assessmentCenters);
+		this.interviewRepository.saveAll(interviews);
 		/* --- end of remove all bidirectional dependencies to avoid delete bug --- */
 		
 		packsRepository.deleteById(packId);

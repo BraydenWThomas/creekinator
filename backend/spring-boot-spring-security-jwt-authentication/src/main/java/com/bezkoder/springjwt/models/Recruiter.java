@@ -22,18 +22,18 @@ public class Recruiter {
 	
 	private boolean superRecruiter;
 	
-	@OneToMany(mappedBy = "recruiter")
+	@ManyToMany(mappedBy = "recruiters")
 	//@JsonIgnoreProperties("recruiter")
 	@JsonIgnore
 	private List<AssessmentCenter> assessmentCenters;
 	
 	public void addAssessmentCenter(AssessmentCenter assessmentCenter) {
 		this.assessmentCenters.add(assessmentCenter);
-		assessmentCenter.setRecruiter(this);
+		assessmentCenter.getRecruiters().add(this);
 	}
 	public void removeAssessmentCenter(AssessmentCenter assessmentCenter) {
 		this.assessmentCenters.remove(assessmentCenter);
-		assessmentCenter.setRecruiter(null);
+		assessmentCenter.getRecruiters().remove(this);
 	}
 	/* --- End of Attributes --- */
 	

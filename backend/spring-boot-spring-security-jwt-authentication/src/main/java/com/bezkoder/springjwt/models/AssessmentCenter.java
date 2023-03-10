@@ -73,17 +73,21 @@ public class AssessmentCenter {
 		candidate.getAssessmentCenters().remove(this);
 	}
 	
+	/*
 	@ManyToOne
 	@JoinColumn(name = "FK_PACK_NO")
 	//@JsonIgnoreProperties("assessmentCenters")
 	@JsonIgnore
 	private Pack pack;
+	*/
 	
-	@ManyToOne
-	@JoinColumn(name = "FK_RECRUITER_NO")
+	@ManyToMany
+	@JoinTable(name = "assessmentCenter_recruiter",
+				joinColumns = @JoinColumn(name = "recruiter_id"),
+				inverseJoinColumns = @JoinColumn(name = "AC_id"))
 	//@JsonIgnoreProperties("assessmentCenters")
 	@JsonIgnore
-	private Recruiter recruiter;
+	private List<Recruiter> recruiters;
 	//#TODO this needs to be changed into a list
 	
 	private String title;
@@ -113,16 +117,18 @@ public class AssessmentCenter {
 		this.finish_time = finish_time;
 		this.completed = completed;
 	}
+	
+	/*
 	public AssessmentCenter(String title, LocalDate date,
-			LocalTime start_time, LocalTime finish_time, boolean completed,Pack pack) {
+			LocalTime start_time, LocalTime finish_time, boolean completed) {
 		// super();
 		this.title = title;
 		this.date = date;
 		this.start_time = start_time;
 		this.finish_time = finish_time;
 		this.completed = completed;
-		this.pack = pack;
 	}
+	*/
 	
 	/* --- End of Constructor --- */
 	
@@ -159,7 +165,8 @@ public class AssessmentCenter {
 	public void setCandidates(List<Candidate> candidates) {
 		this.candidates = candidates;
 	}
-
+	
+	/*
 	public Pack getPack() {
 		return pack;
 	}
@@ -167,13 +174,14 @@ public class AssessmentCenter {
 	public void setPack(Pack pack) {
 		this.pack = pack;
 	}
+	*/
 
-	public Recruiter getRecruiter() {
-		return recruiter;
+	public List<Recruiter> getRecruiters() {
+		return recruiters;
 	}
 
-	public void setRecruiter(Recruiter recruiter) {
-		this.recruiter = recruiter;
+	public void setRecruiters(List<Recruiter> recruiters) {
+		this.recruiters = recruiters;
 	}
 
 	public String getTitle() {

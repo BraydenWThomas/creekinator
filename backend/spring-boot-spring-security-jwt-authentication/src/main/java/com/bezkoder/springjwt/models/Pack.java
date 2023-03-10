@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,6 +29,20 @@ public class Pack {
 	private String tech_pack;
 	private String sales_pack;
 	
+	@ManyToMany(mappedBy = "packs")
+	@JsonIgnore
+	private List<Interview> interviews;
+	
+	public void addInterviews(Interview interview) {
+		this.interviews.add(interview);
+		interview.getPacks().add(this);
+	}
+	public void removeInterviews(Interview interview) {
+		this.interviews.remove(interview);
+		interview.getPacks().remove(this);
+	}
+	
+	/*
 	@OneToMany(mappedBy = "pack")
 	@JsonIgnore
 	private List<AssessmentCenter> assessmentCenters;
@@ -43,6 +58,8 @@ public class Pack {
 		assessmentCenter.setPack(null);
 		
 	}
+	*/
+	
 	/* --- End of Attributes --- aaa wasdwa */ 
 	
 	/* --- Constructors --- */
@@ -85,11 +102,19 @@ public class Pack {
 	public void setSales_pack(String sales_pack) {
 		this.sales_pack = sales_pack;
 	}
+	/*
 	public void setAssessmentCenters(List<AssessmentCenter> assessmentCenters) {
 		this.assessmentCenters = assessmentCenters;
 	}
 	public List<AssessmentCenter> getAssessmentCenters() {
 		return this.assessmentCenters;
+	}
+	*/
+	public void setInterviews(List<Interview> interviews) {
+		this.interviews = interviews;
+	}
+	public List<Interview> getInterviews(){
+		return this.interviews;
 	}
 	/* --- End of Getters and setters --- */
 }

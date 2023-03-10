@@ -43,6 +43,13 @@ public class Interview {
 	@JsonIgnore
 	//@JsonIgnoreProperties("interviews")
 	private Candidate candidate;
+	// packs
+	@ManyToMany
+	@JoinTable(name = "interview_pack",
+			joinColumns = @JoinColumn(name = "pack_id"),
+				inverseJoinColumns = @JoinColumn(name = "interview_id"))
+	@JsonIgnore
+	private List<Pack> packs;
 	/* --- End of fields --- */
 	
 	
@@ -96,6 +103,12 @@ public class Interview {
 	}
 	public void setCandidate(Candidate candidate) {
 		this.candidate = candidate;
+	}
+	public List<Pack> getPacks() {
+		return this.packs;
+	}
+	public void setPacks(List<Pack> packs) {
+		this.packs = packs;
 	}
 	/* --- End of Constructors --- */
 	
