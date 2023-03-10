@@ -9,6 +9,7 @@ import CandidateInformation from './Components/Candidate/CandidateInformation';
 import ViewAC from './Components/Interviewers/ViewAC';
 import ViewUpcomingAC from './Components/Recruiters/ViewUpcomingAC';
 import ViewPastAC from './Components/Recruiters/ViewPastAC';
+import CreateAC from './Components/Recruiters/CreateAC';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
@@ -30,21 +31,24 @@ const App = () => {
       path:"/",
       element: <LoginPage />
     },
+
+    // Users
     {
       path:"/recruiter",
       element: <Recruiter />
     },
-   
     {
       path:"/interviewer",
       element: <Interviewer />
     },
-
     {
       path:"/admin",
       element: <AdminDashboard />
     },
-,
+
+    // User webpages
+
+    // Candidates
     {
       path:"/createcandidate",
       element: <CreateCandidate />
@@ -57,6 +61,8 @@ const App = () => {
       path:"/candidateinformation/:abc",
       element: <CandidateInformation />
     },
+
+    // AC Info
     {
       path:"/viewac/:abc",
       element: <ViewAC />
@@ -64,11 +70,14 @@ const App = () => {
     {
       path:"/viewupcomingac/:abc",
       element: <ViewUpcomingAC />
-    }
-    ,
+    },
     {
       path:"/viewpastac/:abc",
       element: <ViewPastAC />
+    },
+    {
+      path:"/createac",
+      element:<CreateAC />
     }
     
   ]);

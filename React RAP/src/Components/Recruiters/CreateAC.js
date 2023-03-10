@@ -1,5 +1,5 @@
 // Components
-import NavBar from './NavBar';
+import NavBar from '../NavBar';
 
 // React
 import React, { useState } from 'react';
@@ -27,7 +27,7 @@ import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 const CreateAC = () => {
   // AC Details
   const [title, setTitle] = useState('');
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(dayjs(''));
   const [timeStart, setTimeStart] = useState(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));
   const [timeEnd, setTimeEnd] = useState(dayjs().set('hour', 17).set('minute', 0).startOf('minute'));
   const [salesInterviewer1, setSalesInterviewer1] = useState('');
@@ -45,6 +45,46 @@ const CreateAC = () => {
   // Time details
   const startDay = dayjs().set('hour', 9).startOf('hour')
   const endDay = dayjs().set('hour', 17).startOf('hour')
+
+  // Handle creating AC
+  const handleSubmit = () => {
+    setTitle('');
+    setDate('');
+    setTimeStart(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));
+    setTimeEnd(dayjs().set('hour', 17).set('minute', 0).startOf('minute'));
+    setSalesInterviewer1('');
+    setSalesInterviewer2('');
+    setTechInterviewer1('');
+    setTechInterviewer2('');
+    setCandidates([]);
+    setSalesPack('');
+    setTechPack('');
+    setStream('');
+    setFilteredCandidates([]);
+
+    const body =
+      JSON.stringify({
+        title: title,
+        // date: date.toISOString(),
+        // start_time: timeStart.toISOString(),
+        // finish_time:timeEnd.toISOString()
+        date: date,
+        start_time: timeStart,
+        finish_time:timeEnd
+      });
+
+    const requestOptions = {
+      method: 'POST',
+      body: body,
+      redirect: 'follow',
+      headers: { 'content-type': 'application/json' }
+    };
+
+    fetch("http://localhost:8080/api/ac", requestOptions)
+      .then(response => response.json())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+  }
 
   return (
     <div>
@@ -64,13 +104,17 @@ const CreateAC = () => {
             autoComplete="current-title"
             fullWidth
             required
+            value={title}
             onChange={(e) => setTitle(e.target.value)} />
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Date"
               disablePast
-              required />
+              required
+              format="DD/MM/YYYY"
+              value={date}
+              onChange={(newDate) => setDate(newDate)} />
           </LocalizationProvider>
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -80,7 +124,7 @@ const CreateAC = () => {
               minTime={startDay}
               maxTime={endDay}
               value={timeStart}
-              onChange={(e) => setTimeStart(e.target.value)} />
+              onChange={(newTime) => setTimeStart(newTime)} />
           </LocalizationProvider>
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -90,7 +134,7 @@ const CreateAC = () => {
               minTime={startDay}
               maxTime={endDay}
               value={timeEnd}
-              onChange={(e) => setTimeEnd(e.target.value)} />
+              onChange={(newTime) => setTimeEnd(newTime)} />
           </LocalizationProvider>
         </div>
 
@@ -180,7 +224,7 @@ const CreateAC = () => {
             </h2>
 
             <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
-              <FormGroup sx={{ float: 'left', width: '25%' }}>
+              {/* <FormGroup sx={{ float: 'left', width: '25%' }}>
                 <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
                 <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
                 <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
@@ -219,7 +263,7 @@ const CreateAC = () => {
                 <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
                 <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
                 <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-              </FormGroup>
+              </FormGroup> */}
 
             </Box>
 
@@ -255,8 +299,11 @@ const CreateAC = () => {
             </Select>
           </FormControl>
 
-          <Button variant="contained" sx={{ float: 'right' }}>
-            Create
+          <Button 
+            variant="contained" 
+            sx={{ float: 'right' }}
+            onClick={(e) => handleSubmit(e.target.value)}>
+              Create
           </Button>
         </div>
       </div>
