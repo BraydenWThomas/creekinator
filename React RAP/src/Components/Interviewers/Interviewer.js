@@ -1,6 +1,6 @@
 import CandidateSelectBox from '../Candidate/CandidatesSelectBox';
 import AssessmentCentreInfo from '../Recruiters/AssessmentCentreInfo';
-import '../Styling/RecruiterStyles.css';
+// import '../Styling/RecruiterStyles.css';
 import NavBar from '../NavBar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
@@ -10,15 +10,16 @@ import AddIcon from '@mui/icons-material/Add';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { Avatar, Box, Divider, Tab, Tabs } from '@mui/material';
 
 const Interviewer = () => {
 
     const [displayState, setDisplayState] = useState("Candidate");
-    const acList = [<AssessmentCentreInfo />,<CandidateSelectBox />,<AssessmentCentreInfo />,<AssessmentCentreInfo />];
-    const doneACList = [<AssessmentCentreInfo />,<CandidateSelectBox />,<AssessmentCentreInfo />,<AssessmentCentreInfo />];
+    const acList = [<AssessmentCentreInfo />, <CandidateSelectBox />, <AssessmentCentreInfo />, <AssessmentCentreInfo />];
+    const doneACList = [<AssessmentCentreInfo />, <CandidateSelectBox />, <AssessmentCentreInfo />, <AssessmentCentreInfo />];
     const [pos, setPos] = useState(0);
     const [donepos, setDonePos] = useState(0);
-   
+
     // USE THIS FOR LATER
     // const [users, setUsers] = useState([
     //     { username: "John Doe", email: 'johndoe@fdm.com'},
@@ -34,17 +35,17 @@ const Interviewer = () => {
         //console.log(displayState);
     }
     const moveLeft = () => {
-        if (pos > 0){
-            setPos(pos-1)
+        if (pos > 0) {
+            setPos(pos - 1)
         }
         else {
-            setPos(acList.length-1)
+            setPos(acList.length - 1)
         }
     }
 
     const moveRight = () => {
-        if (pos < acList.length-1){
-            setPos(pos+1)
+        if (pos < acList.length - 1) {
+            setPos(pos + 1)
         }
         else {
             setPos(0)
@@ -52,17 +53,17 @@ const Interviewer = () => {
     }
 
     const moveDoneLeft = () => {
-        if (donepos > 0){
-            setDonePos(donepos-1)
+        if (donepos > 0) {
+            setDonePos(donepos - 1)
         }
         else {
-            setDonePos(doneACList.length-1)
+            setDonePos(doneACList.length - 1)
         }
     }
 
     const moveDoneRight = () => {
-        if (donepos < doneACList.length-1){
-            setDonePos(donepos+1)
+        if (donepos < doneACList.length - 1) {
+            setDonePos(donepos + 1)
         }
         else {
             setDonePos(0)
@@ -73,26 +74,27 @@ const Interviewer = () => {
     return (
         <div className="pageSection" >
 
-            <NavBar />
+            {/* <NavBar /> */}
 
             <div className='bodySection'>
 
-                <div className='bellAndAvatar'>
-                    <h1 style={{ paddingLeft: "20px", paddingTop: "20px" }}>Dashboard</h1>
-                    
-                    <NotificationsIcon/>
+                <div className="header" style={{ display: "flex" }}>
+                    <h1 style={{ flex: 1, margin: '1%' }}>Dashboard</h1>
+                    <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
+                        <NotificationsIcon fontSize="large" />
+                        <Avatar src="/broken-image.jpg" />
+                    </div>
                 </div>
 
-                <hr />
+                <Divider variant='middle'/>
 
                 <div className='recruiterToolBar'>
-                    <div style={{ float: "left" }}>
-
-                        <button value={"AC_Centre"} onClick={() => changeDisplay("AC_Centre")}>Assessment Centres</button>
-                        <button value={"Candidate"} onClick={() => changeDisplay("Candidate")}>Interviews</button>
-                        <button value={"Candidate"} onClick={() => changeDisplay("Candidate")}>Feedback</button>
-                    </div>
-
+                    <Box sx={{m: 2, width: '100%' }}>
+                        <Tabs value={displayState} aria-label="basic tabs example">
+                            <Tab value="AC_Centre" label="Assessment Centre" onClick={() => changeDisplay("AC_Centre")} />
+                            <Tab value="Candidate" label="Interviews & Feedback" onClick={() => changeDisplay("Candidate")} />
+                        </Tabs>
+                    </Box>
                 </div>
 
                 <div className='candidatesInfo' style={{ marginTop: "30px" }}>
@@ -101,7 +103,7 @@ const Interviewer = () => {
 
                     <div>
                         <div className='assessmentToolBar'>
-                            <h3>Upcoming</h3>
+                            <h2>Upcoming</h2>
 
                             <div style={{ float: 'right' }}>
                                 <button className='candidateSort'><SortByAlphaIcon /></button>
@@ -115,9 +117,10 @@ const Interviewer = () => {
 
                             </div>
                         </div>
-                        
+
                         <AssessmentCentreInfo statustype="upcomeInterviewer" />
-                        <div className="scrollArrows" style={{ float: "right", marginRight: "20px", marginTop: "20px"}}>
+                        
+                        <div className="scrollArrows" style={{ float: "right", marginRight: "20px", marginTop: "20px" }}>
                             <button onClick={moveLeft} className="leftIcon"><ChevronLeftIcon /></button>
                             <button onClick={moveRight} className="rightIcon"><ChevronRightIcon /></button>
                         </div>
@@ -136,8 +139,8 @@ const Interviewer = () => {
                             </div>
                         </div>
                         <AssessmentCentreInfo statustype="pastInterviewer" />
-                        <div className="scrollArrows" style={{float: "right", marginRight: "20px", marginTop: "20px"}}>
-                          <button onClick={moveDoneLeft} className="leftIcon"><ChevronLeftIcon /></button>
+                        <div className="scrollArrows" style={{ float: "right", marginRight: "20px", marginTop: "20px" }}>
+                            <button onClick={moveDoneLeft} className="leftIcon"><ChevronLeftIcon /></button>
                             <button onClick={moveDoneRight} className="rightIcon"><ChevronRightIcon /></button>
                         </div>
                     </div>
