@@ -110,6 +110,15 @@ public class EntityController {
 		return assessmentCenterRepository.save(tempAC);
 	}
 	
+//	//Add Pack to AC
+//	@PutMapping("/ac/{acId}/addRecruiter")
+//	public AssessmentCenter addRecruiterToAc(@PathVariable int acId,@RequestParam int rec) {
+//		
+//		AssessmentCenter tempAC = assessmentCenterRepository.getReferenceById(acId);
+//		tempAC.setPack(packsRepository.getReferenceById(packId));
+//		return assessmentCenterRepository.save(tempAC);
+//	}
+	
 	/* --- End of Assessment Center --- */	
 	
 	
