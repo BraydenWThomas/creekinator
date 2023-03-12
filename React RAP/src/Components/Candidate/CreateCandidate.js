@@ -73,7 +73,7 @@ const CreateCandidate = () => {
         email: email,
         date_of_birth: new Date().toISOString(),
         address: address,
-        graduation_year: new Date().toISOString(),
+        graduation_year: gradYear,
         degree: degree,
         university: university,
         resume: "resume-link",
@@ -184,8 +184,8 @@ const CreateCandidate = () => {
               <DatePicker
                 label="D.O.B *"
                 format="DD/MM/YYYY"
-                // value={dob}
-                // onChange={(event) => setDob(event.target.value)}
+                value={dob}
+                onChange={(newDob) => setDob(newDob)}
                 sx={{ m: 2 }}
               />
             </LocalizationProvider>
@@ -197,7 +197,7 @@ const CreateCandidate = () => {
               autoComplete="current-address"
               value={address}
               sx={{ m: 2, minWidth: 500 }}
-              onChange={(newDate) => setAddress(newDate)}
+              onChange={(event) => setAddress(event.target.value)}
             />
           </div>
           <div className="contact-details-row">

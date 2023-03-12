@@ -10,6 +10,7 @@ import ViewAC from './Components/Interviewers/ViewAC';
 import ViewUpcomingAC from './Components/Recruiters/ViewUpcomingAC';
 import ViewPastAC from './Components/Recruiters/ViewPastAC';
 import CreateAC from './Components/Recruiters/CreateAC';
+import UpdateAC from './Components/Recruiters/UpdateAC';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
@@ -50,38 +51,41 @@ const App = () => {
 
     // Candidates
     {
-      path:"/createcandidate",
+      path:"/candidate/create",
       element: <CreateCandidate />
     },
     {
-      path:"/updatecandidate",
+      path:"/candidate/update",
       element: <UpdateCandidate />
     },
     {
-      path:"/candidateinformation/:abc",
+      path:"/candidate/info/:abc",
       element: <CandidateInformation />
     },
 
     // AC Info
     {
-      path:"/viewac/:abc",
+      path:"/ac/view/:abc",
       element: <ViewAC />
     },
     {
-      path:"/viewupcomingac/:abc",
+      path:"/ac/view-upcoming/:abc",
       element: <ViewUpcomingAC />
     },
     {
-      path:"/viewpastac/:abc",
+      path:"/ac/view-past/:abc",
       element: <ViewPastAC />
     },
     {
-      path:"/createac",
-      element:<CreateAC />
+      path:"/ac/create",
+      element: <CreateAC />
+    },
+    {
+      path:"/ac/update",
+      element: <UpdateAC />
     }
     
   ]);
-
 
   return (
     <ThemeProvider theme={FDMtheme}>

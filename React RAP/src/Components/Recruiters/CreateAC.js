@@ -2,7 +2,7 @@
 import NavBar from '../NavBar';
 
 // React
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 
 // Material UI
@@ -27,7 +27,7 @@ import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 const CreateAC = () => {
   // AC Details
   const [title, setTitle] = useState('');
-  const [date, setDate] = useState(dayjs(''));
+  const [date, setDate] = useState('');
   const [timeStart, setTimeStart] = useState(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));
   const [timeEnd, setTimeEnd] = useState(dayjs().set('hour', 17).set('minute', 0).startOf('minute'));
   const [salesInterviewer1, setSalesInterviewer1] = useState('');
@@ -48,6 +48,9 @@ const CreateAC = () => {
 
   // Handle creating AC
   const handleSubmit = () => {
+    console.log(date)
+    console.log(timeStart.format('hh:mm-ss'))
+    console.log(timeEnd.format('hh-mm-ss'))
     setTitle('');
     setDate('');
     setTimeStart(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));
@@ -65,12 +68,9 @@ const CreateAC = () => {
     const body =
       JSON.stringify({
         title: title,
-        // date: date.toISOString(),
-        // start_time: timeStart.toISOString(),
-        // finish_time:timeEnd.toISOString()
-        date: date,
-        start_time: timeStart,
-        finish_time:timeEnd
+        date: date.format('YYYY-MM-DD'),
+        start_time: timeStart.format('HH:mm:ss'),
+        finish_time: timeEnd.format('HH:mm:ss')
       });
 
     const requestOptions = {
@@ -85,6 +85,19 @@ const CreateAC = () => {
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
   }
+
+  // Fetch all candidates
+  useEffect(() => {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
+
+    fetch("http://localhost:8080/api/candidate", requestOptions)
+      .then(response => response.json())
+      .then(data => { setCandidates(data) })
+      .catch(error => console.log('error', error));
+  })
 
   return (
     <div>
@@ -224,46 +237,14 @@ const CreateAC = () => {
             </h2>
 
             <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
-              {/* <FormGroup sx={{ float: 'left', width: '25%' }}>
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
+              <FormGroup>
+                {candidates.map(candidate => (
+                  <FormControlLabel 
+                    key={candidate.id}
+                    control={<Checkbox/>} 
+                    label={candidate.first_name + " " + candidate.middle_name + " " + candidate.last_name} />
+                ))} 
               </FormGroup>
-              <FormGroup sx={{ float: 'left', width: '25%' }}>
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-              </FormGroup>
-              <FormGroup sx={{ float: 'left', width: '25%' }}>
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-              </FormGroup>
-              <FormGroup sx={{ float: 'left', width: '25%' }}>
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-                <FormControlLabel control={<Checkbox defaultUnChecked />} label="John Doe" />
-              </FormGroup> */}
 
             </Box>
 
