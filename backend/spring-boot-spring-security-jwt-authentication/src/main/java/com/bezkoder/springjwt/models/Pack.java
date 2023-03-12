@@ -29,18 +29,12 @@ public class Pack {
 	private String tech_pack;
 	private String sales_pack;
 	
+	// linked
 	@ManyToMany(mappedBy = "packs")
 	@JsonIgnore
 	private List<Interview> interviews;
+	/* --- end of fileds --- */
 	
-	public void addInterviews(Interview interview) {
-		this.interviews.add(interview);
-		interview.getPacks().add(this);
-	}
-	public void removeInterviews(Interview interview) {
-		this.interviews.remove(interview);
-		interview.getPacks().remove(this);
-	}
 	
 	/*
 	@OneToMany(mappedBy = "pack")
@@ -60,24 +54,28 @@ public class Pack {
 	}
 	*/
 	
-	/* --- End of Attributes --- aaa wasdwa */ 
+	
 	
 	/* --- Constructors --- */
 	public Pack() {
 		//super();
-		// TODO Auto-generated constructor stub
+		this.interviews = new ArrayList<Interview>();
 	}
-	
 	public Pack(String pack_name, String tech_pack, String sales_pack) {
 		//super();
 		this.pack_name = pack_name;
 		this.tech_pack = tech_pack;
 		this.sales_pack = sales_pack;
+		this.interviews = new ArrayList<Interview>();
 	}
 	/* --- End of Constructors --- */
 	
 	
-	/* --- Getters and setters --- */
+	
+	
+	
+	
+	/* --- Normal getters and setters --- */
 	public int getId() {
 		return id;
 	}
@@ -110,11 +108,27 @@ public class Pack {
 		return this.assessmentCenters;
 	}
 	*/
+	
+	/* --- End of Normal getters and setters --- */
+	
+	
+	
+	
+	
+	/* --- linked --- */
+	// interview
 	public void setInterviews(List<Interview> interviews) {
 		this.interviews = interviews;
 	}
 	public List<Interview> getInterviews(){
 		return this.interviews;
 	}
-	/* --- End of Getters and setters --- */
+	public void addInterviews(Interview interview) {
+		this.interviews.add(interview);
+		interview.getPacks().add(this);
+	}
+	public void removeInterviews(Interview interview) {
+		this.interviews.remove(interview);
+		interview.getPacks().remove(this);
+	}
 }

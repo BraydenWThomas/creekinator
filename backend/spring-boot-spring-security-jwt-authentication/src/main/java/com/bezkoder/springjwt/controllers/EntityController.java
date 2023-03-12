@@ -25,6 +25,7 @@ import com.bezkoder.springjwt.repository.InterviewerRepository;
 import com.bezkoder.springjwt.repository.InterviewsRepository;
 import com.bezkoder.springjwt.repository.PacksRepository;
 import com.bezkoder.springjwt.repository.RecruiterRepository;
+import com.bezkoder.springjwt.repository.UserRepository;
 import com.bezkoder.springjwt.exceptions.NotFoundException;
 
 
@@ -35,6 +36,7 @@ import com.bezkoder.springjwt.exceptions.NotFoundException;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class EntityController {
 	
+	/* --- fileds --- */
 	AssessmentCenterRepository assessmentCenterRepository;
 	CandidateRepository candidateRepository;
 	InterviewerRepository interviewerRepository;
@@ -43,14 +45,21 @@ public class EntityController {
 	RecruiterRepository recruiterRepository;
 	BookRepository bookRepository;
 	AuthorRepository authorRepository;
+	UserRepository userRepository;
+	/* --- end of fields --- */
 	
 	
 	
+	
+	
+	/* --- constructor --- */
+	// TODO autowire attribute should be able to avoid doing this section
 	public EntityController(AssessmentCenterRepository assessmentCenterRepository, CandidateRepository candidateRepository ,
 			InterviewerRepository interviewerRepository, InterviewsRepository interviewRepository, 
 			PacksRepository packsRepository,RecruiterRepository recruiterRepository,
 			BookRepository bookRepository,
-			AuthorRepository authorRepository) {
+			AuthorRepository authorRepository,
+			UserRepository userRepository) {
 		super();
 		this.assessmentCenterRepository = assessmentCenterRepository;
 		this.candidateRepository = candidateRepository;
@@ -60,7 +69,10 @@ public class EntityController {
 		this.recruiterRepository = recruiterRepository;
 		this.bookRepository = bookRepository;
 		this.authorRepository = authorRepository;
+		this.userRepository = userRepository;
 	}
+	/* --- end of constructor --- */
+	
 	
 	
 	
@@ -85,6 +97,7 @@ public class EntityController {
 	// Delete AC
 	@DeleteMapping("/ac/{acId}")
 	public void deleteAcById(@PathVariable int acId) {
+		// TODO remove this part as it is reduntency
 		if (assessmentCenterRepository.findById(acId).isEmpty()) {
 			throw new NotFoundException("Can't find transaction with id: " + acId);
 		}
@@ -92,10 +105,10 @@ public class EntityController {
 		/* --- remove all bidirectional dependencies to avoid delete bug --- */
 		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(acId).orElseThrow(()->
 											new NotFoundException("Can't find transaction with id: " + acId));
+		
 		List<Interviewer> interviewers = assessmentCenter.getInterviewers();
 		List<Interview> interviews = assessmentCenter.getInterviews();
 		List<Candidate> candidates = assessmentCenter.getCandidates();
-		
 		// remove all interviewers
 		while (! interviewers.isEmpty()) {
 			assessmentCenter.removeInterviewer(interviewers.get(interviewers.size() - 1));
@@ -168,9 +181,6 @@ public class EntityController {
 	public List<Candidate> getAllCandidate(@RequestParam (required=false) String firstName,
 			@RequestParam (required=false) String lastName,
 			@RequestParam (required=false) String appliedStream) {
-		
-		
-		
 		return candidateRepository.findAll();
 	}
 	
@@ -183,6 +193,7 @@ public class EntityController {
 	// Delete Candidate
 	@DeleteMapping("/candidate/{candidateId}")
 	public void deleteCandidateById(@PathVariable int candidateId) {
+		// TODO this part should be removed in the future
 		if (candidateRepository.findById(candidateId).isEmpty()) {
 			throw new NotFoundException("Can't find transaction with id: " + candidateId);
 		}
@@ -240,6 +251,7 @@ public class EntityController {
 	// Delete Interviewer
 	@DeleteMapping("/interviewer/{interviewerId}")
 	public void deleteInterviewerById(@PathVariable int interviewerId) {
+		// TODO should delete later
 		if (interviewerRepository.findById(interviewerId).isEmpty()) {
 			throw new NotFoundException("Can't find transaction with id: " + interviewerId);
 		}
@@ -302,6 +314,34 @@ public class EntityController {
 		if (interviewRepository.findById(interviewId).isEmpty()) {
 			throw new NotFoundException("Can't find transaction with id: " + interviewId);
 		}
+		
+		/* --- unlink before deletion --- */
+		Interview interview = interviewRepository.findById(interviewId).orElseThrow(() -> new NotFoundException("Can't find transaction with id: " + interviewId));
+		Interviewer interviewer = interview.getInterviewer();
+		AssessmentCenter assessmentCenter = interview.getAssessmentCenter();
+		Candidate candidate = interview.getCandidate();
+		List<Pack> packs = interview.getPacks();
+		
+		if (interviewer != null) {
+			interview.removeInterviewer();
+			interviewerRepository.save(interviewer);
+		}
+		if (assessmentCenter != null) {
+			interview.removeAssessmentCenter();
+			assessmentCenterRepository.save(assessmentCenter);
+		}
+		if (candidate != null) {
+			interview.removeCandidate();
+			candidateRepository.save(candidate);
+		}
+		while (! packs.isEmpty()) {
+			interview.removePack(packs.get(packs.size() - 1));
+		}
+		
+		interviewRepository.save(interview);
+		packsRepository.saveAll(packs);
+		/* --- end of unlink before deletion --- */
+		
 		interviewRepository.deleteById(interviewId);
 	}	
 	
@@ -412,11 +452,17 @@ public class EntityController {
 		
 		/* --- remove all bidirectional dependencies to avoid delete bug --- */
 		Recruiter recruiter = recruiterRepository.findById(recruiterId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " +recruiterId));
-		// remove assessmentCenter
 		List<AssessmentCenter> assessmentCenters = recruiter.getAssessmentCenters();
+		User user = recruiter.getUser();
+		
+		if (user != null) {
+			recruiter.removeUser();
+			userRepository.save(user);
+		}
 		while (! assessmentCenters.isEmpty()) {
 			recruiter.removeAssessmentCenter(assessmentCenters.get(assessmentCenters.size() - 1));
 		}
+		
 		this.recruiterRepository.save(recruiter);
 		this.assessmentCenterRepository.saveAll(assessmentCenters);
 		/* --- end of remove all bidirectional dependencies to avoid delete bug --- */
