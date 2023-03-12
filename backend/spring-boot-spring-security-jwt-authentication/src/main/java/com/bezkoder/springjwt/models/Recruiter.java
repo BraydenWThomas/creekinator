@@ -27,6 +27,9 @@ public class Recruiter {
 	@JsonIgnore
 	private List<AssessmentCenter> assessmentCenters;
 	
+	@OneToOne
+	private User user;
+	
 	public void addAssessmentCenter(AssessmentCenter assessmentCenter) {
 		this.assessmentCenters.add(assessmentCenter);
 		assessmentCenter.getRecruiters().add(this);
@@ -81,6 +84,14 @@ public class Recruiter {
 
 	public void setAssessmentCenters(List<AssessmentCenter> assessementCenters) {
 		this.assessmentCenters = assessementCenters;
+	}
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	public User getUser() {
+		return this.user;
 	}
 	/* --- End of Getters and setters --- */
 	

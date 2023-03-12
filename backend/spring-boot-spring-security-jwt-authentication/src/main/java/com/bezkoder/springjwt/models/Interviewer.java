@@ -41,6 +41,9 @@ public class Interviewer {
 	@JsonIgnore
 	private List<AssessmentCenter> assessmentCenters;
 	
+	@OneToOne
+	private User user;
+	
 	private String name;
 	
 	public Interviewer() {
@@ -87,6 +90,14 @@ public class Interviewer {
 		}	
 		assessmentCentersList.add(assessmentCenters);
 		this.assessmentCenters = assessmentCentersList;
+	}
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	public User getUser() {
+		return this.user;
 	}
 
 	
