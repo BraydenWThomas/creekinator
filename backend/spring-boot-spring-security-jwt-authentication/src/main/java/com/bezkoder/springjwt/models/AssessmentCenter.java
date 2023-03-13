@@ -40,6 +40,8 @@ public class AssessmentCenter {
 	
 	private boolean completed;
 	
+	private int coordinatorId = -1;
+	
 	// linked fields
 	@ManyToMany(mappedBy = "assessmentCenters")
 	@JsonIgnore
@@ -74,6 +76,21 @@ public class AssessmentCenter {
 		this.candidates = new ArrayList<Candidate>();
 		this.recruiters = new ArrayList<Recruiter>();
 	}
+	public AssessmentCenter(String title, LocalDate date,
+			LocalTime start_time, LocalTime finish_time, boolean completed, int coordinatorId) {
+		this.title = title;
+		this.date = date;
+		this.start_time = start_time;
+		this.finish_time = finish_time;
+		this.completed = completed;
+		this.coordinatorId = coordinatorId;
+		
+		this.interviewers = new ArrayList<Interviewer>();
+		this.interviews = new ArrayList<Interview>();
+		this.candidates = new ArrayList<Candidate>();
+		this.recruiters = new ArrayList<Recruiter>();
+	}
+	
 	public AssessmentCenter(String title, LocalDate date,
 			LocalTime start_time, LocalTime finish_time, boolean completed) {
 		this.title = title;
@@ -143,6 +160,14 @@ public class AssessmentCenter {
 
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
+	}
+	
+	public void setCoordinatorId(int id) {
+		this.coordinatorId = id;
+	}
+	
+	public int getCoordinatorId() {
+		return this.coordinatorId;
 	}
 	/* --- End of normal setter and getters --- */
 	

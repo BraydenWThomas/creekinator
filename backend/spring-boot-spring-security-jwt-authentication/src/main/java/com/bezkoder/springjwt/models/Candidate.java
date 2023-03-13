@@ -40,8 +40,8 @@ public class Candidate {
 	// linked fields
 	@ManyToMany
 	@JoinTable(name = "assessmentCenter_candidate", 
-        joinColumns = @JoinColumn(name = "AC_id"), 
-        inverseJoinColumns = @JoinColumn(name = "Candidate_id"))
+        joinColumns = @JoinColumn(name = "Candidate_id"), 
+        inverseJoinColumns = @JoinColumn(name = "AC_id"))
 	@JsonIgnore
 	private List<AssessmentCenter> assessmentCenters;
 	@OneToMany(mappedBy = "candidate")
