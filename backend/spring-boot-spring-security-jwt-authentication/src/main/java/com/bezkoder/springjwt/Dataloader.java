@@ -143,15 +143,15 @@ public class Dataloader implements ApplicationRunner{
 		
 		// ASSESSMENT CENTERS 
 		List<AssessmentCenter> acList = new ArrayList<>();
-		acList.add(new AssessmentCenter("Ass 1",date,time,time,true));
-		acList.add(new AssessmentCenter("Ass 2",date,time,time,true));
-		acList.add(new AssessmentCenter("Ass 3",date,time,time,true));
-		acList.add(new AssessmentCenter("Ass 4",date,time,time,true));
-		acList.add(new AssessmentCenter("Ass 5",date,time,time,true));
-		acList.add(new AssessmentCenter("Ass 6",date,time,time,true));
-		acList.add(new AssessmentCenter("Ass 7",date,time,time,true));
-		acList.add(new AssessmentCenter("Ass 8",date,time,time,true));
-		acList.add(new AssessmentCenter("Ass 9",date,time,time,true));
+		acList.add(new AssessmentCenter("Ass 1",date,time,time,true,packList.get(0)));
+		acList.add(new AssessmentCenter("Ass 2",date,time,time,true,packList.get(1)));
+		acList.add(new AssessmentCenter("Ass 3",date,time,time,true,packList.get(2)));
+		acList.add(new AssessmentCenter("Ass 4",date,time,time,true,packList.get(0)));
+		acList.add(new AssessmentCenter("Ass 5",date,time,time,true,packList.get(3)));
+		acList.add(new AssessmentCenter("Ass 6",date,time,time,true,packList.get(1)));
+		acList.add(new AssessmentCenter("Ass 7",date,time,time,true,packList.get(0)));
+		acList.add(new AssessmentCenter("Ass 8",date,time,time,true,packList.get(4)));
+		acList.add(new AssessmentCenter("Ass 9",date,time,time,true,packList.get(2)));
 		
 		this.assessmentCenterRepository.saveAll(acList);
 			

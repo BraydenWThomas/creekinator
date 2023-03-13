@@ -12,56 +12,79 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "interviewers")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Interviewer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private String name;
-	
-	// linked fields
+
 	@OneToMany(mappedBy = "interviewer")
+	//@JsonIgnoreProperties("interviewer")
 	@JsonIgnore
 	private List<Interview> interviews; // an array list
+	
+	public void addInterview(Interview interview) {
+		this.interviews.add(interview);
+		interview.setInterviewer(this);
+	}
+	public void removeInterview(Interview interview) {
+		this.interviews.remove(interview);
+		interview.setInterviewer(null);
+	}
+	
 	@ManyToMany
 	@JoinTable(name = "assessmentCenter_interviewer", 
 	       		joinColumns = @JoinColumn(name = "interviewer_id"), 
 	       		inverseJoinColumns = @JoinColumn(name = "AC_id"))
+	//@JsonIgnoreProperties("interviewers")
 	@JsonIgnore
 	private List<AssessmentCenter> assessmentCenters;
-	@OneToOne
-	private User user;
-	/* --- end of fields --- */
 	
+	private String name;
 	
+	//#TODO Sales or Tech etc.. 
+	//private String role;
 	
+//	@OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_id", referencedColumnName = "id")
+//	private User user;
 	
-	
-	
-	/* --- contructors ---*/
 	public Interviewer() {
-		this.interviews = new ArrayList<Interview>();
-		this.assessmentCenters = new ArrayList<AssessmentCenter>();
+		
 	}
+	
+	
 	public Interviewer(String name) {
 		this.name = name;
-		this.interviews = new ArrayList<Interview>();
-		this.assessmentCenters = new ArrayList<AssessmentCenter>();
 	}
-	/* --- end of constructor --- */
+
 	
 	
 	
-	
-	
-	
-	
-	/* --- getter and setter --- */
+//	public User getUser() {
+//		return user;
+//	}
+//
+//
+//	public void setUser(User user) {
+//		this.user = user;
+//	}
+
+
 	public int getId() {
 		return this.id;
 	}
 	
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public List<Interview> getInterviews() {
+		return interviews;
+	}
+
+	public void setInterviews(List<Interview> interviews) {
+		this.interviews = interviews;
 	}
 	
 	public String getName() {
@@ -72,26 +95,10 @@ public class Interviewer {
 		this.name = name;
 	}
 
-	
-	/*
-	public void setAssessmentCenters(List<AssessmentCenter> assessmentCenters) {
-		this.assessmentCenters = new ArrayList<AssessmentCenter>();
-		for (AssessmentCenter assessmentCenter : assessmentCenters) {
-			addAssessmentCenter(assessmentCenter);
-		}
+	public List<AssessmentCenter> getAssessmentCenters() {
+		return assessmentCenters;
 	}
-	
-	
 
-	public void setInterviews(List<Interview> interviews) {
-		this.interviews = new ArrayList<Interview>();
-		for (Interview interview : interviews) {
-			addInterview(interview);
-		}
-	}
-	*/
-	
-	/*
 	public void addAssessmentCenter(AssessmentCenter assessmentCenters) {
 		List<AssessmentCenter> assessmentCentersList = new ArrayList<AssessmentCenter>();
 		if (this.getAssessmentCenters() != null) {
@@ -100,73 +107,6 @@ public class Interviewer {
 		assessmentCentersList.add(assessmentCenters);
 		this.assessmentCenters = assessmentCentersList;
 	}
-	*/
-	
-	
-	/* --- end of getter and setter --- */
-	
-	
-	
-	
-
-	
-	
-	/* add, remove or get the linked reference --- */
-	// interview
-	public void addInterview(Interview interview) {
-		this.interviews.add(interview);
-		interview.setInterviewer(this);
-	}
-	public void removeInterview(Interview interview) {
-		this.interviews.remove(interview);
-		interview.setInterviewer(null);
-	}
-	public List<Interview> getInterviews() {
-		return interviews;
-	}
-	public void setInterviews(List<Interview> interviews) {
-		this.interviews = interviews;
-	}
-	
-	// AC
-	public void addAssessmentCenter(AssessmentCenter assessmentCenter) {
-		this.assessmentCenters.add(assessmentCenter);
-		assessmentCenter.getInterviewers().add(this);
-	}
-	public void removeAssessmentCenter(AssessmentCenter assessmentCenter) {
-		this.assessmentCenters.remove(assessmentCenter);
-		assessmentCenter.getInterviewers().remove(this);
-	}
-	public List<AssessmentCenter> getAssessmentCenters() {
-		return assessmentCenters;
-	}
-	public void setAssessmentCenters(List<AssessmentCenter> assessmentCenters) {
-		this.assessmentCenters = assessmentCenters;
-	}
-	
-	//user
-	public void addUser(User user) {
-		// if currently linked, unlink first
-		if (this.user != null) {
-			removeUser();
-		}
-		this.user = user;
-		user.setInterviewer(this);
-	}
-	public void removeUser() {
-		this.user = null;
-		user.setInterviewer(null);
-	}
-	public void setUser(User user) {
-		this.user = user;
-	}
-	public User getUser() {
-		return this.user;
-	}
-	
-	
-	
-	
 
 	
 	
