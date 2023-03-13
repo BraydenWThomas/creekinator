@@ -56,16 +56,18 @@ const UpdateCandidate = () => {
       .catch(error => console.log('error', error));
   }, [candidateId])
 
+  // Handle update
   const handleSubmit = (id) => {
     const body =
       JSON.stringify({
+        id: id,
         title: title,
         first_name: firstName,
         middle_name: middleName,
         last_name: lastName,
         mobile_number: mobilePhone,
         email: email,
-        date_of_birth: dob.format('YYYY-MM-DD'),
+        date_of_birth: dob,
         address: address,
         graduation_year: gradYear,
         degree: degree,
@@ -83,18 +85,20 @@ const UpdateCandidate = () => {
       headers: { 'content-type': 'application/json' },
     };
 
-    fetch("http://localhost:8080/api/candidate" + id, requestOptions)
+    fetch("http://localhost:8080/api/candidate", requestOptions)
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
   }
 
+  const pageTitle = candidate.first_name + " " + candidate.last_name + "'s " + "Profile"
+  
   return (
     <div className="update-candidate">
       <NavBar />
       <div className="content" style={{ float: 'left', width: '80%', backgroundColor: "#f2f2f2" }}>
         <div className="header" style={{ display: "flex" }}>
-          <h1 style={{ flex: 1, margin: '1%' }}>Candidate Profile</h1>
+          <h1 style={{ flex: 1, margin: '1%' }}> {pageTitle} </h1>
           <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
             <NotificationsIcon fontSize="large" />
             <Avatar src="/broken-image.jpg" />
@@ -110,8 +114,8 @@ const UpdateCandidate = () => {
                 labelId="title-select-label"
                 id="title-select"
                 label="Title"
-                value={candidate.title}
-                // onChange={(event) => setTitle(event.target.value)}
+                value={candidate.title ?? " "}
+                onChange={(event) => setTitle(event.target.value)}
               >
                 <MenuItem value={"Mr"}>Mr</MenuItem>
                 <MenuItem value={"Ms"}>Ms</MenuItem>
@@ -123,44 +127,48 @@ const UpdateCandidate = () => {
             <TextField
               id="outlined-first-name-input"
               label="First Name"
-              value={candidate.first_name}
               type="text"
               autoComplete="current-first-name"
               sx={{ m: 2 }}
+              value={candidate.first_name ?? " "}
               onChange={(event) => setFirstName(event.target.value)}
             />
             <TextField
               id="outlined-middle-name-input"
-              label={candidate.middle_name}
+              label="Middle Name"
               type="text"
               autoComplete="current-middle-name"
               sx={{ m: 2 }}
+              value={candidate.middle_name ?? " "}
               onChange={(event) => setMiddleName(event.target.value)}
             />
             <TextField
               id="outlined-last-name-input"
-              label={candidate.last_name}
+              label="Last Name"
               type="text"
               autoComplete="current-last-name"
               sx={{ m: 2 }}
+              value={candidate.last_name ?? " "}
               onChange={(event) => setLastName(event.target.value)}
             />
           </div>
           <div className="contact-details-row">
             <TextField
               id="outlined-mobile-input"
-              label={candidate.mobile_number}
+              label="Mobile Number"
               type="number"
               autoComplete="current-mobile"
               sx={{ m: 2 }}
+              value={candidate.mobile_number ?? " "}
               onChange={(event) => setMobilePhone(event.target.value)}
             />
             <TextField
               id="outlined-email-input"
-              label={candidate.email}
+              label="Email"
               type="text"
               autoComplete="current-email"
               sx={{ m: 2 }}
+              value={candidate.email ?? " "}
               onChange={(event) => setEmail(event.target.value)}
             />
           </div>
@@ -168,42 +176,47 @@ const UpdateCandidate = () => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker 
                 format="DD/MM/YYYY"
-                label={candidate.date_of_birth} 
+                label="D.O.B"
                 sx={{ m: 2 }} 
+                // value={candidate.date_of_birth ?? " "}
                 />
             </LocalizationProvider>
             <TextField
               id="outlined-address-input"
-              label={candidate.address}
+              label="Address"
               type="text"
               autoComplete="current-address"
               sx={{ m: 2 }}
+              value={candidate.address ?? " "}
               onChange={(event) => setAddress(event.target.value)}
             />
           </div>
           <div className="contact-details-row">
             <TextField
               id="outlined-year-input"
-              label={candidate.graduation_year}
+              label="Graduation Year"
               type="number"
               autoComplete="current-year"
               sx={{ m: 2 }}
+              value={candidate.graduation_year ?? " "}
               onChange={(event) => setGradYear(event.target.value)}
             />
             <TextField
               id="outlined-degree-input"
-              label={candidate.degree}
+              label="Degree"
               type="text"
               autoComplete="current-degree"
               sx={{ m: 2 }}
+              value={candidate.degree ?? " "}
               onChange={(event) => setDegree(event.target.value)}
             />
             <TextField
               id="outlined-university-input"
-              label={candidate.university}
+              label="University"
               type="text"
               autoComplete="current-university"
               sx={{ m: 2 }}
+              value={candidate.university ?? " "}
               onChange={(event) => setUniversity(event.target.value)}
             />
           </div>
@@ -224,8 +237,8 @@ const UpdateCandidate = () => {
               <Select
                 labelId="applied-stream-select-label"
                 id="applied-stream-select"
-                value={appliedStream}
-                label={candidate.applied_stream}
+                label="Applied Stream"
+                value={candidate.applied_stream ?? " "}
                 onChange={(event) => setAppliedStream(event.target.value)}
               >
                 <MenuItem value={"Software Development"}>Software Development</MenuItem>
@@ -238,20 +251,21 @@ const UpdateCandidate = () => {
               <Select
                 labelId="recruitment-phase-select-label"
                 id="recruitment-phase-select"
-                value={recruitmentPhase}
-                label={candidate.recruit_phase}
+                label="Recruitment Phase"
+                value={candidate.recruit_phase ?? " "}
                 onChange={(event) => setRecruitmentPhase(event.target.value)}
               >
                 <MenuItem value={"Applied"}>Applied</MenuItem>
-                <MenuItem value={"Interviewed"}>Invterviewed</MenuItem>
+                <MenuItem value={"Interviewed"}>Interviewed</MenuItem>
               </Select>
             </FormControl>
             <TextField
               id="past-ac-result-input"
-              label={candidate.past_ac_result}
+              label="Pase AC Result"
               type="number"
               autoComplete="past-ac-result"
               sx={{ m: 2 }}
+              value={candidate.past_ac_result ?? " "}
               onChange={(event) => setPastACResult(event.target.value)}
             />
           </div>
@@ -260,7 +274,7 @@ const UpdateCandidate = () => {
               variant="contained" 
               component="label" 
               sx={{ m: 5 }} 
-              onClick={handleSubmit}>
+              onClick={() => handleSubmit(candidate.id)}>
                 Update
             </Button>
             <a href="/recruiter">

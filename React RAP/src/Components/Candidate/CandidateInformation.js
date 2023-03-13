@@ -43,7 +43,7 @@ const CandidateInformation = () => {
       .catch(error => console.log('error', error));
   }, [candidateId])
 
-  const pageTitle = candidate.first_name + " " + candidate.last_name + " " + "Profile"
+  const pageTitle = candidate.first_name + " " + candidate.last_name + "'s " + "Profile"
   
   return (
     <div className="candidate-info">
@@ -63,118 +63,116 @@ const CandidateInformation = () => {
             <TextField
               disabled
               id="title_select"
-              label={candidate.title}
+              label="Title"
               type="text"
+              value={candidate.title ?? ""}
               sx={{ m: 2 }} />
             <TextField
               disabled
               id="outlined-first-name-input"
-              label={candidate.first_name}
+              label="First Name"
               type="text"
+              value={candidate.first_name ?? ""}
               sx={{ m: 2 }} />
             <TextField
               disabled
               id="outlined-middle-name-input"
-              label={candidate.middle_name}
+              label="Middle Name"
               type="text"
+              value={candidate.middle_name ?? ""}
               sx={{ m: 2 }} />
             <TextField
               disabled
               id="outlined-last-name-input"
-              label={candidate.last_name}
+              label="Last Name"
               type="text"
+              value={candidate.last_name ?? ""}
               sx={{ m: 2 }} />
           </div>
           <div className="contact-details-row">
             <TextField
               disabled
               id="outlined-mobile-input"
-              label={candidate.mobile_number}
+              label="Mobile Phone"
               type="number"
+              value={candidate.mobile_number ?? ""}
               sx={{ m: 2 }} />
             <TextField
               disabled
               id="outlined-email-input"
-              label={candidate.email}
+              label="Email"
               type="text"
+              value={candidate.email ?? ""}
               sx={{ m: 2 }} />
           </div>
           <div className="contact-details-row">
             <TextField
               disabled
               id="outlined-date-input"
-              label={candidate.date_of_birth}
+              label="D.O.B"
               type="text"
+              value={candidate.date_of_birth ?? ""}
               sx={{ m: 2 }} />
             <TextField
               disabled
               id="outlined-address-input"
-              label={candidate.address}
+              label="Address"
               type="text"
+              value={candidate.address ?? ""}
               sx={{ m: 2, minWidth: 500 }} />
           </div>
           <div className="contact-details-row">
             <TextField
               disabled
               id="outlined-year-input"
-              label={candidate.graduation_year}
+              label="Graduation Year"
               type="number"
+              value={candidate.graduation_year ?? ""}
               sx={{ m: 2 }} />
             <TextField
               disabled
               id="outlined-degree-input"
-              label={candidate.degree}
+              label="Degree"
               type="text"
+              value={candidate.degree ?? ""}
               sx={{ m: 2 }} />
             <TextField
               disabled
               id="outlined-university-input"
-              label={candidate.university}
+              label="University"
               type="text"
+              value={candidate.university ?? ""}
               sx={{ m: 2 }} />
           </div>
         </div>
         <div className="application-details">
           <div className="application-details-header"></div>
           <Divider style={{ paddingTop: '2%' }} />
-          <h2 style={{ margin: '1%' }}>Application Details</h2>
+          <h2 style={{ margin: '1%' }}> Application Details </h2>
           <div className="resume-row">
           </div>
           <div className="stream-details-row">
             <TextField
               disabled
               id="applied-stream-select"
-              label={candidate.applied_stream}
+              label="Applied Stream"
               type="text"
+              value={candidate.applied_stream ?? ""}
               sx={{ m: 2 }} />
-            {/* <FormControl required sx={{ m: 2, minWidth: 450 }}>
-                            <InputLabel id="recruitment-phase-select-label">Recruitment Phase</InputLabel>
-                            <Select
-                                labelId="recruitment-phase-select-label"
-                                id="recruitment-phase-select"
-                                value={recruitmentPhase}
-                                label="Recruitment Phase"
-                                onChange={(event) => setRecruitmentPhase(event.target.value)}
-                            >
-                                <MenuItem value={"Applied"}>Applied</MenuItem>
-                                <MenuItem value={"Interviewed"}>Invterviewed</MenuItem>
-                            </Select>
-                        </FormControl> */}
             <TextField
               disabled
               id="recruitment-phase-select-label"
-              label={candidate.recruit_phase}
+              label="Recruitment Phase"
               type="text"
-              sx={{ m: 2 }}
-              onChange={(event) => setRecruitmentPhase(event.target.value)} />
-
+              value={candidate.recruit_phase ?? ""}
+              sx={{ m: 2 }} />
             <TextField
               disabled
               id="past-ac-result-input"
-              label={candidate.past_ac_result}
+              label="Past AC Result"
               type="text"
-              sx={{ m: 2 }}
-              onChange={(event) => setPastACResult(event.target.value)} />
+              value={candidate.past_ac_result ?? ""}
+              sx={{ m: 2 }} />
           </div>
           <div className="create-button-row">
             <a href="/recruiter">

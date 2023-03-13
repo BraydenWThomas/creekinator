@@ -41,32 +41,15 @@ const CandidateSelectBox = ({ candidate }) => {
   };
 
   const handleDelete = (id) => {
-    console.log("Working")
-    return (
-      <div>
-        <Button
-          variant="contained"
-          color="red"
-          onClick={handleConfirm}>
-          Confirm
-        </Button>
+    const requestOptions = {
+      method: 'DELETE',
+      redirect: 'follow',
+      headers: { 'content-type': 'application/json' },
+    };
 
-        <Button
-          variant="outlined"
-          onClick={handleCancel}>
-          Cancel
-        </Button>
-      </div>
-    )
-    // const requestOptions = {
-    //   method: 'DELETE',
-    //   redirect: 'follow',
-    //   headers: { 'content-type': 'application/json' },
-    // };
-
-    // fetch("http://localhost:8080/api/candidate/" + id, requestOptions)
-    //   .then(result => console.log(result))
-    //   .catch(error => console.log('error', error));
+    fetch("http://localhost:8080/api/candidate/" + id, requestOptions)
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
   }
   
   return (
