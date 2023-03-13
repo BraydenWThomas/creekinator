@@ -97,14 +97,19 @@ public class Recruiter {
 	// user
 	public void setUser(User user) {
 		this.user = user;
-	}
+	} 
 	public User getUser() {
 		return this.user;
 	}
 	public void addUser(User user) {
+		// unlink previous relationship before link to the current relationship
 		if (this.user != null) {
 			removeUser();
 		}
+		if (user.getRecruiter() != null) {
+			user.removeRecruiter();
+		}
+		
 		this.user = user;
 		user.setRecruiter(this);
 	}

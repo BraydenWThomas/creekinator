@@ -200,6 +200,8 @@ public class Candidate {
 	
 	
 	
+	
+	
 	/* --- linked --- */
 	// interview
 	public List<Interview> getInterviews() {
@@ -210,6 +212,10 @@ public class Candidate {
 	}
 	public void addInterview(Interview interview) {
 		this.interviews.add(interview);
+		// if the interview already linked to other candidate, remove relationship first
+		if (interview.getCandidate() != null) {
+			interview.removeCandidate();
+		}
 		interview.setCandidate(this);
 	}
 	public void removeInterview(Interview interview) {
