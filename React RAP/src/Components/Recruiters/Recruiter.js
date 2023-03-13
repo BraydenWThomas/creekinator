@@ -13,6 +13,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
+import { keys } from '@mui/system';
 
 const Recruiter = () => {
    
@@ -108,7 +109,7 @@ const Recruiter = () => {
                                         <option value="Stream">Stream</option>
                                         <option value="GradYear">Year of Graduation</option>
                                     </select>
-                                    <a href='/createcandidate' target="_blank"><button className='candidateAdd'><AddIcon /></button></a>
+                                    <a href='/createac' target="_blank"><button className='candidateAdd'><AddIcon /></button></a>
                                 </div>
                             </div>
                             <AssessmentCentreInfo statustype="upcome" />

@@ -3,14 +3,14 @@ import '../Styling/RecruiterStyles.css';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import CandidateInformation from './CandidateInformation';
-const CandidateSelectBox = (props) => {
+const CandidateSelectBox = () => {
     
     return (
        
         <a href="/createcandidate" target={"_blank"}>
         <div className='candidateSelectBox' style={{ clear: "both" }}>
                 
-                <button className='candidateDelete' onClick={props}><DeleteIcon /></button>
+                <button className='candidateDelete'><DeleteIcon /></button>
             
                 <div style={{ marginLeft: "20px"}}>
                     <div style={{ display: "flex", clear: "both" }}>

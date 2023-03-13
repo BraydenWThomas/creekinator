@@ -12,6 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import './Styling/LoginPageStyle.css'
 
+
 const FDMtheme = createTheme({
   palette: {
     primary: {
@@ -21,15 +22,9 @@ const FDMtheme = createTheme({
   },
 });
 
-const LoginPage = () => {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
-    });
-  };
+const LoginPage = (props) => {
+  
+  
 
   return (
     <div className='login-container'>
@@ -43,7 +38,7 @@ const LoginPage = () => {
               alignItems: 'center'
             }}>
             <Avatar src="/broken-image.jpg" sx={{ width: 350, height: 350 }} />
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 10 }}>
+            <Box component="form" onSubmit={props.onClick} noValidate sx={{ mt: 10 }}>
               <TextField
                 margin="normal"
                 required
@@ -53,6 +48,7 @@ const LoginPage = () => {
                 name="username"
                 autoComplete="username"
                 autoFocus
+               
               />
               <TextField
                 margin="normal"
@@ -63,6 +59,7 @@ const LoginPage = () => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+               
               />
               <FormControlLabel
                 control={<Checkbox value="remember" />}
@@ -75,12 +72,14 @@ const LoginPage = () => {
                 variant="contained"
                 size='large'
                 disableElevation
-                sx={{ mt: 2, mb: 2, }}>
+                sx={{ mt: 2, mb: 2, }}
+             
+              >
                 Login
               </Button>
-                <Button><a href="/recruiter"><h4>Rercruiter</h4></a></Button>
-                <Button><a href="/interviewer"><h4>Interviewer</h4></a></Button>
-                <Button><a href="/admin"><h4>Admin</h4></a></Button>
+                {/* <Button><a href='/recruiter'><h4>Recruiter</h4></a></Button>
+                <Button><a href='/interviewer'><h4>Interviewer</h4></a></Button>
+                <Button><a href="/admin"><h4>Admin</h4></a></Button> */}
             </Box>
             <Grid item
               sx={{ mt: 35 }}>
