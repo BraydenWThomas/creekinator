@@ -11,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class Interview {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String form;
+	private LocalTime interviewTime;
 	
 	@ManyToOne
 	@JoinColumn(name = "FK_INTERVIEWER_NO")
@@ -66,21 +69,23 @@ public class Interview {
 		this.form = form; // comment should be included in form
 		this.packs = new ArrayList<Pack>();
 	}
-	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, String form) {
+	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, String form,LocalTime interviewTime) {
 		super();
 		this.form = form; // comment should be included in form
 		this.assessmentCenter = assessmentCenter;
 		this.interviewer = interviewer;
 		this.candidate = candidate;	
 		this.packs = new ArrayList<Pack>();
+		this.interviewTime = interviewTime;
 	}
-	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, List<Pack> packs, String form) {
+	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, List<Pack> packs, String form,LocalTime interviewTime) {
 		super();
 		this.form = form; // comment should be included in form
 		this.assessmentCenter = assessmentCenter;
 		this.interviewer = interviewer;
 		this.candidate = candidate;	
 		this.packs = packs;
+		this.interviewTime = interviewTime;
 	}
 	/* --- End of Constructors --- */
 	
@@ -112,9 +117,17 @@ public class Interview {
 	
 	
 	/* --- linked reference --- */
+	
+	
 	// interviewer
 	public Interviewer getInterviewer() {
 		return interviewer;
+	}
+	public LocalTime getInterviewTime() {
+		return interviewTime;
+	}
+	public void setInterviewTime(LocalTime interviewTime) {
+		this.interviewTime = interviewTime;
 	}
 	public void setInterviewer(Interviewer interviewer) {
 		this.interviewer = interviewer;
