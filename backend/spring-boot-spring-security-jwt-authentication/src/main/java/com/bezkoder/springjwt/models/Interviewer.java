@@ -165,8 +165,9 @@ public class Interviewer {
 		user.setInterviewer(this);
 	}
 	public void removeUser() {
+		this.user.setInterviewer(null);
 		this.user = null;
-		user.setInterviewer(null);
+		
 	}
 	public void setUser(User user) {
 		this.user = user;
