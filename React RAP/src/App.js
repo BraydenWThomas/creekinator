@@ -16,6 +16,13 @@ import LoginPage from './Components/LoginPage';
 
 
 const FDMtheme = createTheme({
+  // typography:{
+  //   fontFamily: [
+  //     'Barlow',
+  //     'sans-serif'
+  // ].join(','),
+  // },
+
   palette: {
     primary: {
       main: '#6f00ff',

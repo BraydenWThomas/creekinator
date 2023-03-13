@@ -93,7 +93,7 @@ const AdminDashboard = () => {
             mt: 3,
           }}>
           <div className="create-user">
-            <Typography component="h2" variant="h4"> Create User </Typography>
+            <Typography component="h2"  variant="h4"> Create User </Typography>
             <Grid container justifyContent='space-between' alignItems='center' spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField

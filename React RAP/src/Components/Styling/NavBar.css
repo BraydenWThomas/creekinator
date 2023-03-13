@@ -7,15 +7,13 @@ img{
   float: left;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: white;
 }
 
 .nav-side {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 200px;
+  width: 150px;
   padding: 20px;
 }
 
