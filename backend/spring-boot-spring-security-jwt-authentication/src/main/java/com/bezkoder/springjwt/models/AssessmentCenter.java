@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import java.time.LocalDateTime;
@@ -23,68 +24,11 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "assessmentCenters")
-// @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class AssessmentCenter {
 	/* --- fields --- */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	
-	@ManyToMany(mappedBy = "assessmentCenters")
-	@JsonIgnore
-	//@JsonIgnoreProperties("assessmentCenters")
-	private List<Interviewer> interviewers;
-	
-	public void addInterviewer(Interviewer interviewer) {
-		this.interviewers.add(interviewer);
-		interviewer.getAssessmentCenters().add(this);
-	}
-	public void removeInterviewer(Interviewer interviewer) {
-		this.interviewers.remove(interviewer);
-		interviewer.getAssessmentCenters().remove(this);
-	}
-	
-	@OneToMany(mappedBy = "assessmentCenter")
-	//@JsonIgnoreProperties("assessmentCenter")
-	@JsonIgnore
-	private List<Interview> interviews;
-	
-	public void addInterview(Interview interview) {
-		this.interviews.add(interview);
-		interview.setAssessmentCenter(this);
-	}
-	public void removeInterview(Interview interview) {
-		this.interviews.remove(interview);
-		interview.setAssessmentCenter(null);
-	}
-	
-	@ManyToMany(mappedBy = "assessmentCenters")
-	//@JsonIgnoreProperties("assessmentCenters")
-	@JsonIgnore
-	private List<Candidate> candidates;
-	
-	public void addCandidate(Candidate candidate) {
-		this.candidates.add(candidate);
-		candidate.getAssessmentCenters().add(this);
-	}
-	public void removeCandidate(Candidate candidate) {
-		this.candidates.remove(candidate);
-		candidate.getAssessmentCenters().remove(this);
-	}
-	
-	@ManyToOne
-	@JoinColumn(name = "FK_PACK_NO")
-	//@JsonIgnoreProperties("assessmentCenters")
-	@JsonIgnore
-	private Pack pack;
-	
-	@ManyToOne
-	@JoinColumn(name = "FK_RECRUITER_NO")
-	//@JsonIgnoreProperties("assessmentCenters")
-	@JsonIgnore
-	private Recruiter recruiter;
-	//#TODO this needs to be changed into a list
 	
 	private String title;
 	
@@ -95,85 +39,87 @@ public class AssessmentCenter {
 	private LocalTime finish_time;
 	
 	private boolean completed;
+	
+	private int coordinatorId = -1;
+	
+	// linked fields
+	@ManyToMany(mappedBy = "assessmentCenters")
+	@JsonIgnore
+	private List<Interviewer> interviewers;
+	
+	@OneToMany(mappedBy = "assessmentCenter")
+	@JsonIgnore
+	private List<Interview> interviews;
+	
+	@ManyToMany(mappedBy = "assessmentCenters")
+	@JsonIgnore
+	private List<Candidate> candidates;
+	
+	@ManyToMany
+	@JoinTable(name = "assessmentCenter_recruiter",
+				joinColumns = @JoinColumn(name = "recruiter_id"),
+				inverseJoinColumns = @JoinColumn(name = "AC_id"))
+	@JsonIgnore
+	private List<Recruiter> recruiters;
 	/* --- End of fields --- */
+	
+	
+	
+	
 	
 	
 	
 	/* --- Constructor --- */
 	public AssessmentCenter() {
-		// pass
+		this.interviewers = new ArrayList<Interviewer>();
+		this.interviews = new ArrayList<Interview>();
+		this.candidates = new ArrayList<Candidate>();
+		this.recruiters = new ArrayList<Recruiter>();
 	}
-
 	public AssessmentCenter(String title, LocalDate date,
-			LocalTime start_time, LocalTime finish_time, boolean completed) {
-		// super();
+			LocalTime start_time, LocalTime finish_time, boolean completed, int coordinatorId) {
 		this.title = title;
 		this.date = date;
 		this.start_time = start_time;
 		this.finish_time = finish_time;
 		this.completed = completed;
-	}
-	public AssessmentCenter(String title, LocalDate date,
-			LocalTime start_time, LocalTime finish_time, boolean completed,Pack pack) {
-		// super();
-		this.title = title;
-		this.date = date;
-		this.start_time = start_time;
-		this.finish_time = finish_time;
-		this.completed = completed;
-		this.pack = pack;
+		this.coordinatorId = coordinatorId;
+		
+		this.interviewers = new ArrayList<Interviewer>();
+		this.interviews = new ArrayList<Interview>();
+		this.candidates = new ArrayList<Candidate>();
+		this.recruiters = new ArrayList<Recruiter>();
 	}
 	
+	public AssessmentCenter(String title, LocalDate date,
+			LocalTime start_time, LocalTime finish_time, boolean completed) {
+		this.title = title;
+		this.date = date;
+		this.start_time = start_time;
+		this.finish_time = finish_time;
+		this.completed = completed;
+		
+		this.interviewers = new ArrayList<Interviewer>();
+		this.interviews = new ArrayList<Interview>();
+		this.candidates = new ArrayList<Candidate>();
+		this.recruiters = new ArrayList<Recruiter>();
+	}
 	/* --- End of Constructor --- */
 	
 	
-	/* --- setter and getters --- */
+	
+	
+	
+	
+	
+	
+	/* --- normal setter and getters --- */
 	public Integer getId() {
 		return id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public List<Interviewer> getInterviewers() {
-		return interviewers;
-	}
-
-	public void setInterviewers(List<Interviewer> interviewers) {
-		this.interviewers = interviewers;
-	}
-
-	public List<Interview> getInterviews() {
-		return interviews;
-	}
-
-	public void setInterviews(List<Interview> interviews) {
-		this.interviews = interviews;
-	}
-
-	public List<Candidate> getCandidates() {
-		return candidates;
-	}
-
-	public void setCandidates(List<Candidate> candidates) {
-		this.candidates = candidates;
-	}
-
-	public Pack getPack() {
-		return pack;
-	}
-
-	public void setPack(Pack pack) {
-		this.pack = pack;
-	}
-
-	public Recruiter getRecruiter() {
-		return recruiter;
-	}
-
-	public void setRecruiter(Recruiter recruiter) {
-		this.recruiter = recruiter;
 	}
 
 	public String getTitle() {
@@ -215,5 +161,86 @@ public class AssessmentCenter {
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
 	}
-	/* --- End of setter and getters --- */
+	
+	public void setCoordinatorId(int id) {
+		this.coordinatorId = id;
+	}
+	
+	public int getCoordinatorId() {
+		return this.coordinatorId;
+	}
+	/* --- End of normal setter and getters --- */
+	
+	
+	
+	
+	
+	
+	
+	
+	/* --- add and remove functions --- */
+	// interviewer
+	public List<Interviewer> getInterviewers() {
+		return interviewers;
+	}
+	public void setInterviewers(List<Interviewer> interviewers) {
+		this.interviewers = interviewers;
+	}
+	public void addInterviewer(Interviewer interviewer) {
+		this.interviewers.add(interviewer);
+		interviewer.getAssessmentCenters().add(this);
+	}
+	public void removeInterviewer(Interviewer interviewer) {
+		this.interviewers.remove(interviewer);
+		interviewer.getAssessmentCenters().remove(this);
+	}
+	
+	// interview
+	public List<Interview> getInterviews() {
+		return interviews;
+	}
+	public void setInterviews(List<Interview> interviews) {
+		this.interviews = interviews;
+	}
+	public void addInterview(Interview interview) {
+		this.interviews.add(interview);
+		interview.setAssessmentCenter(this);
+	}
+	public void removeInterview(Interview interview) {
+		this.interviews.remove(interview);
+		interview.setAssessmentCenter(null);
+	}
+	
+	// candidate
+	public List<Candidate> getCandidates() {
+		return candidates;
+	}
+	public void setCandidates(List<Candidate> candidates) {
+		this.candidates = candidates;
+	}
+	public void addCandidate(Candidate candidate) {
+		this.candidates.add(candidate);
+		candidate.getAssessmentCenters().add(this);
+	}
+	public void removeCandidate(Candidate candidate) {
+		this.candidates.remove(candidate);
+		candidate.getAssessmentCenters().remove(this);
+	}
+	
+	// Recruiter
+	public List<Recruiter> getRecruiters() {
+		return recruiters;
+	}
+	public void setRecruiters(List<Recruiter> recruiters) {
+		this.recruiters = recruiters;
+	}
+	public void addRecruiter(Recruiter recruiter) {
+		this.recruiters.add(recruiter);
+		recruiter.getAssessmentCenters().add(this);
+	}
+	public void removeRecruiter(Recruiter recruiter) {
+		this.recruiters.remove(recruiter);
+		recruiter.getAssessmentCenters().remove(this);
+	}
+	
 }
