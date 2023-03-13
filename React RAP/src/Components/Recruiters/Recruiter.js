@@ -17,7 +17,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 
 const Recruiter = () => {
   const [displayState, setDisplayState] = useState("Candidate");
-  const [inputList, setInputList] = useState([<CandidateSelectBox />]);
+  
   // USE THIS FOR LATER
   // const [users, setUsers] = useState([
   //     { username: "John Doe", email: 'johndoe@fdm.com'},
@@ -44,10 +44,6 @@ const Recruiter = () => {
   const changeDisplay = (value) => {
     setDisplayState(value);
     //console.log(displayState);
-  }
-
-  const addCandidateBox = () => {
-    setInputList(inputList.concat(<CandidateSelectBox />));
   }
 
   return (
@@ -101,7 +97,7 @@ const Recruiter = () => {
                     <option value="Stream"> Stream </option>
                     <option value="GradYear"> Year of Graduation </option>
                   </select>
-                  <a href="/candidate/create" taget="_blank">
+                  <a href="/candidate/create" target="_blank">
                     <button 
                       className='candidateAdd'>
                         <AddIcon />

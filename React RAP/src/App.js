@@ -1,5 +1,8 @@
+// React + css
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
+
+// Componenets
 import AdminDashboard from './Components/AdminDashboard';
 import Recruiter from './Components/Recruiters/Recruiter';
 import Interviewer from './Components/Interviewers/Interviewer';
@@ -11,11 +14,11 @@ import ViewUpcomingAC from './Components/Recruiters/ViewUpcomingAC';
 import ViewPastAC from './Components/Recruiters/ViewPastAC';
 import CreateAC from './Components/Recruiters/CreateAC';
 import UpdateAC from './Components/Recruiters/UpdateAC';
-
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { blue } from '@mui/material/colors';
 import LoginPage from './Components/LoginPage';
 
+// Material UI
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { blue } from '@mui/material/colors';
 
 const FDMtheme = createTheme({
   palette: {
@@ -55,12 +58,13 @@ const App = () => {
       element: <CreateCandidate />
     },
     {
-      path:"/candidate/update",
-      element: <UpdateCandidate />
+      // path:"/candidate/info/name=:candidateName&id=:candidateId",
+      path: "/candidate/info/:candidateId",
+      element: <CandidateInformation />
     },
     {
-      path:"/candidate/info/:abc",
-      element: <CandidateInformation />
+      path:"/candidate/update/:candidateId",
+      element: <UpdateCandidate />
     },
 
     // AC Info

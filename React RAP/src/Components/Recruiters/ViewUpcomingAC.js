@@ -19,25 +19,24 @@ const ViewUpcomingAC = () => {
 	const [tabValue4, setTabValue4] = useState("1");
 
 	// Fetch AC details
-  useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      redirect: 'follow',
-    };
+	useEffect(() => {
+		const requestOptions = {
+			method: 'GET',
+			redirect: 'follow',
+		};
 
-    fetch("http://localhost:8080/api/ac/1", requestOptions)
-      .then(response => response.json())
-      .then(data => { setAcDetails(data) })
-      .catch(error => console.log('error', error));
-  })
-
+		fetch("http://localhost:8080/api/ac/1", requestOptions)
+			.then(response => response.json())
+			.then(data => { setAcDetails(data) })
+			.catch(error => console.log('error', error));
+	})
 
 	// Format LocalDate, LocalTime objects from java to dayjs object for javascript
 	dayjs.extend(customParseFormat);
 	const formatStart = dayjs(acDetails.start_time, "hh:mm:ss");
 	const formatEnd = dayjs(acDetails.finish_time, "hh:mm:ss");
-	
-	const dateFormat = 
+
+	const dateFormat =
 		dayjs(acDetails.date).format("dddd, DD MMMM YYYY") + " " +
 		formatStart.format("LT") + " - " +
 		formatEnd.format("LT")
@@ -58,7 +57,7 @@ const ViewUpcomingAC = () => {
 		setTabValue4(newValue);
 	}
 
-  return (
+	return (
 		<div>
 			<NavBar />
 
@@ -121,29 +120,29 @@ const ViewUpcomingAC = () => {
 						<div style={{ float: 'left' }}>
 							<h3> Interviewer 2 </h3>
 							<TabContext value={tabValue2}>
-							<TabList onChange={handleChangeInterview2}>
-								<Tab value="1" label="John Doe" />
-								<Tab value="2" label="John Doe" />
-								<Tab value="3" label="John Doe" />
-								<Tab value="4" label="John Doe" />
-							</TabList>
-							<TabPanel value="1">
-								<Button variant="contained"> View profile </Button>
-								<Button variant="contained"> View interview form </Button>
-							</TabPanel>
-							<TabPanel value="2">
-								<Button variant="contained"> View profile </Button>
-								<Button variant="contained"> View interview form </Button>
-							</TabPanel>
-							<TabPanel value="3">
-								<Button variant="contained"> View profile </Button>
-								<Button variant="contained"> View interview form </Button>
-							</TabPanel>
-							<TabPanel value="4">
-								<Button variant="contained"> View profile </Button>
-								<Button variant="contained"> View interview form </Button>
-							</TabPanel>
-						</TabContext>
+								<TabList onChange={handleChangeInterview2}>
+									<Tab value="1" label="John Doe" />
+									<Tab value="2" label="John Doe" />
+									<Tab value="3" label="John Doe" />
+									<Tab value="4" label="John Doe" />
+								</TabList>
+								<TabPanel value="1">
+									<Button variant="contained"> View profile </Button>
+									<Button variant="contained"> View interview form </Button>
+								</TabPanel>
+								<TabPanel value="2">
+									<Button variant="contained"> View profile </Button>
+									<Button variant="contained"> View interview form </Button>
+								</TabPanel>
+								<TabPanel value="3">
+									<Button variant="contained"> View profile </Button>
+									<Button variant="contained"> View interview form </Button>
+								</TabPanel>
+								<TabPanel value="4">
+									<Button variant="contained"> View profile </Button>
+									<Button variant="contained"> View interview form </Button>
+								</TabPanel>
+							</TabContext>
 						</div>
 					</div>
 				</div>
@@ -182,29 +181,29 @@ const ViewUpcomingAC = () => {
 						<div style={{ float: 'left' }}>
 							<h3> Interviewer 2 </h3>
 							<TabContext value={tabValue4}>
-							<TabList onChange={handleChangeInterview4}>
-								<Tab value="1" label="John Doe" />
-								<Tab value="2" label="John Doe" />
-								<Tab value="3" label="John Doe" />
-								<Tab value="4" label="John Doe" />
-							</TabList>
-							<TabPanel value="1">
-								<Button variant="contained"> View profile </Button>
-								<Button variant="contained"> View interview form </Button>
-							</TabPanel>
-							<TabPanel value="2">
-								<Button variant="contained"> View profile </Button>
-								<Button variant="contained"> View interview form </Button>
-							</TabPanel>
-							<TabPanel value="3">
-								<Button variant="contained"> View profile </Button>
-								<Button variant="contained"> View interview form </Button>
-							</TabPanel>
-							<TabPanel value="4">
-								<Button variant="contained"> View profile </Button>
-								<Button variant="contained"> View interview form </Button>
-							</TabPanel>
-						</TabContext>
+								<TabList onChange={handleChangeInterview4}>
+									<Tab value="1" label="John Doe" />
+									<Tab value="2" label="John Doe" />
+									<Tab value="3" label="John Doe" />
+									<Tab value="4" label="John Doe" />
+								</TabList>
+								<TabPanel value="1">
+									<Button variant="contained"> View profile </Button>
+									<Button variant="contained"> View interview form </Button>
+								</TabPanel>
+								<TabPanel value="2">
+									<Button variant="contained"> View profile </Button>
+									<Button variant="contained"> View interview form </Button>
+								</TabPanel>
+								<TabPanel value="3">
+									<Button variant="contained"> View profile </Button>
+									<Button variant="contained"> View interview form </Button>
+								</TabPanel>
+								<TabPanel value="4">
+									<Button variant="contained"> View profile </Button>
+									<Button variant="contained"> View interview form </Button>
+								</TabPanel>
+							</TabContext>
 						</div>
 					</div>
 				</div>
@@ -224,15 +223,15 @@ const ViewUpcomingAC = () => {
 				<Divider />
 
 				<div className="bottom-buttons" style={{ float: 'right', marginTop: '2%' }}>
-					<Button 
-						variant="contained" 
+					<Button
+						variant="contained"
 						sx={{ float: 'right' }}>
 						Back
 					</Button>
 
 					<a href="/ac/update" target="_blank">
-						<Button 
-							variant="contained" 
+						<Button
+							variant="contained"
 							sx={{ float: 'right' }}>
 							Update-show-up-for-ac-coordinator
 						</Button>

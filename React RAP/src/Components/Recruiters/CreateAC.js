@@ -48,9 +48,6 @@ const CreateAC = () => {
 
   // Handle creating AC
   const handleSubmit = () => {
-    console.log(date)
-    console.log(timeStart.format('hh:mm-ss'))
-    console.log(timeEnd.format('hh-mm-ss'))
     setTitle('');
     setDate('');
     setTimeStart(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));

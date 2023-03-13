@@ -1,5 +1,6 @@
 // React
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 // Components
 import '../Styling/RecruiterStyles.css';
@@ -10,7 +11,7 @@ import { Button, Menu, MenuItem, IconButton } from '@mui/material';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 const CandidateSelectBox = ({ candidate }) => {
-  // For Menu
+  // For Material UI Menu
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -22,7 +23,7 @@ const CandidateSelectBox = ({ candidate }) => {
     setAnchorEl(null);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = (id) => {
     // const requestOptions = {
     //   method: 'DELETE',
     //   redirect: 'follow',
@@ -40,42 +41,37 @@ const CandidateSelectBox = ({ candidate }) => {
   };
 
   const handleDelete = (id) => {
-    // console.log("Working")
-    // return (
-    //   <div>
-    //     <Button
-    //       variant="contained"
-    //       color="red"
-    //       onClick={handleConfirm}>
-    //       Confirm
-    //     </Button>
+    console.log("Working")
+    return (
+      <div>
+        <Button
+          variant="contained"
+          color="red"
+          onClick={handleConfirm}>
+          Confirm
+        </Button>
 
-    //     <Button
-    //       variant="outlined"
-    //       onClick={handleCancel}>
-    //       Cancel
-    //     </Button>
-    //   </div>
-    // )
-    const requestOptions = {
-      method: 'DELETE',
-      redirect: 'follow',
-      headers: { 'content-type': 'application/json' },
-    };
+        <Button
+          variant="outlined"
+          onClick={handleCancel}>
+          Cancel
+        </Button>
+      </div>
+    )
+    // const requestOptions = {
+    //   method: 'DELETE',
+    //   redirect: 'follow',
+    //   headers: { 'content-type': 'application/json' },
+    // };
 
-    fetch("http://localhost:8080/api/candidate/" + id, requestOptions)
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
+    // fetch("http://localhost:8080/api/candidate/" + id, requestOptions)
+    //   .then(result => console.log(result))
+    //   .catch(error => console.log('error', error));
   }
   
   return (
 
       <div className='candidateSelectBox' style={{ clear: "both" }}>
-        {/* <Button 
-          className='candidateDelete'
-          onClick = {() => handleDelete(candidate.id)}> 
-            <DeleteIcon /> 
-        </Button> */}
         <IconButton
           id="basic-button"
           aria-controls={open ? 'basic-menu' : undefined}
@@ -92,13 +88,18 @@ const CandidateSelectBox = ({ candidate }) => {
           MenuListProps={{
             'aria-labelledby': 'basic-button',
           }}>
-          <MenuItem>
-            View
-          </MenuItem>
-          <MenuItem>
-            Update
-          </MenuItem>
-          <MenuItem>
+          {/* <Link to={`/candidate/info/name=${candidate.first_name + candidate.middle_name + candidate.last_name}&id=${candidate.id}`}> */}
+          <Link to={`/candidate/info/${candidate.id}`}>
+            <MenuItem>
+              View
+            </MenuItem>
+          </Link>
+          <Link to={`/candidate/update/${candidate.id}`}>
+            <MenuItem>
+              Update
+            </MenuItem>
+          </Link>
+          <MenuItem onClick={() => handleDelete(candidate.id)}>
             Delete
           </MenuItem>
         </Menu>
