@@ -9,6 +9,7 @@ const AssessmentCentreInfo = (props) => {
         <Box
             sx={{
                 display: 'flex',
+                minWidth:500,
                 '& > :not(style)': {
                     m: 1,
                     width: '100%',
@@ -16,7 +17,7 @@ const AssessmentCentreInfo = (props) => {
                 }
             }}
         >
-            <Paper className='assessmentCentreInfo' style={{ clear: "both" }}>
+            <Paper className='assessmentCentreInfo' style={{ clear: "both", borderRadius: 10 }}>
 
 
                 <div className="streamInfo">

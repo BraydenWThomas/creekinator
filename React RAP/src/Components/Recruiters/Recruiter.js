@@ -2,7 +2,7 @@ import CandidateSelectBox from '../Candidate/CandidatesSelectBox';
 import AssessmentCentreInfo from './AssessmentCentreInfo';
 // import '../Styling/RecruiterStyles.css';
 import NavBar from '../NavBar';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -17,7 +17,7 @@ import { FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/mate
 const Recruiter = () => {
 
     const [displayState, setDisplayState] = useState("Candidate");
-    const [inputList, setInputList] = useState([<CandidateSelectBox />]);
+
     // USE THIS FOR LATER
     // const [users, setUsers] = useState([
     //     { username: "John Doe", email: 'johndoe@fdm.com'},
@@ -26,18 +26,25 @@ const Recruiter = () => {
     //     { username: "Alice Smith", email: 'alicesmith@fdm.com'},
     //   ])
     //   const [ACs, setACs] = useState([""]);
+    const [candidates, setCandidates] = useState([]);
 
+    // Fetch all candidates
+    useEffect(() => {
+        const requestOptions = {
+            method: 'GET',
+            redirect: 'follow',
+        };
+
+        fetch("http://localhost:8080/api/candidate", requestOptions)
+            .then(response => response.json())
+            .then(data => { setCandidates(data) })
+            .catch(error => console.log('error', error));
+    })
 
     const changeDisplay = (value) => {
         setDisplayState(value);
         //console.log(displayState);
     }
-
-
-    const addCandidateBox = () => {
-        setInputList(inputList.concat(<CandidateSelectBox />));
-    }
-
 
     return (
         <div className="pageSection">
@@ -90,7 +97,7 @@ const Recruiter = () => {
                             ?
                             <div style={{ clear: "both" }}>
                                 <div className='applicantToolBar' style={{ display: 'flex' }}>
-                                    <Typography component="h2" variant="h4" style={{ flex: 1, margin: 10}}> Applied </Typography>
+                                    <Typography component="h2" variant="h4" style={{ flex: 1, margin: 10 }}> Applied </Typography>
                                     <div className='filter'>
 
                                         <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -104,10 +111,19 @@ const Recruiter = () => {
                                                 <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
                                             </Select>
                                         </FormControl>
-                                        <button className='candidateAdd' onClick={addCandidateBox}><AddIcon /></button>
+                                        <a href="/candidate/create" target="_blank">
+                                            <button
+                                                className='candidateAdd'>
+                                                <AddIcon />
+                                            </button>
+                                        </a>
                                     </div>
                                 </div >
-                                {inputList}
+                                {candidates.map(candidate => (
+                                    <div key={candidate.id}>
+                                        <CandidateSelectBox candidate={candidate} />
+                                    </div>
+                                ))}
                             </div>
 
 
@@ -130,7 +146,7 @@ const Recruiter = () => {
                                                 <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
                                             </Select>
                                         </FormControl>
-                                        <a href='/createcandidate' target="_blank"><button className='candidateAdd'><AddIcon/></button></a>
+                                        <a href='/createcandidate' target="_blank"><button className='candidateAdd'><AddIcon /></button></a>
                                     </div>
                                 </div>
 
@@ -155,7 +171,7 @@ const Recruiter = () => {
                                                 <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
                                             </Select>
                                         </FormControl>
-                                        <a href='/createcandidate' target="_blank"><button className='candidateAdd'><AddIcon/></button></a>
+                                        <a href='/createcandidate' target="_blank"><button className='candidateAdd'><AddIcon /></button></a>
                                     </div>
                                 </div>
                                 <AssessmentCentreInfo statustype="pastInterviewer" />
@@ -165,41 +181,6 @@ const Recruiter = () => {
                                 </div>
 
                             </div>
-
-                            // <div style={{ clear: "both" }}>
-                            //     <div className='assessmentToolBar'>
-                            //         <h2 style={{ float: "left", paddingBottom: "10px" }}>Upcomming</h2>
-
-                            //         <div style={{ float: 'right' }}>
-                            //             <select id='filterCandidate' style={{ textAlign: 'center', height: "20px", padding: "10px" }}>
-                            //                 <option value="Name">Name</option>
-                            //                 <option value="Stream">Stream</option>
-                            //                 <option value="GradYear">Year of Graduation</option>
-                            //             </select>
-                            //             <a href='/createcandidate' target="_blank"><button className='candidateAdd'><AddIcon /></button></a>
-                            //         </div>
-                            //     </div>
-
-                            //     <AssessmentCentreInfo statustype="upcome" />
-                            //     <div className="scrollArrows" style={{ float: "right", marginRight: "20px", marginTop: "20px" }}>
-                            //         <button className="leftIcon"><ChevronLeftIcon /></button>
-                            //         <button className="rightIcon"><ChevronRightIcon /></button>
-                            //     </div>
-
-                            //     <div className='assessmentToolBar' style={{ clear: "both" }}>
-                            //         <h2 style={{ float: "left", marginBottom: "10px" }}>Past</h2>
-                            //         <div style={{ float: 'right' }}>
-                            //             <select placeholder='filter' id='filterCandidate' style={{ textAlign: 'center', height: "20px", padding: "10px" }}>
-                            //                 <option value="default" disabled>filter</option>
-                            //                 <option value="Name">Name</option>
-                            //                 <option value="Stream">Stream</option>
-                            //                 <option value="GradYear">Year of Graduation</option>
-                            //             </select>
-                            //         </div>
-                            //     </div>
-                            //     <AssessmentCentreInfo statustype="past" />
-
-                            // </div>
                         }
                     </Box>
                 </div>
