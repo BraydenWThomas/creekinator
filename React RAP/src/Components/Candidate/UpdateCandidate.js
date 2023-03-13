@@ -7,7 +7,6 @@ import NavBar from "../NavBar";
 
 // Material UI
 import { Divider, TextField } from "@mui/material";
-
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Avatar from '@mui/material/Avatar';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -43,6 +42,25 @@ const UpdateCandidate = () => {
   const { candidateId } = useParams();
   const [candidate, setCandidate] = useState([]);
 
+  // Testing
+  const [editCandidateData, setEditCandidateData] = useState({
+    title: candidate.title,
+    first_name: candidate.first_name,
+    middle_name: candidate.middle_name,
+    last_name: candidate.last_name,
+    mobile_number: "",
+    email: "",
+    date_of_birth: "",
+    address: "",
+    graduation_year: "",
+    degree: "",
+    university: "",
+    resume: "resume-link",
+    applied_stream: "",
+    recruit_phase: "",
+    past_ac_result: ""
+  })
+
   // Fetch specific candidate
   useEffect(() => {
     const requestOptions = {
@@ -53,9 +71,57 @@ const UpdateCandidate = () => {
     fetch("http://localhost:8080/api/candidate/" + candidateId, requestOptions)
       .then(response => response.json())
       .then(data => { setCandidate(data) })
+      .then(data => console.log(data))
       .catch(error => console.log('error', error));
   }, [candidateId])
 
+  // Handles the event of user input updating/editing the table row data
+  const handleEditedCandidate = (e) => {
+    const fieldName = e.target.getAttribute("name");
+    const fieldValue = e.target.value;
+
+    const newData = { ...editCandidateData };
+    newData[fieldName] = fieldValue;
+
+    setEditCandidateData(newData);
+  }
+
+  // // Handle update
+  // const handleSubmit = (id, title, firstName, middleName, lastName, mobilePhone, email, 
+  //                       dob, address, gradYear, degree, university, appliedStream, 
+  //                       recruitmentPhase, pastACResult) => {
+  //   const body =
+  //     JSON.stringify({
+  //       id: id,
+  //       title: title,
+  //       first_name: firstName,
+  //       middle_name: middleName,
+  //       last_name: lastName,
+  //       mobile_number: mobilePhone,
+  //       email: email,
+  //       date_of_birth: dob,
+  //       address: address,
+  //       graduation_year: gradYear,
+  //       degree: degree,
+  //       university: university,
+  //       resume: "resume-link",
+  //       applied_stream: appliedStream,
+  //       recruit_phase: recruitmentPhase,
+  //       past_ac_result: pastACResult
+  //     });
+
+  //   const requestOptions = {
+  //     method: 'PUT',
+  //     body: body,
+  //     redirect: 'follow',
+  //     headers: { 'content-type': 'application/json' },
+  //   };
+
+  //   fetch("http://localhost:8080/api/candidate", requestOptions)
+  //     .then(response => response.json())
+  //     .then(result => console.log(result))
+  //     .catch(error => console.log('error', error));
+  // }
   // Handle update
   const handleSubmit = (id) => {
     const body =
@@ -92,7 +158,7 @@ const UpdateCandidate = () => {
   }
 
   const pageTitle = candidate.first_name + " " + candidate.last_name + "'s " + "Profile"
-  
+
   return (
     <div className="update-candidate">
       <NavBar />
@@ -109,19 +175,20 @@ const UpdateCandidate = () => {
           <h2 style={{ margin: '1%' }}>Details</h2>
           <div className="personal-details-row">
             <FormControl sx={{ m: 2, minWidth: 80 }}>
-              <InputLabel id="title-select-label">Title</InputLabel>
+              <InputLabel id="title-select-label"> Title </InputLabel>
               <Select
                 labelId="title-select-label"
                 id="title-select"
                 label="Title"
-                value={candidate.title ?? " "}
-                onChange={(event) => setTitle(event.target.value)}
+                // value={JSON.stringify(editCandidateData.title)}
+                value={title}
+                onChange={handleEditedCandidate}
               >
-                <MenuItem value={"Mr"}>Mr</MenuItem>
-                <MenuItem value={"Ms"}>Ms</MenuItem>
-                <MenuItem value={"Miss"}>Miss</MenuItem>
-                <MenuItem value={"Mrs"}>Mrs</MenuItem>
-                <MenuItem value={"Dr"}>Dr</MenuItem>
+                <MenuItem value={"Mr"}> Mr </MenuItem>
+                <MenuItem value={"Ms"}> Ms </MenuItem>
+                <MenuItem value={"Miss"}> Miss </MenuItem>
+                <MenuItem value={"Mrs"}> Mrs </MenuItem>
+                <MenuItem value={"Dr"}> Dr </MenuItem>
               </Select>
             </FormControl>
             <TextField
@@ -130,8 +197,8 @@ const UpdateCandidate = () => {
               type="text"
               autoComplete="current-first-name"
               sx={{ m: 2 }}
-              value={candidate.first_name ?? " "}
-              onChange={(event) => setFirstName(event.target.value)}
+              value={editCandidateData?.first_name}
+              onChange={handleEditedCandidate}
             />
             <TextField
               id="outlined-middle-name-input"
@@ -139,7 +206,7 @@ const UpdateCandidate = () => {
               type="text"
               autoComplete="current-middle-name"
               sx={{ m: 2 }}
-              value={candidate.middle_name ?? " "}
+              // value={candidate.middle_name ?? " "}
               onChange={(event) => setMiddleName(event.target.value)}
             />
             <TextField
@@ -148,7 +215,7 @@ const UpdateCandidate = () => {
               type="text"
               autoComplete="current-last-name"
               sx={{ m: 2 }}
-              value={candidate.last_name ?? " "}
+              // value={candidate.last_name ?? " "}
               onChange={(event) => setLastName(event.target.value)}
             />
           </div>
@@ -159,7 +226,7 @@ const UpdateCandidate = () => {
               type="number"
               autoComplete="current-mobile"
               sx={{ m: 2 }}
-              value={candidate.mobile_number ?? " "}
+              // value={candidate.mobile_number ?? " "}
               onChange={(event) => setMobilePhone(event.target.value)}
             />
             <TextField
@@ -168,18 +235,18 @@ const UpdateCandidate = () => {
               type="text"
               autoComplete="current-email"
               sx={{ m: 2 }}
-              value={candidate.email ?? " "}
+              // value={candidate.email ?? " "}
               onChange={(event) => setEmail(event.target.value)}
             />
           </div>
           <div className="contact-details-row">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker 
+              <DatePicker
                 format="DD/MM/YYYY"
                 label="D.O.B"
-                sx={{ m: 2 }} 
-                // value={candidate.date_of_birth ?? " "}
-                />
+                sx={{ m: 2 }}
+              // value={candidate.date_of_birth ?? " "}
+              />
             </LocalizationProvider>
             <TextField
               id="outlined-address-input"
@@ -187,7 +254,7 @@ const UpdateCandidate = () => {
               type="text"
               autoComplete="current-address"
               sx={{ m: 2 }}
-              value={candidate.address ?? " "}
+              // value={candidate.address ?? " "}
               onChange={(event) => setAddress(event.target.value)}
             />
           </div>
@@ -198,7 +265,7 @@ const UpdateCandidate = () => {
               type="number"
               autoComplete="current-year"
               sx={{ m: 2 }}
-              value={candidate.graduation_year ?? " "}
+              // value={candidate.graduation_year ?? " "}
               onChange={(event) => setGradYear(event.target.value)}
             />
             <TextField
@@ -207,7 +274,7 @@ const UpdateCandidate = () => {
               type="text"
               autoComplete="current-degree"
               sx={{ m: 2 }}
-              value={candidate.degree ?? " "}
+              // value={candidate.degree ?? " "}
               onChange={(event) => setDegree(event.target.value)}
             />
             <TextField
@@ -216,7 +283,7 @@ const UpdateCandidate = () => {
               type="text"
               autoComplete="current-university"
               sx={{ m: 2 }}
-              value={candidate.university ?? " "}
+              // value={candidate.university ?? " "}
               onChange={(event) => setUniversity(event.target.value)}
             />
           </div>
@@ -238,12 +305,16 @@ const UpdateCandidate = () => {
                 labelId="applied-stream-select-label"
                 id="applied-stream-select"
                 label="Applied Stream"
-                value={candidate.applied_stream ?? " "}
+                // value={candidate.applied_stream ?? " "}
+                value={appliedStream}
                 onChange={(event) => setAppliedStream(event.target.value)}
               >
-                <MenuItem value={"Software Development"}>Software Development</MenuItem>
-                <MenuItem value={"Technical Analyst"}>Technical Analyst</MenuItem>
-                <MenuItem value={"Business Analytics"}>Business Analytics</MenuItem>
+                <MenuItem value="Business Analyst"> Business Analyst </MenuItem>
+                <MenuItem value="Business Intelligence"> Business Intelligence </MenuItem>
+                <MenuItem value="Cloud (AWS)"> Cloud (AWS) </MenuItem>
+                <MenuItem value="Technical Analyst"> Technical Analyst </MenuItem>
+                <MenuItem value="Software Development"> Software Development </MenuItem>
+                <MenuItem value="Testing"> Testing </MenuItem>
               </Select>
             </FormControl>
             <FormControl sx={{ m: 2, minWidth: 450 }}>
@@ -252,7 +323,8 @@ const UpdateCandidate = () => {
                 labelId="recruitment-phase-select-label"
                 id="recruitment-phase-select"
                 label="Recruitment Phase"
-                value={candidate.recruit_phase ?? " "}
+                // value={candidate.recruit_phase ?? " "}
+                value={recruitmentPhase}
                 onChange={(event) => setRecruitmentPhase(event.target.value)}
               >
                 <MenuItem value={"Applied"}>Applied</MenuItem>
@@ -261,8 +333,7 @@ const UpdateCandidate = () => {
             </FormControl>
             <TextField
               id="past-ac-result-input"
-              label="Pase AC Result"
-              type="number"
+              label="Past AC Result"
               autoComplete="past-ac-result"
               sx={{ m: 2 }}
               value={candidate.past_ac_result ?? " "}
@@ -270,21 +341,21 @@ const UpdateCandidate = () => {
             />
           </div>
           <div className="update-button-row" style={{ float: 'right' }} >
-            <Button 
-              variant="contained" 
-              component="label" 
-              sx={{ m: 5 }} 
+            <Button
+              variant="contained"
+              component="label"
+              sx={{ m: 5 }}
               onClick={() => handleSubmit(candidate.id)}>
-                Update
+              Update
             </Button>
             <a href="/recruiter">
-              <Button 
-                variant="contained" 
-                component="label" 
+              <Button
+                variant="contained"
+                component="label"
                 sx={{ m: 5 }} >
-                  Back
+                Back
               </Button>
-            </a> 
+            </a>
           </div>
         </div>
 
