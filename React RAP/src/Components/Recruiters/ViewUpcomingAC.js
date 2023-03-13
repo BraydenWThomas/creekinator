@@ -2,44 +2,23 @@
 import NavBar from '../NavBar';
 
 // React
-import React, { useEffect, useState } from 'react';
-import dayjs from 'dayjs';
-import customParseFormat from "dayjs/plugin/customParseFormat";
+import React, { useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
 
 // Material UI
 import { Avatar, Divider, Tab, Stack, Button, FormControl } from "@mui/material";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 const ViewUpcomingAC = () => {
 	// AC Details
-	const [acDetails, setAcDetails] = useState([]);
 	const [tabValue1, setTabValue1] = useState("1");
 	const [tabValue2, setTabValue2] = useState("1");
 	const [tabValue3, setTabValue3] = useState("1");
 	const [tabValue4, setTabValue4] = useState("1");
-
-	// Fetch AC details
-	useEffect(() => {
-		const requestOptions = {
-			method: 'GET',
-			redirect: 'follow',
-		};
-
-		fetch("http://localhost:8080/api/ac/1", requestOptions)
-			.then(response => response.json())
-			.then(data => { setAcDetails(data) })
-			.catch(error => console.log('error', error));
-	})
-
-	// Format LocalDate, LocalTime objects from java to dayjs object for javascript
-	dayjs.extend(customParseFormat);
-	const formatStart = dayjs(acDetails.start_time, "hh:mm:ss");
-	const formatEnd = dayjs(acDetails.finish_time, "hh:mm:ss");
-
-	const dateFormat =
-		dayjs(acDetails.date).format("dddd, DD MMMM YYYY") + " " +
-		formatStart.format("LT") + " - " +
-		formatEnd.format("LT")
 
 	const handleChangeInterview1 = (event, newValue) => {
 		setTabValue1(newValue);
@@ -57,7 +36,7 @@ const ViewUpcomingAC = () => {
 		setTabValue4(newValue);
 	}
 
-	return (
+  return (
 		<div>
 			<NavBar />
 
@@ -68,12 +47,8 @@ const ViewUpcomingAC = () => {
 
 				<div className="ac-details" style={{ marginTop: '-0.5%' }}>
 					<div style={{ float: 'left', width: '80%' }}>
-						<h1> {acDetails.title} </h1>
-						<h2 style={{ marginLeft: '15p(t', marginTop: '-5pt' }}>
-							{dateFormat}
-							{" "}
-							{/* {time} */}
-						</h2>
+						<h1> placeholder-ac-title </h1>
+						<h2 style={{ marginLeft: '15pt', marginTop: '-5pt' }}> placeholder-date </h2>
 					</div>
 
 					<div style={{ float: 'left', width: '20%', marginTop: '4%' }}>
@@ -120,29 +95,29 @@ const ViewUpcomingAC = () => {
 						<div style={{ float: 'left' }}>
 							<h3> Interviewer 2 </h3>
 							<TabContext value={tabValue2}>
-								<TabList onChange={handleChangeInterview2}>
-									<Tab value="1" label="John Doe" />
-									<Tab value="2" label="John Doe" />
-									<Tab value="3" label="John Doe" />
-									<Tab value="4" label="John Doe" />
-								</TabList>
-								<TabPanel value="1">
-									<Button variant="contained"> View profile </Button>
-									<Button variant="contained"> View interview form </Button>
-								</TabPanel>
-								<TabPanel value="2">
-									<Button variant="contained"> View profile </Button>
-									<Button variant="contained"> View interview form </Button>
-								</TabPanel>
-								<TabPanel value="3">
-									<Button variant="contained"> View profile </Button>
-									<Button variant="contained"> View interview form </Button>
-								</TabPanel>
-								<TabPanel value="4">
-									<Button variant="contained"> View profile </Button>
-									<Button variant="contained"> View interview form </Button>
-								</TabPanel>
-							</TabContext>
+							<TabList onChange={handleChangeInterview2}>
+								<Tab value="1" label="John Doe" />
+								<Tab value="2" label="John Doe" />
+								<Tab value="3" label="John Doe" />
+								<Tab value="4" label="John Doe" />
+							</TabList>
+							<TabPanel value="1">
+								<Button variant="contained"> View profile </Button>
+								<Button variant="contained"> View interview form </Button>
+							</TabPanel>
+							<TabPanel value="2">
+								<Button variant="contained"> View profile </Button>
+								<Button variant="contained"> View interview form </Button>
+							</TabPanel>
+							<TabPanel value="3">
+								<Button variant="contained"> View profile </Button>
+								<Button variant="contained"> View interview form </Button>
+							</TabPanel>
+							<TabPanel value="4">
+								<Button variant="contained"> View profile </Button>
+								<Button variant="contained"> View interview form </Button>
+							</TabPanel>
+						</TabContext>
 						</div>
 					</div>
 				</div>
@@ -181,29 +156,29 @@ const ViewUpcomingAC = () => {
 						<div style={{ float: 'left' }}>
 							<h3> Interviewer 2 </h3>
 							<TabContext value={tabValue4}>
-								<TabList onChange={handleChangeInterview4}>
-									<Tab value="1" label="John Doe" />
-									<Tab value="2" label="John Doe" />
-									<Tab value="3" label="John Doe" />
-									<Tab value="4" label="John Doe" />
-								</TabList>
-								<TabPanel value="1">
-									<Button variant="contained"> View profile </Button>
-									<Button variant="contained"> View interview form </Button>
-								</TabPanel>
-								<TabPanel value="2">
-									<Button variant="contained"> View profile </Button>
-									<Button variant="contained"> View interview form </Button>
-								</TabPanel>
-								<TabPanel value="3">
-									<Button variant="contained"> View profile </Button>
-									<Button variant="contained"> View interview form </Button>
-								</TabPanel>
-								<TabPanel value="4">
-									<Button variant="contained"> View profile </Button>
-									<Button variant="contained"> View interview form </Button>
-								</TabPanel>
-							</TabContext>
+							<TabList onChange={handleChangeInterview4}>
+								<Tab value="1" label="John Doe" />
+								<Tab value="2" label="John Doe" />
+								<Tab value="3" label="John Doe" />
+								<Tab value="4" label="John Doe" />
+							</TabList>
+							<TabPanel value="1">
+								<Button variant="contained"> View profile </Button>
+								<Button variant="contained"> View interview form </Button>
+							</TabPanel>
+							<TabPanel value="2">
+								<Button variant="contained"> View profile </Button>
+								<Button variant="contained"> View interview form </Button>
+							</TabPanel>
+							<TabPanel value="3">
+								<Button variant="contained"> View profile </Button>
+								<Button variant="contained"> View interview form </Button>
+							</TabPanel>
+							<TabPanel value="4">
+								<Button variant="contained"> View profile </Button>
+								<Button variant="contained"> View interview form </Button>
+							</TabPanel>
+						</TabContext>
 						</div>
 					</div>
 				</div>
@@ -223,19 +198,13 @@ const ViewUpcomingAC = () => {
 				<Divider />
 
 				<div className="bottom-buttons" style={{ float: 'right', marginTop: '2%' }}>
-					<Button
-						variant="contained"
-						sx={{ float: 'right' }}>
+					<Button variant="contained" sx={{ float: 'right' }}>
 						Back
 					</Button>
 
-					<a href="/ac/update" target="_blank">
-						<Button
-							variant="contained"
-							sx={{ float: 'right' }}>
-							Update-show-up-for-ac-coordinator
-						</Button>
-					</a>
+					<Button variant="contained" sx={{ float: 'right' }}>
+						Update-show-up-for-ac-coordinator
+					</Button>
 				</div>
 			</div>
 
