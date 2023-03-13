@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bezkoder.springjwt.exceptions.NotFoundException;
+import com.bezkoder.springjwt.models.AssessmentCenter;
 import com.bezkoder.springjwt.models.Author;
 import com.bezkoder.springjwt.models.ERole;
 import com.bezkoder.springjwt.models.Interviewer;
@@ -89,9 +90,12 @@ public class AuthController {
                          roles));
   }
   
-//  @PostMapping("/role")
-//  public void 
-//  
+
+	// Get All Users (no password)
+	@GetMapping("/getAll")
+	public List<String> getACbyId() {
+		return userRepository.getByFilter();
+	}
 
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
