@@ -134,6 +134,99 @@ public class EntityController {
 		return assessmentCenterRepository.save(assessmentCenter);
 	}
 	
+<<<<<<< HEAD
+=======
+	// show all candidates in an specific ac 
+	@GetMapping("/ac/{id}/showCandidates")
+	public List<Candidate> showACCandidates(@PathVariable int id) {
+		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
+		return assessmentCenter.getCandidates();
+	}	
+	
+	// show all interviewers in an specific ac 
+	@GetMapping("/ac/{id}/showInterviewers")
+	public List<Interviewer> showACInterviewers(@PathVariable int id) {
+		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
+		return assessmentCenter.getInterviewers();
+	}
+	
+	// add new candidates with a specific ac, raise error if ac not exist or any id of candidate id list not existed in database
+	@PutMapping("/ac/{id}/addCandidates")
+	public List<Candidate> addACCandidates(@PathVariable int id, 
+			@RequestParam(required = true, name = "candidateIds") int[] candidatesIds) {
+		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
+		List<Candidate> candidates = new ArrayList<Candidate>();
+		//int addedCandidates = new int[];
+		// TODO, test case that the candidate already linked to AC
+		for (int candidateId : candidatesIds) {
+			Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + candidateId));
+			assessmentCenter.addCandidate(candidate);
+			candidates.add(candidate);
+			assessmentCenterRepository.save(assessmentCenter);
+			candidateRepository.save(candidate);
+		}
+		return candidates;
+	}
+	
+	// add new interviewer with a specific ac, raise error if ac not exist or any id of interviewer id list not existed in database
+	@PutMapping("/ac/{id}/addInterviewers")
+	public List<Interviewer> addACInterviewers(@PathVariable int id, 
+			@RequestParam(required = true, name = "interviewerIds") int[] interviewerIds) {
+		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
+		List<Interviewer> interviewers = new ArrayList<Interviewer>();
+		//int addedCandidates = new int[];
+		// TODO, test case that the candidate already linked to AC
+		for (int interviewerId : interviewerIds) {
+			Interviewer interviewer = interviewerRepository.findById(interviewerId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + interviewerId));
+			assessmentCenter.addInterviewer(interviewer);
+			interviewers.add(interviewer);
+			assessmentCenterRepository.save(assessmentCenter);
+			interviewerRepository.save(interviewer);
+		}
+		return interviewers;
+	}
+	
+	// add new candidates with a specific ac, raise error if ac not exist or any id of candidate id list not existed in database
+	@PutMapping("/ac/{id}/deleteCandidates")
+	public List<Candidate> deleteACCandidates(@PathVariable int id, 
+			@RequestParam(required = true, name = "candidateIds") int[] candidatesIds) {
+		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
+		List<Candidate> candidates = new ArrayList<Candidate>();
+		//int addedCandidates = new int[];
+		// TODO, test case that the candidate already linked to AC
+		for (int candidateId : candidatesIds) {
+			Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + candidateId));
+			assessmentCenter.removeCandidate(candidate);
+			candidates.add(candidate);
+			assessmentCenterRepository.save(assessmentCenter);
+			candidateRepository.save(candidate);
+		}
+		return candidates;
+	}
+	
+	// delete interviewers from an AC
+	@PutMapping("/ac/{id}/deleteInterviewers")
+	public List<Interviewer> deleteACInterviewers(@PathVariable int id, 
+			@RequestParam(required = true, name = "interviewerIds") int[] interviewerIds) {
+		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
+		List<Interviewer> interviewers = new ArrayList<Interviewer>();
+		//int addedCandidates = new int[];
+		// TODO, test case that the candidate already linked to AC
+		for (int interviewerId : interviewerIds) {
+			Interviewer interviewer = interviewerRepository.findById(interviewerId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + interviewerId));
+			assessmentCenter.removeInterviewer(interviewer);
+			interviewers.add(interviewer);
+			assessmentCenterRepository.save(assessmentCenter);
+			interviewerRepository.save(interviewer);
+		}
+		return interviewers;
+	}
+	
+	
+	
+	
+	/*
+>>>>>>> bee0bfd7677a8992e78e8bd22af562a5e2d9151f
 	//Add Pack to AC
 	@PutMapping("/ac/{acId}/addPack")
 	public AssessmentCenter addPackToAc(@PathVariable int acId,@RequestParam int packId) {
@@ -151,7 +244,12 @@ public class EntityController {
 //		tempAC.setPack(packsRepository.getReferenceById(packId));
 //		return assessmentCenterRepository.save(tempAC);
 //	}
+<<<<<<< HEAD
 	
+=======
+
+		
+>>>>>>> bee0bfd7677a8992e78e8bd22af562a5e2d9151f
 	/* --- End of Assessment Center --- */	
 	
 	

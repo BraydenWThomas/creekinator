@@ -1,6 +1,7 @@
 package com.bezkoder.springjwt.models;
 
 import java.sql.Blob;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.*;
@@ -26,7 +27,7 @@ public class Candidate {
 	private String last_name;
 	private String mobile_number;
 	private String email;
-	private LocalDateTime date_of_birth;
+	private LocalDate date_of_birth;
 	private String address;
 	private int graduation_year; 
 	private String degree;
@@ -42,7 +43,7 @@ public class Candidate {
 	}
 	
 	public Candidate(String title, String first_name, String middle_name, String last_name, String mobile_number,
-			String email, LocalDateTime date_of_birth, String address, int graduation_year, String degree,
+			String email, LocalDate date_of_birth, String address, int graduation_year, String degree,
 			String university, String resume, String applied_stream, String recruit_phase, String past_ac_result) {
 		super();
 		this.title = title;
@@ -124,10 +125,10 @@ public class Candidate {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public LocalDateTime getDate_of_birth() {
+	public LocalDate getDate_of_birth() {
 		return date_of_birth;
 	}
-	public void setDate_of_birth(LocalDateTime date_of_birth) {
+	public void setDate_of_birth(LocalDate date_of_birth) {
 		this.date_of_birth = date_of_birth;
 	}
 	public String getAddress() {
