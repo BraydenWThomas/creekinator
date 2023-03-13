@@ -46,14 +46,15 @@ public class User {
   @JsonIgnore
   private Interviewer interviewer;
   
-  
-  
-  
   @OneToOne(mappedBy = "user")
   @JsonIgnore
   private Recruiter recruiter;
   
-
+  @OneToOne(mappedBy = "user")
+  @JsonIgnore
+  private Candidate candidate;
+ 
+  
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(  name = "user_roles", 
         joinColumns = @JoinColumn(name = "user_id"), 
@@ -166,16 +167,15 @@ public Long getId() {
 	  this.interviewer.setUser(null);
 	  this.interviewer = null;
   }
-  
+
+  // recruiter
   public void setRecruiter(Recruiter recruiter) {
 	  this.recruiter = recruiter;
 	  recruiter.setUser(this);
   }
-  
   public Recruiter getRecruiter() {
 	  return this.recruiter;
   }
-  
   public void removeRecruiter() {
 	// assume the if user recruiter filed is empty, then the associated recruiter user field also have to be empty
 		  if (this.recruiter == null) {
@@ -183,5 +183,24 @@ public Long getId() {
 		  }
 	  this.recruiter.setUser(null);
 	  this.recruiter = null;
+  }
+  
+  // candidate
+  public void setCandidate(Candidate candidate) {
+	  this.candidate = candidate;
+  }
+  public Candidate getCandidate() {
+	  return this.candidate;
+  }
+  public void removeCandidate() {
+	  this.candidate.setUser(null);
+	  this.candidate = null;
+  }
+  public void addCandidate(Candidate candidate) {
+	  if (this.candidate != null) {
+		  removeCandidate();
+	  }
+	  this.candidate = candidate;
+	  candidate.setUser(this);
   }
 }

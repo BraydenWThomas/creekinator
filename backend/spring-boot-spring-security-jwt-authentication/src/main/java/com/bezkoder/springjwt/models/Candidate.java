@@ -48,6 +48,8 @@ public class Candidate {
 	@OneToMany(mappedBy = "candidate")
 	@JsonIgnore
 	private List<Interview> interviews;
+	@OneToOne
+	private User user;
 	/* --- end of fields --- */
 	
 	
@@ -237,6 +239,25 @@ public class Candidate {
 	public void removeAssessmentCenter(AssessmentCenter assessmentCenter) {
 		this.assessmentCenters.remove(assessmentCenter);
 		assessmentCenter.getCandidates().remove(this);
+	}
+	
+	// user
+	public User getUser() {
+		return this.user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public void addUser(User user) {
+		if (this.user != null) {
+			this.removeUser();
+		}
+		this.user = user;
+		user.setCandidate(this);
+	}
+	public void removeUser() {
+		this.user.setCandidate(null);
+		this.user = null;
 	}
 	
 	/*

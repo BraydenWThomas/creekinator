@@ -189,22 +189,25 @@ public class EntityController {
 		return assessmentCenterRepository.save(assessmentCenter);
 	}
 	
+	
+	
+	
 	// show all candidates in an specific ac 
-	@GetMapping("/ac/{id}/showCandidates")
+	@GetMapping("/ac/showCandidates/{id}")
 	public List<Candidate> showACCandidates(@PathVariable int id) {
 		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
 		return assessmentCenter.getCandidates();
 	}	
 	
 	// show all interviewers in an specific ac 
-	@GetMapping("/ac/{id}/showInterviewers")
+	@GetMapping("/ac/showInterviewers/{id}")
 	public List<Interviewer> showACInterviewers(@PathVariable int id) {
 		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
 		return assessmentCenter.getInterviewers();
 	}
 	
 	// add new candidates with a specific ac, raise error if ac not exist or any id of candidate id list not existed in database
-	@PutMapping("/ac/{id}/addCandidates")
+	@PutMapping("/ac/addCandidates/{id}")
 	public List<Candidate> addACCandidates(@PathVariable int id, 
 			@RequestParam(required = true, name = "candidateIds") int[] candidatesIds) {
 		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
@@ -222,7 +225,7 @@ public class EntityController {
 	}
 	
 	// add new interviewer with a specific ac, raise error if ac not exist or any id of interviewer id list not existed in database
-	@PutMapping("/ac/{id}/addInterviewers")
+	@PutMapping("/ac/addInterviewers/{id}")
 	public List<Interviewer> addACInterviewers(@PathVariable int id, 
 			@RequestParam(required = true, name = "interviewerIds") int[] interviewerIds) {
 		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
@@ -240,7 +243,7 @@ public class EntityController {
 	}
 	
 	// add new candidates with a specific ac, raise error if ac not exist or any id of candidate id list not existed in database
-	@PutMapping("/ac/{id}/deleteCandidates")
+	@PutMapping("/ac/deleteCandidates/{id}")
 	public List<Candidate> deleteACCandidates(@PathVariable int id, 
 			@RequestParam(required = true, name = "candidateIds") int[] candidatesIds) {
 		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
@@ -258,7 +261,7 @@ public class EntityController {
 	}
 	
 	// delete interviewers from an AC
-	@PutMapping("/ac/{id}/deleteInterviewers")
+	@PutMapping("/ac/deleteInterviewers/{id}")
 	public List<Interviewer> deleteACInterviewers(@PathVariable int id, 
 			@RequestParam(required = true, name = "interviewerIds") int[] interviewerIds) {
 		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
@@ -274,6 +277,8 @@ public class EntityController {
 		}
 		return interviewers;
 	}
+	
+	// update AC's 
 	
 	
 	
@@ -300,7 +305,26 @@ public class EntityController {
 //		tempAC.setPack(packsRepository.getReferenceById(packId));
 //		return assessmentCenterRepository.save(tempAC);
 //	}
-
+	
+	//Add Candidate to AC
+	/*
+	@PutMapping("/ac/{acId}/addCandidates") 
+	public AssessmentCenter addCandidateToAc( @RequestParam List<Integer> candidateIds, @PathVariable int acId) {
+		List<Candidate> candidateList = new ArrayList<>();
+		if (assessmentCenterRepository.getReferenceById(acId).getCandidates().isEmpty() != true) {
+			candidateList = assessmentCenterRepository.getReferenceById(acId).getCandidates();
+		}
+		for (int c : candidateIds) {
+			//Verify id exists
+			if (candidateRepository.findById(c).isEmpty() != true) {
+				candidateList.add(candidateRepository.getReferenceById(c));
+			}
+		}
+		AssessmentCenter tempAC = assessmentCenterRepository.getReferenceById(acId);
+		tempAC.setCandidates(candidateList);
+		return assessmentCenterRepository.save(tempAC);
+	}
+	*/
 		
 	/* --- End of Assessment Center --- */	
 	
