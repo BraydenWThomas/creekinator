@@ -1,5 +1,8 @@
+// React + css
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
+
+// Componenets
 import AdminDashboard from './Components/AdminDashboard';
 import Recruiter from './Components/Recruiters/Recruiter';
 import Interviewer from './Components/Interviewers/Interviewer';
@@ -9,20 +12,15 @@ import CandidateInformation from './Components/Candidate/CandidateInformation';
 import ViewAC from './Components/Interviewers/ViewAC';
 import ViewUpcomingAC from './Components/Recruiters/ViewUpcomingAC';
 import ViewPastAC from './Components/Recruiters/ViewPastAC';
-
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { blue } from '@mui/material/colors';
+import CreateAC from './Components/Recruiters/CreateAC';
+import UpdateAC from './Components/Recruiters/UpdateAC';
 import LoginPage from './Components/LoginPage';
 
+// Material UI
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { blue } from '@mui/material/colors';
 
 const FDMtheme = createTheme({
-  // typography:{
-  //   fontFamily: [
-  //     'Barlow',
-  //     'sans-serif'
-  // ].join(','),
-  // },
-
   palette: {
     primary: {
       main: '#6f00ff',
@@ -37,49 +35,61 @@ const App = () => {
       path:"/",
       element: <LoginPage />
     },
+
+    // Users
     {
       path:"/recruiter",
       element: <Recruiter />
     },
-   
     {
       path:"/interviewer",
       element: <Interviewer />
     },
-
     {
       path:"/admin",
       element: <AdminDashboard />
     },
-,
+
+    // User webpages
+
+    // Candidates
     {
-      path:"/createcandidate",
+      path:"/candidate/create",
       element: <CreateCandidate />
     },
     {
-      path:"/updatecandidate",
-      element: <UpdateCandidate />
-    },
-    {
-      path:"/candidateinformation/:abc",
+      // path:"/candidate/info/name=:candidateName&id=:candidateId",
+      path: "/candidate/info/:candidateId",
       element: <CandidateInformation />
     },
     {
-      path:"/viewac/:abc",
+      path:"/candidate/update/:candidateId",
+      element: <UpdateCandidate />
+    },
+
+    // AC Info
+    {
+      path:"/ac/view/:abc",
       element: <ViewAC />
     },
     {
-      path:"/viewupcomingac/:abc",
+      path:"/ac/view-upcoming/:abc",
       element: <ViewUpcomingAC />
-    }
-    ,
+    },
     {
-      path:"/viewpastac/:abc",
+      path:"/ac/view-past/:abc",
       element: <ViewPastAC />
+    },
+    {
+      path:"/ac/create",
+      element: <CreateAC />
+    },
+    {
+      path:"/ac/update",
+      element: <UpdateAC />
     }
     
   ]);
-
 
   return (
     <ThemeProvider theme={FDMtheme}>
