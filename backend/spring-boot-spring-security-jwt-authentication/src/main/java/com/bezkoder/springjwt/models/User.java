@@ -11,6 +11,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "users", 
     uniqueConstraints = { 
@@ -40,6 +42,17 @@ public class User {
 //  @NotFound(action=NotFoundAction.IGNORE)
 //  private Interviewer interviewer;
 //	private Recruiter recruiter;
+  @OneToOne(mappedBy = "user")
+  @JsonIgnore
+  private Interviewer interviewer;
+  
+  
+  
+  
+  @OneToOne(mappedBy = "user")
+  @JsonIgnore
+  private Recruiter recruiter;
+  
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(  name = "user_roles", 
@@ -132,5 +145,43 @@ public Long getId() {
 	  }
 	  roles.add(role);
 	  this.roles = roles;
+  }
+  
+  
+  public void setInterviewer(Interviewer interviewer) {
+	  this.interviewer = interviewer;
+	  interviewer.setUser(this);
+  }
+
+  
+  public Interviewer getInterviewer() {
+	  return this.interviewer;
+  }
+  
+  public void removeInterviewer() {
+	  // assume the if user interview filed is empty, then the associated interview user field also have to be empty
+	  if (this.interviewer == null) {
+		  return;
 	  }
+	  this.interviewer.setUser(null);
+	  this.interviewer = null;
+  }
+  
+  public void setRecruiter(Recruiter recruiter) {
+	  this.recruiter = recruiter;
+	  recruiter.setUser(this);
+  }
+  
+  public Recruiter getRecruiter() {
+	  return this.recruiter;
+  }
+  
+  public void removeRecruiter() {
+	// assume the if user recruiter filed is empty, then the associated recruiter user field also have to be empty
+		  if (this.recruiter == null) {
+			  return;
+		  }
+	  this.recruiter.setUser(null);
+	  this.recruiter = null;
+  }
 }

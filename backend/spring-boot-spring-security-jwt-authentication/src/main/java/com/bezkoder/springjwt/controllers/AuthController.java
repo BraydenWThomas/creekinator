@@ -16,17 +16,27 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bezkoder.springjwt.exceptions.NotFoundException;
+import com.bezkoder.springjwt.models.Author;
 import com.bezkoder.springjwt.models.ERole;
+import com.bezkoder.springjwt.models.Interviewer;
+import com.bezkoder.springjwt.models.Recruiter;
 import com.bezkoder.springjwt.models.Role;
 import com.bezkoder.springjwt.models.User;
 import com.bezkoder.springjwt.payload.request.LoginRequest;
 import com.bezkoder.springjwt.payload.request.SignupRequest;
 import com.bezkoder.springjwt.payload.response.JwtResponse;
 import com.bezkoder.springjwt.payload.response.MessageResponse;
+import com.bezkoder.springjwt.repository.InterviewerRepository;
+import com.bezkoder.springjwt.repository.RecruiterRepository;
 import com.bezkoder.springjwt.repository.RoleRepository;
 import com.bezkoder.springjwt.repository.UserRepository;
 import com.bezkoder.springjwt.security.jwt.JwtUtils;
@@ -44,6 +54,12 @@ public class AuthController {
 
   @Autowired
   RoleRepository roleRepository;
+  
+  @Autowired
+  RecruiterRepository recruiterRepository;
+  
+  @Autowired
+  InterviewerRepository interviewerRepository;
 
   @Autowired
   PasswordEncoder encoder;
@@ -57,7 +73,7 @@ public class AuthController {
     Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-    SecurityContextHolder.getContext().setAuthentication(authentication);
+    SecurityContextHolder.getContext().setAuthentication(authentication); // store user info into contextHolder to avoid login again and again
     String jwt = jwtUtils.generateJwtToken(authentication);
     
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();    
@@ -156,5 +172,49 @@ public class AuthController {
     userRepository.save(user);
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+  }
+  
+  // TODO make this api available to admin only
+  @GetMapping("/user")
+  public List<User> getUsers() {
+	  return userRepository.findAll();
+  }
+  
+  // TODO make this api available to admin only
+  @GetMapping("/user/{id}")
+  public User getUser(@PathVariable long id) {
+	  return userRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
+  }
+  
+  // TODO make this api available to admin only
+  @PutMapping("/user")
+  public User changeUser(@RequestBody User user) {
+	  if (userRepository.findById(user.getId()).isEmpty()) {
+			throw new NotFoundException("Can't find user with id: " + user.getId());
+		}
+	  return userRepository.save(user);
+  }
+  
+  //TODO make this api available to admin only and watch out null
+  @DeleteMapping("/user/{id}")
+  public void changeUser(@PathVariable long id) {
+	  if (userRepository.findById(id).isEmpty()) {
+			throw new NotFoundException("Can't find user with id: " + id);
+	  }
+	  User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Can't find user with id: " + id));
+	  Interviewer interviewer = user.getInterviewer();
+	  Recruiter recruiter = user.getRecruiter();
+	  user.removeInterviewer();
+	  user.removeRecruiter();
+	  userRepository.save(user);
+	  // save only if it is not null
+	  if (! (recruiter == null) ) {
+		  recruiterRepository.save(recruiter);
+	  }
+	  // save only if it is not null
+	  if (! (interviewer == null) ) {
+		  interviewerRepository.save(interviewer);
+	  }
+	  userRepository.delete(user);
   }
 }
