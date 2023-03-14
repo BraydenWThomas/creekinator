@@ -23,8 +23,19 @@ const FDMtheme = createTheme({
 });
 
 const LoginPage = (props) => {
+<<<<<<< HEAD
   
   
+=======
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     username: data.get('username'),
+  //     password: data.get('password'),
+  //   });
+  // };
+>>>>>>> master
 
   return (
     <div className='login-container'>
@@ -76,9 +87,15 @@ const LoginPage = (props) => {
              
               >
                 Login
+                
               </Button>
+<<<<<<< HEAD
                 {/* <Button><a href='/recruiter'><h4>Recruiter</h4></a></Button>
                 <Button><a href='/interviewer'><h4>Interviewer</h4></a></Button>
+=======
+                {/* <Button><a href="/recruiter"><h4>Rercruiter</h4></a></Button>
+                <Button><a href="/interviewer"><h4>Interviewer</h4></a></Button>
+>>>>>>> master
                 <Button><a href="/admin"><h4>Admin</h4></a></Button> */}
             </Box>
             <Grid item

@@ -1,23 +1,32 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
+=======
+// Components
+>>>>>>> master
 import NavBar from '../NavBar';
 
+// React
+import React, { useEffect, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { Divider, TextField } from "@mui/material";
+
+// Material UI
+import { Divider,
+         TextField,
+         Button,
+         InputLabel,
+         MenuItem,
+         FormControl,
+         FormControlLabel,
+         Select,
+         IconButton,
+         Box,
+         FormGroup,
+         Checkbox } from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import Button from '@mui/material/Button';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
-import IconButton from '@mui/material/IconButton';
-import Box from '@mui/material/Box';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 
 const UpdateAC = () => {
   // AC Details

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { createBrowserRouter, RouterProvider, redirect, Navigate } from 'react-router-dom';
+=======
+import { createBrowserRouter, RouterProvider, Navigate, useNavigate, Router } from 'react-router-dom';
+>>>>>>> master
 import './App.css';
 import AdminDashboard from './Components/AdminDashboard';
 import Recruiter from './Components/Recruiters/Recruiter';
@@ -27,6 +31,7 @@ const FDMtheme = createTheme({
   },
 });
 
+<<<<<<< HEAD
 
 const App = () => {
 
@@ -201,7 +206,123 @@ const App = () => {
     }
   ]);
   const logout = () => {
+=======
 
+const App = () => {
+
+
+  const handleClick = (event) => {
+
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+
+    const body =
+      JSON.stringify({
+        "username": data.get('username'),
+        "password": data.get('password')
+      });
+
+    const requestOptions = {
+      headers: { 'content-type': 'application/json' },
+      method: "POST",
+      body: body,
+      redirect: 'follow'
+    };
+
+    fetch(" http://localhost:8080/api/auth/signin", requestOptions)
+      .then(response => response.json())
+      .then(result => {
+
+       
+
+        if (result.username) {
+
+          localStorage.setItem('status', result.roles[0])
+          if (result.roles[0] == "ROLE_RECRUITER") {
+            window.location.href = "/recruiter"
+          }
+          else if (result.roles[0] == "ROLE_INTERVIEWER") {
+            window.location.href = "/interviewer"
+          }
+
+
+        }}) 
+      .catch(error => console.log('error', error));
+
+
+
+
+
+
+  };
+
+  const routes = [{
+    path: "/",
+    element: <LoginPage onClick={handleClick} />
+  }]
+
+  if (localStorage.getItem('status') == "ROLE_RECRUITER") {
+    routes.push({
+      path: "/recruiter",
+      element: <Recruiter />
+    },
+      {
+        path: "/candidate/create",
+        element: <CreateCandidate />
+      },
+      {
+        path: "/candidate/update/:abc",
+        element: <UpdateCandidate />
+      },
+      {
+        path: "/candidate/info/:abc",
+        element: <CandidateInformation />
+      },
+      {
+        path: "/viewac/:abc",
+        element: <ViewAC />
+      },
+      {
+        path: "/viewupcomingac/:abc",
+        element: <ViewUpcomingAC />
+      }
+      ,
+      {
+        path: "/viewpastac/:abc",
+        element: <ViewPastAC />
+      }
+      ,
+      {
+        path: "/createac",
+        element: <CreateAC />
+      }
+    )
+  }
+
+  if (localStorage.getItem('status') == "ROLE_INTERVIEWER") {
+    routes.push({
+      path: "/interviewer",
+      element: <Interviewer />
+    },
+      {
+        path: "/candidateinformation/:abc",
+        element: <CandidateInformation />
+      },
+      {
+        path: "/viewac/:abc",
+        element: <ViewAC />
+      })
+  }
+
+  const routerPage = createBrowserRouter(routes);
+>>>>>>> master
+
+  const logout = () => {
+
+    localStorage.removeItem('status');
+    window.location.href = "/"
+
+  }
 
     //console.log("log out")
     localStorage.setItem('status', false);
@@ -217,10 +338,15 @@ const App = () => {
   return (
 
     <ThemeProvider theme={FDMtheme}>
+<<<<<<< HEAD
 
       <Button onClick={logout}>LOGOUT</Button>
 
       <RouterProvider router={routerRecruit} />
+=======
+      <Button onClick={logout}>LOGOUT</Button>
+      <RouterProvider router={routerPage} />
+>>>>>>> master
     </ThemeProvider>
   )
 

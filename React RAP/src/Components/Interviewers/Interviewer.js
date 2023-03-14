@@ -1,24 +1,21 @@
 import CandidateSelectBox from '../Candidate/CandidatesSelectBox';
 import AssessmentCentreInfo from '../Recruiters/AssessmentCentreInfo';
-import '../Styling/RecruiterStyles.css';
 import NavBar from '../NavBar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import CandidateInformation from '../Candidate/CandidateInformation';
-import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
-import AddIcon from '@mui/icons-material/Add';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { Avatar, Box, Divider, FormControl, InputLabel, MenuItem, Select, Tab, Tabs, Typography } from '@mui/material';
 
 const Interviewer = () => {
 
-    const [displayState, setDisplayState] = useState("Candidate");
-    const acList = [<AssessmentCentreInfo />,<CandidateSelectBox />,<AssessmentCentreInfo />,<AssessmentCentreInfo />];
-    const doneACList = [<AssessmentCentreInfo />,<CandidateSelectBox />,<AssessmentCentreInfo />,<AssessmentCentreInfo />];
+    const [displayState, setDisplayState] = useState("AC_Centre");
+    const acList = [<AssessmentCentreInfo />, <CandidateSelectBox />, <AssessmentCentreInfo />, <AssessmentCentreInfo />];
+    const doneACList = [<AssessmentCentreInfo />, <CandidateSelectBox />, <AssessmentCentreInfo />, <AssessmentCentreInfo />];
     const [pos, setPos] = useState(0);
     const [donepos, setDonePos] = useState(0);
-   
+
     // USE THIS FOR LATER
     // const [users, setUsers] = useState([
     //     { username: "John Doe", email: 'johndoe@fdm.com'},
@@ -34,17 +31,17 @@ const Interviewer = () => {
         //console.log(displayState);
     }
     const moveLeft = () => {
-        if (pos > 0){
-            setPos(pos-1)
+        if (pos > 0) {
+            setPos(pos - 1)
         }
         else {
-            setPos(acList.length-1)
+            setPos(acList.length - 1)
         }
     }
 
     const moveRight = () => {
-        if (pos < acList.length-1){
-            setPos(pos+1)
+        if (pos < acList.length - 1) {
+            setPos(pos + 1)
         }
         else {
             setPos(0)
@@ -52,17 +49,17 @@ const Interviewer = () => {
     }
 
     const moveDoneLeft = () => {
-        if (donepos > 0){
-            setDonePos(donepos-1)
+        if (donepos > 0) {
+            setDonePos(donepos - 1)
         }
         else {
-            setDonePos(doneACList.length-1)
+            setDonePos(doneACList.length - 1)
         }
     }
 
     const moveDoneRight = () => {
-        if (donepos < doneACList.length-1){
-            setDonePos(donepos+1)
+        if (donepos < doneACList.length - 1) {
+            setDonePos(donepos + 1)
         }
         else {
             setDonePos(0)
@@ -77,70 +74,73 @@ const Interviewer = () => {
 
             <div className='bodySection'>
 
-                <div className='bellAndAvatar'>
-                    <h1 style={{ paddingLeft: "20px", paddingTop: "20px" }}>Dashboard</h1>
-                    
-                    <NotificationsIcon/>
+                <div className="header" style={{ display: "flex" }}>
+                    <h1 style={{ flex: 1, margin: '1%', marginTop: '2%' }}>Dashboard</h1>
+                    <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
+                        <NotificationsIcon fontSize="large" />
+                        <Avatar src="/broken-image.jpg" />
+                    </div>
                 </div>
 
-                <hr />
+                <Divider variant='middle' />
 
-                <div className='recruiterToolBar'>
-                    <div style={{ float: "left" }}>
-
-                        <button value={"AC_Centre"} onClick={() => changeDisplay("AC_Centre")}>Assessment Centres</button>
-                        <button value={"Candidate"} onClick={() => changeDisplay("Candidate")}>Interviews</button>
-                        <button value={"Candidate"} onClick={() => changeDisplay("Candidate")}>Feedback</button>
-                    </div>
-
+                <div>
+                    <Box sx={{ m: 2, width: '100%' }}>
+                        <Tabs value={displayState} aria-label="interviewer-toolbar">
+                            <Tab value="AC_Centre" label="Assessment Centre" onClick={() => changeDisplay("AC_Centre")} />
+                            <Tab value="Candidate" label="Interviews & Feedback" onClick={() => changeDisplay("Candidate")} />
+                        </Tabs>
+                    </Box>
                 </div>
 
                 <div className='candidatesInfo' style={{ marginTop: "30px" }}>
+                            <div className='assessmentToolBar' style={{ display: 'flex' }}>
+                                <Typography component="h2" variant="h4" style={{ flex: 1, margin: 10 }}> Upcoming </Typography>
 
+                                <div className='filter'>
 
-
-                    <div>
-                        <div className='assessmentToolBar'>
-                            <h3>Upcoming</h3>
-
-                            <div style={{ float: 'right' }}>
-                                <button className='candidateSort'><SortByAlphaIcon /></button>
-                                <select id='filterCandidate' style={{ textAlign: 'center', height: "20px", padding: "10px" }}>
-
-                                    <option value="Name">Name</option>
-                                    <option value="Stream">Stream</option>
-                                    <option value="GradYear">Year of Graduation</option>
-
-                                </select>
-
+                                        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                                            <InputLabel id="filter"></InputLabel>
+                                            <Select
+                                                labelId="filter"
+                                                id="filter"
+                                            >
+                                                <MenuItem value="Name">Name</MenuItem>
+                                                <MenuItem value="Stream">Stream</MenuItem>
+                                                <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </div>
                             </div>
-                        </div>
-                        
-                        <AssessmentCentreInfo statustype="upcomeInterviewer" />
-                        <div className="scrollArrows" style={{ float: "right", marginRight: "20px", marginTop: "20px"}}>
-                            <button onClick={moveLeft} className="leftIcon"><ChevronLeftIcon /></button>
-                            <button onClick={moveRight} className="rightIcon"><ChevronRightIcon /></button>
-                        </div>
 
-
-                        <div className='assessmentToolBar' style={{ clear: "both" }}>
-                            <h3 style={{ float: "left" }}>Past</h3>
-                            <div style={{ float: 'right' }}>
-                                <button className='candidateSort'><SortByAlphaIcon /></button>
-                                <select placeholder='filter' id='filterCandidate' style={{ textAlign: 'center', height: "20px", padding: "10px" }}>
-                                    <option value="default" disabled>filter</option>
-                                    <option value="Name">Name</option>
-                                    <option value="Stream">Stream</option>
-                                    <option value="GradYear">Year of Graduation</option>
-                                </select>
+                            <AssessmentCentreInfo statustype="upcomeInterviewer" />
+                            <div className="scrollArrows">
+                                <button onClick={moveLeft} className="leftIcon"><ChevronLeftIcon /></button>
+                                <button onClick={moveRight} className="rightIcon"><ChevronRightIcon /></button>
                             </div>
+
+                        <div className='assessmentToolBar' style={{ display: 'flex' }}>
+                            <Typography component="h2" variant="h4" style={{ flex: 1, margin: 10 }}> Past </Typography>
+                            <div className='filter'>
+
+                                        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                                            <InputLabel id="filter"></InputLabel>
+                                            <Select
+                                                labelId="filter"
+                                                id="filter"
+                                            >
+                                                <MenuItem value="Name">Name</MenuItem>
+                                                <MenuItem value="Stream">Stream</MenuItem>
+                                                <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </div>
                         </div>
                         <AssessmentCentreInfo statustype="pastInterviewer" />
-                        <div className="scrollArrows" style={{float: "right", marginRight: "20px", marginTop: "20px"}}>
-                          <button onClick={moveDoneLeft} className="leftIcon"><ChevronLeftIcon /></button>
+                        <div className="scrollArrows">
+                            <button onClick={moveDoneLeft} className="leftIcon"><ChevronLeftIcon /></button>
                             <button onClick={moveDoneRight} className="rightIcon"><ChevronRightIcon /></button>
                         </div>
-                    </div>
 
                 </div>
 
