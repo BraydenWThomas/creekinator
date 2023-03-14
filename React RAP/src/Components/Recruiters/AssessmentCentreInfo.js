@@ -10,7 +10,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 // Material UI
 import { Box, Paper, Button, Menu, MenuItem, IconButton, Icon } from '@mui/material';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import InfoIcon from '@mui/icons-material/Info';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 const AssessmentCentreInfo = ({ statustype, ac }) => {
   // Get assigned candidates
@@ -122,7 +122,7 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
           }
           <h2> {ac.title} </h2>
           <h4>
-            <InfoIcon />
+            <InfoOutlinedIcon />
             {dateFormat}
           </h4>
         </div>
@@ -134,7 +134,7 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
               <li>Karen</li>
               <li>Joe</li>
             </ul>
-            <p>Techincal</p>
+            <p>Technical</p>
             <ul style={{ marginLeft: "20px" }}>
               <li>Karen</li>
               <li>Joe</li>
@@ -151,19 +151,9 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
               ))}
             </ul>
           </div>
-          <div style={{ width: "40%", float: "left" }}>
-            <h4>Interview Pack</h4>
-            <p>Sales</p>
-            <ul style={{ marginLeft: "20px" }}>
-              <li>Pack 1</li>
-            </ul>
-            <p>Techincal</p>
-            <ul style={{ marginLeft: "20px" }}>
-              <li>Pack 1</li>
-            </ul>
-          </div>
+
           <div style={{ display: "flex", clear: "both" }}>
-            <h3>NAME</h3>
+            <h3> placeholder-ac-coordinator </h3>
           </div>
 
         </div>
