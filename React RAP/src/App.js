@@ -10,7 +10,10 @@ import ViewAC from './Components/Interviewers/ViewAC';
 import ViewUpcomingAC from './Components/Recruiters/ViewUpcomingAC';
 import ViewPastAC from './Components/Recruiters/ViewPastAC';
 import CreateAC from './Components/Recruiters/CreateAC';
-import React, { useState, useEffect } from 'react';
+import UpdateAC from './Components/Recruiters/UpdateAC';
+import LoginPage from './Components/LoginPage';
+
+// Material UI
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import LoginPage from './Components/LoginPage';
