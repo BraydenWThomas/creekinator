@@ -42,6 +42,7 @@ const UpdateCandidate = () => {
   // To Link to specific candidate
   const { candidateId } = useParams();
   const [candidate, setCandidate] = useState([]);
+  const [getName, setGetName] = useState([])
 
   // Testing
   const [editCandidateData, setEditCandidateData] = useState({
@@ -68,13 +69,24 @@ const UpdateCandidate = () => {
       method: 'GET',
       redirect: 'follow',
     };
-
-    fetch("http://localhost:8080/api/candidate/" + candidateId, requestOptions)
-      .then(response => response.json())
-      .then(data => { setCandidate(data) })
-      .then(data => console.log(data))
-      .catch(error => console.log('error', error));
-  }, [candidateId])
+    
+    Promise.all([
+      fetch("http://localhost:8080/api/candidate/" + candidateId, requestOptions),
+      fetch("http://localhost:8080/api/candidate/" + candidateId, requestOptions)
+    ]).then((responses => {
+      console.log(responses)
+      responses[0].json()
+        .then(data => { setCandidate(data) })
+      responses[1].json()
+        .then(data => { setGetName(data) })
+    })).catch(error => console.log('error', error));
+    
+      // .then(response => response.json())
+      // .then(data => { setCandidate(data) })
+      // .then(data => console.log(data))
+      // .then(data => { setGetName(data) })
+      
+  }, [candidateId]);
 
   // Handles the event of user input updating/editing the table row data
   const handleEditedCandidate = (e) => {
@@ -85,7 +97,7 @@ const UpdateCandidate = () => {
     newData[fieldName] = fieldValue;
 
     setEditCandidateData(newData);
-  }
+  };
 
   // // Handle update
   // const handleSubmit = (id, title, firstName, middleName, lastName, mobilePhone, email, 
@@ -123,6 +135,7 @@ const UpdateCandidate = () => {
   //     .then(result => console.log(result))
   //     .catch(error => console.log('error', error));
   // }
+  
   // Handle update
   const handleSubmit = (id) => {
     const body =
@@ -158,7 +171,7 @@ const UpdateCandidate = () => {
       .catch(error => console.log('error', error));
   }
 
-  const pageTitle = candidate.first_name + " " + candidate.last_name + "'s " + "Profile"
+  var pageTitle = getName.first_name + " " + getName.last_name + "'s " + "Profile"
 
   return (
     <div className="update-candidate">

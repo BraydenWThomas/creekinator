@@ -132,7 +132,7 @@ const App = () => {
       element: <CreateAC />
     },
     {
-      path:"/ac/update",
+      path:"/ac/update/:acId",
       element: <UpdateAC />
     }
     
