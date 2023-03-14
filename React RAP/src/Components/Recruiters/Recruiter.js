@@ -15,35 +15,33 @@ import Divider from '@mui/material/Divider';
 import { FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 
 const Recruiter = () => {
-
   const [displayState, setDisplayState] = useState("Candidate");
 
-  // USE THIS FOR LATER
-  // const [users, setUsers] = useState([
-  //     { username: "John Doe", email: 'johndoe@fdm.com'},
-  //     { username: "Jane Doe", email: 'janedoe@fdm.com'},
-  //     { username: "Bob Smith", email: 'bobsm@fdm.com'},
-  //     { username: "Alice Smith", email: 'alicesmith@fdm.com'},
-  //   ])
-  //   const [ACs, setACs] = useState([""]);
+  // AC + Candidate states
   const [candidates, setCandidates] = useState([]);
+  const [acs, setAcs] = useState([]);
 
-  // Fetch all candidates
+  // Fetch all candidates + acs
   useEffect(() => {
     const requestOptions = {
       method: 'GET',
       redirect: 'follow',
     };
 
-    fetch("http://localhost:8080/api/candidate", requestOptions)
-      .then(response => response.json())
-      .then(data => { setCandidates(data) })
-      .catch(error => console.log('error', error));
-  })
+    Promise.all([
+      fetch("http://localhost:8080/api/candidate", requestOptions),
+      fetch("http://localhost:8080/api/ac", requestOptions)
+    ]).then((responses => {
+      console.log(responses)
+      responses[0].json()
+        .then(data => { setCandidates(data) })
+      responses[1].json()
+        .then(data => { setAcs(data) })
+    })).catch(error => console.log('error', error));
+  }, [])
 
   const changeDisplay = (value) => {
     setDisplayState(value);
-    //console.log(displayState);
   }
 
   return (
@@ -59,6 +57,7 @@ const Recruiter = () => {
             <Avatar src="/broken-image.jpg" />
           </div>
         </div>
+
         <Divider variant='middle' />
 
         <div className='recruiterToolBar'>
@@ -70,18 +69,6 @@ const Recruiter = () => {
           </Box>
         </div>
 
-        {/* <div className='applicantToolBar' style={{clear: "both"}}>
-                    <h4 style={{float: "left"}}>Applied</h4>
-                    <button className='addCandidate'>+</button>
-            </div> */}
-
-        {/* <Router>
-            <Routes>
-              <Route path='/CandidateInformation' element={<CandidateInformation />} />
-              </Routes>
-
-            </Router> */}
-
         <div className='candidatesInfo' style={{ marginTop: "30px" }}>
           <Box
             sx={{
@@ -91,21 +78,16 @@ const Recruiter = () => {
                 width: '100%',
                 height: 300
               }
-            }}
-          >
+            }} >
             {displayState === "Candidate"
-              ?
+              ? // Display candidate tab
               <div style={{ clear: "both" }}>
                 <div className='applicantToolBar' style={{ display: 'flex' }}>
                   <Typography component="h2" variant="h4" style={{ flex: 1, margin: 10 }}> Applied </Typography>
                   <div className='filter'>
-
                     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                      <InputLabel id="filter"></InputLabel>
-                      <Select
-                        labelId="filter"
-                        id="filter"
-                      >
+                      <InputLabel id="filter"> Filter </InputLabel>
+                      <Select labelId="filter" id="filter" label="Filter" value={""}>
                         <MenuItem value="Name">Name</MenuItem>
                         <MenuItem value="Stream">Stream</MenuItem>
                         <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
@@ -125,60 +107,73 @@ const Recruiter = () => {
                   </div>
                 ))}
               </div>
-
-
-
-              :
-
+              : // Display AC tab
               <div className='candidatesInfo' style={{ marginTop: "30px" }}>
                 <div className='assessmentToolBar' style={{ display: 'flex' }}>
                   <Typography component="h2" variant="h4" style={{ flex: 1, margin: 10 }}> Upcoming </Typography>
                   <div className='filter'>
-
                     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                      <InputLabel id="filter"></InputLabel>
-                      <Select
-                        labelId="filter"
-                        id="filter"
-                      >
+                      <InputLabel id="filter"> Filter </InputLabel>
+                      <Select labelId="filter" id="filter" label="Filter" value={""}>
                         <MenuItem value="Name">Name</MenuItem>
                         <MenuItem value="Stream">Stream</MenuItem>
                         <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
                       </Select>
                     </FormControl>
-                    <a href='/createcandidate' target="_blank"><button className='candidateAdd'><AddIcon /></button></a>
+                    <a href="/ac/create" target="_blank">
+                      <button className='candidateAdd'> <AddIcon /> </button>
+                    </a>
                   </div>
                 </div>
+                
+                {acs.map(ac => (
+                  (ac.completed === "false" 
+                    ? // Show incompleted AC
+                    <>
+                    <div key={ac.id}>
+                      <AssessmentCentreInfo statustype="upcomingAC" ac={ac} />
+                    </div>
+                    <div className="scrollArrows">
+                      <button className="leftIcon"><ChevronLeftIcon /></button>
+                      <button className="rightIcon"><ChevronRightIcon /></button>
+                    </div>
+    
+                    <div className='assessmentToolBar' style={{ display: 'flex' }}>
+                      <Typography component="h2" variant="h4" style={{ flex: 1, margin: 10 }}> Past </Typography>
+                      <div className='filter'>
+    
+                        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                          <InputLabel id="filter"> Filter </InputLabel>
+                          <Select labelId="filter" id="filter" label="Filter" value={""}>
+                            <MenuItem value="Name">Name</MenuItem>
+                            <MenuItem value="Stream">Stream</MenuItem>
+                            <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
+                          </Select>
+                        </FormControl>
+                        <a href="/ac/create" target="_blank">
+                          <button className='candidateAdd'> <AddIcon /> </button>
+                        </a>
+                      </div>
+                    </div>
+                    </>
+                    : // Show completed AC
+                    <>
+                      <div key={ac.id}>
+                        <AssessmentCentreInfo statustype="pastAC" ac={ac} />
+                      </div>
+    
+                      <div className="scrollArrows">
+                        <button className="leftIcon"><ChevronLeftIcon /></button>
+                        <button className="rightIcon"><ChevronRightIcon /></button>
+                      </div>
+                    </>
+                  )
+                  
+                ))}
 
-                <AssessmentCentreInfo statustype="upcomeInterviewer" />
-                <div className="scrollArrows">
-                  <button className="leftIcon"><ChevronLeftIcon /></button>
-                  <button className="rightIcon"><ChevronRightIcon /></button>
-                </div>
+                
 
-                <div className='assessmentToolBar' style={{ display: 'flex' }}>
-                  <Typography component="h2" variant="h4" style={{ flex: 1, margin: 10 }}> Past </Typography>
-                  <div className='filter'>
-
-                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                      <InputLabel id="filter"></InputLabel>
-                      <Select
-                        labelId="filter"
-                        id="filter"
-                      >
-                        <MenuItem value="Name">Name</MenuItem>
-                        <MenuItem value="Stream">Stream</MenuItem>
-                        <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <a href='/createcandidate' target="_blank"><button className='candidateAdd'><AddIcon /></button></a>
-                  </div>
-                </div>
-                <AssessmentCentreInfo statustype="pastInterviewer" />
-                <div className="scrollArrows">
-                  <button className="leftIcon"><ChevronLeftIcon /></button>
-                  <button className="rightIcon"><ChevronRightIcon /></button>
-                </div>
+                
 
               </div>
             }
@@ -189,6 +184,5 @@ const Recruiter = () => {
 
   )
 }
-
 
 export default Recruiter;

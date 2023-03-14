@@ -73,11 +73,11 @@ const App = () => {
       element: <ViewAC />
     },
     {
-      path:"/ac/view-upcoming/:abc",
+      path:"/ac/view-upcoming/:acId",
       element: <ViewUpcomingAC />
     },
     {
-      path:"/ac/view-past/:abc",
+      path:"/ac/view-past/:acId",
       element: <ViewPastAC />
     },
     {
@@ -85,7 +85,7 @@ const App = () => {
       element: <CreateAC />
     },
     {
-      path:"/ac/update",
+      path:"/ac/update/:acId",
       element: <UpdateAC />
     }
     

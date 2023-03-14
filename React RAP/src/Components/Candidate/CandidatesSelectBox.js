@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import '../Styling/RecruiterStyles.css';
 
 // Material UI
-import DeleteIcon from '@mui/icons-material/Delete';
 import { Button, Menu, MenuItem, IconButton } from '@mui/material';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
@@ -89,19 +88,15 @@ const CandidateSelectBox = ({ candidate }) => {
 
         <div style={{ marginLeft: "20px" }}>
           <div style={{ display: "flex", clear: "both" }}>
-
             <h3> {candidate.first_name + " " + candidate.last_name} </h3>
           </div>
           <div style={{ display: "flex", clear: "both" }}>
-
             <h3> {candidate.mobile_number} </h3>
           </div>
           <div style={{ display: "flex", clear: "both" }}>
-
             <h3> {candidate.email} </h3>
           </div>
           <div style={{ display: "flex", marginBottom: "20px", clear: "both" }}>
-
             <h3> {candidate.applied_stream} </h3>
           </div>
         </div>
