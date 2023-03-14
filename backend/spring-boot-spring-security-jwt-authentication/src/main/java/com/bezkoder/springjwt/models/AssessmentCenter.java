@@ -204,6 +204,10 @@ public class AssessmentCenter {
 	}
 	public void addInterview(Interview interview) {
 		this.interviews.add(interview);
+		// if interview has linked with other AC, unlink it first
+		if (interview.getAssessmentCenter() != null) {
+			interview.removeAssessmentCenter();
+		}
 		interview.setAssessmentCenter(this);
 	}
 	public void removeInterview(Interview interview) {

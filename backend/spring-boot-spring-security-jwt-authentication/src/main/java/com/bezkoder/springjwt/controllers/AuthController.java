@@ -91,10 +91,10 @@ public class AuthController {
   }
   
 
-	// Get All Users (no password)
+	// Get All Users
 	@GetMapping("/getAll")
-	public List<String> getACbyId() {
-		return userRepository.getByFilter();
+	public List<User> getACbyId() {
+		return userRepository.findAll();
 	}
 
   @PostMapping("/signup")

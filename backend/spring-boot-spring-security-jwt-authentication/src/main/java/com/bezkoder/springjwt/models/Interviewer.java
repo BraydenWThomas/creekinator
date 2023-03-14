@@ -37,6 +37,8 @@ public class Interviewer {
 	
 	
 	
+	
+	
 	/* --- contructors ---*/
 	public Interviewer() {
 		this.interviews = new ArrayList<Interview>();
@@ -48,6 +50,8 @@ public class Interviewer {
 		this.assessmentCenters = new ArrayList<AssessmentCenter>();
 	}
 	/* --- end of constructor --- */
+	
+	
 	
 	
 	
@@ -115,6 +119,9 @@ public class Interviewer {
 	// interview
 	public void addInterview(Interview interview) {
 		this.interviews.add(interview);
+		if (interview.getInterviewer() != null) {
+			interview.removeInterviewer();
+		}
 		interview.setInterviewer(this);
 	}
 	public void removeInterview(Interview interview) {
@@ -146,16 +153,21 @@ public class Interviewer {
 	
 	//user
 	public void addUser(User user) {
-		// if currently linked, unlink first
+		// if interviewer is currently linking to another user, remove relationship first
 		if (this.user != null) {
 			removeUser();
 		}
+		// if the user is linking to another interviewer, remove the relationship first
+		if (user.getInterviewer() != null) {
+			user.removeInterviewer();
+		}
 		this.user = user;
-		user.setInterviewer(this);
+		this.user.setInterviewer(this);
 	}
 	public void removeUser() {
+		this.user.setInterviewer(null);
 		this.user = null;
-		user.setInterviewer(null);
+		
 	}
 	public void setUser(User user) {
 		this.user = user;
@@ -163,12 +175,5 @@ public class Interviewer {
 	public User getUser() {
 		return this.user;
 	}
-	
-	
-	
-	
 
-	
-	
-	
 }
