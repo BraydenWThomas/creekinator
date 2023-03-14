@@ -27,6 +27,7 @@ public class Interview {
 	private int id;
 	private String form;
 	private LocalTime interviewTime;
+	private int score = -1;
 	
 	@ManyToOne
 	@JoinColumn(name = "FK_INTERVIEWER_NO")
@@ -69,7 +70,7 @@ public class Interview {
 		this.form = form; // comment should be included in form
 		this.packs = new ArrayList<Pack>();
 	}
-	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, String form,LocalTime interviewTime) {
+	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, String form,LocalTime interviewTime, int score) {
 		super();
 		this.form = form; // comment should be included in form
 		this.assessmentCenter = assessmentCenter;
@@ -77,8 +78,9 @@ public class Interview {
 		this.candidate = candidate;	
 		this.packs = new ArrayList<Pack>();
 		this.interviewTime = interviewTime;
+		this.score = score;
 	}
-	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, List<Pack> packs, String form,LocalTime interviewTime) {
+	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, List<Pack> packs, String form,LocalTime interviewTime, int score) {
 		super();
 		this.form = form; // comment should be included in form
 		this.assessmentCenter = assessmentCenter;
@@ -86,6 +88,7 @@ public class Interview {
 		this.candidate = candidate;	
 		this.packs = packs;
 		this.interviewTime = interviewTime;
+		this.score = score;
 	}
 	/* --- End of Constructors --- */
 	
@@ -119,9 +122,16 @@ public class Interview {
 	/* --- linked reference --- */
 	
 	
+	
 	// interviewer
 	public Interviewer getInterviewer() {
 		return interviewer;
+	}
+	public int getScore() {
+		return score;
+	}
+	public void setScore(int score) {
+		this.score = score;
 	}
 	public LocalTime getInterviewTime() {
 		return interviewTime;

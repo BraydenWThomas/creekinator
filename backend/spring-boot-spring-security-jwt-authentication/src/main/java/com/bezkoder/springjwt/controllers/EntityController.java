@@ -92,7 +92,7 @@ public class EntityController {
 	// Get specific AC
 	@GetMapping("/ac/{acId}")
 	public AssessmentCenter getACbyId(@PathVariable int acId) {
-		return assessmentCenterRepository.findById(acId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " +acId));
+		return assessmentCenterRepository.findById(acId).orElseThrow(()->new NotFoundException("Can't find AC with id: " +acId));
 	}
 	
 	// Delete AC
@@ -100,12 +100,12 @@ public class EntityController {
 	public void deleteAcById(@PathVariable int acId) {
 		// TODO remove this part as it is reduntency
 		if (assessmentCenterRepository.findById(acId).isEmpty()) {
-			throw new NotFoundException("Can't find transaction with id: " + acId);
+			throw new NotFoundException("Can't find AC with id: " + acId);
 		}
 		
 		/* --- remove all bidirectional dependencies to avoid delete bug --- */
 		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(acId).orElseThrow(()->
-											new NotFoundException("Can't find transaction with id: " + acId));
+											new NotFoundException("Can't find AC with id: " + acId));
 		
 		List<Interviewer> interviewers = assessmentCenter.getInterviewers();
 		List<Interview> interviews = assessmentCenter.getInterviews();
@@ -143,7 +143,7 @@ public class EntityController {
 		if (candidates != null) {
 			for (int candidateID : candidates) {
 				Candidate candidate = candidateRepository.findById(candidateID).orElseThrow(()->
-					new NotFoundException("Can't find transaction with id: " + candidateID));
+					new NotFoundException("Can't find candidate with id: " + candidateID));
 				assessmentCenter.addCandidate(candidate);
 				assessmentCenterRepository.save(assessmentCenter);
 				candidateRepository.save(candidate);
@@ -152,7 +152,7 @@ public class EntityController {
 		if (interviews != null) {
 			for (int interviewId : interviews) {
 				Interview interview = interviewRepository.findById(interviewId).orElseThrow(()->
-					new NotFoundException("Can't find transaction with id: " + interviewId));
+					new NotFoundException("Can't find interview with id: " + interviewId));
 				assessmentCenter.addInterview(interview); 
 				assessmentCenterRepository.save(assessmentCenter);
 				interviewRepository.save(interview);
@@ -161,7 +161,7 @@ public class EntityController {
 		if (interviewers != null) {
 			for (int interviewerId : interviewers) {
 				Interviewer interviewer = interviewerRepository.findById(interviewerId).orElseThrow(()->
-					new NotFoundException("Can't find transaction with id: " + interviewerId));
+					new NotFoundException("Can't find interviewer with id: " + interviewerId));
 				assessmentCenter.addInterviewer(interviewer); 
 				assessmentCenterRepository.save(assessmentCenter);
 				interviewerRepository.save(interviewer);
@@ -170,7 +170,7 @@ public class EntityController {
 		if (recruiters != null) {
 			for (int recruiterId : recruiters) {
 				Recruiter recruiter = recruiterRepository.findById(recruiterId).orElseThrow(()->
-					new NotFoundException("Can't find transaction with id: " + recruiterId));
+					new NotFoundException("Can't find recruiter with id: " + recruiterId));
 				assessmentCenter.addRecruiter(recruiter); 
 				assessmentCenterRepository.save(assessmentCenter);
 				recruiterRepository.save(recruiter);
@@ -184,7 +184,7 @@ public class EntityController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public AssessmentCenter modifyAc(@RequestBody AssessmentCenter assessmentCenter) {
 		if (assessmentCenterRepository.findById(assessmentCenter.getId()).isEmpty()) {
-			throw new NotFoundException("Can't find transaction with id: " + assessmentCenter.getId());
+			throw new NotFoundException("Can't find AC with id: " + assessmentCenter.getId());
 		}
 		return assessmentCenterRepository.save(assessmentCenter);
 	}
@@ -192,14 +192,14 @@ public class EntityController {
 	// show all candidates in an specific ac 
 	@GetMapping("/ac/{id}/showCandidates")
 	public List<Candidate> showACCandidates(@PathVariable int id) {
-		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
+		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find candidate with id: " + id));
 		return assessmentCenter.getCandidates();
 	}	
 	
 	// show all interviewers in an specific ac 
 	@GetMapping("/ac/{id}/showInterviewers")
 	public List<Interviewer> showACInterviewers(@PathVariable int id) {
-		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
+		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find interviewer with id: " + id));
 		return assessmentCenter.getInterviewers();
 	}
 	
@@ -207,12 +207,12 @@ public class EntityController {
 	@PutMapping("/ac/{id}/addCandidates")
 	public List<Candidate> addACCandidates(@PathVariable int id, 
 			@RequestParam(required = true, name = "candidateIds") int[] candidatesIds) {
-		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
+		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find candidate with id: " + id));
 		List<Candidate> candidates = new ArrayList<Candidate>();
 		//int addedCandidates = new int[];
 		// TODO, test case that the candidate already linked to AC
 		for (int candidateId : candidatesIds) {
-			Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + candidateId));
+			Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(()->new NotFoundException("Can't find candidate with id: " + candidateId));
 			assessmentCenter.addCandidate(candidate);
 			candidates.add(candidate);
 			assessmentCenterRepository.save(assessmentCenter);
@@ -225,12 +225,12 @@ public class EntityController {
 	@PutMapping("/ac/{id}/addInterviewers")
 	public List<Interviewer> addACInterviewers(@PathVariable int id, 
 			@RequestParam(required = true, name = "interviewerIds") int[] interviewerIds) {
-		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
+		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find AC with id: " + id));
 		List<Interviewer> interviewers = new ArrayList<Interviewer>();
 		//int addedCandidates = new int[];
 		// TODO, test case that the candidate already linked to AC
 		for (int interviewerId : interviewerIds) {
-			Interviewer interviewer = interviewerRepository.findById(interviewerId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + interviewerId));
+			Interviewer interviewer = interviewerRepository.findById(interviewerId).orElseThrow(()->new NotFoundException("Can't find interviewer with id: " + interviewerId));
 			assessmentCenter.addInterviewer(interviewer);
 			interviewers.add(interviewer);
 			assessmentCenterRepository.save(assessmentCenter);
@@ -243,12 +243,12 @@ public class EntityController {
 	@PutMapping("/ac/{id}/deleteCandidates")
 	public List<Candidate> deleteACCandidates(@PathVariable int id, 
 			@RequestParam(required = true, name = "candidateIds") int[] candidatesIds) {
-		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
+		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find AC with id: " + id));
 		List<Candidate> candidates = new ArrayList<Candidate>();
 		//int addedCandidates = new int[];
 		// TODO, test case that the candidate already linked to AC
 		for (int candidateId : candidatesIds) {
-			Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + candidateId));
+			Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(()->new NotFoundException("Can't find candidate with id: " + candidateId));
 			assessmentCenter.removeCandidate(candidate);
 			candidates.add(candidate);
 			assessmentCenterRepository.save(assessmentCenter);
@@ -261,12 +261,12 @@ public class EntityController {
 	@PutMapping("/ac/{id}/deleteInterviewers")
 	public List<Interviewer> deleteACInterviewers(@PathVariable int id, 
 			@RequestParam(required = true, name = "interviewerIds") int[] interviewerIds) {
-		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
+		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find AC with id: " + id));
 		List<Interviewer> interviewers = new ArrayList<Interviewer>();
 		//int addedCandidates = new int[];
 		// TODO, test case that the candidate already linked to AC
 		for (int interviewerId : interviewerIds) {
-			Interviewer interviewer = interviewerRepository.findById(interviewerId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + interviewerId));
+			Interviewer interviewer = interviewerRepository.findById(interviewerId).orElseThrow(()->new NotFoundException("Can't find interviewer with id: " + interviewerId));
 			assessmentCenter.removeInterviewer(interviewer);
 			interviewers.add(interviewer);
 			assessmentCenterRepository.save(assessmentCenter);
@@ -274,33 +274,6 @@ public class EntityController {
 		}
 		return interviewers;
 	}
-	
-	
-	
-	
-	/*
-	//Add Pack to AC
-	@PutMapping("/ac/{acId}/addPack")
-	public AssessmentCenter addPackToAc(@PathVariable int acId,@RequestParam int packId) {
-		
-		AssessmentCenter tempAC = assessmentCenterRepository.getReferenceById(acId);
-		//tempAC.setPack(packsRepository.getReferenceById(packId));
-		return assessmentCenterRepository.save(tempAC);
-	}
-	
-	@RequestParam(required = false, name = "showCandidate") int showCandidate,
-			@RequestParam(required = false, name = "showCandidate") int showCandidate
-	*/
-	
-//	//Add Pack to AC
-//	@PutMapping("/ac/{acId}/addRecruiter")
-//	public AssessmentCenter addRecruiterToAc(@PathVariable int acId,@RequestParam int rec) {
-//		
-//		AssessmentCenter tempAC = assessmentCenterRepository.getReferenceById(acId);
-//		tempAC.setPack(packsRepository.getReferenceById(packId));
-//		return assessmentCenterRepository.save(tempAC);
-//	}
-
 		
 	/* --- End of Assessment Center --- */	
 	
@@ -313,16 +286,22 @@ public class EntityController {
 	
 	// Get all Candidate
 	@GetMapping("/candidate")
-	public List<Candidate> getAllCandidate(@RequestParam (required=false) String firstName,
+	public List<Candidate> getAllCandidate(
+			@RequestParam (required=false) String firstName,
 			@RequestParam (required=false) String lastName,
 			@RequestParam (required=false) String appliedStream) {
-		return candidateRepository.findAll();
+		
+		if(firstName=="") {firstName=null;}
+		if(lastName=="") {lastName=null;}
+		if(appliedStream=="") {appliedStream=null;}
+		
+		return candidateRepository.getByFilter(firstName, lastName, appliedStream);
 	}
 	
 	// Get specific Candidate
 	@GetMapping("/candidate/{candidateId}")
 	public Candidate getCandidatebyId(@PathVariable int candidateId) {
-		return candidateRepository.findById(candidateId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " +candidateId));
+		return candidateRepository.findById(candidateId).orElseThrow(()->new NotFoundException("Can't find candidate with id: " +candidateId));
 	}
 	
 	// Delete Candidate
@@ -334,7 +313,7 @@ public class EntityController {
 		}
 		
 		/* remove dependency before deletion */
-		Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + candidateId));
+		Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(()->new NotFoundException("Can't find candidate with id: " + candidateId));
 		List<Interview> interviews = candidate.getInterviews();
 		while (! interviews.isEmpty()) {
 			candidate.removeInterview(interviews.get(interviews.size() - 1));
@@ -358,7 +337,7 @@ public class EntityController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Candidate modifyCandidate(@RequestBody Candidate candidate) {
 		if (candidateRepository.findById(candidate.getId()).isEmpty()) {
-			throw new NotFoundException("Can't find transaction with id: " + candidate.getId());
+			throw new NotFoundException("Can't find candidate with id: " + candidate.getId());
 		}
 		return candidateRepository.save(candidate);
 	}
@@ -380,7 +359,7 @@ public class EntityController {
 	// Get specific Interviewer
 	@GetMapping("/interviewer/{interviewerId}")
 	public Interviewer getInterviewerbyId(@PathVariable int interviewerId) {
-		return interviewerRepository.findById(interviewerId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " +interviewerId));
+		return interviewerRepository.findById(interviewerId).orElseThrow(()->new NotFoundException("Can't find interviewer with id: " +interviewerId));
 	}
 	
 	// Delete Interviewer
@@ -388,11 +367,11 @@ public class EntityController {
 	public void deleteInterviewerById(@PathVariable int interviewerId) {
 		// TODO should delete later
 		if (interviewerRepository.findById(interviewerId).isEmpty()) {
-			throw new NotFoundException("Can't find transaction with id: " + interviewerId);
+			throw new NotFoundException("Can't find interviewer with id: " + interviewerId);
 		}
 		
 		/* --- remove all bidirectional dependencies to avoid delete bug --- */
-		Interviewer interviewer = interviewerRepository.findById(interviewerId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " +interviewerId));
+		Interviewer interviewer = interviewerRepository.findById(interviewerId).orElseThrow(()->new NotFoundException("Can't find interviewer with id: " +interviewerId));
 		List<Interview> interviews = interviewer.getInterviews();
 		// remove interviews
 		while (! interviews.isEmpty()) {
@@ -417,7 +396,7 @@ public class EntityController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Interviewer modifyInterviewer(@RequestBody Interviewer interviewer) {
 		if (interviewerRepository.findById(interviewer.getId()).isEmpty()) {
-			throw new NotFoundException("Can't find transaction with id: " + interviewer.getId());
+			throw new NotFoundException("Can't find interviewer with id: " + interviewer.getId());
 		}
 		return interviewerRepository.save(interviewer);
 	}
@@ -440,18 +419,18 @@ public class EntityController {
 	// Get specific Interviews
 	@GetMapping("/interview/{interviewId}")
 	public Interview getInterviewbyId(@PathVariable int interviewId) {
-		return interviewRepository.findById(interviewId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " +interviewId));
+		return interviewRepository.findById(interviewId).orElseThrow(()->new NotFoundException("Can't find interview with id: " +interviewId));
 	}
 	
 	// Delete Interview
 	@DeleteMapping("/interview/{interviewId}")
 	public void deleteInterviewById(@PathVariable int interviewId) {
 		if (interviewRepository.findById(interviewId).isEmpty()) {
-			throw new NotFoundException("Can't find transaction with id: " + interviewId);
+			throw new NotFoundException("Can't find interviw with id: " + interviewId);
 		}
 		
 		/* --- unlink before deletion --- */
-		Interview interview = interviewRepository.findById(interviewId).orElseThrow(() -> new NotFoundException("Can't find transaction with id: " + interviewId));
+		Interview interview = interviewRepository.findById(interviewId).orElseThrow(() -> new NotFoundException("Can't find interview with id: " + interviewId));
 		Interviewer interviewer = interview.getInterviewer();
 		AssessmentCenter assessmentCenter = interview.getAssessmentCenter();
 		Candidate candidate = interview.getCandidate();
@@ -483,7 +462,8 @@ public class EntityController {
 	//Create Interview
 	@PostMapping("/interview")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Interview createInterview(@RequestBody Interview interview) {
+	public Interview createInterview(@RequestBody Interview interview,@RequestParam(required = true, name = "packIds") int acId) {
+		interview.addAssessmentCenter(assessmentCenterRepository.findById(acId).orElseThrow(()->new NotFoundException("Can't find AC with id: " + acId)));
 		return interviewRepository.save(interview);
 	}
 	
@@ -492,10 +472,55 @@ public class EntityController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Interview modifyInterview(@RequestBody Interview interview) {
 		if (interviewRepository.findById(interview.getId()).isEmpty()) {
-			throw new NotFoundException("Can't find transaction with id: " + interview.getId());
+			throw new NotFoundException("Can't find interview with id: " + interview.getId());
 		}
 		return interviewRepository.save(interview);
 	}
+	
+	//Add Pack to interview
+	@PutMapping("/interview/{id}/addPacks")
+	public List<Pack> addPackToInterview(@PathVariable int id,@RequestParam(required = true, name = "packIds") int[] packIds) {	
+		
+		Interview interviews = interviewRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find interview with id: " + id));
+		List<Pack> packs = new ArrayList<Pack>();
+		
+		for (int packId : packIds) {
+			Pack pack = packsRepository.findById(packId).orElseThrow(()->new NotFoundException("Can't find pack with id: " + packId));
+			interviews.addPack(pack);
+			packs.add(pack);
+			packsRepository.saveAll(packs);
+			interviewRepository.save(interviews);
+		}
+		return packs;
+	}
+		
+	//Get Pack from interview
+	@GetMapping("/interview/{id}/getPacks")
+	public List<Pack> getPackFromInterview(@PathVariable int id) {
+		return interviewRepository.getReferenceById(id).getPacks();
+	}
+	
+	//Remove Pack from Interview
+	@PutMapping("/interview/{id}/removePacks")
+	public List<Pack> removePackFromInterview(@PathVariable int id,@RequestParam(required = true, name = "packIds") int[] packIds) {	
+		
+		Interview interviews = interviewRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find interview with id: " + id));
+		List<Pack> packs = new ArrayList<Pack>();
+		
+		for (int packId : packIds) {
+			System.out.println(packId);
+			Pack pack = packsRepository.findById(packId).orElseThrow(()->new NotFoundException("Can't find pack with id: " + packId));
+			interviews.removePack(pack);
+			packs.add(pack);
+			packsRepository.saveAll(packs);
+			interviewRepository.save(interviews);
+		}
+		return packs;
+	}
+	
+	//remove required
+	
+	
 	/* --- End of Interviews --- */
 	
 	
@@ -516,7 +541,7 @@ public class EntityController {
 	// Get specific Pack
 	@GetMapping("/pack/{packId}")
 	public Pack getPackbyId(@PathVariable int packId) {
-		return packsRepository.findById(packId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " +packId));
+		return packsRepository.findById(packId).orElseThrow(()->new NotFoundException("Can't find pack with id: " +packId));
 	}	
 	
 	// Delete Pack
@@ -527,7 +552,7 @@ public class EntityController {
 		}
 		
 		/* --- remove all bidirectional dependencies to avoid delete bug --- */
-		Pack pack = packsRepository.findById(packId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " +packId));
+		Pack pack = packsRepository.findById(packId).orElseThrow(()->new NotFoundException("Can't find pack with id: " +packId));
 		// remove interviews
 		List<Interview> interviews = pack.getInterviews();
 		while (! interviews.isEmpty()) {
@@ -552,7 +577,7 @@ public class EntityController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Pack modifyPack(@RequestBody Pack pack) {
 		if (packsRepository.findById(pack.getId()).isEmpty()) {
-			throw new NotFoundException("Can't find transaction with id: " + pack.getId());
+			throw new NotFoundException("Can't find pack with id: " + pack.getId());
 		}
 		return packsRepository.save(pack);
 	}
@@ -575,18 +600,18 @@ public class EntityController {
 	// Get specific Recruiter
 	@GetMapping("/recruiter/{recruiterId}")
 	public Recruiter getRecruiterbyId(@PathVariable int recruiterId) {
-		return recruiterRepository.findById(recruiterId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " +recruiterId));
+		return recruiterRepository.findById(recruiterId).orElseThrow(()->new NotFoundException("Can't find recruiter with id: " +recruiterId));
 	}
 	
 	// Delete Recruiter
 	@DeleteMapping("/recruiter/{recruiterId}")
 	public void deleteRecruiterById(@PathVariable int recruiterId) {
 		if (recruiterRepository.findById(recruiterId).isEmpty()) {
-			throw new NotFoundException("Can't find transaction with id: " + recruiterId);
+			throw new NotFoundException("Can't find recruiter with id: " + recruiterId);
 		}
 		
 		/* --- remove all bidirectional dependencies to avoid delete bug --- */
-		Recruiter recruiter = recruiterRepository.findById(recruiterId).orElseThrow(()->new NotFoundException("Can't find transaction with id: " +recruiterId));
+		Recruiter recruiter = recruiterRepository.findById(recruiterId).orElseThrow(()->new NotFoundException("Can't find recruiter with id: " +recruiterId));
 		List<AssessmentCenter> assessmentCenters = recruiter.getAssessmentCenters();
 		User user = recruiter.getUser();
 		
@@ -617,7 +642,7 @@ public class EntityController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Recruiter modifyRecruiter(@RequestBody Recruiter recruiter) {
 		if (recruiterRepository.findById(recruiter.getId()).isEmpty()) {
-			throw new NotFoundException("Can't find transaction with id: " + recruiter.getId());
+			throw new NotFoundException("Can't find recruiter with id: " + recruiter.getId());
 		}
 		return recruiterRepository.save(recruiter);
 	}

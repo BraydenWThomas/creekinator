@@ -1,6 +1,10 @@
 package com.bezkoder.springjwt.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.bezkoder.springjwt.models.Candidate;
@@ -10,5 +14,9 @@ import com.bezkoder.springjwt.models.Candidate;
 public interface CandidateRepository extends JpaRepository<Candidate, Integer> {
 
 	
-	
+	@Query(value = "select c from Candidate c where (:firstName IS null OR c.first_name LIKE %:firstName%) OR (:lastName IS null OR c.last_name LIKE %:lastName%) OR (:appliedStream IS null OR c.applied_stream LIKE %:appliedStream%)")
+	List<Candidate> getByFilter(
+			@Param("firstName") String firstName,
+			@Param("lastName") String lastName,
+			@Param("appliedStream") String appliedStream);
 }
