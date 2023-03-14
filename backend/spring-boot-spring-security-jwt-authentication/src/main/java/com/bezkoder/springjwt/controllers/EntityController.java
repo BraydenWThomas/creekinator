@@ -466,8 +466,19 @@ public class EntityController {
 	//Create Interview
 	@PostMapping("/interview")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Interview createInterview(@RequestBody Interview interview,@RequestParam(required = true, name = "acId") int acId) {
+	public Interview createInterview(@RequestBody Interview interview,
+			@RequestParam(required = true, name = "acId") int acId,
+			@RequestParam(required = true, name = "interviewId") int interviewId,
+			@RequestParam(required = true, name = "candidateId") int candidateId,
+			@RequestParam(required = true, name = "packIds") int[] packIds) {
+		//if (interviewId == null)
 		interview.addAssessmentCenter(assessmentCenterRepository.findById(acId).orElseThrow(()->new NotFoundException("Can't find AC with id: " + acId)));
+		interview.addInterviewer(interviewerRepository.findById(interviewId).orElseThrow(()->new NotFoundException("Can't find interviewer with id: " + interviewId)));
+		interview.addCandidate(candidateRepository.findById(candidateId).orElseThrow(()->new NotFoundException("Can't find candidate with id: " + candidateId)));		
+		for (int pack : packIds) {
+			interview.addPack(packsRepository.findById(pack).orElseThrow(()->new NotFoundException("Can't find AC with id: " + pack)));
+		}
+		
 		return interviewRepository.save(interview);
 	}
 	
