@@ -48,6 +48,10 @@ public class Candidate {
 	@OneToMany(mappedBy = "candidate")
 	@JsonIgnore
 	private List<Interview> interviews;
+	@OneToOne
+	private User user;
+	@ManyToMany(mappedBy = "candidates")
+	private List<Recruiter> recruiters;
 	/* --- end of fields --- */
 	
 	
@@ -200,6 +204,8 @@ public class Candidate {
 	
 	
 	
+	
+	
 	/* --- linked --- */
 	// interview
 	public List<Interview> getInterviews() {
@@ -210,6 +216,10 @@ public class Candidate {
 	}
 	public void addInterview(Interview interview) {
 		this.interviews.add(interview);
+		// if the interview already linked to other candidate, remove relationship first
+		if (interview.getCandidate() != null) {
+			interview.removeCandidate();
+		}
 		interview.setCandidate(this);
 	}
 	public void removeInterview(Interview interview) {
@@ -233,6 +243,40 @@ public class Candidate {
 		assessmentCenter.getCandidates().remove(this);
 	}
 	
+	// user
+	public User getUser() {
+		return this.user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public void addUser(User user) {
+		if (this.user != null) {
+			this.removeUser();
+		}
+		this.user = user;
+		user.setCandidate(this);
+	}
+	public void removeUser() {
+		this.user.setCandidate(null);
+		this.user = null;
+	}
+	
+	// recruiters
+	public List<Recruiter> getRecruiters() {
+		return this.recruiters;
+	}
+	public void setRecruiters(List<Recruiter> recruiters) {
+		this.recruiters = recruiters;
+	}
+	public void removeRecruiter(Recruiter recruiter) {
+		this.recruiters.remove(recruiter);
+		recruiter.removeCandidate(this);
+	}
+	public void addRecruiter(Recruiter recruiter) {
+		this.recruiters.add(recruiter);
+		recruiter.getCandidates().add(this);
+	}
 	/*
 	public void addAssessmentCenter(AssessmentCenter assessmentCenters) {
 		List<AssessmentCenter> assessmentCentersList = new ArrayList<AssessmentCenter>();

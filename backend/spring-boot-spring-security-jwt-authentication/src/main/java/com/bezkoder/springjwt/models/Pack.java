@@ -26,8 +26,8 @@ public class Pack {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String pack_name;
-	private String tech_pack;
-	private String sales_pack;
+	private String pack_type;
+	private String link;
 	
 	// linked
 	@ManyToMany(mappedBy = "packs")
@@ -64,8 +64,8 @@ public class Pack {
 	public Pack(String pack_name, String tech_pack, String sales_pack) {
 		//super();
 		this.pack_name = pack_name;
-		this.tech_pack = tech_pack;
-		this.sales_pack = sales_pack;
+		this.pack_type = tech_pack;
+		this.link = sales_pack;
 		this.interviews = new ArrayList<Interview>();
 	}
 	/* --- End of Constructors --- */
@@ -76,6 +76,7 @@ public class Pack {
 	
 	
 	/* --- Normal getters and setters --- */
+
 	public int getId() {
 		return id;
 	}
@@ -88,18 +89,19 @@ public class Pack {
 	public void setPack_name(String pack_name) {
 		this.pack_name = pack_name;
 	}
-	public String getTech_pack() {
-		return tech_pack;
+	public String getPack_type() {
+		return pack_type;
 	}
-	public void setTech_pack(String tech_pack) {
-		this.tech_pack = tech_pack;
+	public void setPack_type(String pack_type) {
+		this.pack_type = pack_type;
 	}
-	public String getSales_pack() {
-		return sales_pack;
+	public String getLink() {
+		return link;
 	}
-	public void setSales_pack(String sales_pack) {
-		this.sales_pack = sales_pack;
+	public void setLink(String link) {
+		this.link = link;
 	}
+	
 	/*
 	public void setAssessmentCenters(List<AssessmentCenter> assessmentCenters) {
 		this.assessmentCenters = assessmentCenters;
