@@ -1,5 +1,6 @@
 package com.bezkoder.springjwt.controllers;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,10 +24,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bezkoder.springjwt.exceptions.NotFoundException;
 import com.bezkoder.springjwt.models.AssessmentCenter;
 import com.bezkoder.springjwt.models.Author;
+import com.bezkoder.springjwt.models.Candidate;
 import com.bezkoder.springjwt.models.ERole;
 import com.bezkoder.springjwt.models.Interviewer;
 import com.bezkoder.springjwt.models.Recruiter;
@@ -36,6 +39,7 @@ import com.bezkoder.springjwt.payload.request.LoginRequest;
 import com.bezkoder.springjwt.payload.request.SignupRequest;
 import com.bezkoder.springjwt.payload.response.JwtResponse;
 import com.bezkoder.springjwt.payload.response.MessageResponse;
+import com.bezkoder.springjwt.repository.CandidateRepository;
 import com.bezkoder.springjwt.repository.InterviewerRepository;
 import com.bezkoder.springjwt.repository.RecruiterRepository;
 import com.bezkoder.springjwt.repository.RoleRepository;
@@ -61,6 +65,9 @@ public class AuthController {
   
   @Autowired
   InterviewerRepository interviewerRepository;
+  
+  @Autowired
+  CandidateRepository candidateRepository;
 
   @Autowired
   PasswordEncoder encoder;
@@ -98,7 +105,10 @@ public class AuthController {
 	}
 
   @PostMapping("/signup")
-  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest,
+		  @RequestParam(required = false, name = "interviewerId") Integer interviewerId,
+		  @RequestParam(required = false, name = "candidateId") Integer candidateId,
+		  @RequestParam(required = false, name = "recruiterId") Integer recruiterId) {
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity
           .badRequest()
@@ -140,7 +150,10 @@ public class AuthController {
         	Role recruiterRole = roleRepository.findByName(ERole.ROLE_RECRUITER)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(recruiterRole);
-
+            
+            // find the recruiter to link
+            //Recruiter recruiter = recruiterRepository.findById(recruiterId).orElseThrow(()->new NotFoundException("Can't find recruiter with id: " + recruiterId));
+            //recruiter.addUser(user)
             break;
         
         case "interviewer":
@@ -163,6 +176,12 @@ public class AuthController {
             roles.add(salesInterviewerRole);
 
             break;
+        
+        case "candidate":
+        	Role candidateRole = roleRepository.findByName(ERole.ROLE_CANDIDATE)
+        		.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        	roles.add(candidateRole);
+        	break;
             
         default:
           Role userRole = roleRepository.findByName(ERole.ROLE_USER)
@@ -173,7 +192,30 @@ public class AuthController {
     }
 
     user.setRoles(roles);
+    
+    // update link the user with interviewer, candidate or recruiter if new added roles contain any of them and id is specified
+    if (strRoles.contains("recruiter") & (recruiterId != null) ) {
+        Recruiter recruiter = recruiterRepository.findById(recruiterId).orElseThrow(()->new NotFoundException("Can't find recruiter with id: " + recruiterId));
+        recruiter.addUser(user);
+        userRepository.save(user);
+        recruiterRepository.save(recruiter);
+    }
+    if (strRoles.contains("interviewer") & (interviewerId != null) ) {
+    	Interviewer interviewer = interviewerRepository.findById(interviewerId).orElseThrow(()->new NotFoundException("Can't find interviewer with id: " + interviewerId));
+    	interviewer.addUser(user);
+    	userRepository.save(user);
+    	interviewerRepository.save(interviewer);
+    }
+    if (strRoles.contains("candidate") & (candidateId != null) ) {
+    	Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(()->new NotFoundException("Can't find candidate with id: " + candidateId));
+    	candidate.addUser(user);
+    	userRepository.save(user);
+    	candidateRepository.save(candidate);
+    }
     userRepository.save(user);
+    
+    // check the role assigned to user, linked user to recruiter or interviewer or candidate;
+    
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
@@ -221,4 +263,76 @@ public class AuthController {
 	  }
 	  userRepository.delete(user);
   }
+  
+  //TODO only make this api available to admin
+  @PutMapping("/user/{id}/linkRole")
+  public List<String> linkUserWithRole(@PathVariable long id,
+		  @RequestParam(required = false, name = "recruiterId") Integer recruiterId,
+		  @RequestParam(required = false, name = "interviewerId") Integer interviewerId,
+		  @RequestParam(required = false, name = "candidateId") Integer candidateId) {
+	  List<String> linkedList = new ArrayList<String>(); // this list contain 
+	  User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Can't find user with id: " + id));
+	  if (recruiterId != null) {
+		  Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(() -> new NotFoundException("Can't find candidate with id: " + candidateId));
+		  candidate.addUser(user);
+		  candidateRepository.save(candidate);
+		  linkedList.add("recruiterId " + recruiterId);
+	  }
+	  
+	  if (interviewerId != null) {
+		  Interviewer interviewer = interviewerRepository.findById(interviewerId).orElseThrow(() -> new NotFoundException("Can't find interviewer with id: " + interviewerId));
+		  interviewer.addUser(user);
+		  interviewerRepository.save(interviewer);
+		  linkedList.add("interviewerId " + interviewerId);
+	  }
+	  
+	  if (candidateId != null) {
+		  Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(() -> new NotFoundException("Can't find candidate with id: " + candidateId));
+		  candidate.addUser(user);
+		  candidateRepository.save(candidate);
+		  linkedList.add("candidateId " + candidateId);
+	  }
+	  userRepository.save(user);
+	  return linkedList;
+  }
+  
+  //TODO only make this api available to admin
+  /**
+   * This function will allow to remove candidate, interviewer and recruiter from a specific candidate. interviewer, candidate,
+   * and recruiter remove is not mandidatory, 0 to 3 of them can be removed based on the api parameter
+   * @param id The user id
+   * @param recruiterId the recruiter id
+   * @param interviewerId the interviewer id
+   * @param candidateId the candidate id
+   * @return a list of string that indicate what is successfully removed
+   */
+  @PutMapping("/user/{id}/unlinkRole")
+  public List<String> unlinkUserRoles(@PathVariable long id,
+		  @RequestParam(required = false, name = "recruiterId") Integer recruiterId,
+		  @RequestParam(required = false, name = "interviewerId") Integer interviewerId,
+		  @RequestParam(required = false, name = "candidateId") Integer candidateId){
+	  List<String> output = new ArrayList<String>();
+	  User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Can't find user with id: " + id));
+	  Recruiter recruiter = user.getRecruiter();
+	  Interviewer interviewer = user.getInterviewer();
+	  Candidate candidate = user.getCandidate();
+	  if ( (recruiterId != null) & (recruiter != null) ) {
+		  user.removeRecruiter();
+		  output.add("removed recruiter " + recruiterId);
+	  }
+	  if ( (interviewerId != null) & (interviewer != null) ) {
+		  user.removeInterviewer();
+		  output.add("removed interviewer " + interviewerId);
+	  }
+	  if ( (candidateId != null) & (candidate != null) ) {
+		  user.removeCandidate();
+		  output.add("removed candidate " + candidateId);
+	  }
+	  userRepository.save(user);
+	  recruiterRepository.save(recruiter);
+	  interviewerRepository.save(interviewer);
+	  candidateRepository.save(candidate);
+	  return output;
+  }
+  
 }

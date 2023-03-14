@@ -229,11 +229,15 @@ public class Dataloader implements ApplicationRunner{
 		rolesList.add(new Role());
 		rolesList.add(new Role());
 		rolesList.add(new Role());
+		rolesList.add(new Role());
+		//rolesList.add(new Role());
 		rolesList.get(0).setName(ERole.ROLE_ADMIN);
 		rolesList.get(1).setName(ERole.ROLE_INTERVIEWER);
 		rolesList.get(2).setName(ERole.ROLE_RECRUITER);
 		rolesList.get(3).setName(ERole.ROLE_TECH);
 		rolesList.get(4).setName(ERole.ROLE_SALES);
+		rolesList.get(5).setName(ERole.ROLE_CANDIDATE);
+		// rolesList.get(6).setName(ERole.ROLE_);
 		this.roleRepository.saveAll(rolesList);
 		
 		// Auth Sign-In

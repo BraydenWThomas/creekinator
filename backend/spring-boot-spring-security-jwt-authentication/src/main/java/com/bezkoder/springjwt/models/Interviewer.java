@@ -29,6 +29,7 @@ public class Interviewer {
 	@JsonIgnore
 	private List<AssessmentCenter> assessmentCenters;
 	@OneToOne
+	@JsonIgnore
 	private User user;
 	/* --- end of fields --- */
 	
