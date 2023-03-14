@@ -75,8 +75,6 @@ const ViewUpcomingAC = () => {
             <h1> {acDetails.title} </h1>
             <h2 style={{ marginLeft: '15p(t', marginTop: '-5pt' }}>
               {dateFormat}
-              {" "}
-              {/* {time} */}
             </h2>
           </div>
 

@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
 // Material UI
-import { Box, Paper, Button, Menu, MenuItem, IconButton, Icon } from '@mui/material';
+import { Box, Paper, Menu, MenuItem, IconButton } from '@mui/material';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
@@ -129,7 +129,7 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
         <div style={{ marginRight: "20px", marginLeft: "20px", backgroundColor: "white", paddingLeft: "20px" }}>
           <div style={{ width: "30%", float: "left" }}>
             <h4>Interviewers assigned</h4>
-            <p>Sales</p>
+            {/* <p>Sales</p>
             <ul style={{ marginLeft: "20px" }}>
               <li>Karen</li>
               <li>Joe</li>
@@ -138,6 +138,13 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
             <ul style={{ marginLeft: "20px" }}>
               <li>Karen</li>
               <li>Joe</li>
+            </ul> */}
+            <ul style={{ marginLeft: "20px" }}>
+              {interviewers.map(interview => (
+                <li key={interview.id}>
+                  {interview.name}
+                </li>
+              ))}
             </ul>
           </div>
 

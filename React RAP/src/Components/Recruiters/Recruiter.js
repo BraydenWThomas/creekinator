@@ -127,7 +127,7 @@ const Recruiter = () => {
                 </div>
                 
                 {acs.map(ac => (
-                  (ac.completed === "false" 
+                  (ac.completed === "true" 
                     ? // Show incompleted AC
                     <>
                     <div key={ac.id}>
