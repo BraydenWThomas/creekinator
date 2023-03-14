@@ -133,11 +133,11 @@ public class Dataloader implements ApplicationRunner{
 		
 		// PACKS
 		List<Pack> packList = new ArrayList<>();
-		packList.add(new Pack("Pack 1","TechPackLink1","SalesPackLink1"));
-		packList.add(new Pack("Pack 2","TechPackLink2","SalesPackLink2"));
-		packList.add(new Pack("Pack 3","TechPackLink3","SalesPackLink3"));
-		packList.add(new Pack("Pack 4","TechPackLink4","SalesPackLink4"));
-		packList.add(new Pack("Pack 5","TechPackLink5","SalesPackLink5"));
+		packList.add(new Pack("Pack 1","Tech","Link..."));
+		packList.add(new Pack("Pack 2","Tech","Link..."));
+		packList.add(new Pack("Pack 3","Sales","Link..."));
+		packList.add(new Pack("Pack 4","Tech","Link..."));
+		packList.add(new Pack("Pack 5","Sales","Link..."));
 		
 		this.packsRepository.saveAll(packList);
 		
