@@ -117,16 +117,16 @@ public class Dataloader implements ApplicationRunner{
 		
 		// INTERVIEWERS
 		List<Interviewer> interviewerList = new ArrayList<>();
-		interviewerList.add(new Interviewer("Drummond Bria Lane"));
-		interviewerList.add(new Interviewer("Deryck Cynthia Garnett"));
-		interviewerList.add(new Interviewer("Eliana Kassie Quincy"));
-		interviewerList.add(new Interviewer("Myra Irvine Bannister"));
-		interviewerList.add(new Interviewer("Cherry Adele Oakley"));
-		interviewerList.add(new Interviewer("Kerena Alise Horton"));
-		interviewerList.add(new Interviewer("Haven Astra Petit"));
-		interviewerList.add(new Interviewer("Delilah Rosie Abbey"));
-		interviewerList.add(new Interviewer("Nikolas Lexine Yap"));
-		interviewerList.add(new Interviewer("Garnet Trista Bean"));
+		interviewerList.add(new Interviewer("Drummond Bria Lane",true));
+		interviewerList.add(new Interviewer("Deryck Cynthia Garnett",true));
+		interviewerList.add(new Interviewer("Eliana Kassie Quincy",true));
+		interviewerList.add(new Interviewer("Myra Irvine Bannister",true));
+		interviewerList.add(new Interviewer("Cherry Adele Oakley",true));
+		interviewerList.add(new Interviewer("Kerena Alise Horton",false));
+		interviewerList.add(new Interviewer("Haven Astra Petit",false));
+		interviewerList.add(new Interviewer("Delilah Rosie Abbey",false));
+		interviewerList.add(new Interviewer("Nikolas Lexine Yap",false));
+		interviewerList.add(new Interviewer("Garnet Trista Bean",false));
 		
 		this.interviewerRepository.saveAll(interviewerList);
 		
