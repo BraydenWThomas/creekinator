@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import NavBar from "../NavBar";
 
 // Material UI
-import { Divider, TextField } from "@mui/material";
+import { Divider, responsiveFontSizes, TextField } from "@mui/material";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Avatar from '@mui/material/Avatar';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -41,6 +41,7 @@ const UpdateCandidate = () => {
   // To Link to specific candidate
   const { candidateId } = useParams();
   const [candidate, setCandidate] = useState([]);
+  const [getName, setGetName] = useState([])
 
   // Testing
   const [editCandidateData, setEditCandidateData] = useState({
@@ -67,13 +68,24 @@ const UpdateCandidate = () => {
       method: 'GET',
       redirect: 'follow',
     };
-
-    fetch("http://localhost:8080/api/candidate/" + candidateId, requestOptions)
-      .then(response => response.json())
-      .then(data => { setCandidate(data) })
-      .then(data => console.log(data))
-      .catch(error => console.log('error', error));
-  }, [candidateId])
+    
+    Promise.all([
+      fetch("http://localhost:8080/api/candidate/" + candidateId, requestOptions),
+      fetch("http://localhost:8080/api/candidate/" + candidateId, requestOptions)
+    ]).then((responses => {
+      console.log(responses)
+      responses[0].json()
+        .then(data => { setCandidate(data) })
+      responses[1].json()
+        .then(data => { setGetName(data) })
+    })).catch(error => console.log('error', error));
+    
+      // .then(response => response.json())
+      // .then(data => { setCandidate(data) })
+      // .then(data => console.log(data))
+      // .then(data => { setGetName(data) })
+      
+  }, [candidateId]);
 
   // Handles the event of user input updating/editing the table row data
   const handleEditedCandidate = (e) => {
@@ -84,7 +96,7 @@ const UpdateCandidate = () => {
     newData[fieldName] = fieldValue;
 
     setEditCandidateData(newData);
-  }
+  };
 
   // // Handle update
   // const handleSubmit = (id, title, firstName, middleName, lastName, mobilePhone, email, 
@@ -122,6 +134,7 @@ const UpdateCandidate = () => {
   //     .then(result => console.log(result))
   //     .catch(error => console.log('error', error));
   // }
+  
   // Handle update
   const handleSubmit = (id) => {
     const body =
@@ -157,7 +170,7 @@ const UpdateCandidate = () => {
       .catch(error => console.log('error', error));
   }
 
-  const pageTitle = candidate.first_name + " " + candidate.last_name + "'s " + "Profile"
+  var pageTitle = getName.first_name + " " + getName.last_name + "'s " + "Profile"
 
   return (
     <div className="update-candidate">
@@ -197,8 +210,8 @@ const UpdateCandidate = () => {
               type="text"
               autoComplete="current-first-name"
               sx={{ m: 2 }}
-              value={editCandidateData?.first_name}
-              onChange={handleEditedCandidate}
+              value={candidate.first_name ?? ""}
+              onChange={(event) => setCandidate({ first_name: event.target.value })}
             />
             <TextField
               id="outlined-middle-name-input"

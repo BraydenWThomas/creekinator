@@ -6,23 +6,29 @@ import React, { useEffect, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 
 // Material UI
-import { Divider,
-         TextField,
-         Button,
-         InputLabel,
-         MenuItem,
-         FormControl,
-         FormControlLabel,
-         Select,
-         IconButton,
-         Box,
-         FormGroup,
-         Checkbox } from "@mui/material";
+import {
+  Divider,
+  TextField,
+  Button,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  FormControlLabel,
+  Select,
+  IconButton,
+  Box,
+  FormGroup,
+  Checkbox
+} from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
+
+// // Brayden
+
+// // Brayden
 
 const CreateAC = () => {
   // AC Details
@@ -34,7 +40,6 @@ const CreateAC = () => {
   const [salesInterviewer2, setSalesInterviewer2] = useState('');
   const [techInterviewer1, setTechInterviewer1] = useState('');
   const [techInterviewer2, setTechInterviewer2] = useState('');
-  const [candidates, setCandidates] = useState([]);
   const [salesPack, setSalesPack] = useState('');
   const [techPack, setTechPack] = useState('');
 
@@ -46,11 +51,35 @@ const CreateAC = () => {
   const startDay = dayjs().set('hour', 9).startOf('hour')
   const endDay = dayjs().set('hour', 17).startOf('hour')
 
+  // GET requests
+  const [candidates, setCandidates] = useState([]);
+  const [packs, setPacks] = useState([]);
+  const [interviewers, setInterviewers] = useState([]);
+
+  // Fetch all candidates
+  useEffect(() => {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
+
+    Promise.all([
+      fetch("http://localhost:8080/api/candidate", requestOptions),
+      fetch("http://localhost:8080/api/pack", requestOptions),
+      fetch("http://localhost:8080/api/interviewer", requestOptions)
+    ]).then((responses => {
+      console.log(responses)
+      responses[0].json()
+        .then(data => { setCandidates(data) })
+      responses[1].json()
+        .then(data => { setPacks(data) })
+      responses[2].json()
+        .then(data => { setInterviewers(data) })
+    })).catch(error => console.log('error', error));
+  }, []);
+
   // Handle creating AC
   const handleSubmit = () => {
-    console.log(date)
-    console.log(timeStart.format('hh:mm-ss'))
-    console.log(timeEnd.format('hh-mm-ss'))
     setTitle('');
     setDate('');
     setTimeStart(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));
@@ -80,24 +109,12 @@ const CreateAC = () => {
       headers: { 'content-type': 'application/json' }
     };
 
-    fetch("http://localhost:8080/api/ac", requestOptions)
+    // fetch("http://localhost:8080/api/ac", requestOptions)
+    fetch("http://localhost:8080/api/ac?interviewers=4,5&recruiters=1&candidates=1,2,3", requestOptions)
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
   }
-
-  // Fetch all candidates
-  useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      redirect: 'follow',
-    };
-
-    fetch("http://localhost:8080/api/candidate", requestOptions)
-      .then(response => response.json())
-      .then(data => { setCandidates(data) })
-      .catch(error => console.log('error', error));
-  })
 
   return (
     <div>
@@ -155,59 +172,37 @@ const CreateAC = () => {
 
         <div className="Interviewers" style={{ marginTop: '-10pt', padding: '2.5%' }}>
           <h2> Interviewers </h2>
+          <div className="sales-packs" style={{ float: 'left', width: '50%' }}>
+            <h3> Sales Interviewer </h3>
+            <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
+              <FormGroup>
+                {interviewers.map(interviewer => (
+                  (interviewer.tech === false) ?
+                    <FormControlLabel
+                      key={interviewer.id}
+                      control={<Checkbox />}
+                      label={interviewer.name} />
+                    : <> </>
+                ))}
+              </FormGroup>
+            </Box>
+          </div>
 
-          <FormControl sx={{ float: 'left', minWidth: '50%' }}>
-            <InputLabel id="sales1-select-label"> Sales Interviewer 1 </InputLabel>
-            <Select
-              id="sales1-select"
-              label="Sales Interview 1"
-              sx={{ float: 'left', minWidth: '50%' }}
-              required
-              value={salesInterviewer1}
-              onChange={(e) => setSalesInterviewer1(e.target.value)}>
-              <MenuItem value={"John Doe"}> John Doe </MenuItem>
-              <MenuItem value={"John Doe"}> John Doe </MenuItem>
-            </Select>
-          </FormControl>
-
-          <FormControl sx={{ float: 'left', minWidth: '50%' }}>
-            <InputLabel id="tech1-select-label"> Technical Interviewer 1 </InputLabel>
-            <Select
-              id="tech1-select"
-              label="Technical Interview 1"
-              required
-              value={techInterviewer1}
-              onChange={(e) => setTechInterviewer1(e.target.value)}>
-              <MenuItem value={"John Doe"}> John Doe </MenuItem>
-              <MenuItem value={"John Doe"}> John Doe </MenuItem>
-            </Select>
-          </FormControl>
-
-          <FormControl sx={{ float: 'left', minWidth: '50%' }}>
-            <InputLabel id="sales2-select-label"> Sales Interviewer 2 </InputLabel>
-            <Select
-              id="sales2-select"
-              label="Sales Interview 2"
-              required
-              value={salesInterviewer2}
-              onChange={(e) => setSalesInterviewer2(e.target.value)}>
-              <MenuItem value={"John Doe"}> John Doe </MenuItem>
-              <MenuItem value={"John Doe"}> John Doe </MenuItem>
-            </Select>
-          </FormControl>
-
-          <FormControl sx={{ float: 'left', minWidth: '50%' }}>
-            <InputLabel id="tech2-select-label"> Technical Interviewer 2 </InputLabel>
-            <Select
-              id="tech2-select"
-              label="Technical Interview 2"
-              required
-              value={techInterviewer2}
-              onChange={(e) => setTechInterviewer2(e.target.value)}>
-              <MenuItem value={"John Doe"}> John Doe </MenuItem>
-              <MenuItem value={"John Doe"}> John Doe </MenuItem>
-            </Select>
-          </FormControl>
+          <div className="technical-packs" style={{ float: 'left', width: '50%' }}>
+            <h3> Technical Interviewer </h3>
+            <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
+              <FormGroup>
+                {interviewers.map(interviewer => (
+                  (interviewer.tech === true) ?
+                    <FormControlLabel
+                      key={interviewer.id}
+                      control={<Checkbox />}
+                      label={interviewer.name} />
+                    : <> </>
+                ))}
+              </FormGroup>
+            </Box>
+          </div>
         </div>
 
         <Divider />
@@ -216,7 +211,6 @@ const CreateAC = () => {
           <div>
             <h2>
               Candidates
-
               <FormControl sx={{ float: 'right', minWidth: '25%' }}>
                 <InputLabel id="stream-select-label"> Stream </InputLabel>
                 <Select
@@ -239,13 +233,12 @@ const CreateAC = () => {
             <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
               <FormGroup>
                 {candidates.map(candidate => (
-                  <FormControlLabel 
+                  <FormControlLabel
                     key={candidate.id}
-                    control={<Checkbox/>} 
+                    control={<Checkbox />}
                     label={candidate.first_name + " " + candidate.middle_name + " " + candidate.last_name} />
-                ))} 
+                ))}
               </FormGroup>
-
             </Box>
 
           </div>
@@ -253,38 +246,46 @@ const CreateAC = () => {
 
         <Divider variant="middle" />
 
-        <div className="interview-packs" style={{ margigTop: '-10pt', padding: '2.5%' }}>
+        <div className="interview-packs" style={{ marginTop: '-10pt', padding: '2.5%' }}>
           <h2> Interview Pack </h2>
-          <FormControl sx={{ float: 'left', minWidth: '50%' }}>
-            <InputLabel id="sales-pack-select-label"> Sales Interview Pack </InputLabel>
-            <Select
-              id="sales-pack-select"
-              label="Sales Interview Pack"
-              required
-              value={salesPack}
-              onChange={(e) => setSalesPack(e.target.value)}>
-              <MenuItem value={"Sales pack A"}> Sales Pack A </MenuItem>
-              <MenuItem value={"Sales pack B"}> Sales Pack B </MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl sx={{ float: 'left', minWidth: '50%' }}>
-            <InputLabel id="tech-pack-select-label"> Technical Interview Pack </InputLabel>
-            <Select
-              id="technical-pack-select"
-              label="Technical Interview Pack"
-              required
-              value={techPack}
-              onChange={(e) => setTechPack(e.target.value)}>
-              <MenuItem value={"Technical pack A"}> Technical Pack A </MenuItem>
-              <MenuItem value={"Technical pack B"}> Technical Pack B </MenuItem>
-            </Select>
-          </FormControl>
 
-          <Button 
-            variant="contained" 
+          <div className="sales-packs" style={{ float: 'left', width: '50%' }}>
+            <h3> Sales Interview Pack </h3>
+            <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
+              <FormGroup>
+                {packs.map(pack => (
+                  (pack.pack_type === "Sales") ?
+                    <FormControlLabel
+                      key={pack.id}
+                      control={<Checkbox />}
+                      label={pack.pack_name} />
+                    : <> </>
+                ))}
+              </FormGroup>
+            </Box>
+          </div>
+
+          <div className="technical-packs" style={{ float: 'left', width: '50%' }}>
+            <h3> Technical Interview Pack </h3>
+            <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
+              <FormGroup>
+                {packs.map(pack => (
+                  (pack.pack_type === "Tech") ?
+                    <FormControlLabel
+                      key={pack.id}
+                      control={<Checkbox />}
+                      label={pack.pack_name} />
+                    : <> </>
+                ))}
+              </FormGroup>
+            </Box>
+          </div>
+
+          <Button
+            variant="contained"
             sx={{ float: 'right' }}
             onClick={(e) => handleSubmit(e.target.value)}>
-              Create
+            Create
           </Button>
         </div>
       </div>
