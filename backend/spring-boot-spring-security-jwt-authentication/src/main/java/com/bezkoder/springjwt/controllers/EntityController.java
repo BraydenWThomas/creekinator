@@ -462,7 +462,7 @@ public class EntityController {
 	//Create Interview
 	@PostMapping("/interview")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Interview createInterview(@RequestBody Interview interview,@RequestParam(required = true, name = "packIds") int acId) {
+	public Interview createInterview(@RequestBody Interview interview,@RequestParam(required = true, name = "acId") int acId) {
 		interview.addAssessmentCenter(assessmentCenterRepository.findById(acId).orElseThrow(()->new NotFoundException("Can't find AC with id: " + acId)));
 		return interviewRepository.save(interview);
 	}

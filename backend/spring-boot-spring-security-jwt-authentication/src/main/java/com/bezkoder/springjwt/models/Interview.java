@@ -152,7 +152,7 @@ public class Interview {
 	}
 	public void removeInterviewer() {
 		this.interviewer = null;
-		interviewer.getInterviews().remove(this);
+		this.interviewer.getInterviews().remove(this);
 	}
 	
 	// AssessmentCenter
@@ -168,7 +168,7 @@ public class Interview {
 			removeAssessmentCenter();
 		}
 		this.assessmentCenter = assessmentCenter;
-		assessmentCenter.getInterviews().add(this);
+		this.assessmentCenter.getInterviews().add(this);
 	}
 	public void removeAssessmentCenter() {
 		this.assessmentCenter = null;
@@ -189,7 +189,7 @@ public class Interview {
 			removeCandidate();
 		}
 		this.candidate = candidate;
-		candidate.getInterviews().add(this);
+		this.candidate.getInterviews().add(this);
 	}
 	public void removeCandidate() {
 		this.candidate = null;
