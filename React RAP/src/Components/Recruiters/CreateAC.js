@@ -3,7 +3,7 @@ import NavBar from '../NavBar';
 
 // React
 import React, { useEffect, useState } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
 // Material UI
 import {
@@ -36,16 +36,15 @@ const CreateAC = () => {
   const [date, setDate] = useState('');
   const [timeStart, setTimeStart] = useState(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));
   const [timeEnd, setTimeEnd] = useState(dayjs().set('hour', 17).set('minute', 0).startOf('minute'));
-  const [salesInterviewer1, setSalesInterviewer1] = useState('');
-  const [salesInterviewer2, setSalesInterviewer2] = useState('');
-  const [techInterviewer1, setTechInterviewer1] = useState('');
-  const [techInterviewer2, setTechInterviewer2] = useState('');
-  const [salesPack, setSalesPack] = useState('');
-  const [techPack, setTechPack] = useState('');
+  // const [salesInterviewer1, setSalesInterviewer1] = useState('');
+  // const [salesInterviewer2, setSalesInterviewer2] = useState('');
+  // const [techInterviewer1, setTechInterviewer1] = useState('');
+  // const [techInterviewer2, setTechInterviewer2] = useState('');
+  // const [salesPack, setSalesPack] = useState('');
+  // const [techPack, setTechPack] = useState('');
 
   // Filter
   const [stream, setStream] = useState('');
-  const [filteredCandidates, setFilteredCandidates] = useState([]);
 
   // Time details
   const startDay = dayjs().set('hour', 9).startOf('hour')
@@ -55,6 +54,10 @@ const CreateAC = () => {
   const [candidates, setCandidates] = useState([]);
   const [packs, setPacks] = useState([]);
   const [interviewers, setInterviewers] = useState([]);
+
+  // Checkbox states
+  const [isCheckedInterviewer, setIsCheckedInterviewer] = useState([]);
+  const [isCheckedCandidates, setIsCheckedCandidates] = useState([]);
 
   // Fetch all candidates
   useEffect(() => {
@@ -78,21 +81,53 @@ const CreateAC = () => {
     })).catch(error => console.log('error', error));
   }, []);
 
+  // Handle adding interviewers
+  useEffect(() => {
+    setIsCheckedInterviewer(interviewers.slice().fill(false));
+  }, [interviewers]);
+
+  const toggleCheckedInterviewer = (index) => {
+    setIsCheckedInterviewer(isCheckedInterviewer.map((v, i) => (i === index ? !v : v)));
+  };
+  
+  // Handle adding candidates
+  useEffect(() => {
+    setIsCheckedCandidates(candidates.slice().fill(false));
+  }, [candidates]);
+
+  const toggleCheckedCandidates = (index) => {
+    setIsCheckedCandidates(isCheckedCandidates.map((v, i) => (i === index ? !v : v)));
+  };
+
+  // // Handle adding interview packs
+  // const handleAddInterviewPacks = () => {
+
+  // };
+
   // Handle creating AC
   const handleSubmit = () => {
+    // Get attending interviewers
+    const interviewerIds = [];
+    for (var i = 0; i < isCheckedInterviewer.length; i++) {
+      if (isCheckedInterviewer[i]) {
+        interviewerIds.push(interviewers[i].id);
+      }
+    }
+    const interviewerString = interviewerIds.join(",");
+
+    // Get attending candidates
+    const candidateIds = [];
+    for (var j = 0; j < isCheckedCandidates.length; j++) {
+      if (isCheckedCandidates[j]) {
+        candidateIds.push(candidates[j].id);
+      }
+    }
+    const candidateString = candidateIds.join(",");
+
     setTitle('');
     setDate('');
     setTimeStart(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));
     setTimeEnd(dayjs().set('hour', 17).set('minute', 0).startOf('minute'));
-    setSalesInterviewer1('');
-    setSalesInterviewer2('');
-    setTechInterviewer1('');
-    setTechInterviewer2('');
-    setCandidates([]);
-    setSalesPack('');
-    setTechPack('');
-    setStream('');
-    setFilteredCandidates([]);
 
     const body =
       JSON.stringify({
@@ -110,11 +145,12 @@ const CreateAC = () => {
     };
 
     // fetch("http://localhost:8080/api/ac", requestOptions)
-    fetch("http://localhost:8080/api/ac?interviewers=4,5&recruiters=1&candidates=1,2,3", requestOptions)
+    fetch("http://localhost:8080/api/ac?interviewers=" + interviewerString + 
+          "&recruiters=1&candidates=" + candidateString, requestOptions)
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
-  }
+  };
 
   return (
     <div>
@@ -176,12 +212,18 @@ const CreateAC = () => {
             <h3> Sales Interviewer </h3>
             <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
               <FormGroup>
-                {interviewers.map(interviewer => (
-                  (interviewer.tech === false) ?
+                {isCheckedInterviewer.map((checked, index)=> (
+                  (interviewers[index].tech === false) ?
                     <FormControlLabel
-                      key={interviewer.id}
-                      control={<Checkbox />}
-                      label={interviewer.name} />
+                      key={interviewers[index].id}
+                      control={
+                        <Checkbox
+                          key={index}
+                          checked={checked}
+                          onClick={() => toggleCheckedInterviewer(index)}
+                        />}
+                      label={interviewers[index].name} 
+                      />
                     : <> </>
                 ))}
               </FormGroup>
@@ -192,13 +234,19 @@ const CreateAC = () => {
             <h3> Technical Interviewer </h3>
             <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
               <FormGroup>
-                {interviewers.map(interviewer => (
-                  (interviewer.tech === true) ?
-                    <FormControlLabel
-                      key={interviewer.id}
-                      control={<Checkbox />}
-                      label={interviewer.name} />
-                    : <> </>
+              {isCheckedInterviewer.map((checked, index)=> (
+                  (interviewers[index].tech === true) ?
+                  <FormControlLabel
+                    key={interviewers[index].id}
+                    control={
+                      <Checkbox
+                        key={index}
+                        checked={checked}
+                        onClick={() => toggleCheckedInterviewer(index)}
+                      />}
+                    label={interviewers[index].name} 
+                    />
+                  : <> </>
                 ))}
               </FormGroup>
             </Box>
@@ -232,11 +280,16 @@ const CreateAC = () => {
 
             <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
               <FormGroup>
-                {candidates.map(candidate => (
+                {isCheckedCandidates.map((checked, index) => (
                   <FormControlLabel
-                    key={candidate.id}
-                    control={<Checkbox />}
-                    label={candidate.first_name + " " + candidate.middle_name + " " + candidate.last_name} />
+                    key={candidates[index].id}
+                    control={
+                      <Checkbox
+                        key={index}
+                        checked={checked}
+                        onClick={() => toggleCheckedCandidates(index)}
+                      />}
+                    label={candidates[index].first_name + " " + candidates[index].middle_name + " " + candidates[index].last_name} />
                 ))}
               </FormGroup>
             </Box>
