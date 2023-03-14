@@ -12,11 +12,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-<<<<<<< HEAD
-import { keys } from '@mui/system';
-=======
 import { FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
->>>>>>> master
 
 const Recruiter = () => {
 
@@ -154,27 +150,10 @@ const Recruiter = () => {
                                     </div>
                                 </div>
 
-<<<<<<< HEAD
-                        :
-
-                        <div style={{ clear: "both" }}>
-                            <div className='assessmentToolBar'>
-                                <h2 style={{ float: "left", paddingBottom: "10px" }}>Upcomming</h2>
-
-                                <div style={{ float: 'right' }}>
-                                    <button className='candidateSort'><SortByAlphaIcon /></button>
-                                    <select id='filterCandidate' style={{ textAlign: 'center', height: "20px", padding: "10px" }}>
-                                        <option value="Name">Name</option>
-                                        <option value="Stream">Stream</option>
-                                        <option value="GradYear">Year of Graduation</option>
-                                    </select>
-                                    <a href='/createac' target="_blank"><button className='candidateAdd'><AddIcon /></button></a>
-=======
                                 <AssessmentCentreInfo statustype="upcomeInterviewer" />
                                 <div className="scrollArrows">
                                     <button className="leftIcon"><ChevronLeftIcon /></button>
                                     <button className="rightIcon"><ChevronRightIcon /></button>
->>>>>>> master
                                 </div>
 
                                 <div className='assessmentToolBar' style={{ display: 'flex' }}>

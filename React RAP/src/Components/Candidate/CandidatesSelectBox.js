@@ -7,38 +7,8 @@ import '../Styling/RecruiterStyles.css';
 
 // Material UI
 import DeleteIcon from '@mui/icons-material/Delete';
-<<<<<<< HEAD
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import CandidateInformation from './CandidateInformation';
-const CandidateSelectBox = () => {
-    
-    return (
-       
-        <a href="/createcandidate" target={"_blank"}>
-        <div className='candidateSelectBox' style={{ clear: "both" }}>
-                
-                <button className='candidateDelete'><DeleteIcon /></button>
-            
-                <div style={{ marginLeft: "20px"}}>
-                    <div style={{ display: "flex", clear: "both" }}>
-                    
-                        <h3>NAME</h3>
-                    </div>
-                    <div style={{ display: "flex", clear: "both" }}>
-                    
-                        <h3>PHONE</h3>
-                    </div>
-                    <div style={{ display: "flex", marginBottom: "20px", clear: "both" }}>
-                    
-                        <h3>EMAIL</h3>
-                    </div>
-                </div>
-            </div>
-        </a>
-=======
 import { Button, Menu, MenuItem, IconButton } from '@mui/material';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
->>>>>>> master
 
 const CandidateSelectBox = ({ candidate }) => {
   // For Material UI Menu

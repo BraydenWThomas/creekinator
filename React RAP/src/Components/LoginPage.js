@@ -12,7 +12,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import './Styling/LoginPageStyle.css'
 
-
 const FDMtheme = createTheme({
   palette: {
     primary: {
@@ -23,7 +22,14 @@ const FDMtheme = createTheme({
 });
 
 const LoginPage = (props) => {
-
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     username: data.get('username'),
+  //     password: data.get('password'),
+  //   });
+  // };
 
   return (
     <div className='login-container'>
@@ -47,7 +53,6 @@ const LoginPage = (props) => {
                 name="username"
                 autoComplete="username"
                 autoFocus
-               
               />
               <TextField
                 margin="normal"
@@ -58,7 +63,6 @@ const LoginPage = (props) => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-               
               />
               <FormControlLabel
                 control={<Checkbox value="remember" />}
@@ -71,12 +75,13 @@ const LoginPage = (props) => {
                 variant="contained"
                 size='large'
                 disableElevation
-                sx={{ mt: 2, mb: 2, }}
-             
-              >
+                sx={{ mt: 2, mb: 2, }}>
                 Login
                 
               </Button>
+                {/* <Button><a href="/recruiter"><h4>Rercruiter</h4></a></Button>
+                <Button><a href="/interviewer"><h4>Interviewer</h4></a></Button>
+                <Button><a href="/admin"><h4>Admin</h4></a></Button> */}
             </Box>
             <Grid item
               sx={{ mt: 35 }}>

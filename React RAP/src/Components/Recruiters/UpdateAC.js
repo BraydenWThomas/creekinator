@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, { useState } from 'react';
-=======
 // Components
->>>>>>> master
 import NavBar from '../NavBar';
 
 // React
