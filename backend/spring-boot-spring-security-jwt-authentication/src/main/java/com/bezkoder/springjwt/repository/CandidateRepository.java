@@ -14,7 +14,7 @@ import com.bezkoder.springjwt.models.Candidate;
 public interface CandidateRepository extends JpaRepository<Candidate, Integer> {
 
 	
-	@Query(value = "select c from Candidate c where (:firstName IS null OR c.first_name LIKE %:firstName%) OR (:lastName IS null OR c.last_name LIKE %:lastName%) OR (:appliedStream IS null OR c.applied_stream LIKE %:appliedStream%)")
+	@Query(value = "select c from Candidate c where (:firstName IS null OR c.first_name IS :firstName) AND (:lastName IS null OR c.last_name IS :lastName) AND (:appliedStream IS null OR c.applied_stream IS :appliedStream)")
 	List<Candidate> getByFilter(
 			@Param("firstName") String firstName,
 			@Param("lastName") String lastName,
