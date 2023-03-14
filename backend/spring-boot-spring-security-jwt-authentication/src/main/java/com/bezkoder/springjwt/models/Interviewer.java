@@ -162,7 +162,7 @@ public class Interviewer {
 			user.removeInterviewer();
 		}
 		this.user = user;
-		user.setInterviewer(this);
+		this.user.setInterviewer(this);
 	}
 	public void removeUser() {
 		this.user.setInterviewer(null);

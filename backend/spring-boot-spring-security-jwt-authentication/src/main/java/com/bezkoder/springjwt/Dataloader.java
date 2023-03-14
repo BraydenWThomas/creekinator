@@ -158,14 +158,14 @@ public class Dataloader implements ApplicationRunner{
 		// INTERVIEWS
 		// AC 1 (A)
 		List<Interview> interviewA = new ArrayList<>();
-		interviewA.add(new Interview(acList.get(0),interviewerList.get(2),candidateList.get(0),"Feedback Form", time));
-		interviewA.add(new Interview(acList.get(0),interviewerList.get(3),candidateList.get(0),"Feedback Form", time));
-		interviewA.add(new Interview(acList.get(0),interviewerList.get(3),candidateList.get(1),"Feedback Form", time));
-		interviewA.add(new Interview(acList.get(0),interviewerList.get(1),candidateList.get(1),"Feedback Form", time));
-		interviewA.add(new Interview(acList.get(0),interviewerList.get(5),candidateList.get(2),"Feedback Form", time));
-		interviewA.add(new Interview(acList.get(0),interviewerList.get(5),candidateList.get(2),"Feedback Form", time));
-		interviewA.add(new Interview(acList.get(0),interviewerList.get(7),candidateList.get(3),"Feedback Form", time));
-		interviewA.add(new Interview(acList.get(0),interviewerList.get(8),candidateList.get(3),"Feedback Form", time));
+		interviewA.add(new Interview(acList.get(0),interviewerList.get(2),candidateList.get(0),"Feedback Form", time,1));
+		interviewA.add(new Interview(acList.get(0),interviewerList.get(3),candidateList.get(0),"Feedback Form", time,2));
+		interviewA.add(new Interview(acList.get(0),interviewerList.get(3),candidateList.get(1),"Feedback Form", time,3));
+		interviewA.add(new Interview(acList.get(0),interviewerList.get(1),candidateList.get(1),"Feedback Form", time,4));
+		interviewA.add(new Interview(acList.get(0),interviewerList.get(5),candidateList.get(2),"Feedback Form", time,5));
+		interviewA.add(new Interview(acList.get(0),interviewerList.get(5),candidateList.get(2),"Feedback Form", time,6));
+		interviewA.add(new Interview(acList.get(0),interviewerList.get(7),candidateList.get(3),"Feedback Form", time,7));
+		interviewA.add(new Interview(acList.get(0),interviewerList.get(8),candidateList.get(3),"Feedback Form", time,8));
 
 		candidateList.get(0).addAssessmentCenter(acList.get(0));
 		candidateList.get(1).addAssessmentCenter(acList.get(0));
@@ -180,12 +180,12 @@ public class Dataloader implements ApplicationRunner{
 		
 		// AC 2 (B)
 		List<Interview> interviewB = new ArrayList<>();
-		interviewB.add(new Interview(acList.get(1),interviewerList.get(4),candidateList.get(0),"Feedback Form", time));
-		interviewB.add(new Interview(acList.get(1),interviewerList.get(3),candidateList.get(0),"Feedback Form", time));
-		interviewB.add(new Interview(acList.get(1),interviewerList.get(3),candidateList.get(1),"Feedback Form", time));
-		interviewB.add(new Interview(acList.get(1),interviewerList.get(8),candidateList.get(1),"Feedback Form", time));
-		interviewB.add(new Interview(acList.get(1),interviewerList.get(5),candidateList.get(2),"Feedback Form", time));
-		interviewB.add(new Interview(acList.get(1),interviewerList.get(7),candidateList.get(2),"Feedback Form", time));
+		interviewB.add(new Interview(acList.get(1),interviewerList.get(4),candidateList.get(0),"Feedback Form", time,10));
+		interviewB.add(new Interview(acList.get(1),interviewerList.get(3),candidateList.get(0),"Feedback Form", time,20));
+		interviewB.add(new Interview(acList.get(1),interviewerList.get(3),candidateList.get(1),"Feedback Form", time,30));
+		interviewB.add(new Interview(acList.get(1),interviewerList.get(8),candidateList.get(1),"Feedback Form", time,40));
+		interviewB.add(new Interview(acList.get(1),interviewerList.get(5),candidateList.get(2),"Feedback Form", time,50));
+		interviewB.add(new Interview(acList.get(1),interviewerList.get(7),candidateList.get(2),"Feedback Form", time,60));
 		
 		candidateList.get(0).addAssessmentCenter(acList.get(1));
 		candidateList.get(1).addAssessmentCenter(acList.get(1));
@@ -198,14 +198,14 @@ public class Dataloader implements ApplicationRunner{
 		
 		// AC 3	(C)
 		List<Interview> interviewC = new ArrayList<>();
-		interviewC.add(new Interview(acList.get(2),interviewerList.get(2),candidateList.get(0),"Feedback Form", time));
-		interviewC.add(new Interview(acList.get(2),interviewerList.get(1),candidateList.get(0),"Feedback Form", time));
-		interviewC.add(new Interview(acList.get(2),interviewerList.get(4),candidateList.get(1),"Feedback Form", time));
-		interviewC.add(new Interview(acList.get(2),interviewerList.get(4),candidateList.get(1),"Feedback Form", time));
-		interviewC.add(new Interview(acList.get(2),interviewerList.get(6),candidateList.get(2),"Feedback Form", time));
-		interviewC.add(new Interview(acList.get(2),interviewerList.get(6),candidateList.get(2),"Feedback Form", time));
-		interviewC.add(new Interview(acList.get(2),interviewerList.get(7),candidateList.get(3),"Feedback Form", time));
-		interviewC.add(new Interview(acList.get(2),interviewerList.get(8),candidateList.get(3),"Feedback Form", time));
+		interviewC.add(new Interview(acList.get(2),interviewerList.get(2),candidateList.get(0),"Feedback Form", time,23));
+		interviewC.add(new Interview(acList.get(2),interviewerList.get(1),candidateList.get(0),"Feedback Form", time,123));
+		interviewC.add(new Interview(acList.get(2),interviewerList.get(4),candidateList.get(1),"Feedback Form", time,63));
+		interviewC.add(new Interview(acList.get(2),interviewerList.get(4),candidateList.get(1),"Feedback Form", time,478));
+		interviewC.add(new Interview(acList.get(2),interviewerList.get(6),candidateList.get(2),"Feedback Form", time,234));
+		interviewC.add(new Interview(acList.get(2),interviewerList.get(6),candidateList.get(2),"Feedback Form", time,613));
+		interviewC.add(new Interview(acList.get(2),interviewerList.get(7),candidateList.get(3),"Feedback Form", time,123));
+		interviewC.add(new Interview(acList.get(2),interviewerList.get(8),candidateList.get(3),"Feedback Form", time,52));
 		
 		candidateList.get(0).addAssessmentCenter(acList.get(2));
 		candidateList.get(1).addAssessmentCenter(acList.get(2));
