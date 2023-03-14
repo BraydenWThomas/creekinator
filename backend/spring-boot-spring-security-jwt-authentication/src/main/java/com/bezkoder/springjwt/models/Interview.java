@@ -45,8 +45,8 @@ public class Interview {
 	
 	@ManyToMany
 	@JoinTable(name = "interview_pack",
-			joinColumns = @JoinColumn(name = "pack_id"),
-				inverseJoinColumns = @JoinColumn(name = "interview_id"))
+			joinColumns = @JoinColumn(name = "interview_id"),
+				inverseJoinColumns = @JoinColumn(name = "pack_id"))
 	@JsonIgnore
 	private List<Pack> packs;
 	/* --- End of fields --- */

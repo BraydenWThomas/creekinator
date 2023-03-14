@@ -26,6 +26,11 @@ public class Recruiter {
 	private List<AssessmentCenter> assessmentCenters;
 	@OneToOne
 	private User user;
+	@ManyToMany
+	@JoinTable(name = "recruiter_candidate", 
+		joinColumns = @JoinColumn(name = "recruiter_id"), 
+		inverseJoinColumns = @JoinColumn(name = "candidate_id"))
+	private List<Candidate> candidates;
 	/* --- End of Attributes --- */
 	
 	
@@ -116,5 +121,16 @@ public class Recruiter {
 	public void removeUser() {
 		this.user = null;
 		user.setRecruiter(null);
+	}
+	
+	// candidates
+	public void setCandidates(List<Candidate> candidates) {
+		this.candidates = candidates;
+	}
+	public List<Candidate> getCandidates(){
+		return this.candidates;
+	}
+	public void removeCandidate(Candidate candidate) {
+		this.getCandidates().remove(candidate);
 	}
 }

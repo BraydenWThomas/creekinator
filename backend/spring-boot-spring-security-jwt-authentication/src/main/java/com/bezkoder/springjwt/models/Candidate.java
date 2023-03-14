@@ -50,6 +50,8 @@ public class Candidate {
 	private List<Interview> interviews;
 	@OneToOne
 	private User user;
+	@ManyToMany(mappedBy = "candidates")
+	private List<Recruiter> recruiters;
 	/* --- end of fields --- */
 	
 	
@@ -260,6 +262,21 @@ public class Candidate {
 		this.user = null;
 	}
 	
+	// recruiters
+	public List<Recruiter> getRecruiters() {
+		return this.recruiters;
+	}
+	public void setRecruiters(List<Recruiter> recruiters) {
+		this.recruiters = recruiters;
+	}
+	public void removeRecruiter(Recruiter recruiter) {
+		this.recruiters.remove(recruiter);
+		recruiter.removeCandidate(this);
+	}
+	public void addRecruiter(Recruiter recruiter) {
+		this.recruiters.add(recruiter);
+		recruiter.getCandidates().add(this);
+	}
 	/*
 	public void addAssessmentCenter(AssessmentCenter assessmentCenters) {
 		List<AssessmentCenter> assessmentCentersList = new ArrayList<AssessmentCenter>();
