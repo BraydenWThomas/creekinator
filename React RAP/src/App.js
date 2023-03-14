@@ -15,6 +15,7 @@ import ViewPastAC from './Components/Recruiters/ViewPastAC';
 import CreateAC from './Components/Recruiters/CreateAC';
 import UpdateAC from './Components/Recruiters/UpdateAC';
 import LoginPage from './Components/LoginPage';
+import CandidateApply from './Components/CandidateApply';
 
 // Material UI
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -87,6 +88,10 @@ const App = () => {
     {
       path:"/ac/update",
       element: <UpdateAC />
+    },
+    {
+      path:"/apply",
+      element: <CandidateApply />
     }
     
   ]);
