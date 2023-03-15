@@ -12,6 +12,7 @@ import ViewPastAC from './Components/Recruiters/ViewPastAC';
 import CreateAC from './Components/Recruiters/CreateAC';
 import UpdateAC from './Components/Recruiters/UpdateAC';
 import LoginPage from './Components/LoginPage';
+import Candidate from './Components/Candidate/Candidate'
 
 // Material UI
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -21,7 +22,13 @@ import NavBar from './Components/NavBar';
 import { Button } from '@mui/material';
 import Calendar from './Components/Calendar';
 import CandidateApply from './Components/CandidateApply';
+
+
 const FDMtheme = createTheme({
+  typography:{
+    fontFamily: "barlow",
+  },
+
   palette: {
     primary: {
       main: '#6f00ff',
@@ -98,7 +105,8 @@ const App = () => {
   }, {
     path: "/candidate",
     element: <Candidate />
-  }]
+  }
+]
 
   if (localStorage.getItem('status') == "ROLE_RECRUITER") {
     routes.push({
@@ -157,13 +165,6 @@ const App = () => {
 
   const routerPage = createBrowserRouter(routes);
 
-  const logout = () => {
-
-    localStorage.removeItem('status');
-    localStorage.removeItem('userId')
-    window.location.href = "/"
-
-  }
   const getCalendar = () => {
     window.location.href = "/calendar"
   }
@@ -178,9 +179,7 @@ const App = () => {
   return (
 
     <ThemeProvider theme={FDMtheme}>
-      <Button onClick={logout}>LOGOUT</Button>
-      <Button onClick={getCalendar}>Calendar</Button>
-      <Button onClick={getCandidate}>Candidate</Button>
+      {/* <Button onClick={getCandidate}>Candidate</Button> */}
       
       <RouterProvider router={routerPage} />
     </ThemeProvider>

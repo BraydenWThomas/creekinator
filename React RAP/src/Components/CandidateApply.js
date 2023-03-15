@@ -16,19 +16,16 @@ import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 const CandidateApply = () => {
 
     return (
-        <Container component="main" maxWidth="sm" sx={{ height:"100vh"}}>
+        <Container component="main" maxWidth="xs" sx={{ height:"100vh"}}>
             <Box
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    paddingTop:30
+                    paddingTop:50
                 }}
             >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
+                <Typography component="h1" variant="h3">
                     Sign up
                 </Typography>
                 <Box component="form" noValidate sx={{ mt: 3 }}>
@@ -100,7 +97,7 @@ const CandidateApply = () => {
                     </Grid>
                     <Grid container justifyContent="center">
                     <Grid item
-                        sx={{ mt: 50 }}>
+                        sx={{ position: 'absolute', bottom: 75 }}>
                         <img src={fdm} alt="FDM Logo" />
                     </Grid>
                     </Grid>

@@ -79,7 +79,7 @@ const AdminDashboard = () => {
     <div>
       <Container component="main">
         <div className="header" style={{ display: "flex" }}>
-          <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Admin Dashboard</Typography>
+          <Typography component="h1" variant="h3" fontFamily="barlow" mt={2} sx={{ flex: 1 }}>Admin Dashboard</Typography>
           <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
             <NotificationsIcon fontSize="large" />
             <Avatar src="/broken-image.jpg" />
