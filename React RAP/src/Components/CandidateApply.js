@@ -35,12 +35,12 @@ const CandidateApply = () => {
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
-                                autoComplete="given-name"
-                                name="fullname"
+                                autoComplete="user"
+                                name="username"
                                 required
                                 fullWidth
-                                id="fullname"
-                                label="Full Name"
+                                id="username"
+                                label="Username"
                                 autoFocus
                             />
                         </Grid>
@@ -65,7 +65,7 @@ const CandidateApply = () => {
                                 autoComplete="new-password"
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        {/* <Grid item xs={12}>
                         <FormControl required fullWidth>
                             <InputLabel id="title-select-label">Stream</InputLabel>
                             <Select
@@ -81,7 +81,7 @@ const CandidateApply = () => {
 
                             </Select>
                             </FormControl>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                     <Button
                         type="submit"
@@ -100,7 +100,7 @@ const CandidateApply = () => {
                     </Grid>
                     <Grid container justifyContent="center">
                     <Grid item
-                        sx={{ mt: 35 }}>
+                        sx={{ mt: 50 }}>
                         <img src={fdm} alt="FDM Logo" />
                     </Grid>
                     </Grid>

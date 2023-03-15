@@ -11,7 +11,6 @@ import fdm from './fdm-logo.png';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import './Styling/LoginPageStyle.css'
-import { Link } from 'react-router-dom';
 
 const FDMtheme = createTheme({
   palette: {
@@ -22,15 +21,15 @@ const FDMtheme = createTheme({
   },
 });
 
-const LoginPage = () => {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
-    });
-  };
+const LoginPage = (props) => {
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     username: data.get('username'),
+  //     password: data.get('password'),
+  //   });
+  // };
 
   return (
     <div className='login-container'>
@@ -44,7 +43,7 @@ const LoginPage = () => {
               alignItems: 'center'
             }}>
             <Avatar src="/broken-image.jpg" sx={{ width: 350, height: 350 }} />
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 10 }}>
+            <Box component="form" onSubmit={props.onClick} noValidate sx={{ mt: 10 }}>
               <TextField
                 margin="normal"
                 required
@@ -79,7 +78,7 @@ const LoginPage = () => {
                 sx={{ mt: 2, mb: 2, }}>
                 Login
               </Button>
-                <Button><a href="/recruiter"><h4>Rercruiter</h4></a></Button>
+                {/* <Button><a href="/recruiter"><h4>Rercruiter</h4></a></Button>
                 <Button><a href="/interviewer"><h4>Interviewer</h4></a></Button>
               <Button><a href="/admin"><h4>Admin</h4></a></Button> */}
             </Box>
