@@ -65,17 +65,17 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
             MenuListProps={{
               'aria-labelledby': 'basic-button',
             }}>
-            <Link to={`/ac/view-upcoming/${ac.id}`}>
+            <Link to={`ac/view-upcoming/${ac.id}`}>
               <MenuItem>
                 View
               </MenuItem>
             </Link>
-            <Link to={`/ac/update/${ac.id}`}>
+            <Link to={`ac/update/${ac.id}`}>
               <MenuItem>
                 Update Details
               </MenuItem>
             </Link>
-            <Link to={`/ac/update/schedule/${ac.id}`}>
+            <Link to={`ac/update/schedule/${ac.id}`}>
               <MenuItem>
                 Schedule Attendees
               </MenuItem>
@@ -107,7 +107,7 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
             MenuListProps={{
               'aria-labelledby': 'basic-button',
             }}>
-            <Link to={`/ac/view-upcoming/${ac.id}`}>
+            <Link to={`ac/view-upcoming/${ac.id}`}>
               <MenuItem>
                 View
               </MenuItem>
@@ -139,7 +139,7 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
             MenuListProps={{
               'aria-labelledby': 'basic-button',
             }}>
-            <Link to={`/ac/view-upcoming/${ac.id}`}>
+            <Link to={`ac/view-upcoming/${ac.id}`}>
               <MenuItem>
                 View
               </MenuItem>

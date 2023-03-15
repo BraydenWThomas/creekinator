@@ -5,11 +5,11 @@ import NavBar from '../NavBar';
 import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import { Link, useParams, useNavigate } from 'react-router-dom';
 
 // Material UI
 import { Avatar, Divider, Tab, Stack, Button, FormControl } from "@mui/material";
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { Link, useParams } from 'react-router-dom';
 
 const ViewUpcomingAC = () => {
   // AC Details
@@ -21,6 +21,12 @@ const ViewUpcomingAC = () => {
 
   // Link to specific AC
   const { acId } = useParams();
+
+  // Go back to previous page
+  const navigate = useNavigate();
+  const goBack = () => {
+    navigate(-1);
+  }
 
   // Fetch AC details
   useEffect(() => {
@@ -227,11 +233,12 @@ const ViewUpcomingAC = () => {
         <div className="bottom-buttons" style={{ float: 'right', marginTop: '2%' }}>
           <Button
             variant="contained"
-            sx={{ float: 'right' }}>
+            sx={{ float: 'right' }}
+            onClick={goBack}>
             Back
           </Button>
 
-          <Link to={`/ac/update/${ac.id}`}>
+          <Link to={`/recruiter/ac/update/${ac.id}`}>
             <Button
               variant="contained"
               sx={{ float: 'right' }}>

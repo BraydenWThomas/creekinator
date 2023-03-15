@@ -1,5 +1,6 @@
 import CandidateSelectBox from '../Candidate/CandidatesSelectBox';
 import AssessmentCentreInfo from './AssessmentCentreInfo';
+import { Link } from 'react-router-dom'
 // import '../Styling/RecruiterStyles.css';
 import NavBar from '../NavBar';
 import React, { useEffect, useState } from 'react';
@@ -93,12 +94,12 @@ const Recruiter = () => {
                         <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
                       </Select>
                     </FormControl>
-                    <a href="/candidate/create" target="_blank">
+                    <Link to={"candidate/create"}>
                       <button
                         className='candidateAdd'>
                         <AddIcon />
                       </button>
-                    </a>
+                    </Link>
                   </div>
                 </div >
                 {candidates.map(candidate => (
@@ -125,9 +126,9 @@ const Recruiter = () => {
                         <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
                       </Select>
                     </FormControl>
-                    <a href="/ac/create" target="_blank">
-                      <button className='candidateAdd'> <AddIcon /> </button>
-                    </a>
+                    <Link to={"ac/create"}>
+                      <button className='acAdd'> <AddIcon /> </button>
+                    </Link>
                   </div>
                 </div>
 
@@ -164,9 +165,6 @@ const Recruiter = () => {
                         <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
                       </Select>
                     </FormControl>
-                    <a href="/ac/create" target="_blank">
-                      <button className='candidateAdd'> <AddIcon /> </button>
-                    </a>
                   </div>
                 </div>
                 {acs.map(ac => (

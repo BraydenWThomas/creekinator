@@ -4,6 +4,7 @@ import NavBar from '../NavBar';
 // React
 import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
+import { Link, useNavigate } from 'react-router-dom'
 
 // Material UI
 import {
@@ -48,6 +49,12 @@ const CreateAC = () => {
   const [isCheckedInterviewer, setIsCheckedInterviewer] = useState([]);
   const [isCheckedCandidates, setIsCheckedCandidates] = useState([]);
 
+  // Go back to previous page
+  const navigate = useNavigate();
+  const goBack = () => {
+    navigate(-1);
+  }
+
   // Fetch all candidates
   useEffect(() => {
     const requestOptions = {
@@ -87,6 +94,8 @@ const CreateAC = () => {
 
   // Handle creating AC
   const handleSubmit = () => {
+    goBack()
+
     // Get attending interviewers
     const interviewerIds = [];
     for (var i = 0; i < isCheckedInterviewer.length; i++) {
@@ -125,7 +134,7 @@ const CreateAC = () => {
       redirect: 'follow',
       headers: { 'content-type': 'application/json' }
     };
-    
+
     fetch("http://localhost:8080/api/ac?interviewers=" + interviewerString +
       "&recruiters=1&candidates=" + candidateString, requestOptions)
       .then(response => response.json())
@@ -283,6 +292,12 @@ const CreateAC = () => {
           sx={{ float: 'right' }}
           onClick={(e) => handleSubmit(e.target.value)}>
           Create
+        </Button>
+        <Button
+          variant="contained"
+          sx={{ float: 'right' }}
+          onClick={goBack}>
+          Cancel
         </Button>
       </div>
     </div>
