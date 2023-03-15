@@ -18,6 +18,8 @@ import handleClick from './Components/LoginPage';
 import NavBar from './Components/NavBar';
 import { Button } from '@mui/material';
 import Calendar from './Components/Calendar';
+import Candidate from './Components/Candidate/Candidate';
+
 const FDMtheme = createTheme({
   palette: {
     primary: {
@@ -58,6 +60,7 @@ const App = () => {
         if (result.username) {
 
           localStorage.setItem('status', result.roles[0])
+          localStorage.setItem('userId', result.id)
           if (result.roles[0] == "ROLE_RECRUITER") {
             window.location.href = "/recruiter"
           }
@@ -87,6 +90,9 @@ const App = () => {
   {
     path: "/admin",
     element: <AdminDashboard />
+  }, {
+    path: "/candidate",
+    element: <Candidate />
   }]
 
   if (localStorage.getItem('status') == "ROLE_RECRUITER") {
@@ -142,18 +148,25 @@ const App = () => {
       })
   }
 
+  
+
   const routerPage = createBrowserRouter(routes);
 
   const logout = () => {
 
     localStorage.removeItem('status');
+    localStorage.removeItem('userId')
     window.location.href = "/"
 
   }
   const getCalendar = () => {
+    window.location.href = "/calendar"
+  }
+
+  const getCandidate = () => {
 
     
-    window.location.href = "/calendar"
+    window.location.href = "/candidate"
 
   }
 
@@ -162,6 +175,8 @@ const App = () => {
     <ThemeProvider theme={FDMtheme}>
       <Button onClick={logout}>LOGOUT</Button>
       <Button onClick={getCalendar}>Calendar</Button>
+      <Button onClick={getCandidate}>Candidate</Button>
+      
       <RouterProvider router={routerPage} />
     </ThemeProvider>
   )

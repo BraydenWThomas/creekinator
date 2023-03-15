@@ -45,7 +45,8 @@ const AdminDashboard = () => {
         username: username,
         email: email,
         password: password,
-        role: [role.toLowerCase()]
+        role: [role.toLowerCase()],
+        name: fullname
       });
 
     const requestOptions = {
