@@ -29,6 +29,8 @@ const AdminDashboard = () => {
   const [selection, setSelection] = useState('All');
   const [filteredUsers, setFilteredUsers] = useState([]);
 
+  // Fetch all existing users
+  
   const handleSubmit = () => {
     const newUser = { fullname, username, password, email, role };
     setUsers([...users, newUser]);
@@ -37,8 +39,6 @@ const AdminDashboard = () => {
     setPassword("");
     setEmail("");
     setRole("")
-
-    // console.log("Submit clicked")
 
     const body =
       JSON.stringify({
@@ -87,6 +87,7 @@ const AdminDashboard = () => {
         <Divider variant='middle' />
         <Box
           sx={{
+            display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             mt: 3,
@@ -148,7 +149,6 @@ const AdminDashboard = () => {
                 />
               </Grid>
               <Grid item xs={6}>
-              <FormControl required fullWidth sx={{mt: 4}}>
                 <InputLabel id="role-select-label">Role</InputLabel>
                 <Select
                   labelId="role-select-label"
@@ -162,7 +162,6 @@ const AdminDashboard = () => {
                   <MenuItem value={"Sales Interviewer"}>Sales Interviewer</MenuItem>
                   <MenuItem value={"Technical Interviewer"}>Technical Interviewer</MenuItem>
                 </Select>
-                </FormControl>
                 </Grid>
                 <Grid item xs={12}>
                   <Button fullWidth variant='contained' type='button' sx={{ mt: 3, mb: 2 }} onClick={handleSubmit}>Create</Button>

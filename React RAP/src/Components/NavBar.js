@@ -15,7 +15,7 @@ const NavBar = () => {
   };
 
   return (
-    <div className="nav-container" style={{height: '100vh'}}>
+    <div className="nav-container">
       <Paper elevation={4} sx={{ height: '100vh'}}>
         <nav className="nav-side">
           <img src={fdm} alt="FDM Logo" />

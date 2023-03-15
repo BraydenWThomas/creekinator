@@ -36,12 +36,6 @@ const CreateAC = () => {
   const [date, setDate] = useState('');
   const [timeStart, setTimeStart] = useState(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));
   const [timeEnd, setTimeEnd] = useState(dayjs().set('hour', 17).set('minute', 0).startOf('minute'));
-  // const [salesInterviewer1, setSalesInterviewer1] = useState('');
-  // const [salesInterviewer2, setSalesInterviewer2] = useState('');
-  // const [techInterviewer1, setTechInterviewer1] = useState('');
-  // const [techInterviewer2, setTechInterviewer2] = useState('');
-  // const [salesPack, setSalesPack] = useState('');
-  // const [techPack, setTechPack] = useState('');
 
   // Filter
   const [stream, setStream] = useState('');
@@ -52,7 +46,6 @@ const CreateAC = () => {
 
   // GET requests
   const [candidates, setCandidates] = useState([]);
-  const [packs, setPacks] = useState([]);
   const [interviewers, setInterviewers] = useState([]);
 
   // Checkbox states
@@ -68,15 +61,12 @@ const CreateAC = () => {
 
     Promise.all([
       fetch("http://localhost:8080/api/candidate", requestOptions),
-      fetch("http://localhost:8080/api/pack", requestOptions),
       fetch("http://localhost:8080/api/interviewer", requestOptions)
     ]).then((responses => {
       console.log(responses)
       responses[0].json()
         .then(data => { setCandidates(data) })
       responses[1].json()
-        .then(data => { setPacks(data) })
-      responses[2].json()
         .then(data => { setInterviewers(data) })
     })).catch(error => console.log('error', error));
   }, []);
@@ -89,7 +79,7 @@ const CreateAC = () => {
   const toggleCheckedInterviewer = (index) => {
     setIsCheckedInterviewer(isCheckedInterviewer.map((v, i) => (i === index ? !v : v)));
   };
-  
+
   // Handle adding candidates
   useEffect(() => {
     setIsCheckedCandidates(candidates.slice().fill(false));
@@ -98,11 +88,6 @@ const CreateAC = () => {
   const toggleCheckedCandidates = (index) => {
     setIsCheckedCandidates(isCheckedCandidates.map((v, i) => (i === index ? !v : v)));
   };
-
-  // // Handle adding interview packs
-  // const handleAddInterviewPacks = () => {
-
-  // };
 
   // Handle creating AC
   const handleSubmit = () => {
@@ -145,8 +130,8 @@ const CreateAC = () => {
     };
 
     // fetch("http://localhost:8080/api/ac", requestOptions)
-    fetch("http://localhost:8080/api/ac?interviewers=" + interviewerString + 
-          "&recruiters=1&candidates=" + candidateString, requestOptions)
+    fetch("http://localhost:8080/api/ac?interviewers=" + interviewerString +
+      "&recruiters=1&candidates=" + candidateString, requestOptions)
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -212,7 +197,7 @@ const CreateAC = () => {
             <h3> Sales Interviewer </h3>
             <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
               <FormGroup>
-                {isCheckedInterviewer.map((checked, index)=> (
+                {isCheckedInterviewer.map((checked, index) => (
                   (interviewers[index].tech === false) ?
                     <FormControlLabel
                       key={interviewers[index].id}
@@ -222,8 +207,8 @@ const CreateAC = () => {
                           checked={checked}
                           onClick={() => toggleCheckedInterviewer(index)}
                         />}
-                      label={interviewers[index].name} 
-                      />
+                      label={interviewers[index].name}
+                    />
                     : <> </>
                 ))}
               </FormGroup>
@@ -234,19 +219,19 @@ const CreateAC = () => {
             <h3> Technical Interviewer </h3>
             <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
               <FormGroup>
-              {isCheckedInterviewer.map((checked, index)=> (
+                {isCheckedInterviewer.map((checked, index) => (
                   (interviewers[index].tech === true) ?
-                  <FormControlLabel
-                    key={interviewers[index].id}
-                    control={
-                      <Checkbox
-                        key={index}
-                        checked={checked}
-                        onClick={() => toggleCheckedInterviewer(index)}
-                      />}
-                    label={interviewers[index].name} 
+                    <FormControlLabel
+                      key={interviewers[index].id}
+                      control={
+                        <Checkbox
+                          key={index}
+                          checked={checked}
+                          onClick={() => toggleCheckedInterviewer(index)}
+                        />}
+                      label={interviewers[index].name}
                     />
-                  : <> </>
+                    : <> </>
                 ))}
               </FormGroup>
             </Box>
@@ -257,9 +242,8 @@ const CreateAC = () => {
 
         <div className="candidates" style={{ marginTop: '50pt', padding: '2.5%' }}>
           <div>
-            <h2>
-              Candidates
-              <FormControl sx={{ float: 'right', minWidth: '25%' }}>
+            <h2> Candidates 
+              <FormControl sx={{ float: 'right', minWidth: '25%' }} size="small">
                 <InputLabel id="stream-select-label"> Stream </InputLabel>
                 <Select
                   id="stream-select"
@@ -267,9 +251,12 @@ const CreateAC = () => {
                   required
                   value={stream}
                   onChange={(e) => setStream(e.target.value)}>
-                  <MenuItem value={"Stream name"}> Stream name </MenuItem>
-                  <MenuItem value={"Stream name"}> Stream name </MenuItem>
-                  <MenuItem value={"Stream name"}> Stream name </MenuItem>
+                  <MenuItem value="Business Analyst"> Business Analyst </MenuItem>
+                  <MenuItem value="Business Intelligence"> Business Intelligence </MenuItem>
+                  <MenuItem value="Cloud (AWS)"> Cloud (AWS) </MenuItem>
+                  <MenuItem value="Technical Analyst"> Technical Analyst </MenuItem>
+                  <MenuItem value="Software Development"> Software Development </MenuItem>
+                  <MenuItem value="Testing"> Testing </MenuItem>
                 </Select>
               </FormControl>
 
@@ -279,7 +266,7 @@ const CreateAC = () => {
             </h2>
 
             <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
-              <FormGroup>
+              <FormGroup style={{ maxHeight: 150, overflow: 'auto', width: '100%'}}>
                 {isCheckedCandidates.map((checked, index) => (
                   <FormControlLabel
                     key={candidates[index].id}
@@ -293,54 +280,14 @@ const CreateAC = () => {
                 ))}
               </FormGroup>
             </Box>
-
           </div>
         </div>
-
-        <Divider variant="middle" />
-
-        <div className="interview-packs" style={{ marginTop: '-10pt', padding: '2.5%' }}>
-          <h2> Interview Pack </h2>
-
-          <div className="sales-packs" style={{ float: 'left', width: '50%' }}>
-            <h3> Sales Interview Pack </h3>
-            <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
-              <FormGroup>
-                {packs.map(pack => (
-                  (pack.pack_type === "Sales") ?
-                    <FormControlLabel
-                      key={pack.id}
-                      control={<Checkbox />}
-                      label={pack.pack_name} />
-                    : <> </>
-                ))}
-              </FormGroup>
-            </Box>
-          </div>
-
-          <div className="technical-packs" style={{ float: 'left', width: '50%' }}>
-            <h3> Technical Interview Pack </h3>
-            <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
-              <FormGroup>
-                {packs.map(pack => (
-                  (pack.pack_type === "Tech") ?
-                    <FormControlLabel
-                      key={pack.id}
-                      control={<Checkbox />}
-                      label={pack.pack_name} />
-                    : <> </>
-                ))}
-              </FormGroup>
-            </Box>
-          </div>
-
-          <Button
-            variant="contained"
-            sx={{ float: 'right' }}
-            onClick={(e) => handleSubmit(e.target.value)}>
-            Create
-          </Button>
-        </div>
+        <Button
+          variant="contained"
+          sx={{ float: 'right' }}
+          onClick={(e) => handleSubmit(e.target.value)}>
+          Create
+        </Button>
       </div>
     </div>
   )

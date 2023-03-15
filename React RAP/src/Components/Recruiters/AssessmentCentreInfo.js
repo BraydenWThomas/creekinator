@@ -19,6 +19,10 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
   // Get assigned interviewers
   const [interviewers, setInterviewers] = useState([]);
 
+  // Get AC + Recruiter info
+  const [recruiters, setRecruiters] = useState([]);
+  const [acCoordinator, setAcCoordinator] = useState('');
+
   // For Material UI Menu
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -87,15 +91,27 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
 
     Promise.all([
       fetch("http://localhost:8080/api/ac/" + ac.id + "/showCandidates", requestOptions),
-      fetch("http://localhost:8080/api/ac/" + ac.id + "/showInterviewers", requestOptions)
+      fetch("http://localhost:8080/api/ac/" + ac.id + "/showInterviewers", requestOptions),
+      fetch("http://localhost:8080/api/recruiter", requestOptions),
     ]).then((responses => {
       console.log(responses)
       responses[0].json()
         .then(data => { setCandidates(data) })
       responses[1].json()
         .then(data => { setInterviewers(data) })
+      responses[2].json()
+        .then(data => { setRecruiters(data) })
     })).catch(error => console.log('error', error));
-  }, [])
+  }, [ac.id])
+
+  // Get AC Coordinator for AC
+  useEffect(() => {
+    for (var i = 0; i < recruiters.length; i++) {
+      if (recruiters[i].id === ac.coordinatorId) {
+        setAcCoordinator(recruiters[i].name);
+      };
+    };
+  }, [recruiters, ac.coordinatorId]);
 
   return (
     <Box
@@ -127,40 +143,44 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
           </h4>
         </div>
         <div style={{ marginRight: "20px", marginLeft: "20px", backgroundColor: "white", paddingLeft: "20px" }}>
-          <div style={{ width: "30%", float: "left" }}>
-            <h4>Interviewers assigned</h4>
-            {/* <p>Sales</p>
-            <ul style={{ marginLeft: "20px" }}>
-              <li>Karen</li>
-              <li>Joe</li>
-            </ul>
-            <p>Technical</p>
-            <ul style={{ marginLeft: "20px" }}>
-              <li>Karen</li>
-              <li>Joe</li>
-            </ul> */}
+          <div style={{ float: "left", width: "35%" }}>
+            <h4> Sales Interviewers </h4>
             <ul style={{ marginLeft: "20px" }}>
               {interviewers.map(interview => (
-                <li key={interview.id}>
-                  {interview.name}
-                </li>
+                (interview.tech === false) ?
+                  <li key={interview.id}>
+                    {interview.name}
+                  </li>
+                  : <></>
+              ))}
+            </ul>
+          </div>
+          <div style={{ float: "left", width: "35%" }}>
+            <h4> Technical Interviewers </h4>
+            <ul style={{ marginLeft: "20px" }}>
+              {interviewers.map(interview => (
+                (interview.tech === true) ?
+                  <li key={interview.id}>
+                    {interview.name}
+                  </li>
+                  : <></>
               ))}
             </ul>
           </div>
 
           <div style={{ width: "30%", float: "left" }}>
-            <h4>Candidate Attending</h4>
+            <h4> Candidates Attending </h4>
             <ul style={{ marginLeft: "20px" }}>
               {candidates.map(candidate => (
-                <li key={candidate.id}> 
-                  {candidate.first_name + " " + candidate.last_name} 
+                <li key={candidate.id}>
+                  {candidate.first_name + " " + candidate.last_name}
                 </li>
               ))}
             </ul>
           </div>
 
           <div style={{ display: "flex", clear: "both" }}>
-            <h3> placeholder-ac-coordinator </h3>
+            <h3> {acCoordinator} </h3>
           </div>
 
         </div>

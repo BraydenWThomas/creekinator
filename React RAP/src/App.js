@@ -1,5 +1,8 @@
-import { createBrowserRouter, RouterProvider, Navigate, useNavigate, Router } from 'react-router-dom';
+// React + css
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
+
+// Componenets
 import AdminDashboard from './Components/AdminDashboard';
 import Recruiter from './Components/Recruiters/Recruiter';
 import Interviewer from './Components/Interviewers/Interviewer';
@@ -16,10 +19,6 @@ import LoginPage from './Components/LoginPage';
 // Material UI
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
-import LoginPage from './Components/LoginPage';
-import handleClick from './Components/LoginPage';
-import NavBar from './Components/NavBar';
-import { Button } from '@mui/material';
 
 const FDMtheme = createTheme({
   palette: {
@@ -30,102 +29,55 @@ const FDMtheme = createTheme({
   },
 });
 
-
 const App = () => {
+  const router = createBrowserRouter([
+    {
+      path:"/",
+      element: <LoginPage />
+    },
 
-
-  const handleClick = (event) => {
-
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
-    const body =
-      JSON.stringify({
-        "username": data.get('username'),
-        "password": data.get('password')
-      });
-
-    const requestOptions = {
-      headers: { 'content-type': 'application/json' },
-      method: "POST",
-      body: body,
-      redirect: 'follow'
-    };
-
-    fetch(" http://localhost:8080/api/auth/signin", requestOptions)
-      .then(response => response.json())
-      .then(result => {
-
-       
-
-        if (result.username) {
-
-          localStorage.setItem('status', result.roles[0])
-          if (result.roles[0] == "ROLE_RECRUITER") {
-            window.location.href = "/recruiter"
-          }
-          else if (result.roles[0] == "ROLE_INTERVIEWER") {
-            window.location.href = "/interviewer"
-          }
-
-
-        }}) 
-      .catch(error => console.log('error', error));
-
-
-
-
-
-
-  };
-
-  const routes = [{
-    path: "/",
-    element: <LoginPage onClick={handleClick} />
-  }]
-
-  if (localStorage.getItem('status') == "ROLE_RECRUITER") {
-    routes.push({
-      path: "/recruiter",
+    // Users
+    {
+      path:"/recruiter",
       element: <Recruiter />
     },
-      {
-        path: "/candidate/create",
-        element: <CreateCandidate />
-      },
-      {
-        path: "/candidate/update/:abc",
-        element: <UpdateCandidate />
-      },
-      {
-        path: "/candidate/info/:abc",
-        element: <CandidateInformation />
-      },
-      {
-        path: "/viewac/:abc",
-        element: <ViewAC />
-      },
-      {
-        path: "/viewupcomingac/:abc",
-        element: <ViewUpcomingAC />
-      }
-      ,
-      {
-        path: "/viewpastac/:abc",
-        element: <ViewPastAC />
-      }
-      ,
-      {
-        path: "/createac",
-        element: <CreateAC />
-      }
-    )
-  }
-
-  if (localStorage.getItem('status') == "ROLE_INTERVIEWER") {
-    routes.push({
-      path: "/interviewer",
+    {
+      path:"/interviewer",
       element: <Interviewer />
+    },
+    {
+      path:"/admin",
+      element: <AdminDashboard />
+    },
+
+    // User webpages
+
+    // Candidates
+    {
+      path:"/candidate/create",
+      element: <CreateCandidate />
+    },
+    {
+      path: "/candidate/info/:candidateId",
+      element: <CandidateInformation />
+    },
+    {
+      path:"/candidate/update/:candidateId",
+      element: <UpdateCandidate />
+    },
+
+    // AC Info
+    {
+      path:"/ac/view/:abc",
+      element: <ViewAC />
+    },
+    {
+      path:"/ac/view-upcoming/:acId",
+      element: <ViewUpcomingAC />
+    },
+    {
+      path:"/ac/view-past/:acId",
+      element: <ViewPastAC />
     },
     {
       path:"/ac/create",
@@ -136,13 +88,11 @@ const App = () => {
       element: <UpdateAC />
     }
     
-  })
+  ]);
 
   return (
-
     <ThemeProvider theme={FDMtheme}>
-      <Button onClick={logout}>LOGOUT</Button>
-      <RouterProvider router={routerPage} />
+    <RouterProvider router = {router} />
     </ThemeProvider>
   )
 
