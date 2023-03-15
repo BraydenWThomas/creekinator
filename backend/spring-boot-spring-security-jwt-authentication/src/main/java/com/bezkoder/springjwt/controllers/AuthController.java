@@ -1,5 +1,6 @@
 package com.bezkoder.springjwt.controllers;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -107,7 +108,34 @@ public class AuthController {
 	
 	
   @PostMapping("/signup")
-  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest,
+		  
+		  // recruiter part
+		  @RequestParam(required = false, name = "recruiterName") String recruiterName,
+		  @RequestParam(required = false, name = "superRecruiter") boolean superRecruiter,
+		  
+		  // interviewer
+		  @RequestParam(required = false, name = "interviewerName") String interviewerName,
+		  @RequestParam(required = false, name = "tech") boolean tech,
+		  
+		  // candidate
+		  @RequestParam(required = false, name = "candidateTitle") String candidateTitle,
+		  @RequestParam(required = false, name = "candidateFirst_name") String candidateFirst_name,
+		  @RequestParam(required = false, name = "candidateMiddle_name") String candidateMiddle_name,
+		  @RequestParam(required = false, name = "candidateLast_name") String candidateLast_name,
+		  @RequestParam(required = false, name = "candidateMobile_number") String candidateMobile_number,
+		  @RequestParam(required = false, name = "candidateEmail") String candidateEmail,
+		  @RequestParam(required = false, name = "candidate_date_of_birth") String candidate_date_of_birth,
+		  @RequestParam(required = false, name = "candidateAddress") String candidateAddress,
+		  @RequestParam(required = false, name = "candidate_graduation_year") Integer candidate_graduation_year,
+		  @RequestParam(required = false, name = "candidateDegree") String candidateDegree,
+		  @RequestParam(required = false, name = "candidateUniversity") String candidateUniversity,
+		  @RequestParam(required = false, name = "candidateResume") String candidateResume,
+		  @RequestParam(required = false, name = "candidate_applied_stream") String candidate_applied_stream,
+		  @RequestParam(required = false, name = "candidate_recruit_phase") String candidate_recruit_phase,
+		  @RequestParam(required = false, name = "candidate_past_ac_result") String candidate_past_ac_result
+		  ) {
+	  
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity
           .badRequest()
@@ -196,19 +224,24 @@ public class AuthController {
     // update link the user with interviewer, candidate or recruiter if new added roles contain any of them and id is specified
     if (strRoles.contains("recruiter")) {
     	// create a new recruiter 
+    	/*
     	Recruiter recruiter = user.getRecruiter();
     	if (recruiter == null) {
+    		//System.out.println("wadwadwaaaaaaaaaaaaaaaaaaaaaa");
     		recruiter = new Recruiter(user.getName());
     	}
     	else {
     		user.setRecruiter(null);
     	}
+    	*/
+    	Recruiter recruiter = new Recruiter(recruiterName, superRecruiter);
     	recruiter.addUser(user);
     	recruiterRepository.save(recruiter);
         userRepository.save(user);
         
     }
     if (strRoles.contains("interviewer")) {
+    	/*
     	Interviewer interviewer = user.getInterviewer();
     	if (interviewer == null) {
     		interviewer = new Interviewer(user.getName());
@@ -216,12 +249,15 @@ public class AuthController {
     	else {
     		user.setInterviewer(null);
     	}
+    	*/
+    	Interviewer interviewer = new Interviewer(interviewerName, tech);
     	interviewer.addUser(user);
     	interviewerRepository.save(interviewer);
     	userRepository.save(user);
     	
     }
     if (strRoles.contains("candidate")) {
+    	/*
     	Candidate candidate = user.getCandidate();
     	if (candidate == null) {
     		candidate = new Candidate();
@@ -229,6 +265,25 @@ public class AuthController {
     	else {
     		user.setCandidate(null);
     	}
+    	*/
+    	Candidate candidate = new Candidate(
+								candidateTitle,
+								candidateFirst_name,
+								candidateMiddle_name,
+								candidateLast_name,
+								candidateMobile_number,
+								  candidateEmail,
+								  LocalDate.parse(candidate_date_of_birth),
+								  candidateAddress,
+								  candidate_graduation_year,
+								  candidateDegree,
+								  candidateUniversity,
+								  candidateResume,
+								  candidate_applied_stream,
+								  candidate_recruit_phase,
+								  candidate_past_ac_result
+    			);
+    	
     	candidate.addUser(user);
     	candidateRepository.save(candidate);
     	userRepository.save(user);
