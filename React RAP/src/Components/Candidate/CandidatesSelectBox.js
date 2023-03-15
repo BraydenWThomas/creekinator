@@ -65,13 +65,12 @@ const CandidateSelectBox = ({ candidate }) => {
           MenuListProps={{
             'aria-labelledby': 'basic-button',
           }}>
-          {/* <Link to={`/candidate/info/name=${candidate.first_name + candidate.middle_name + candidate.last_name}&id=${candidate.id}`}> */}
-          <Link to={`/candidate/info/${candidate.id}`}>
+          <Link to={`candidate/info/${candidate.id}`}>
             <MenuItem>
               View
             </MenuItem>
           </Link>
-          <Link to={`/candidate/update/${candidate.id}`}>
+          <Link to={`candidate/update/${candidate.id}`}>
             <MenuItem>
               Update
             </MenuItem>

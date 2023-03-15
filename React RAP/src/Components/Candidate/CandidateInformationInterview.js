@@ -1,6 +1,8 @@
 // React
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import dayjs from 'dayjs';
+import { Link } from 'react-router-dom'
 
 // Components
 import NavBar from "../NavBar";
@@ -20,9 +22,21 @@ import Select from '@mui/material/Select';
 import { Box } from "@mui/system";
 
 
-const CandidateInformation = () => {
+const CandidateInformationInterview = () => {
   // Candidate Details
   const [title, setTitle] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [middleName, setMiddleName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [mobilePhone, setMobilePhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [dob, setDob] = useState('');
+  const [address, setAddress] = useState('');
+  const [gradYear, setGradYear] = useState('');
+  const [degree, setDegree] = useState('');
+  const [university, setUniversity] = useState('');
+
+  // Candidate Application Details
   const [appliedStream, setAppliedStream] = useState('');
   const [recruitmentPhase, setRecruitmentPhase] = useState('');
   const [pastACResult, setPastACResult] = useState('');
@@ -43,6 +57,27 @@ const CandidateInformation = () => {
       .then(data => { setCandidate(data) })
       .catch(error => console.log('error', error));
   }, [candidateId])
+
+  // Create new states to update Candidate details
+  useEffect(() => {
+    // Candidate Details
+    setTitle(candidate.title);
+    setFirstName(candidate.first_name);
+    setMiddleName(candidate.middle_name);
+    setLastName(candidate.last_name);
+    setMobilePhone(candidate.mobile_number);
+    setEmail(candidate.email);
+    setDob(dayjs(candidate.date_of_birth));
+    setAddress(candidate.address);
+    setGradYear(candidate.graduation_year);
+    setDegree(candidate.degree);
+    setUniversity(candidate.university);
+
+    // Application Details
+    setAppliedStream(candidate.applied_stream);
+    setRecruitmentPhase(candidate.recruit_phase);
+    setPastACResult(candidate.past_ac_result);
+  }, [candidate])
 
   const pageTitle = candidate.first_name + " " + candidate.last_name + "'s " + "Profile"
 
@@ -70,111 +105,133 @@ const CandidateInformation = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={2}>
                   <TextField
-                    disabled
                     id="title_select"
                     label="Title"
                     type="text"
-                    value={candidate.title ?? ""}
+                    value={title}
+                    InputProps={{
+                      readOnly: true
+                    }}
                     fullWidth
                   />
                 </Grid>
                 <Grid item xs={12} sm={3}>
                   <TextField
-                    disabled
                     id="outlined-first-name-input"
                     label="First Name"
                     type="text"
-                    value={candidate.first_name ?? ""}
+                    value={firstName}
+                    InputProps={{
+                      readOnly: true
+                    }}
                     fullWidth
                   />
                 </Grid>
                 <Grid item xs={12} sm={3}>
                   <TextField
-                    disabled
                     id="outlined-middle-name-input"
                     label="Middle Name"
                     type="text"
-                    value={candidate.middle_name ?? ""}
+                    value={middleName}
+                    InputProps={{
+                      readOnly: true
+                    }}
                     fullWidth
                   />
                 </Grid>
                 <Grid item xs={12} sm={4}>
                   <TextField
-                    disabled
                     id="outlined-last-name-input"
                     label="Last Name"
                     type="text"
-                    value={candidate.last_name ?? ""}
+                    value={lastName}
+                    InputProps={{
+                      readOnly: true
+                    }}
                     fullWidth
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    disabled
                     id="outlined-mobile-input"
                     label="Mobile Phone"
                     type="number"
-                    value={candidate.mobile_number ?? ""}
+                    value={mobilePhone}
+                    InputProps={{
+                      readOnly: true
+                    }}
                     fullWidth
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    disabled
                     id="outlined-email-input"
                     label="Email"
                     type="text"
-                    value={candidate.email ?? ""}
+                    value={email}
+                    InputProps={{
+                      readOnly: true
+                    }}
                     fullWidth
                   />
                 </Grid>
                 <Grid item xs={12} sm={2}>
                   <TextField
-                    disabled
                     id="outlined-date-input"
                     label="D.O.B"
                     type="text"
-                    value={candidate.date_of_birth ?? ""}
+                    value={dob}
+                    InputProps={{
+                      readOnly: true
+                    }}
                     fullWidth
                   />
                 </Grid>
                 <Grid item xs={12} sm={10}>
                   <TextField
-                    disabled
                     id="outlined-address-input"
                     label="Address"
                     type="text"
-                    value={candidate.address ?? ""}
+                    value={address}
+                    InputProps={{
+                      readOnly: true
+                    }}
                     fullWidth
                   />
                 </Grid>
                 <Grid item xs={12} sm={4}>
                   <TextField
-                    disabled
                     id="outlined-year-input"
                     label="Graduation Year"
                     type="number"
-                    value={candidate.graduation_year ?? ""}
+                    value={gradYear}
+                    InputProps={{
+                      readOnly: true
+                    }}
                     fullWidth
                   />
                 </Grid>
                 <Grid item xs={12} sm={4}>
                   <TextField
-                    disabled
                     id="outlined-degree-input"
                     label="Degree"
                     type="text"
-                    value={candidate.degree ?? ""}
+                    value={degree}
+                    InputProps={{
+                      readOnly: true
+                    }}
                     fullWidth
                   />
                 </Grid>
                 <Grid item xs={12} sm={4}>
                   <TextField
-                    disabled
                     id="outlined-university-input"
                     label="University"
                     type="text"
-                    value={candidate.university ?? ""}
+                    value={university}
+                    InputProps={{
+                      readOnly: true
+                    }}
                     fullWidth
                   />
                 </Grid>
@@ -187,33 +244,39 @@ const CandidateInformation = () => {
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <TextField
-                    disabled
                     id="applied-stream-select"
                     label="Applied Stream"
                     type="text"
-                    value={candidate.applied_stream ?? ""}
+                    value={appliedStream}
+                    InputProps={{
+                      readOnly: true
+                    }}
                     fullWidth />
                 </Grid>
                 <Grid item xs sm={6}>
                   <TextField
-                    disabled
                     id="recruitment-phase-select-label"
                     label="Recruitment Phase"
                     type="text"
-                    value={candidate.recruit_phase ?? ""}
+                    value={recruitmentPhase}
+                    InputProps={{
+                      readOnly: true
+                    }}
                     fullWidth />
                 </Grid>
                 <Grid item xs sm={6}>
                   <TextField
-                    disabled
                     id="past-ac-result-input"
                     label="Past AC Result"
                     type="text"
-                    value={candidate.past_ac_result ?? ""}
+                    value={pastACResult}
+                    InputProps={{
+                      readOnly: true
+                    }}
                     fullWidth />
                 </Grid>
                 <Grid item xs sm={12}>
-                  <a href="/recruiter">
+                  <a href="/interviewer">
                     <Button
                       variant="contained"
                       component="label"
@@ -232,31 +295,4 @@ const CandidateInformation = () => {
   )
 }
 
-export default CandidateInformation;
-
-  // const fetchCandidate = async () => {
-    //   const { candidate } = await request (
-    //     "http://localhost:8080/api/candidate/",
-    //     `
-    //     {
-    //       candidate(where: {candidateName: "${candidateName}"}) {
-    //         title
-    //         first_name
-    //         middle_name
-    //         last_name
-    //         mobile_number
-    //         email
-    //         date_of_birth
-    //         address
-    //         graduation_year
-    //         degree
-    //         university
-    //         applied_stream
-    //         recruit_phase
-    //         past_ac_result
-    //       }
-    //     }
-    //     `
-    //   );
-    //   setCandidate(candidate);
-    // }
+export default CandidateInformationInterview;

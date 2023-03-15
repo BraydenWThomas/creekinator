@@ -12,7 +12,6 @@ import { useParams } from 'react-router-dom';
 import { Box, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 
 const AdminDashboard = () => {
-  const { abc } = useParams();
   const [fullname, setFullname] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -30,7 +29,7 @@ const AdminDashboard = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
 
   // Fetch all existing users
-  
+
   const handleSubmit = () => {
     const newUser = { fullname, username, password, email, role };
     setUsers([...users, newUser]);
@@ -38,28 +37,52 @@ const AdminDashboard = () => {
     setUsername("");
     setPassword("");
     setEmail("");
-    setRole("")
+    setRole("");
+    console.log(role.includes("Interviewer"))
+    if (role.includes("Interviewer")) {
+      console.log("Working")
+      const body =
+        JSON.stringify({
+          username: username,
+          email: email,
+          password: password,
+          role: ["interviewer"],
+          name: fullname
+        });
 
-    const body =
-      JSON.stringify({
-        username: username,
-        email: email,
-        password: password,
-        role: [role.toLowerCase()],
-        name: fullname
-      });
+      const requestOptions = {
+        method: 'POST',
+        body: body,
+        redirect: 'follow',
+        headers: { 'content-type': 'application/json' }
+      };
 
-    const requestOptions = {
-      method: 'POST',
-      body: body,
-      redirect: 'follow',
-      headers: { 'content-type': 'application/json' }
-    };
+      fetch("http://localhost:8080/api/auth/signup", requestOptions)
+        .then(response => response.json())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+    } else {
+      const body =
+        JSON.stringify({
+          username: username,
+          email: email,
+          password: password,
+          role: [role.toLowerCase()],
+          name: fullname
+        });
 
-    fetch("http://localhost:8080/api/auth/signup", requestOptions)
-      .then(response => response.json())
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
+      const requestOptions = {
+        method: 'POST',
+        body: body,
+        redirect: 'follow',
+        headers: { 'content-type': 'application/json' }
+      };
+
+      fetch("http://localhost:8080/api/auth/signup", requestOptions)
+        .then(response => response.json())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+    }
   }
 
   const handleFilter = (event) => {

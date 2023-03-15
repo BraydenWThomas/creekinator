@@ -9,7 +9,7 @@ import Recruiter from './Components/Recruiters/Recruiter';
 import Interviewer from './Components/Interviewers/Interviewer';
 import CreateCandidate from './Components/Candidate/CreateCandidate';
 import UpdateCandidate from './Components/Candidate/UpdateCandidate';
-import CandidateInformation from './Components/Candidate/CandidateInformation';
+import CandidateInformationRec from './Components/Candidate/CandidateInformationRec';
 import ViewAC from './Components/Interviewers/ViewAC';
 import ViewUpcomingAC from './Components/Recruiters/ViewUpcomingAC';
 import ViewPastAC from './Components/Recruiters/ViewPastAC';
@@ -17,6 +17,8 @@ import CreateAC from './Components/Recruiters/CreateAC';
 import UpdateAC from './Components/Recruiters/UpdateAC';
 import LoginPage from './Components/LoginPage';
 import Candidate from './Components/Candidate/Candidate'
+import CreateInterview from './Components/Recruiters/CreateInterview'
+import CandidateInformationInterview from './Components/Candidate/CandidateInformationInterview';
 
 // Material UI
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -104,36 +106,40 @@ const App = () => {
       element: <Recruiter />
     },
       {
-        path: "/candidate/create",
+        path: "/recruiter/candidate/create",
         element: <CreateCandidate />
       },
       {
-        path: "/candidate/update/:candidateId",
+        path: "/recruiter/candidate/update/:candidateId",
         element: <UpdateCandidate />
       },
       {
-        path: "/candidate/info/:candidateID",
-        element: <CandidateInformation />
+        path: "/recruiter/candidate/info/:candidateId",
+        element: <CandidateInformationRec />
       },
       {
-        path: "/ac/view/:acId",
+        path: "/recruiter/ac/view/:acId",
         element: <ViewAC />
       },
       {
-        path: "/ac/view-upcoming/:acId",
+        path: "/recruiter/ac/view-upcoming/:acId",
         element: <ViewUpcomingAC />
       },
       {
-        path: "/ac/update/:acId",
+        path: "/recruiter/ac/update/:acId",
         element: <UpdateAC />
       },
       {
-        path: "/ac/view-past/:acId",
+        path: "/recruiter/ac/view-past/:acId",
         element: <ViewPastAC />
       },
       {
-        path: "/createac",
+        path: "/recruiter/ac/create",
         element: <CreateAC />
+      },
+      {
+        path: "/createinterview",
+        element: <CreateInterview/>
       }
     )
   }
@@ -144,11 +150,11 @@ const App = () => {
       element: <Interviewer />
     },
       {
-        path: "/candidateinformation/:candidateId",
-        element: <CandidateInformation />
+        path: "/candidate/info/:candidateId",
+        element: <CandidateInformationInterview />
       },
       {
-        path: "/viewac/:acId",
+        path: "/ac/view/:acId",
         element: <ViewAC />
       })
   }

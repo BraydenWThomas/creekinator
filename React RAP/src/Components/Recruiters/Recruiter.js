@@ -1,5 +1,6 @@
 import CandidateSelectBox from '../Candidate/CandidatesSelectBox';
 import AssessmentCentreInfo from './AssessmentCentreInfo';
+import { Link } from 'react-router-dom'
 // import '../Styling/RecruiterStyles.css';
 import NavBar from '../NavBar';
 import React, { useEffect, useState } from 'react';
