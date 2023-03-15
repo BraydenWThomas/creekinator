@@ -51,7 +51,7 @@ public class Interviewer {
 		this.assessmentCenters = new ArrayList<AssessmentCenter>();
 		this.name = name;
 	}
-	public Interviewer(String name,boolean tech) {
+	public Interviewer(String name, boolean tech) {
 		this.name = name;
 		this.tech = tech;
 		this.interviews = new ArrayList<Interview>();
