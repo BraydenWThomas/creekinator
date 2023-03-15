@@ -28,6 +28,7 @@ const NavBar = () => {
           />
           <Tab
             icon={<CalendarMonthIcon />} iconPosition="start"
+            href='/calendar'
             label="Calendar"
           />
           <Tab

@@ -11,6 +11,7 @@ import fdm from './fdm-logo.png';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import './Styling/LoginPageStyle.css'
+import { Link } from 'react-router-dom';
 
 const FDMtheme = createTheme({
   palette: {
@@ -77,14 +78,20 @@ const LoginPage = (props) => {
                 disableElevation
                 sx={{ mt: 2, mb: 2, }}>
                 Login
-                
               </Button>
                 {/* <Button><a href="/recruiter"><h4>Rercruiter</h4></a></Button>
                 <Button><a href="/interviewer"><h4>Interviewer</h4></a></Button>
-                <Button><a href="/admin"><h4>Admin</h4></a></Button> */}
+              <Button><a href="/admin"><h4>Admin</h4></a></Button> */}
             </Box>
+              <Grid container justifyContent="flex-end">
+                        <Grid item>
+                            <Button href="/apply">
+                                Don't have an account? Apply
+                            </Button>
+                        </Grid>
+                    </Grid>
             <Grid item
-              sx={{ mt: 35 }}>
+              sx={{ mt: 30 }}>
               <img src={fdm} alt="FDM Logo" />
             </Grid>
           </Box>

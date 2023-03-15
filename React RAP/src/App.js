@@ -16,11 +16,11 @@ import LoginPage from './Components/LoginPage';
 // Material UI
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
-import LoginPage from './Components/LoginPage';
 import handleClick from './Components/LoginPage';
 import NavBar from './Components/NavBar';
 import { Button } from '@mui/material';
 import Calendar from './Components/Calendar';
+import CandidateApply from './Components/CandidateApply';
 const FDMtheme = createTheme({
   palette: {
     primary: {
@@ -84,6 +84,10 @@ const App = () => {
     element: <LoginPage onClick={handleClick} />
   },
   {
+    path: "/apply",
+    element: <CandidateApply />
+  },
+  {
     path: "/calendar",
     element: <Calendar />
   },
@@ -102,11 +106,11 @@ const App = () => {
         element: <CreateCandidate />
       },
       {
-        path: "/candidate/update/:abc",
+        path: "/candidate/update/:candidateID",
         element: <UpdateCandidate />
       },
       {
-        path: "/candidate/info/:abc",
+        path: "/candidate/info/:candidateID",
         element: <CandidateInformation />
       },
       {

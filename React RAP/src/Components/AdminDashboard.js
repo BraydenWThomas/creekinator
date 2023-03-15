@@ -78,13 +78,13 @@ const AdminDashboard = () => {
     <div>
       <Container component="main">
         <div className="header" style={{ display: "flex" }}>
-          <h1 style={{ flex: 1, margin: '1%' }}>Admin Dashboard</h1>
+          <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Admin Dashboard</Typography>
           <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
             <NotificationsIcon fontSize="large" />
             <Avatar src="/broken-image.jpg" />
           </div>
         </div>
-        <Divider variant='middle' />
+        <Divider sx={{ mt: 2, mb: 2 }} />
         <Box
           sx={{
             flexDirection: 'column',
@@ -92,7 +92,7 @@ const AdminDashboard = () => {
             mt: 3,
           }}>
           <div className="create-user">
-            <Typography component="h2"  variant="h4"> Create User </Typography>
+            <Typography component="h2" variant="h4"> Create User </Typography>
             <Grid container justifyContent='space-between' alignItems='center' spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -148,24 +148,24 @@ const AdminDashboard = () => {
                 />
               </Grid>
               <Grid item xs={6}>
-              <FormControl required fullWidth sx={{mt: 4}}>
-                <InputLabel id="role-select-label">Role</InputLabel>
-                <Select
-                  labelId="role-select-label"
-                  id="role-select"
-                  value={role}
-                  label="Role"
-                  fullWidth
-                  onChange={(event) => setRole(event.target.value)}
-                >
-                  <MenuItem value={"Recruiter"}>Recruiter</MenuItem>
-                  <MenuItem value={"Sales Interviewer"}>Sales Interviewer</MenuItem>
-                  <MenuItem value={"Technical Interviewer"}>Technical Interviewer</MenuItem>
-                </Select>
+                <FormControl required fullWidth sx={{ mt: 4 }}>
+                  <InputLabel id="role-select-label">Role</InputLabel>
+                  <Select
+                    labelId="role-select-label"
+                    id="role-select"
+                    value={role}
+                    label="Role"
+                    fullWidth
+                    onChange={(event) => setRole(event.target.value)}
+                  >
+                    <MenuItem value={"Recruiter"}>Recruiter</MenuItem>
+                    <MenuItem value={"Sales Interviewer"}>Sales Interviewer</MenuItem>
+                    <MenuItem value={"Technical Interviewer"}>Technical Interviewer</MenuItem>
+                  </Select>
                 </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                  <Button fullWidth variant='contained' type='button' sx={{ mt: 3, mb: 2 }} onClick={handleSubmit}>Create</Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Button fullWidth variant='contained' type='button' sx={{ mt: 3, mb: 2 }} onClick={handleSubmit}>Create</Button>
               </Grid>
             </Grid>
           </div>
@@ -197,7 +197,7 @@ const AdminDashboard = () => {
               </Grid>
             </Grid>
             <div className="user-list">
-              <Paper sx={{ borderRadius: 2, p:2 }}>
+              <Paper sx={{ borderRadius: 2, p: 2 }}>
                 <TableContainer>
                   <Table sx={{ minWidth: 650 }} aria-label="Users table">
                     <TableHead>

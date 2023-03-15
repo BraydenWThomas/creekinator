@@ -50,15 +50,15 @@ const Recruiter = () => {
       <NavBar />
 
       <div className='bodySection'>
-        <div className="header" style={{ display: "flex" }}>
-          <h1 style={{ flex: 1, margin: '1%' }}> Dashboard </h1>
-          <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
-            <NotificationsIcon fontSize="large" />
-            <Avatar src="/broken-image.jpg" />
-          </div>
+      <div className="header" style={{ display: "flex" }}>
+            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Dashboard</Typography>
+            <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
+              <NotificationsIcon fontSize="large" />
+              <Avatar src="/broken-image.jpg" />
+            </div>
         </div>
 
-        <Divider variant='middle' />
+        <Divider sx={{ mt: 2, mb: 2 }} />
 
         <div className='recruiterToolBar'>
           <Box sx={{ m: 2, width: '100%' }}>
