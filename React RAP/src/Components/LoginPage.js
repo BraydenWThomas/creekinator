@@ -22,15 +22,6 @@ const FDMtheme = createTheme({
 });
 
 const LoginPage = (props) => {
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   console.log({
-  //     username: data.get('username'),
-  //     password: data.get('password'),
-  //   });
-  // };
-
   return (
     <div className='login-container'>
       <ThemeProvider theme={FDMtheme}>
@@ -78,17 +69,14 @@ const LoginPage = (props) => {
                 sx={{ mt: 2, mb: 2, }}>
                 Login
               </Button>
-                {/* <Button><a href="/recruiter"><h4>Rercruiter</h4></a></Button>
-                <Button><a href="/interviewer"><h4>Interviewer</h4></a></Button>
-              <Button><a href="/admin"><h4>Admin</h4></a></Button> */}
             </Box>
-              <Grid container justifyContent="flex-end">
-                        <Grid item>
-                            <Button href="/apply">
-                                Don't have an account? Apply
-                            </Button>
-                        </Grid>
-                    </Grid>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Button href="/apply">
+                  Don't have an account? Apply
+                </Button>
+              </Grid>
+            </Grid>
             <Grid item
               sx={{ position: 'absolute', bottom: 75 }}>
               <img src={fdm} alt="FDM Logo" />

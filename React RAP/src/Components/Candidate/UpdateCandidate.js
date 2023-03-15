@@ -80,12 +80,6 @@ const UpdateCandidate = () => {
       responses[1].json()
         .then(data => { setGetName(data) })
     })).catch(error => console.log('error', error));
-    
-      // .then(response => response.json())
-      // .then(data => { setCandidate(data) })
-      // .then(data => console.log(data))
-      // .then(data => { setGetName(data) })
-      
   }, [candidateId]);
 
   // Handles the event of user input updating/editing the table row data

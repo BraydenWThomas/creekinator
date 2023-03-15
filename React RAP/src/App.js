@@ -1,5 +1,9 @@
+// React + css
+import React, { useState, useEffect } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate, useNavigate, Router } from 'react-router-dom';
 import './App.css';
+
+// Components
 import AdminDashboard from './Components/AdminDashboard';
 import Recruiter from './Components/Recruiters/Recruiter';
 import Interviewer from './Components/Interviewers/Interviewer';
@@ -17,8 +21,6 @@ import Candidate from './Components/Candidate/Candidate'
 // Material UI
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
-import handleClick from './Components/LoginPage';
-import NavBar from './Components/NavBar';
 import { Button } from '@mui/material';
 import Calendar from './Components/Calendar';
 import CandidateApply from './Components/CandidateApply';
@@ -42,7 +44,6 @@ const App = () => {
 
 
   const handleClick = (event) => {
-
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
@@ -62,11 +63,7 @@ const App = () => {
     fetch(" http://localhost:8080/api/auth/signin", requestOptions)
       .then(response => response.json())
       .then(result => {
-
-       
-
         if (result.username) {
-
           localStorage.setItem('status', result.roles[0])
           localStorage.setItem('userId', result.id)
           if (result.roles[0] == "ROLE_RECRUITER") {
@@ -75,16 +72,9 @@ const App = () => {
           else if (result.roles[0] == "ROLE_INTERVIEWER") {
             window.location.href = "/interviewer"
           }
-
-
-        }}) 
+        }
+      })
       .catch(error => console.log('error', error));
-
-
-
-
-
-
   };
 
   const routes = [{
@@ -118,7 +108,7 @@ const App = () => {
         element: <CreateCandidate />
       },
       {
-        path: "/candidate/update/:candidateID",
+        path: "/candidate/update/:candidateId",
         element: <UpdateCandidate />
       },
       {
@@ -126,19 +116,21 @@ const App = () => {
         element: <CandidateInformation />
       },
       {
-        path: "/viewac/:abc",
+        path: "/ac/view/:acId",
         element: <ViewAC />
       },
       {
-        path: "/viewupcomingac/:abc",
+        path: "/ac/view-upcoming/:acId",
         element: <ViewUpcomingAC />
-      }
-      ,
+      },
       {
-        path: "/viewpastac/:abc",
+        path: "/ac/update/:acId",
+        element: <UpdateAC />
+      },
+      {
+        path: "/ac/view-past/:acId",
         element: <ViewPastAC />
-      }
-      ,
+      },
       {
         path: "/createac",
         element: <CreateAC />
@@ -152,11 +144,11 @@ const App = () => {
       element: <Interviewer />
     },
       {
-        path: "/candidateinformation/:abc",
+        path: "/candidateinformation/:candidateId",
         element: <CandidateInformation />
       },
       {
-        path: "/viewac/:abc",
+        path: "/viewac/:acId",
         element: <ViewAC />
       })
   }

@@ -26,10 +26,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 
-// // Brayden
-
-// // Brayden
-
 const CreateAC = () => {
   // AC Details
   const [title, setTitle] = useState('');
@@ -119,7 +115,8 @@ const CreateAC = () => {
         title: title,
         date: date.format('YYYY-MM-DD'),
         start_time: timeStart.format('HH:mm:ss'),
-        finish_time: timeEnd.format('HH:mm:ss')
+        finish_time: timeEnd.format('HH:mm:ss'),
+        // coordinatorId: 
       });
 
     const requestOptions = {
@@ -128,8 +125,7 @@ const CreateAC = () => {
       redirect: 'follow',
       headers: { 'content-type': 'application/json' }
     };
-
-    // fetch("http://localhost:8080/api/ac", requestOptions)
+    
     fetch("http://localhost:8080/api/ac?interviewers=" + interviewerString +
       "&recruiters=1&candidates=" + candidateString, requestOptions)
       .then(response => response.json())
