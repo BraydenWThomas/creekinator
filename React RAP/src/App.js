@@ -81,6 +81,7 @@ const App = () => {
         if (result.username) {
 
           localStorage.setItem('status', result.roles[0])
+          localStorage.setItem('userId', result.id)
           if (result.roles[0] == "ROLE_RECRUITER") {
             window.location.href = "/recruiter"
           }
@@ -114,6 +115,9 @@ const App = () => {
   {
     path: "/admin",
     element: <AdminDashboard />
+  }, {
+    path: "/candidate",
+    element: <Candidate />
   }]
 
     // Candidates
@@ -185,18 +189,25 @@ const App = () => {
       })
   }
 
+  
+
   const routerPage = createBrowserRouter(routes);
 
   const logout = () => {
 
     localStorage.removeItem('status');
+    localStorage.removeItem('userId')
     window.location.href = "/"
 
   }
   const getCalendar = () => {
+    window.location.href = "/calendar"
+  }
+
+  const getCandidate = () => {
 
     
-    window.location.href = "/calendar"
+    window.location.href = "/candidate"
 
   }
 
@@ -204,6 +215,8 @@ const App = () => {
     <ThemeProvider theme={FDMtheme}>
       <Button onClick={logout}>LOGOUT</Button>
       <Button onClick={getCalendar}>Calendar</Button>
+      <Button onClick={getCandidate}>Candidate</Button>
+      
       <RouterProvider router={routerPage} />
     </ThemeProvider>
   )
