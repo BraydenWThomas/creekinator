@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import fdm from './fdm-logo.png';
-import { Tabs, Tab, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Tabs, Tab, List, ListItemButton, ListItemIcon, ListItemText, Paper } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import TuneIcon from '@mui/icons-material/Tune';
@@ -15,7 +15,8 @@ const NavBar = () => {
   };
 
   return (
-    <div className="nav-container">
+    <div className="nav-container" style={{height: '100vh'}}>
+      <Paper elevation={4} sx={{ height: '100vh'}}>
         <nav className="nav-side">
           <img src={fdm} alt="FDM Logo" />
         </nav>
@@ -34,6 +35,7 @@ const NavBar = () => {
             label="Settings"
           />
         </Tabs>
+      </Paper>
     </div>
   );
 };

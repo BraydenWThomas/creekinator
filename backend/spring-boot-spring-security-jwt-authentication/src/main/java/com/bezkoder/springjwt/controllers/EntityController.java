@@ -193,21 +193,21 @@ public class EntityController {
 	
 	
 	// show all candidates in an specific ac 
-	@GetMapping("/ac/showCandidates/{id}")
+	@GetMapping("/ac/{id}/showCandidates")
 	public List<Candidate> showACCandidates(@PathVariable int id) {
 		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find candidate with id: " + id));
 		return assessmentCenter.getCandidates();
 	}	
 	
 	// show all interviewers in an specific ac 
-	@GetMapping("/ac/showInterviewers/{id}")
+	@GetMapping("/ac/{id}/showInterviewers")
 	public List<Interviewer> showACInterviewers(@PathVariable int id) {
 		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find interviewer with id: " + id));
 		return assessmentCenter.getInterviewers();
 	}
 	
 	// add new candidates with a specific ac, raise error if ac not exist or any id of candidate id list not existed in database
-	@PutMapping("/ac/addCandidates/{id}")
+	@PutMapping("/ac/{id}/addCandidates")
 	public List<Candidate> addACCandidates(@PathVariable int id, 
 			@RequestParam(required = true, name = "candidateIds") int[] candidatesIds) {
 		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find candidate with id: " + id));
@@ -225,7 +225,7 @@ public class EntityController {
 	}
 	
 	// add new interviewer with a specific ac, raise error if ac not exist or any id of interviewer id list not existed in database
-	@PutMapping("/ac/addInterviewers/{id}")
+	@PutMapping("/ac/{id}/addInterviewers")
 	public List<Interviewer> addACInterviewers(@PathVariable int id, 
 			@RequestParam(required = true, name = "interviewerIds") int[] interviewerIds) {
 		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find AC with id: " + id));
@@ -243,7 +243,7 @@ public class EntityController {
 	}
 	
 	// add new candidates with a specific ac, raise error if ac not exist or any id of candidate id list not existed in database
-	@PutMapping("/ac/deleteCandidates/{id}")
+	@PutMapping("/ac/{id}/deleteCandidates")
 	public List<Candidate> deleteACCandidates(@PathVariable int id, 
 			@RequestParam(required = true, name = "candidateIds") int[] candidatesIds) {
 		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find AC with id: " + id));
@@ -261,7 +261,7 @@ public class EntityController {
 	}
 	
 	// delete interviewers from an AC
-	@PutMapping("/ac/deleteInterviewers/{id}")
+	@PutMapping("/ac/{id}/deleteInterviewers")
 	public List<Interviewer> deleteACInterviewers(@PathVariable int id, 
 			@RequestParam(required = true, name = "interviewerIds") int[] interviewerIds) {
 		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find AC with id: " + id));
@@ -345,6 +345,14 @@ public class EntityController {
 		}
 		return candidateRepository.save(candidate);
 	}
+	
+	// show all candidates in an specific ac 
+	@GetMapping("/candidate/{id}/showACs")
+	public List<AssessmentCenter> showCandidateACs(@PathVariable int id) {
+		Candidate candidate = candidateRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find candidate with id: " + id));
+		return candidate.getAssessmentCenters();
+	}	
+	
 	/* --- End of Candidate --- */
 	
 	
@@ -466,8 +474,19 @@ public class EntityController {
 	//Create Interview
 	@PostMapping("/interview")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Interview createInterview(@RequestBody Interview interview,@RequestParam(required = true, name = "acId") int acId) {
+	public Interview createInterview(@RequestBody Interview interview,
+			@RequestParam(required = true, name = "acId") int acId,
+			@RequestParam(required = true, name = "interviewId") int interviewId,
+			@RequestParam(required = true, name = "candidateId") int candidateId,
+			@RequestParam(required = true, name = "packIds") int[] packIds) {
+		//if (interviewId == null)
 		interview.addAssessmentCenter(assessmentCenterRepository.findById(acId).orElseThrow(()->new NotFoundException("Can't find AC with id: " + acId)));
+		interview.addInterviewer(interviewerRepository.findById(interviewId).orElseThrow(()->new NotFoundException("Can't find interviewer with id: " + interviewId)));
+		interview.addCandidate(candidateRepository.findById(candidateId).orElseThrow(()->new NotFoundException("Can't find candidate with id: " + candidateId)));		
+		for (int pack : packIds) {
+			interview.addPack(packsRepository.findById(pack).orElseThrow(()->new NotFoundException("Can't find AC with id: " + pack)));
+		}
+		
 		return interviewRepository.save(interview);
 	}
 	

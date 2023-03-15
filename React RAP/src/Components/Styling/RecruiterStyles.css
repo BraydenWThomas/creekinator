@@ -8,12 +8,6 @@
     height: 100vh;
 }
 
-.applicantToolBar, .assessmentToolBar {
-    margin-left: 20px;
-    margin-right: 20px;
-    padding: 10px;
-
-}
 
 .candidateSelectBox {
     margin-left: 20px;
@@ -59,7 +53,6 @@
     background-color: transparent;
     color: white;
     
-    
 }
 .acDetails {
     float: right;
@@ -70,13 +63,9 @@
 }
 .streamInfo{
     background-color: rgb(214, 214, 214);
-    margin: 20px 20px 0px 20px;
     padding: 10px;
     border: solid;
     border-color: rgb(136, 136, 136);
-}
-.assessmentToolBar {
-   
-    margin-right: 20px; 
-    margin-top: 20px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
 }

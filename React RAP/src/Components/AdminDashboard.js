@@ -9,7 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import { useParams } from 'react-router-dom';
-import { Box, Container } from '@mui/material';
+import { Box, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 
 const AdminDashboard = () => {
   const { abc } = useParams();
@@ -76,125 +76,166 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <Container component="main" maxWidth="xl">
-          <div className="header" style={{ display: "flex" }}>
-            <h1 style={{ flex: 1, margin: '1%' }}>Admin Dashboard</h1>
-            <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
-              <NotificationsIcon fontSize="large" />
-              <Avatar src="/broken-image.jpg" />
-            </div>
+      <Container component="main">
+        <div className="header" style={{ display: "flex" }}>
+          <h1 style={{ flex: 1, margin: '1%' }}>Admin Dashboard</h1>
+          <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
+            <NotificationsIcon fontSize="large" />
+            <Avatar src="/broken-image.jpg" />
           </div>
-          <Divider variant='middle' />
-      <Box
-            sx={{
-              marginTop: 10,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center'
-            }}>
+        </div>
+        <Divider variant='middle' />
+        <Box
+          sx={{
+            flexDirection: 'column',
+            alignItems: 'center',
+            mt: 3,
+          }}>
           <div className="create-user">
-            <h2 style={{ margin: '1%' }}>Create User</h2>
-            <div className='CreateUser'>
-              <FormControl>
+            <Typography component="h2"  variant="h4"> Create User </Typography>
+            <Grid container justifyContent='space-between' alignItems='center' spacing={2}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
+                  fullWidth
+                  margin='normal'
                   id="outlined-fullname-input"
                   label="Full Name"
                   type="text"
                   autoComplete="current-fullname"
                   value={fullname}
-                  sx={{ m: 2 }}
                   onChange={(event) => setFullname(event.target.value)}
                 />
-              </FormControl>
-
-              <TextField
-                required
-                id="outlined-username-input"
-                label="Username"
-                type="text"
-                autoComplete="current-username"
-                value={username}
-                sx={{ m: 2 }}
-                onChange={(event) => setUsername(event.target.value)}
-              />
-              <TextField
-                required
-                id="outlined-password-input"
-                label="Password"
-                type="text"
-                autoComplete="current-password"
-                helperText="Minimum password length of 6"
-                value={password}
-                sx={{ m: 2 }}
-                onChange={(event) => setPassword(event.target.value)}
-              />
-              <TextField
-                required
-                id="outlined-email-input"
-                label="Email"
-                type="email"
-                autoComplete="current-email"
-                value={email}
-                sx={{ m: 2 }}
-                onChange={(event) => setEmail(event.target.value)}
-              />
-              <FormControl required sx={{ m: 2, minWidth: 90 }}>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  margin='normal'
+                  id="outlined-username-input"
+                  label="Username"
+                  type="text"
+                  autoComplete="current-username"
+                  value={username}
+                  onChange={(event) => setUsername(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  margin='normal'
+                  id="outlined-password-input"
+                  label="Password"
+                  type="text"
+                  autoComplete="current-password"
+                  helperText="Minimum password length of 6"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  margin='normal'
+                  id="outlined-email-input"
+                  label="Email"
+                  type="email"
+                  autoComplete="current-email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={6}>
+              <FormControl required fullWidth sx={{mt: 4}}>
                 <InputLabel id="role-select-label">Role</InputLabel>
                 <Select
-                  required
                   labelId="role-select-label"
                   id="role-select"
                   value={role}
                   label="Role"
+                  fullWidth
                   onChange={(event) => setRole(event.target.value)}
                 >
                   <MenuItem value={"Recruiter"}>Recruiter</MenuItem>
                   <MenuItem value={"Sales Interviewer"}>Sales Interviewer</MenuItem>
                   <MenuItem value={"Technical Interviewer"}>Technical Interviewer</MenuItem>
                 </Select>
-              </FormControl>
-              <div className='create-button-row'>
-                <Button variant='contained' type='button' sx={{ m: 2 }} onClick={handleSubmit}>Create</Button>
-              </div>
+                </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button fullWidth variant='contained' type='button' sx={{ mt: 3, mb: 2 }} onClick={handleSubmit}>Create</Button>
+              </Grid>
+            </Grid>
+          </div>
+        </Box>
+        <Divider variant='middle' />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            mt: 2
+          }}>
+          <Container maxWidth="lg" >
+            <Grid container justifyContent='space-between' alignItems='center'>
+              <Grid item>
+                <Typography component="h2" variant="h4"> Users </Typography>
+              </Grid>
+              <Grid item>
+                <FormControl sx={{ m: 2, minWidth: 200 }}>
+                  <InputLabel id="users-list-filter">Filter</InputLabel>
+                  <Select required labelId="filter-select-label" id="filter" value={selection} label="Filter"
+                    onChange={(event) => handleFilter(event)}>
+                    <MenuItem value={"All"}>All</MenuItem>
+                    <MenuItem value={"Recruiter"}>Recruiter</MenuItem>
+                    <MenuItem value={"Sales Interviewer"}>Sales Interviewer</MenuItem>
+                    <MenuItem value={"Technical Interviewer"}>Technical Interviewer</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+            <div className="user-list">
+              <Paper sx={{ borderRadius: 2, p:2 }}>
+                <TableContainer>
+                  <Table sx={{ minWidth: 650 }} aria-label="Users table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Email</TableCell>
+                        <TableCell>Role</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {selection === "All"
+                        ? users.map((user) => (
+                          <TableRow key={user.email}>
+                            <TableCell component="th" scope="row">
+                              {user.fullname}
+                            </TableCell>
+                            <TableCell>{user.email}</TableCell>
+                            <TableCell>{user.role}</TableCell>
+                          </TableRow>
+                        ))
+                        : filteredUsers.map((filteredUser) => (
+                          <TableRow key={filteredUser.email}>
+                            <TableCell component="th" scope="row">
+                              {filteredUser.fullname}
+                            </TableCell>
+                            <TableCell>{filteredUser.email}</TableCell>
+                            <TableCell>{filteredUser.role}</TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Paper>
             </div>
-          </div>
-          <Divider variant='middle' style={{ paddingTop: '2%' }} />
-          <div className='users-list'>
-            <h2 style={{ margin: '1%' }}>Users</h2>
-            <FormControl sx={{ m: 2, minWidth: 150 }}>
-              <InputLabel id="users-list-filter">Filter</InputLabel>
-              <Select
-                required
-                labelId="filter-select-label"
-                id="filter"
-                value={selection}
-                label="Filter by"
-                onChange={(event) => handleFilter(event)}>
-                <MenuItem value={"All"}>All</MenuItem>
-                <MenuItem value={"Recruiter"}>Recruiter</MenuItem>
-                <MenuItem value={"Sales Interviewer"}>Sales Interviewer</MenuItem>
-                <MenuItem value={"Technical Interviewer"}>Technical Interviewer</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-          <div style={{ paddingLeft: '40px' }}>
-            {selection === "All"
-              ? <ul>
-                {users.map((user) => (
-                  <li key={user.fullname}>{user.fullname} ({user.role})</li>
-                ))}
-              </ul>
-              : <ul>
-                {filteredUsers.map((filteredUser) => (
-                  <li key={filteredUser.fullname}>{filteredUser.fullname} ({filteredUser.role})</li>
-                ))}
-              </ul>
-            }
-          </div>
-          </Box>
+          </Container>
+        </Box>
       </Container>
-    </div>
+    </div >
   )
 }
 

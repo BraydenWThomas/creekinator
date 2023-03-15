@@ -17,6 +17,7 @@ public class Interviewer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
+	private boolean tech;
 	
 	// linked fields
 	@OneToMany(mappedBy = "interviewer")
@@ -46,10 +47,17 @@ public class Interviewer {
 		this.assessmentCenters = new ArrayList<AssessmentCenter>();
 	}
 	public Interviewer(String name) {
+		this.interviews = new ArrayList<Interview>();
+		this.assessmentCenters = new ArrayList<AssessmentCenter>();
 		this.name = name;
+	}
+	public Interviewer(String name,boolean tech) {
+		this.name = name;
+		this.tech = tech;
 		this.interviews = new ArrayList<Interview>();
 		this.assessmentCenters = new ArrayList<AssessmentCenter>();
 	}
+	
 	/* --- end of constructor --- */
 	
 	
@@ -76,7 +84,15 @@ public class Interviewer {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
+	public boolean isTech() {
+		return tech;
+	}
+	public void setTech(boolean tech) {
+		this.tech = tech;
+	}
+	
+	
 	
 	/*
 	public void setAssessmentCenters(List<AssessmentCenter> assessmentCenters) {
@@ -116,6 +132,7 @@ public class Interviewer {
 
 	
 	
+
 	/* add, remove or get the linked reference --- */
 	// interview
 	public void addInterview(Interview interview) {

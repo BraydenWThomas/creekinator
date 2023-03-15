@@ -104,11 +104,11 @@ public class Dataloader implements ApplicationRunner{
 		recruiterList.add(new Recruiter("Stephania Kristal Sommer", false));
 		recruiterList.add(new Recruiter("Cynthia Katrina Shepard", false));
 		recruiterList.add(new Recruiter("Darrell Irving Hunnicutt", false));
-		recruiterList.add(new Recruiter("Kaitlyn Amberly Rigby", true));
+		recruiterList.add(new Recruiter("Kaitlyn Amberly Rigby", false));
 		recruiterList.add(new Recruiter("Braelyn Petal Mathews", false));
 		recruiterList.add(new Recruiter("Harper Jayceon Peel", false));
 		recruiterList.add(new Recruiter("Jenelle Rosabella Carpenter", false));
-		recruiterList.add(new Recruiter("Doyle Kendall Parent", true));
+		recruiterList.add(new Recruiter("Doyle Kendall Parent", false));
 		recruiterList.add(new Recruiter("Kiaran Darnell Jephson", false));
 		recruiterList.add(new Recruiter("Jenson Osbourne Ott", false));
 		
@@ -117,41 +117,53 @@ public class Dataloader implements ApplicationRunner{
 		
 		// INTERVIEWERS
 		List<Interviewer> interviewerList = new ArrayList<>();
-		interviewerList.add(new Interviewer("Drummond Bria Lane"));
-		interviewerList.add(new Interviewer("Deryck Cynthia Garnett"));
-		interviewerList.add(new Interviewer("Eliana Kassie Quincy"));
-		interviewerList.add(new Interviewer("Myra Irvine Bannister"));
-		interviewerList.add(new Interviewer("Cherry Adele Oakley"));
-		interviewerList.add(new Interviewer("Kerena Alise Horton"));
-		interviewerList.add(new Interviewer("Haven Astra Petit"));
-		interviewerList.add(new Interviewer("Delilah Rosie Abbey"));
-		interviewerList.add(new Interviewer("Nikolas Lexine Yap"));
-		interviewerList.add(new Interviewer("Garnet Trista Bean"));
+		interviewerList.add(new Interviewer("Drummond Bria Lane",true));
+		interviewerList.add(new Interviewer("Deryck Cynthia Garnett",true));
+		interviewerList.add(new Interviewer("Eliana Kassie Quincy",true));
+		interviewerList.add(new Interviewer("Myra Irvine Bannister",true));
+		interviewerList.add(new Interviewer("Cherry Adele Oakley",true));
+		interviewerList.add(new Interviewer("Kerena Alise Horton",false));
+		interviewerList.add(new Interviewer("Haven Astra Petit",false));
+		interviewerList.add(new Interviewer("Delilah Rosie Abbey",false));
+		interviewerList.add(new Interviewer("Nikolas Lexine Yap",false));
+		interviewerList.add(new Interviewer("Garnet Trista Bean",false));
 		
 		this.interviewerRepository.saveAll(interviewerList);
 		
 		
 		// PACKS
 		List<Pack> packList = new ArrayList<>();
-		packList.add(new Pack("Pack 1","TechPackLink1","SalesPackLink1"));
-		packList.add(new Pack("Pack 2","TechPackLink2","SalesPackLink2"));
-		packList.add(new Pack("Pack 3","TechPackLink3","SalesPackLink3"));
-		packList.add(new Pack("Pack 4","TechPackLink4","SalesPackLink4"));
-		packList.add(new Pack("Pack 5","TechPackLink5","SalesPackLink5"));
+		packList.add(new Pack("Pack 1","Tech","Link..."));
+		packList.add(new Pack("Pack 2","Tech","Link..."));
+		packList.add(new Pack("Pack 3","Sales","Link..."));
+		packList.add(new Pack("Pack 4","Tech","Link..."));
+		packList.add(new Pack("Pack 5","Sales","Link..."));
 		
 		this.packsRepository.saveAll(packList);
 		
 		// ASSESSMENT CENTERS 
 		List<AssessmentCenter> acList = new ArrayList<>();
-		acList.add(new AssessmentCenter("Ass 1",date,time,time,true));
-		acList.add(new AssessmentCenter("Ass 2",date,time,time,true));
-		acList.add(new AssessmentCenter("Ass 3",date,time,time,true));
-		acList.add(new AssessmentCenter("Ass 4",date,time,time,true));
-		acList.add(new AssessmentCenter("Ass 5",date,time,time,true));
-		acList.add(new AssessmentCenter("Ass 6",date,time,time,true));
-		acList.add(new AssessmentCenter("Ass 7",date,time,time,true));
-		acList.add(new AssessmentCenter("Ass 8",date,time,time,true));
-		acList.add(new AssessmentCenter("Ass 9",date,time,time,true));
+		acList.add(new AssessmentCenter("AC 1",LocalDate.of(2023, 3, 7),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));
+		acList.add(new AssessmentCenter("AC 2",LocalDate.of(2023, 3, 8),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));
+		acList.add(new AssessmentCenter("AC 3",LocalDate.of(2023, 3, 9),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));
+		acList.add(new AssessmentCenter("AC 4",LocalDate.of(2023, 3, 10),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));
+		acList.add(new AssessmentCenter("AC 5",LocalDate.of(2023, 3, 13),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));
+		acList.add(new AssessmentCenter("AC 6",LocalDate.of(2023, 3, 14),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));
+		acList.add(new AssessmentCenter("AC 7",LocalDate.of(2023, 3, 15),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));
+		acList.add(new AssessmentCenter("AC 8",LocalDate.of(2023, 3, 16),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));
+		acList.add(new AssessmentCenter("AC 9",LocalDate.of(2023, 3, 17),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));
+		
+		acList.get(0).setCoordinatorId(1);
+		//acList.get(0).setRecruiters(List<Recruiter> = recruiterList.get(0),)
+		acList.get(1).setCoordinatorId(2);
+		acList.get(2).setCoordinatorId(3);
+		acList.get(3).setCoordinatorId(4);
+		acList.get(4).setCoordinatorId(5);
+		acList.get(5).setCoordinatorId(6);
+		acList.get(6).setCoordinatorId(7);
+		acList.get(7).setCoordinatorId(8);
+		acList.get(8).setCoordinatorId(9);
+		
 		
 		this.assessmentCenterRepository.saveAll(acList);
 			
@@ -228,53 +240,59 @@ public class Dataloader implements ApplicationRunner{
 		rolesList.add(new Role());
 		rolesList.add(new Role());
 		rolesList.add(new Role());
-		rolesList.add(new Role());
-		rolesList.add(new Role());
-		//rolesList.add(new Role());
+
 		rolesList.get(0).setName(ERole.ROLE_ADMIN);
 		rolesList.get(1).setName(ERole.ROLE_INTERVIEWER);
 		rolesList.get(2).setName(ERole.ROLE_RECRUITER);
-		rolesList.get(3).setName(ERole.ROLE_TECH);
-		rolesList.get(4).setName(ERole.ROLE_SALES);
-		rolesList.get(5).setName(ERole.ROLE_CANDIDATE);
-		// rolesList.get(6).setName(ERole.ROLE_);
+		rolesList.get(3).setName(ERole.ROLE_CANDIDATE);
+
 		this.roleRepository.saveAll(rolesList);
 		
 		// Auth Sign-In
 		List<User> userList = new ArrayList<>();
-		userList.add(new User("admin","admin@gmail.com","admin","a"));
+		userList.add(new User("admin1","admin1@gmail.com","admin1","adminName1"));
 		userList.get(0).addRole(rolesList.get(0));
-		userList.add(new User("interviewer","interviewer@gmail.com","interviewer","a"));
+		
+		userList.add(new User("interviewer1","interviewer1@gmail.com","interviewer1","interviewerName1"));
 		userList.get(1).addRole(rolesList.get(1));
-		userList.add(new User("recruiter","recruiter@gmail.com","recruiter","a"));
-		userList.get(2).addRole(rolesList.get(2));
+		interviewerList.get(0).addUser(userList.get(1));
+		userList.add(new User("interviewer2","interviewer2@gmail.com","interviewer2","interviewerName2"));
+		userList.get(2).addRole(rolesList.get(1));
+		interviewerList.get(1).addUser(userList.get(2));
+		userList.add(new User("interviewer3","interviewer3@gmail.com","interviewer3","interviewerName3"));
+		userList.get(3).addRole(rolesList.get(1));
+		interviewerList.get(2).addUser(userList.get(3));
+		userList.add(new User("interviewer4","interviewer4@gmail.com","interviewer4","interviewerName4"));
+		userList.get(4).addRole(rolesList.get(1));
+		interviewerList.get(3).addUser(userList.get(4));
+		
+		userList.add(new User("recruiter1","recruiter1@gmail.com","recruiter1","recruiterName1"));
+		userList.get(5).addRole(rolesList.get(2));
+		recruiterList.get(0).addUser(userList.get(5));
+		userList.add(new User("recruiter2","recruiter2@gmail.com","recruiter2","recruiterName2"));
+		userList.get(6).addRole(rolesList.get(2));
+		recruiterList.get(1).addUser(userList.get(6));
+		
+		userList.add(new User("candidate1","candidate1@gmail.com","candidate1","candidateName1"));
+		userList.get(7).addRole(rolesList.get(3));
+		candidateList.get(0).addUser(userList.get(7));
+		userList.add(new User("candidate2","candidate2@gmail.com","candidate2","candidateName2"));
+		userList.get(8).addRole(rolesList.get(3));
+		candidateList.get(1).addUser(userList.get(8));
+		userList.add(new User("candidate3","candidate3@gmail.com","candidate3","candidateName3"));
+		userList.get(9).addRole(rolesList.get(3));
+		candidateList.get(2).addUser(userList.get(9));
+		userList.add(new User("candidate4","candidate4@gmail.com","candidate4","candidateName4"));
+		userList.get(10).addRole(rolesList.get(3));
+		candidateList.get(3).addUser(userList.get(10));
+		
+		
+		
+		
+		
 		this.userRepository.saveAll(userList);
 		
-		// Author test 1-1
-		List<Book> bookList = new ArrayList<>();
-		List<Author> authorList = new ArrayList<>();
-		Author author1 = new Author("A", 10);
-		Author author2 = new Author("B", 20);
-		Author author3 = new Author("C", 30);
-		Book book1 = new Book("A", 10);
-		Book book2 = new Book("B", 20);
-		Book book3 = new Book("C", 30);
-		bookList.add(book1);
-		bookList.add(book2);
-		bookList.add(book3);
-		authorList.add(author1);
-		authorList.add(author2);
-		authorList.add(author3);
-		this.bookRepository.saveAll(bookList);
-		this.authorRepository.saveAll(authorList);
-		author1.setBook(book1);
-		author2.setBook(book2);
-		author3.setBook(book3);
-		book1.setAuthor(author1);
-		book2.setAuthor(author2);
-		book3.setAuthor(author3);
-		this.bookRepository.saveAll(bookList);
-		this.authorRepository.saveAll(authorList);
+	
 		
 	
 		
