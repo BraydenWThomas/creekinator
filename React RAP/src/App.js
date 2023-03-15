@@ -1,8 +1,5 @@
-// React + css
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Navigate, useNavigate, Router } from 'react-router-dom';
 import './App.css';
-
-// Componenets
 import AdminDashboard from './Components/AdminDashboard';
 import Recruiter from './Components/Recruiters/Recruiter';
 import Interviewer from './Components/Interviewers/Interviewer';
@@ -33,26 +30,9 @@ const FDMtheme = createTheme({
   },
 });
 
-const App = () => {
-  const router = createBrowserRouter([
-    {
-      path:"/",
-      element: <LoginPage />
-    },
 
-    // Users
-    {
-      path:"/recruiter",
-      element: <Recruiter />
-    },
-    {
-      path:"/interviewer",
-      element: <Interviewer />
-    },
-    {
-      path:"/admin",
-      element: <AdminDashboard />
-    },
+const App = () => {
+
 
   const handleClick = (event) => {
 
@@ -116,18 +96,10 @@ const App = () => {
     element: <AdminDashboard />
   }]
 
-    // Candidates
-    {
-      path:"/candidate/create",
-      element: <CreateCandidate />
-    },
-    {
-      path: "/candidate/info/:candidateId",
-      element: <CandidateInformation />
-    },
-    {
-      path:"/candidate/update/:candidateId",
-      element: <UpdateCandidate />
+  if (localStorage.getItem('status') == "ROLE_RECRUITER") {
+    routes.push({
+      path: "/recruiter",
+      element: <Recruiter />
     },
       {
         path: "/candidate/create",
@@ -162,18 +134,10 @@ const App = () => {
     )
   }
 
-    // AC Info
-    {
-      path:"/ac/view/:abc",
-      element: <ViewAC />
-    },
-    {
-      path:"/ac/view-upcoming/:acId",
-      element: <ViewUpcomingAC />
-    },
-    {
-      path:"/ac/view-past/:acId",
-      element: <ViewPastAC />
+  if (localStorage.getItem('status') == "ROLE_INTERVIEWER") {
+    routes.push({
+      path: "/interviewer",
+      element: <Interviewer />
     },
       {
         path: "/candidateinformation/:abc",
@@ -201,6 +165,7 @@ const App = () => {
   }
 
   return (
+
     <ThemeProvider theme={FDMtheme}>
       <Button onClick={logout}>LOGOUT</Button>
       <Button onClick={getCalendar}>Calendar</Button>
