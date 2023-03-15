@@ -43,15 +43,15 @@ public class User {
 //  private Interviewer interviewer;
 //	private Recruiter recruiter;
   @OneToOne(mappedBy = "user")
-  @JsonIgnore
+  //@JsonIgnore
   private Interviewer interviewer;
   
   @OneToOne(mappedBy = "user")
-  @JsonIgnore
+  //@JsonIgnore
   private Recruiter recruiter;
   
   @OneToOne(mappedBy = "user")
-  @JsonIgnore
+  //@JsonIgnore
   private Candidate candidate;
  
   

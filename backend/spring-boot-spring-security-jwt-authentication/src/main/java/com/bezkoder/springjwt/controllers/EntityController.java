@@ -1,6 +1,7 @@
 package com.bezkoder.springjwt.controllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,9 @@ import com.bezkoder.springjwt.repository.PacksRepository;
 import com.bezkoder.springjwt.repository.RecruiterRepository;
 import com.bezkoder.springjwt.repository.UserRepository;
 import com.bezkoder.springjwt.exceptions.NotFoundException;
+
+import org.json.simple.JSONObject;
+import org.json.simple.*;
 
 
 //#TODO REMOVE ALL THINGS WITH TRANSACTION
@@ -308,6 +312,28 @@ public class EntityController {
 		return candidateRepository.findById(candidateId).orElseThrow(()->new NotFoundException("Can't find candidate with id: " +candidateId));
 	}
 	
+	// get AC id, interviewer, time, score, comment
+	@GetMapping("/candidate/{candidateId}/linkedInfo")
+	public List<HashMap<String,Object>> getCandidatebyIdWithLinkedInfo(@PathVariable int candidateId) {
+		List<HashMap<String,Object>> output = new ArrayList<HashMap<String,Object>>();
+		// List<JSONObject> output = new ArrayList<JSONObject>();
+		Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(()->new NotFoundException("Can't find candidate with id: " + candidateId));
+		List<Interview> interviews = candidate.getInterviews();
+		for (Interview interview : interviews) {
+			HashMap<String,Object> temp = new HashMap<String,Object>();
+			// JSONObject json = new JSONObject();
+			temp.put("AC_id", interview.getId());
+			temp.put("interviewer", interview.getInterviewer());
+			temp.put("time", interview.getInterviewTime());
+			temp.put("score", interview.getScore());
+			temp.put("comment", interview.getComment());
+			output.add(temp);
+		}
+		return output;
+		// interview
+		//return interviewRepository.findById(interviewId).orElseThrow(()->new NotFoundException("Can't find interview with id: " +interviewId));
+	}
+	
 	// Delete Candidate
 	@DeleteMapping("/candidate/{candidateId}")
 	public void deleteCandidateById(@PathVariable int candidateId) {
@@ -345,6 +371,14 @@ public class EntityController {
 		}
 		return candidateRepository.save(candidate);
 	}
+	
+	// show all candidates in an specific ac 
+	@GetMapping("/candidate/{id}/showACs")
+	public List<AssessmentCenter> showCandidateACs(@PathVariable int id) {
+		Candidate candidate = candidateRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find candidate with id: " + id));
+		return candidate.getAssessmentCenters();
+	}	
+	
 	/* --- End of Candidate --- */
 	
 	
@@ -425,6 +459,8 @@ public class EntityController {
 	public Interview getInterviewbyId(@PathVariable int interviewId) {
 		return interviewRepository.findById(interviewId).orElseThrow(()->new NotFoundException("Can't find interview with id: " +interviewId));
 	}
+	
+	
 	
 	// Delete Interview
 	@DeleteMapping("/interview/{interviewId}")
@@ -532,6 +568,8 @@ public class EntityController {
 		}
 		return packs;
 	}
+	
+	
 	
 	//remove required
 	
