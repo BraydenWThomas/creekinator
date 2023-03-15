@@ -1,17 +1,19 @@
 // React
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // Components
 import '../Styling/RecruiterStyles.css';
 
 // Material UI
-import { Button, Menu, MenuItem, IconButton } from '@mui/material';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { Button, Menu, MenuItem, IconButton, Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const CandidateSelectBox = ({ candidate }) => {
   // For Material UI Menu
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -22,22 +24,15 @@ const CandidateSelectBox = ({ candidate }) => {
     setAnchorEl(null);
   };
 
-  const handleConfirm = (id) => {
-    // const requestOptions = {
-    //   method: 'DELETE',
-    //   redirect: 'follow',
-    //   headers: { 'content-type': 'application/json' },
-    // };
-
-    // fetch("http://localhost:8080/api/ac/" + id, requestOptions)
-    //   .then(response => response.json())
-    //   .then(result => console.log(result))
-    //   .catch(error => console.log('error', error));
+  const handleOpenDeleteModal = () => {
+    setDeleteModalOpen(true);
+    handleClose();
   };
 
-  const handleCancel = () => {
-
+  const handleCloseDeleteModal = () => {
+    setDeleteModalOpen(false);
   };
+
 
   const handleDelete = (id) => {
     const requestOptions = {
@@ -45,22 +40,22 @@ const CandidateSelectBox = ({ candidate }) => {
       redirect: 'follow',
       headers: { 'content-type': 'application/json' },
     };
-
     fetch("http://localhost:8080/api/candidate/" + id, requestOptions)
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
+
+      handleCloseDeleteModal();
+      window.location.reload();
   }
-  
+
   return (
 
-      <div className='candidateSelectBox' style={{ clear: "both" }}>
+    <div className='candidateSelectBox' style={{ clear: "both" }}>
+      <div className='candidateSelectBox-menu' style={{ position: 'absolute', right: 30 }}>
         <IconButton
           id="basic-button"
-          aria-controls={open ? 'basic-menu' : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}>
-            <MoreHorizIcon />
+          <MoreVertIcon />
         </IconButton>
         <Menu
           id="basic-menu"
@@ -80,26 +75,35 @@ const CandidateSelectBox = ({ candidate }) => {
               Update
             </MenuItem>
           </Link>
-          <MenuItem onClick={() => handleDelete(candidate.id)}>
-            Delete
+          <MenuItem 
+          onClick={handleOpenDeleteModal}>Delete
           </MenuItem>
         </Menu>
-
-        <div style={{ marginLeft: "20px" }}>
-          <div style={{ display: "flex", clear: "both" }}>
-            <h3> {candidate.first_name + " " + candidate.last_name} </h3>
-          </div>
-          <div style={{ display: "flex", clear: "both" }}>
-            <h3> {candidate.mobile_number} </h3>
-          </div>
-          <div style={{ display: "flex", clear: "both" }}>
-            <h3> {candidate.email} </h3>
-          </div>
-          <div style={{ display: "flex", marginBottom: "20px", clear: "both" }}>
-            <h3> {candidate.applied_stream} </h3>
-          </div>
-        </div>
       </div>
+
+      <div className='box' style={{ margin: "20px" }}>
+        <Typography component="h3" variant='h5'> {candidate.first_name + " " + candidate.last_name} </Typography>
+        <Typography component="h3" variant='h6'> {candidate.mobile_number} </Typography>
+        <Typography component="h3" variant='h6'> {candidate.email} </Typography>
+        <Typography component="h3" variant='h6'> {candidate.applied_stream} </Typography>
+      </div>
+
+      {/* Delete Confirmation Modal */}
+      <Dialog open={deleteModalOpen} onClose={handleCloseDeleteModal}>
+        <DialogTitle>Delete Candidate</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete {candidate.first_name + ' ' + candidate.last_name}?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteModal}>Cancel</Button>
+          <Button onClick={() => handleDelete(candidate.id)} color="error">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
 
   )
 }
