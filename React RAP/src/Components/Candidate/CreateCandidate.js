@@ -33,7 +33,6 @@ const CreateCandidate = () => {
   const [lastName, setLastName] = useState('');
   const [mobilePhone, setMobilePhone] = useState('');
   const [email, setEmail] = useState('');
-  // const [dob, setDob] = useState(new Date());
   const [dob, setDob] = useState('');
   const [address, setAddress] = useState('');
   const [gradYear, setGradYear] = useState('');
@@ -71,9 +70,9 @@ const CreateCandidate = () => {
         last_name: lastName,
         mobile_number: mobilePhone,
         email: email,
-        date_of_birth: new Date().toISOString(),
+        date_of_birth: dob.format('YYYY-MM-DD'),
         address: address,
-        graduation_year: new Date().toISOString(),
+        graduation_year: gradYear,
         degree: degree,
         university: university,
         resume: "resume-link",
@@ -184,8 +183,8 @@ const CreateCandidate = () => {
               <DatePicker
                 label="D.O.B *"
                 format="DD/MM/YYYY"
-                // value={dob}
-                // onChange={(event) => setDob(event.target.value)}
+                value={dob}
+                onChange={(newDob) => setDob(newDob)}
                 sx={{ m: 2 }}
               />
             </LocalizationProvider>
@@ -205,7 +204,6 @@ const CreateCandidate = () => {
               required
               id="outlined-year-input"
               label="Graduation Year"
-              type="number"
               autoComplete="current-year"
               value={gradYear}
               sx={{ m: 2 }}
@@ -274,16 +272,6 @@ const CreateCandidate = () => {
                 <MenuItem value={"Interviewed"}>Interviewed</MenuItem>
               </Select>
             </FormControl>
-            <TextField
-              required
-              id="past-ac-result-input"
-              label="Past AC Result"
-              type="number"
-              autoComplete="past-ac-result"
-              value={pastACResult}
-              sx={{ m: 2 }}
-              onChange={(event) => setPastACResult(event.target.value)}
-            />
           </div>
           <div className="create-button-row">
             <Button variant="contained" component="label" sx={{ m: 5 }} style={{ float: 'right' }} onClick={handleSubmit}>Create</Button>

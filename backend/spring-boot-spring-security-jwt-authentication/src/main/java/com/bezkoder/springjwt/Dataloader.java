@@ -117,16 +117,16 @@ public class Dataloader implements ApplicationRunner{
 		
 		// INTERVIEWERS
 		List<Interviewer> interviewerList = new ArrayList<>();
-		interviewerList.add(new Interviewer("Drummond Bria Lane"));
-		interviewerList.add(new Interviewer("Deryck Cynthia Garnett"));
-		interviewerList.add(new Interviewer("Eliana Kassie Quincy"));
-		interviewerList.add(new Interviewer("Myra Irvine Bannister"));
-		interviewerList.add(new Interviewer("Cherry Adele Oakley"));
-		interviewerList.add(new Interviewer("Kerena Alise Horton"));
-		interviewerList.add(new Interviewer("Haven Astra Petit"));
-		interviewerList.add(new Interviewer("Delilah Rosie Abbey"));
-		interviewerList.add(new Interviewer("Nikolas Lexine Yap"));
-		interviewerList.add(new Interviewer("Garnet Trista Bean"));
+		interviewerList.add(new Interviewer("Drummond Bria Lane",true));
+		interviewerList.add(new Interviewer("Deryck Cynthia Garnett",true));
+		interviewerList.add(new Interviewer("Eliana Kassie Quincy",true));
+		interviewerList.add(new Interviewer("Myra Irvine Bannister",true));
+		interviewerList.add(new Interviewer("Cherry Adele Oakley",true));
+		interviewerList.add(new Interviewer("Kerena Alise Horton",false));
+		interviewerList.add(new Interviewer("Haven Astra Petit",false));
+		interviewerList.add(new Interviewer("Delilah Rosie Abbey",false));
+		interviewerList.add(new Interviewer("Nikolas Lexine Yap",false));
+		interviewerList.add(new Interviewer("Garnet Trista Bean",false));
 		
 		this.interviewerRepository.saveAll(interviewerList);
 		
@@ -152,6 +152,19 @@ public class Dataloader implements ApplicationRunner{
 		acList.add(new AssessmentCenter("AC 7",LocalDate.of(2023, 3, 15),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));
 		acList.add(new AssessmentCenter("AC 8",LocalDate.of(2023, 3, 16),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));
 		acList.add(new AssessmentCenter("AC 9",LocalDate.of(2023, 3, 17),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));
+<<<<<<< backend/spring-boot-spring-security-jwt-authentication/src/main/java/com/bezkoder/springjwt/Dataloader.java
+		
+		acList.get(0).setCoordinatorId(1);
+		//acList.get(0).setRecruiters(List<Recruiter> = recruiterList.get(0),)
+		acList.get(1).setCoordinatorId(2);
+		acList.get(2).setCoordinatorId(3);
+		acList.get(3).setCoordinatorId(4);
+		acList.get(4).setCoordinatorId(5);
+		acList.get(5).setCoordinatorId(6);
+		acList.get(6).setCoordinatorId(7);
+		acList.get(7).setCoordinatorId(8);
+		acList.get(8).setCoordinatorId(9);
+=======
 		
 		acList.get(0).setCoordinatorId(1);
 		//acList.get(0).setRecruiters(List<Recruiter> = recruiterList.get(0),)
@@ -165,6 +178,43 @@ public class Dataloader implements ApplicationRunner{
 		acList.get(8).setCoordinatorId(9);
 		
 		
+		this.assessmentCenterRepository.saveAll(acList);
+			
+		// INTERVIEWS
+		// AC 1 (A)
+		List<Interview> interviewA = new ArrayList<>();
+		interviewA.add(new Interview(acList.get(0),interviewerList.get(2),candidateList.get(0),"Feedback Form", time,1));
+		interviewA.add(new Interview(acList.get(0),interviewerList.get(3),candidateList.get(0),"Feedback Form", time,2));
+		interviewA.add(new Interview(acList.get(0),interviewerList.get(3),candidateList.get(1),"Feedback Form", time,3));
+		interviewA.add(new Interview(acList.get(0),interviewerList.get(1),candidateList.get(1),"Feedback Form", time,4));
+		interviewA.add(new Interview(acList.get(0),interviewerList.get(5),candidateList.get(2),"Feedback Form", time,5));
+		interviewA.add(new Interview(acList.get(0),interviewerList.get(5),candidateList.get(2),"Feedback Form", time,6));
+		interviewA.add(new Interview(acList.get(0),interviewerList.get(7),candidateList.get(3),"Feedback Form", time,7));
+		interviewA.add(new Interview(acList.get(0),interviewerList.get(8),candidateList.get(3),"Feedback Form", time,8));
+
+		candidateList.get(0).addAssessmentCenter(acList.get(0));
+		candidateList.get(1).addAssessmentCenter(acList.get(0));
+		candidateList.get(2).addAssessmentCenter(acList.get(0));
+		candidateList.get(3).addAssessmentCenter(acList.get(0));
+		interviewerList.get(2).addAssessmentCenter(acList.get(0));
+		interviewerList.get(3).addAssessmentCenter(acList.get(0));
+		interviewerList.get(1).addAssessmentCenter(acList.get(0));
+		interviewerList.get(5).addAssessmentCenter(acList.get(0));
+		interviewerList.get(7).addAssessmentCenter(acList.get(0));
+		interviewerList.get(8).addAssessmentCenter(acList.get(0));
+		
+		// AC 2 (B)
+		List<Interview> interviewB = new ArrayList<>();
+		interviewB.add(new Interview(acList.get(1),interviewerList.get(4),candidateList.get(0),"Feedback Form", time,10));
+		interviewB.add(new Interview(acList.get(1),interviewerList.get(3),candidateList.get(0),"Feedback Form", time,20));
+		interviewB.add(new Interview(acList.get(1),interviewerList.get(3),candidateList.get(1),"Feedback Form", time,30));
+		interviewB.add(new Interview(acList.get(1),interviewerList.get(8),candidateList.get(1),"Feedback Form", time,40));
+		interviewB.add(new Interview(acList.get(1),interviewerList.get(5),candidateList.get(2),"Feedback Form", time,50));
+		interviewB.add(new Interview(acList.get(1),interviewerList.get(7),candidateList.get(2),"Feedback Form", time,60));
+>>>>>>> backend/spring-boot-spring-security-jwt-authentication/src/main/java/com/bezkoder/springjwt/Dataloader.java
+		
+		
+<<<<<<< backend/spring-boot-spring-security-jwt-authentication/src/main/java/com/bezkoder/springjwt/Dataloader.java
 		this.assessmentCenterRepository.saveAll(acList);
 			
 //		// INTERVIEWS
@@ -218,6 +268,18 @@ public class Dataloader implements ApplicationRunner{
 //		interviewC.add(new Interview(acList.get(2),interviewerList.get(6),candidateList.get(2),"Feedback Form", time,613));
 //		interviewC.add(new Interview(acList.get(2),interviewerList.get(7),candidateList.get(3),"Feedback Form", time,123));
 //		interviewC.add(new Interview(acList.get(2),interviewerList.get(8),candidateList.get(3),"Feedback Form", time,52));
+=======
+		// AC 3	(C)
+		List<Interview> interviewC = new ArrayList<>();
+		interviewC.add(new Interview(acList.get(2),interviewerList.get(2),candidateList.get(0),"Feedback Form", time,23));
+		interviewC.add(new Interview(acList.get(2),interviewerList.get(1),candidateList.get(0),"Feedback Form", time,123));
+		interviewC.add(new Interview(acList.get(2),interviewerList.get(4),candidateList.get(1),"Feedback Form", time,63));
+		interviewC.add(new Interview(acList.get(2),interviewerList.get(4),candidateList.get(1),"Feedback Form", time,478));
+		interviewC.add(new Interview(acList.get(2),interviewerList.get(6),candidateList.get(2),"Feedback Form", time,234));
+		interviewC.add(new Interview(acList.get(2),interviewerList.get(6),candidateList.get(2),"Feedback Form", time,613));
+		interviewC.add(new Interview(acList.get(2),interviewerList.get(7),candidateList.get(3),"Feedback Form", time,123));
+		interviewC.add(new Interview(acList.get(2),interviewerList.get(8),candidateList.get(3),"Feedback Form", time,52));
+>>>>>>> backend/spring-boot-spring-security-jwt-authentication/src/main/java/com/bezkoder/springjwt/Dataloader.java
 		
 		candidateList.get(0).addAssessmentCenter(acList.get(2));
 		candidateList.get(1).addAssessmentCenter(acList.get(2));

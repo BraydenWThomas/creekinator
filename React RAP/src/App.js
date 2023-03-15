@@ -1,5 +1,8 @@
-import { createBrowserRouter, RouterProvider, Navigate, useNavigate, Router } from 'react-router-dom';
+// React + css
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
+
+// Componenets
 import AdminDashboard from './Components/AdminDashboard';
 import Recruiter from './Components/Recruiters/Recruiter';
 import Interviewer from './Components/Interviewers/Interviewer';
@@ -10,16 +13,17 @@ import ViewAC from './Components/Interviewers/ViewAC';
 import ViewUpcomingAC from './Components/Recruiters/ViewUpcomingAC';
 import ViewPastAC from './Components/Recruiters/ViewPastAC';
 import CreateAC from './Components/Recruiters/CreateAC';
-import React, { useState, useEffect } from 'react';
+import UpdateAC from './Components/Recruiters/UpdateAC';
+import LoginPage from './Components/LoginPage';
+
+// Material UI
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
-import LoginPage from './Components/LoginPage';
 import handleClick from './Components/LoginPage';
 import NavBar from './Components/NavBar';
 import { Button } from '@mui/material';
 import Calendar from './Components/Calendar';
-import Candidate from './Components/Candidate/Candidate';
-
+import CandidateApply from './Components/CandidateApply';
 const FDMtheme = createTheme({
   palette: {
     primary: {
@@ -29,9 +33,26 @@ const FDMtheme = createTheme({
   },
 });
 
-
 const App = () => {
+  const router = createBrowserRouter([
+    {
+      path:"/",
+      element: <LoginPage />
+    },
 
+    // Users
+    {
+      path:"/recruiter",
+      element: <Recruiter />
+    },
+    {
+      path:"/interviewer",
+      element: <Interviewer />
+    },
+    {
+      path:"/admin",
+      element: <AdminDashboard />
+    },
 
   const handleClick = (event) => {
 
@@ -84,6 +105,10 @@ const App = () => {
     element: <LoginPage onClick={handleClick} />
   },
   {
+    path: "/apply",
+    element: <CandidateApply />
+  },
+  {
     path: "/calendar",
     element: <Calendar />
   },
@@ -95,21 +120,29 @@ const App = () => {
     element: <Candidate />
   }]
 
-  if (localStorage.getItem('status') == "ROLE_RECRUITER") {
-    routes.push({
-      path: "/recruiter",
-      element: <Recruiter />
+    // Candidates
+    {
+      path:"/candidate/create",
+      element: <CreateCandidate />
+    },
+    {
+      path: "/candidate/info/:candidateId",
+      element: <CandidateInformation />
+    },
+    {
+      path:"/candidate/update/:candidateId",
+      element: <UpdateCandidate />
     },
       {
         path: "/candidate/create",
         element: <CreateCandidate />
       },
       {
-        path: "/candidate/update/:abc",
+        path: "/candidate/update/:candidateID",
         element: <UpdateCandidate />
       },
       {
-        path: "/candidate/info/:abc",
+        path: "/candidate/info/:candidateID",
         element: <CandidateInformation />
       },
       {
@@ -133,10 +166,18 @@ const App = () => {
     )
   }
 
-  if (localStorage.getItem('status') == "ROLE_INTERVIEWER") {
-    routes.push({
-      path: "/interviewer",
-      element: <Interviewer />
+    // AC Info
+    {
+      path:"/ac/view/:abc",
+      element: <ViewAC />
+    },
+    {
+      path:"/ac/view-upcoming/:acId",
+      element: <ViewUpcomingAC />
+    },
+    {
+      path:"/ac/view-past/:acId",
+      element: <ViewPastAC />
     },
       {
         path: "/candidateinformation/:abc",
@@ -171,7 +212,6 @@ const App = () => {
   }
 
   return (
-
     <ThemeProvider theme={FDMtheme}>
       <Button onClick={logout}>LOGOUT</Button>
       <Button onClick={getCalendar}>Calendar</Button>

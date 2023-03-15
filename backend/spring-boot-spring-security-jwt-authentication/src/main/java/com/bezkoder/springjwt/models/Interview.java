@@ -27,6 +27,7 @@ public class Interview {
 	private int id;
 	private String form;
 	private LocalTime interviewTime;
+	private int score = -1;
 	
 	@ManyToOne
 	@JoinColumn(name = "FK_INTERVIEWER_NO")
@@ -45,8 +46,8 @@ public class Interview {
 	
 	@ManyToMany
 	@JoinTable(name = "interview_pack",
-			joinColumns = @JoinColumn(name = "pack_id"),
-				inverseJoinColumns = @JoinColumn(name = "interview_id"))
+			joinColumns = @JoinColumn(name = "interview_id"),
+				inverseJoinColumns = @JoinColumn(name = "pack_id"))
 	@JsonIgnore
 	private List<Pack> packs;
 	/* --- End of fields --- */
@@ -69,7 +70,7 @@ public class Interview {
 		this.form = form; // comment should be included in form
 		this.packs = new ArrayList<Pack>();
 	}
-	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, String form,LocalTime interviewTime) {
+	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, String form,LocalTime interviewTime, int score) {
 		super();
 		this.form = form; // comment should be included in form
 		this.assessmentCenter = assessmentCenter;
@@ -77,8 +78,9 @@ public class Interview {
 		this.candidate = candidate;	
 		this.packs = new ArrayList<Pack>();
 		this.interviewTime = interviewTime;
+		this.score = score;
 	}
-	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, List<Pack> packs, String form,LocalTime interviewTime) {
+	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, List<Pack> packs, String form,LocalTime interviewTime, int score) {
 		super();
 		this.form = form; // comment should be included in form
 		this.assessmentCenter = assessmentCenter;
@@ -86,6 +88,7 @@ public class Interview {
 		this.candidate = candidate;	
 		this.packs = packs;
 		this.interviewTime = interviewTime;
+		this.score = score;
 	}
 	/* --- End of Constructors --- */
 	
@@ -119,9 +122,16 @@ public class Interview {
 	/* --- linked reference --- */
 	
 	
+	
 	// interviewer
 	public Interviewer getInterviewer() {
 		return interviewer;
+	}
+	public int getScore() {
+		return score;
+	}
+	public void setScore(int score) {
+		this.score = score;
 	}
 	public LocalTime getInterviewTime() {
 		return interviewTime;
@@ -141,8 +151,8 @@ public class Interview {
 		interviewer.getInterviews().add(this);
 	}
 	public void removeInterviewer() {
+		this.interviewer.getInterviews().remove(this);
 		this.interviewer = null;
-		interviewer.getInterviews().remove(this);
 	}
 	
 	// AssessmentCenter
@@ -161,8 +171,8 @@ public class Interview {
 		assessmentCenter.getInterviews().add(this);
 	}
 	public void removeAssessmentCenter() {
+		this.assessmentCenter.getInterviews().remove(this);
 		this.assessmentCenter = null;
-		assessmentCenter.getInterviews().remove(this);
 	}
 	
 	
@@ -182,8 +192,8 @@ public class Interview {
 		candidate.getInterviews().add(this);
 	}
 	public void removeCandidate() {
+		this.candidate.getInterviews().remove(this);
 		this.candidate = null;
-		candidate.getInterviews().remove(this);
 	}
 	
 	// pack

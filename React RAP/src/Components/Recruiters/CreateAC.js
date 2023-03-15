@@ -3,26 +3,32 @@ import NavBar from '../NavBar';
 
 // React
 import React, { useEffect, useState } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
 // Material UI
-import { Divider,
-         TextField,
-         Button,
-         InputLabel,
-         MenuItem,
-         FormControl,
-         FormControlLabel,
-         Select,
-         IconButton,
-         Box,
-         FormGroup,
-         Checkbox } from "@mui/material";
+import {
+  Divider,
+  TextField,
+  Button,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  FormControlLabel,
+  Select,
+  IconButton,
+  Box,
+  FormGroup,
+  Checkbox
+} from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
+
+// // Brayden
+
+// // Brayden
 
 const CreateAC = () => {
   // AC Details
@@ -30,40 +36,83 @@ const CreateAC = () => {
   const [date, setDate] = useState('');
   const [timeStart, setTimeStart] = useState(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));
   const [timeEnd, setTimeEnd] = useState(dayjs().set('hour', 17).set('minute', 0).startOf('minute'));
-  const [salesInterviewer1, setSalesInterviewer1] = useState('');
-  const [salesInterviewer2, setSalesInterviewer2] = useState('');
-  const [techInterviewer1, setTechInterviewer1] = useState('');
-  const [techInterviewer2, setTechInterviewer2] = useState('');
-  const [candidates, setCandidates] = useState([]);
-  const [salesPack, setSalesPack] = useState('');
-  const [techPack, setTechPack] = useState('');
 
   // Filter
   const [stream, setStream] = useState('');
-  const [filteredCandidates, setFilteredCandidates] = useState([]);
 
   // Time details
   const startDay = dayjs().set('hour', 9).startOf('hour')
   const endDay = dayjs().set('hour', 17).startOf('hour')
 
+  // GET requests
+  const [candidates, setCandidates] = useState([]);
+  const [interviewers, setInterviewers] = useState([]);
+
+  // Checkbox states
+  const [isCheckedInterviewer, setIsCheckedInterviewer] = useState([]);
+  const [isCheckedCandidates, setIsCheckedCandidates] = useState([]);
+
+  // Fetch all candidates
+  useEffect(() => {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
+
+    Promise.all([
+      fetch("http://localhost:8080/api/candidate", requestOptions),
+      fetch("http://localhost:8080/api/interviewer", requestOptions)
+    ]).then((responses => {
+      console.log(responses)
+      responses[0].json()
+        .then(data => { setCandidates(data) })
+      responses[1].json()
+        .then(data => { setInterviewers(data) })
+    })).catch(error => console.log('error', error));
+  }, []);
+
+  // Handle adding interviewers
+  useEffect(() => {
+    setIsCheckedInterviewer(interviewers.slice().fill(false));
+  }, [interviewers]);
+
+  const toggleCheckedInterviewer = (index) => {
+    setIsCheckedInterviewer(isCheckedInterviewer.map((v, i) => (i === index ? !v : v)));
+  };
+
+  // Handle adding candidates
+  useEffect(() => {
+    setIsCheckedCandidates(candidates.slice().fill(false));
+  }, [candidates]);
+
+  const toggleCheckedCandidates = (index) => {
+    setIsCheckedCandidates(isCheckedCandidates.map((v, i) => (i === index ? !v : v)));
+  };
+
   // Handle creating AC
   const handleSubmit = () => {
-    console.log(date)
-    console.log(timeStart.format('hh:mm-ss'))
-    console.log(timeEnd.format('hh-mm-ss'))
+    // Get attending interviewers
+    const interviewerIds = [];
+    for (var i = 0; i < isCheckedInterviewer.length; i++) {
+      if (isCheckedInterviewer[i]) {
+        interviewerIds.push(interviewers[i].id);
+      }
+    }
+    const interviewerString = interviewerIds.join(",");
+
+    // Get attending candidates
+    const candidateIds = [];
+    for (var j = 0; j < isCheckedCandidates.length; j++) {
+      if (isCheckedCandidates[j]) {
+        candidateIds.push(candidates[j].id);
+      }
+    }
+    const candidateString = candidateIds.join(",");
+
     setTitle('');
     setDate('');
     setTimeStart(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));
     setTimeEnd(dayjs().set('hour', 17).set('minute', 0).startOf('minute'));
-    setSalesInterviewer1('');
-    setSalesInterviewer2('');
-    setTechInterviewer1('');
-    setTechInterviewer2('');
-    setCandidates([]);
-    setSalesPack('');
-    setTechPack('');
-    setStream('');
-    setFilteredCandidates([]);
 
     const body =
       JSON.stringify({
@@ -80,24 +129,13 @@ const CreateAC = () => {
       headers: { 'content-type': 'application/json' }
     };
 
-    fetch("http://localhost:8080/api/ac", requestOptions)
+    // fetch("http://localhost:8080/api/ac", requestOptions)
+    fetch("http://localhost:8080/api/ac?interviewers=" + interviewerString +
+      "&recruiters=1&candidates=" + candidateString, requestOptions)
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
-  }
-
-  // Fetch all candidates
-  useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      redirect: 'follow',
-    };
-
-    fetch("http://localhost:8080/api/candidate", requestOptions)
-      .then(response => response.json())
-      .then(data => { setCandidates(data) })
-      .catch(error => console.log('error', error));
-  })
+  };
 
   return (
     <div>
@@ -155,69 +193,57 @@ const CreateAC = () => {
 
         <div className="Interviewers" style={{ marginTop: '-10pt', padding: '2.5%' }}>
           <h2> Interviewers </h2>
+          <div className="sales-packs" style={{ float: 'left', width: '50%' }}>
+            <h3> Sales Interviewer </h3>
+            <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
+              <FormGroup>
+                {isCheckedInterviewer.map((checked, index) => (
+                  (interviewers[index].tech === false) ?
+                    <FormControlLabel
+                      key={interviewers[index].id}
+                      control={
+                        <Checkbox
+                          key={index}
+                          checked={checked}
+                          onClick={() => toggleCheckedInterviewer(index)}
+                        />}
+                      label={interviewers[index].name}
+                    />
+                    : <> </>
+                ))}
+              </FormGroup>
+            </Box>
+          </div>
 
-          <FormControl sx={{ float: 'left', minWidth: '50%' }}>
-            <InputLabel id="sales1-select-label"> Sales Interviewer 1 </InputLabel>
-            <Select
-              id="sales1-select"
-              label="Sales Interview 1"
-              sx={{ float: 'left', minWidth: '50%' }}
-              required
-              value={salesInterviewer1}
-              onChange={(e) => setSalesInterviewer1(e.target.value)}>
-              <MenuItem value={"John Doe"}> John Doe </MenuItem>
-              <MenuItem value={"John Doe"}> John Doe </MenuItem>
-            </Select>
-          </FormControl>
-
-          <FormControl sx={{ float: 'left', minWidth: '50%' }}>
-            <InputLabel id="tech1-select-label"> Technical Interviewer 1 </InputLabel>
-            <Select
-              id="tech1-select"
-              label="Technical Interview 1"
-              required
-              value={techInterviewer1}
-              onChange={(e) => setTechInterviewer1(e.target.value)}>
-              <MenuItem value={"John Doe"}> John Doe </MenuItem>
-              <MenuItem value={"John Doe"}> John Doe </MenuItem>
-            </Select>
-          </FormControl>
-
-          <FormControl sx={{ float: 'left', minWidth: '50%' }}>
-            <InputLabel id="sales2-select-label"> Sales Interviewer 2 </InputLabel>
-            <Select
-              id="sales2-select"
-              label="Sales Interview 2"
-              required
-              value={salesInterviewer2}
-              onChange={(e) => setSalesInterviewer2(e.target.value)}>
-              <MenuItem value={"John Doe"}> John Doe </MenuItem>
-              <MenuItem value={"John Doe"}> John Doe </MenuItem>
-            </Select>
-          </FormControl>
-
-          <FormControl sx={{ float: 'left', minWidth: '50%' }}>
-            <InputLabel id="tech2-select-label"> Technical Interviewer 2 </InputLabel>
-            <Select
-              id="tech2-select"
-              label="Technical Interview 2"
-              required
-              value={techInterviewer2}
-              onChange={(e) => setTechInterviewer2(e.target.value)}>
-              <MenuItem value={"John Doe"}> John Doe </MenuItem>
-              <MenuItem value={"John Doe"}> John Doe </MenuItem>
-            </Select>
-          </FormControl>
+          <div className="technical-packs" style={{ float: 'left', width: '50%' }}>
+            <h3> Technical Interviewer </h3>
+            <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
+              <FormGroup>
+                {isCheckedInterviewer.map((checked, index) => (
+                  (interviewers[index].tech === true) ?
+                    <FormControlLabel
+                      key={interviewers[index].id}
+                      control={
+                        <Checkbox
+                          key={index}
+                          checked={checked}
+                          onClick={() => toggleCheckedInterviewer(index)}
+                        />}
+                      label={interviewers[index].name}
+                    />
+                    : <> </>
+                ))}
+              </FormGroup>
+            </Box>
+          </div>
         </div>
 
         <Divider />
 
         <div className="candidates" style={{ marginTop: '50pt', padding: '2.5%' }}>
           <div>
-            <h2>
-              Candidates
-
-              <FormControl sx={{ float: 'right', minWidth: '25%' }}>
+            <h2> Candidates 
+              <FormControl sx={{ float: 'right', minWidth: '25%' }} size="small">
                 <InputLabel id="stream-select-label"> Stream </InputLabel>
                 <Select
                   id="stream-select"
@@ -225,9 +251,12 @@ const CreateAC = () => {
                   required
                   value={stream}
                   onChange={(e) => setStream(e.target.value)}>
-                  <MenuItem value={"Stream name"}> Stream name </MenuItem>
-                  <MenuItem value={"Stream name"}> Stream name </MenuItem>
-                  <MenuItem value={"Stream name"}> Stream name </MenuItem>
+                  <MenuItem value="Business Analyst"> Business Analyst </MenuItem>
+                  <MenuItem value="Business Intelligence"> Business Intelligence </MenuItem>
+                  <MenuItem value="Cloud (AWS)"> Cloud (AWS) </MenuItem>
+                  <MenuItem value="Technical Analyst"> Technical Analyst </MenuItem>
+                  <MenuItem value="Software Development"> Software Development </MenuItem>
+                  <MenuItem value="Testing"> Testing </MenuItem>
                 </Select>
               </FormControl>
 
@@ -237,56 +266,28 @@ const CreateAC = () => {
             </h2>
 
             <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
-              <FormGroup>
-                {candidates.map(candidate => (
-                  <FormControlLabel 
-                    key={candidate.id}
-                    control={<Checkbox/>} 
-                    label={candidate.first_name + " " + candidate.middle_name + " " + candidate.last_name} />
-                ))} 
+              <FormGroup style={{ maxHeight: 150, overflow: 'auto', width: '100%'}}>
+                {isCheckedCandidates.map((checked, index) => (
+                  <FormControlLabel
+                    key={candidates[index].id}
+                    control={
+                      <Checkbox
+                        key={index}
+                        checked={checked}
+                        onClick={() => toggleCheckedCandidates(index)}
+                      />}
+                    label={candidates[index].first_name + " " + candidates[index].middle_name + " " + candidates[index].last_name} />
+                ))}
               </FormGroup>
-
             </Box>
-
           </div>
         </div>
-
-        <Divider variant="middle" />
-
-        <div className="interview-packs" style={{ margigTop: '-10pt', padding: '2.5%' }}>
-          <h2> Interview Pack </h2>
-          <FormControl sx={{ float: 'left', minWidth: '50%' }}>
-            <InputLabel id="sales-pack-select-label"> Sales Interview Pack </InputLabel>
-            <Select
-              id="sales-pack-select"
-              label="Sales Interview Pack"
-              required
-              value={salesPack}
-              onChange={(e) => setSalesPack(e.target.value)}>
-              <MenuItem value={"Sales pack A"}> Sales Pack A </MenuItem>
-              <MenuItem value={"Sales pack B"}> Sales Pack B </MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl sx={{ float: 'left', minWidth: '50%' }}>
-            <InputLabel id="tech-pack-select-label"> Technical Interview Pack </InputLabel>
-            <Select
-              id="technical-pack-select"
-              label="Technical Interview Pack"
-              required
-              value={techPack}
-              onChange={(e) => setTechPack(e.target.value)}>
-              <MenuItem value={"Technical pack A"}> Technical Pack A </MenuItem>
-              <MenuItem value={"Technical pack B"}> Technical Pack B </MenuItem>
-            </Select>
-          </FormControl>
-
-          <Button 
-            variant="contained" 
-            sx={{ float: 'right' }}
-            onClick={(e) => handleSubmit(e.target.value)}>
-              Create
-          </Button>
-        </div>
+        <Button
+          variant="contained"
+          sx={{ float: 'right' }}
+          onClick={(e) => handleSubmit(e.target.value)}>
+          Create
+        </Button>
       </div>
     </div>
   )

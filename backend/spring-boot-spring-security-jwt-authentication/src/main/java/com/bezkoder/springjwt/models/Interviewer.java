@@ -17,6 +17,7 @@ public class Interviewer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
+	private boolean tech;
 	
 	// linked fields
 	@OneToMany(mappedBy = "interviewer")
@@ -37,17 +38,22 @@ public class Interviewer {
 	
 	
 	
+	
+	
 	/* --- contructors ---*/
 	public Interviewer() {
 		this.interviews = new ArrayList<Interview>();
 		this.assessmentCenters = new ArrayList<AssessmentCenter>();
 	}
-	public Interviewer(String name) {
+	public Interviewer(String name,boolean tech) {
 		this.name = name;
+		this.tech = tech;
 		this.interviews = new ArrayList<Interview>();
 		this.assessmentCenters = new ArrayList<AssessmentCenter>();
 	}
 	/* --- end of constructor --- */
+	
+	
 	
 	
 	
@@ -71,7 +77,15 @@ public class Interviewer {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
+	public boolean isTech() {
+		return tech;
+	}
+	public void setTech(boolean tech) {
+		this.tech = tech;
+	}
+	
+	
 	
 	/*
 	public void setAssessmentCenters(List<AssessmentCenter> assessmentCenters) {
@@ -111,10 +125,14 @@ public class Interviewer {
 
 	
 	
+
 	/* add, remove or get the linked reference --- */
 	// interview
 	public void addInterview(Interview interview) {
 		this.interviews.add(interview);
+		if (interview.getInterviewer() != null) {
+			interview.removeInterviewer();
+		}
 		interview.setInterviewer(this);
 	}
 	public void removeInterview(Interview interview) {
@@ -146,16 +164,21 @@ public class Interviewer {
 	
 	//user
 	public void addUser(User user) {
-		// if currently linked, unlink first
+		// if interviewer is currently linking to another user, remove relationship first
 		if (this.user != null) {
 			removeUser();
 		}
+		// if the user is linking to another interviewer, remove the relationship first
+		if (user.getInterviewer() != null) {
+			user.removeInterviewer();
+		}
 		this.user = user;
-		user.setInterviewer(this);
+		this.user.setInterviewer(this);
 	}
 	public void removeUser() {
+		this.user.setInterviewer(null);
 		this.user = null;
-		user.setInterviewer(null);
+		
 	}
 	public void setUser(User user) {
 		this.user = user;
@@ -163,12 +186,5 @@ public class Interviewer {
 	public User getUser() {
 		return this.user;
 	}
-	
-	
-	
-	
 
-	
-	
-	
 }
