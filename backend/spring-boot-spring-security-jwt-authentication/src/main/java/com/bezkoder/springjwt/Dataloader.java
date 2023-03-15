@@ -104,11 +104,11 @@ public class Dataloader implements ApplicationRunner{
 		recruiterList.add(new Recruiter("Stephania Kristal Sommer", false));
 		recruiterList.add(new Recruiter("Cynthia Katrina Shepard", false));
 		recruiterList.add(new Recruiter("Darrell Irving Hunnicutt", false));
-		recruiterList.add(new Recruiter("Kaitlyn Amberly Rigby", true));
+		recruiterList.add(new Recruiter("Kaitlyn Amberly Rigby", false));
 		recruiterList.add(new Recruiter("Braelyn Petal Mathews", false));
 		recruiterList.add(new Recruiter("Harper Jayceon Peel", false));
 		recruiterList.add(new Recruiter("Jenelle Rosabella Carpenter", false));
-		recruiterList.add(new Recruiter("Doyle Kendall Parent", true));
+		recruiterList.add(new Recruiter("Doyle Kendall Parent", false));
 		recruiterList.add(new Recruiter("Kiaran Darnell Jephson", false));
 		recruiterList.add(new Recruiter("Jenson Osbourne Ott", false));
 		
@@ -240,12 +240,10 @@ public class Dataloader implements ApplicationRunner{
 		rolesList.add(new Role());
 		rolesList.add(new Role());
 		rolesList.add(new Role());
-		rolesList.add(new Role());
 		rolesList.get(0).setName(ERole.ROLE_ADMIN);
 		rolesList.get(1).setName(ERole.ROLE_INTERVIEWER);
 		rolesList.get(2).setName(ERole.ROLE_RECRUITER);
-		rolesList.get(3).setName(ERole.ROLE_TECH);
-		rolesList.get(4).setName(ERole.ROLE_SALES);
+		rolesList.get(3).setName(ERole.ROLE_CANDIDATE);
 		this.roleRepository.saveAll(rolesList);
 		
 		// Auth Sign-In
@@ -255,17 +253,37 @@ public class Dataloader implements ApplicationRunner{
 		
 		userList.add(new User("interviewer1","interviewer1@gmail.com","interviewer1","interviewerName1"));
 		userList.get(1).addRole(rolesList.get(1));
+		interviewerList.get(0).addUser(userList.get(1));
 		userList.add(new User("interviewer2","interviewer2@gmail.com","interviewer2","interviewerName2"));
 		userList.get(2).addRole(rolesList.get(1));
+		interviewerList.get(1).addUser(userList.get(2));
 		userList.add(new User("interviewer3","interviewer3@gmail.com","interviewer3","interviewerName3"));
 		userList.get(3).addRole(rolesList.get(1));
+		interviewerList.get(2).addUser(userList.get(3));
 		userList.add(new User("interviewer4","interviewer4@gmail.com","interviewer4","interviewerName4"));
 		userList.get(4).addRole(rolesList.get(1));
+		interviewerList.get(3).addUser(userList.get(4));
 		
 		userList.add(new User("recruiter1","recruiter1@gmail.com","recruiter1","recruiterName1"));
 		userList.get(5).addRole(rolesList.get(2));
+		recruiterList.get(0).addUser(userList.get(5));
 		userList.add(new User("recruiter2","recruiter2@gmail.com","recruiter2","recruiterName2"));
 		userList.get(6).addRole(rolesList.get(2));
+		recruiterList.get(1).addUser(userList.get(6));
+		
+		userList.add(new User("candidate1","candidate1@gmail.com","candidate1","candidateName1"));
+		userList.get(7).addRole(rolesList.get(3));
+		candidateList.get(0).addUser(userList.get(7));
+		userList.add(new User("candidate2","candidate2@gmail.com","candidate2","candidateName2"));
+		userList.get(8).addRole(rolesList.get(3));
+		candidateList.get(1).addUser(userList.get(8));
+		userList.add(new User("candidate3","candidate3@gmail.com","candidate3","candidateName3"));
+		userList.get(9).addRole(rolesList.get(3));
+		candidateList.get(2).addUser(userList.get(9));
+		userList.add(new User("candidate4","candidate4@gmail.com","candidate4","candidateName4"));
+		userList.get(10).addRole(rolesList.get(3));
+		candidateList.get(3).addUser(userList.get(10));
+		
 		
 		
 		
