@@ -110,7 +110,12 @@ const Recruiter = () => {
               : // Display AC tab
               <div className='candidatesInfo' style={{ marginTop: "30px" }}>
                 <div className='assessmentToolBar' style={{ display: 'flex' }}>
-                  <Typography component="h2" variant="h4" style={{ flex: 1, margin: 10 }}> Upcoming </Typography>
+                  <Typography 
+                    component="h2" 
+                    variant="h4" 
+                    style={{ flex: 1, margin: 10 }}> 
+                    Upcoming 
+                  </Typography>
                   <div className='filter'>
                     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                       <InputLabel id="filter"> Filter </InputLabel>
@@ -127,7 +132,7 @@ const Recruiter = () => {
                 </div>
                 
                 {acs.map(ac => (
-                  (ac.completed === "true" 
+                  (ac.completed === "false" 
                     ? // Show incompleted AC
                     <>
                     <div key={ac.id}>

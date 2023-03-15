@@ -29,6 +29,8 @@ const AdminDashboard = () => {
   const [selection, setSelection] = useState('All');
   const [filteredUsers, setFilteredUsers] = useState([]);
 
+  // Fetch all existing users
+  
   const handleSubmit = () => {
     const newUser = { fullname, username, password, email, role };
     setUsers([...users, newUser]);
@@ -37,8 +39,6 @@ const AdminDashboard = () => {
     setPassword("");
     setEmail("");
     setRole("")
-
-    // console.log("Submit clicked")
 
     const body =
       JSON.stringify({
@@ -87,6 +87,7 @@ const AdminDashboard = () => {
         <Divider sx={{ mt: 2, mb: 2 }} />
         <Box
           sx={{
+            display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             mt: 3,
