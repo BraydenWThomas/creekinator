@@ -272,22 +272,28 @@ public class AuthController {
 		  @RequestParam(required = false, name = "candidateId") Integer candidateId) {
 	  List<String> linkedList = new ArrayList<String>(); // this list contain 
 	  User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Can't find user with id: " + id));
+	  Interviewer interviewer = interviewerRepository.findById(interviewerId).orElseThrow(() -> new NotFoundException("Can't find interviewer with id: " + interviewerId));
+	  Recruiter recruiter = recruiterRepository.findById(recruiterId).orElseThrow(() -> new NotFoundException("Can't find recruiter with id: " + recruiterId));
+	  Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(() -> new NotFoundException("Can't find candidate with id: " + candidateId));
 	  if (recruiterId != null) {
-		  Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(() -> new NotFoundException("Can't find candidate with id: " + candidateId));
+		  //Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(() -> new NotFoundException("Can't find candidate with id: " + candidateId));
+		  if (user.getRecruiter() != null) {
+			  
+		  }
 		  candidate.addUser(user);
 		  candidateRepository.save(candidate);
 		  linkedList.add("recruiterId " + recruiterId);
 	  }
 	  
 	  if (interviewerId != null) {
-		  Interviewer interviewer = interviewerRepository.findById(interviewerId).orElseThrow(() -> new NotFoundException("Can't find interviewer with id: " + interviewerId));
+		  //Interviewer interviewer = interviewerRepository.findById(interviewerId).orElseThrow(() -> new NotFoundException("Can't find interviewer with id: " + interviewerId));
 		  interviewer.addUser(user);
 		  interviewerRepository.save(interviewer);
 		  linkedList.add("interviewerId " + interviewerId);
 	  }
 	  
 	  if (candidateId != null) {
-		  Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(() -> new NotFoundException("Can't find candidate with id: " + candidateId));
+		  //Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(() -> new NotFoundException("Can't find candidate with id: " + candidateId));
 		  candidate.addUser(user);
 		  candidateRepository.save(candidate);
 		  linkedList.add("candidateId " + candidateId);
