@@ -22,16 +22,7 @@ const FDMtheme = createTheme({
   },
 });
 
-const LoginPage = () => {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
-    });
-  };
-
+const LoginPage = (props) => {
   return (
     <div className='login-container'>
       <ThemeProvider theme={FDMtheme}>
@@ -44,7 +35,7 @@ const LoginPage = () => {
               alignItems: 'center'
             }}>
             <Avatar src="/broken-image.jpg" sx={{ width: 350, height: 350 }} />
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 10 }}>
+            <Box component="form" onSubmit={props.onClick} noValidate sx={{ mt: 10 }}>
               <TextField
                 margin="normal"
                 required
@@ -79,17 +70,14 @@ const LoginPage = () => {
                 sx={{ mt: 2, mb: 2, }}>
                 Login
               </Button>
-                <Button><a href="/recruiter"><h4>Rercruiter</h4></a></Button>
-                <Button><a href="/interviewer"><h4>Interviewer</h4></a></Button>
-              <Button><a href="/admin"><h4>Admin</h4></a></Button> */}
             </Box>
-              <Grid container justifyContent="flex-end">
-                        <Grid item>
-                            <Button href="/apply">
-                                Don't have an account? Apply
-                            </Button>
-                        </Grid>
-                    </Grid>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Button href="/apply">
+                  Don't have an account? Apply
+                </Button>
+              </Grid>
+            </Grid>
             <Grid item
               sx={{ mt: 30 }}>
               <img src={fdm} alt="FDM Logo" />

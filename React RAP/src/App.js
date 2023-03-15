@@ -1,8 +1,9 @@
 // React + css
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { createBrowserRouter, RouterProvider, Navigate, useNavigate, Router } from 'react-router-dom';
 import './App.css';
 
-// Componenets
+// Components
 import AdminDashboard from './Components/AdminDashboard';
 import Recruiter from './Components/Recruiters/Recruiter';
 import Interviewer from './Components/Interviewers/Interviewer';
@@ -15,15 +16,16 @@ import ViewPastAC from './Components/Recruiters/ViewPastAC';
 import CreateAC from './Components/Recruiters/CreateAC';
 import UpdateAC from './Components/Recruiters/UpdateAC';
 import LoginPage from './Components/LoginPage';
+import handleClick from './Components/LoginPage';
+import NavBar from './Components/NavBar';
+import Calendar from './Components/Calendar';
+import CandidateApply from './Components/CandidateApply';
 
 // Material UI
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
-import handleClick from './Components/LoginPage';
-import NavBar from './Components/NavBar';
 import { Button } from '@mui/material';
-import Calendar from './Components/Calendar';
-import CandidateApply from './Components/CandidateApply';
+
 const FDMtheme = createTheme({
   palette: {
     primary: {
@@ -34,28 +36,7 @@ const FDMtheme = createTheme({
 });
 
 const App = () => {
-  const router = createBrowserRouter([
-    {
-      path:"/",
-      element: <LoginPage />
-    },
-
-    // Users
-    {
-      path:"/recruiter",
-      element: <Recruiter />
-    },
-    {
-      path:"/interviewer",
-      element: <Interviewer />
-    },
-    {
-      path:"/admin",
-      element: <AdminDashboard />
-    },
-
   const handleClick = (event) => {
-
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
@@ -75,11 +56,7 @@ const App = () => {
     fetch(" http://localhost:8080/api/auth/signin", requestOptions)
       .then(response => response.json())
       .then(result => {
-
-       
-
         if (result.username) {
-
           localStorage.setItem('status', result.roles[0])
           if (result.roles[0] == "ROLE_RECRUITER") {
             window.location.href = "/recruiter"
@@ -87,16 +64,9 @@ const App = () => {
           else if (result.roles[0] == "ROLE_INTERVIEWER") {
             window.location.href = "/interviewer"
           }
-
-
-        }}) 
+        }
+      })
       .catch(error => console.log('error', error));
-
-
-
-
-
-
   };
 
   const routes = [{
@@ -116,25 +86,17 @@ const App = () => {
     element: <AdminDashboard />
   }]
 
-    // Candidates
-    {
-      path:"/candidate/create",
-      element: <CreateCandidate />
-    },
-    {
-      path: "/candidate/info/:candidateId",
-      element: <CandidateInformation />
-    },
-    {
-      path:"/candidate/update/:candidateId",
-      element: <UpdateCandidate />
+  if (localStorage.getItem('status') == "ROLE_RECRUITER") {
+    routes.push({
+      path: "/recruiter",
+      element: <Recruiter />
     },
       {
         path: "/candidate/create",
         element: <CreateCandidate />
       },
       {
-        path: "/candidate/update/:candidateID",
+        path: "/candidate/update/:candidateId",
         element: <UpdateCandidate />
       },
       {
@@ -142,19 +104,17 @@ const App = () => {
         element: <CandidateInformation />
       },
       {
-        path: "/viewac/:abc",
+        path: "/ac/view/:acId",
         element: <ViewAC />
       },
       {
-        path: "/viewupcomingac/:abc",
+        path: "/ac/view-upcoming/:acId",
         element: <ViewUpcomingAC />
-      }
-      ,
+      },
       {
-        path: "/viewpastac/:abc",
+        path: "/ac/view-past/:acId",
         element: <ViewPastAC />
-      }
-      ,
+      },
       {
         path: "/createac",
         element: <CreateAC />
@@ -162,25 +122,17 @@ const App = () => {
     )
   }
 
-    // AC Info
-    {
-      path:"/ac/view/:abc",
-      element: <ViewAC />
-    },
-    {
-      path:"/ac/view-upcoming/:acId",
-      element: <ViewUpcomingAC />
-    },
-    {
-      path:"/ac/view-past/:acId",
-      element: <ViewPastAC />
+  if (localStorage.getItem('status') == "ROLE_INTERVIEWER") {
+    routes.push({
+      path: "/interviewer",
+      element: <Interviewer />
     },
       {
-        path: "/candidateinformation/:abc",
+        path: "/candidateinformation/:candidateId",
         element: <CandidateInformation />
       },
       {
-        path: "/viewac/:abc",
+        path: "/viewac/:acId",
         element: <ViewAC />
       })
   }
@@ -194,10 +146,7 @@ const App = () => {
 
   }
   const getCalendar = () => {
-
-    
     window.location.href = "/calendar"
-
   }
 
   return (
