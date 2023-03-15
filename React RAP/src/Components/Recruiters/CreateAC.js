@@ -26,10 +26,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 
-// // Brayden
-
-// // Brayden
-
 const CreateAC = () => {
   // AC Details
   const [title, setTitle] = useState('');
@@ -119,7 +115,8 @@ const CreateAC = () => {
         title: title,
         date: date.format('YYYY-MM-DD'),
         start_time: timeStart.format('HH:mm:ss'),
-        finish_time: timeEnd.format('HH:mm:ss')
+        finish_time: timeEnd.format('HH:mm:ss'),
+        // coordinatorId: 
       });
 
     const requestOptions = {

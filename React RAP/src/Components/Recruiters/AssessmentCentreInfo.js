@@ -45,41 +45,109 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
     formatStart.format("LT") + " - " +
     formatEnd.format("LT")
 
-  const MenuList = () => {
-    return (
-      <div>
-        <IconButton
-          id="basic-button"
-          aria-controls={open ? 'basic-menu' : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
-          onClick={handleClick}>
-          <MoreHorizIcon />
-        </IconButton>
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          MenuListProps={{
-            'aria-labelledby': 'basic-button',
-          }}>
-          <Link to={`/ac/view-upcoming/${ac.id}`}>
+  const MenuList = ({ statustype }) => {
+    if (statustype === "upcomingAC") {
+      return (
+        <div>
+          <IconButton
+            id="basic-button"
+            aria-controls={open ? 'basic-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={handleClick}>
+            <MoreHorizIcon />
+          </IconButton>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}>
+            <Link to={`/ac/view-upcoming/${ac.id}`}>
+              <MenuItem>
+                View
+              </MenuItem>
+            </Link>
+            <Link to={`/ac/update/${ac.id}`}>
+              <MenuItem>
+                Update Details
+              </MenuItem>
+            </Link>
+            <Link to={`/ac/update/schedule/${ac.id}`}>
+              <MenuItem>
+                Schedule Attendees
+              </MenuItem>
+            </Link>
             <MenuItem>
-              View
+              Delete
             </MenuItem>
-          </Link>
-          <Link to={`/ac/update/${ac.id}`}>
+          </Menu>
+        </div>
+      )
+    }
+    
+    if (statustype === "pastAC") {
+      return (
+        <div>
+          <IconButton
+            id="basic-button"
+            aria-controls={open ? 'basic-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={handleClick}>
+            <MoreHorizIcon />
+          </IconButton>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}>
+            <Link to={`/ac/view-upcoming/${ac.id}`}>
+              <MenuItem>
+                View
+              </MenuItem>
+            </Link>
             <MenuItem>
-              Update
+              Delete
             </MenuItem>
-          </Link>
-          {/* <MenuItem onClick={() => handleDelete(candidate.id)}>
-            Delete
-          </MenuItem> */}
-        </Menu>
-      </div>
-    )
+          </Menu>
+        </div>
+      )
+    }
+
+    if (statustype === "interviewerAC") {
+      return (
+        <div>
+          <IconButton
+            id="basic-button"
+            aria-controls={open ? 'basic-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={handleClick}>
+            <MoreHorizIcon />
+          </IconButton>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}>
+            <Link to={`/ac/view-upcoming/${ac.id}`}>
+              <MenuItem>
+                View
+              </MenuItem>
+            </Link>
+          </Menu>
+        </div>
+      )
+    }
   }
 
   // Fetch attendees assigned to ac
@@ -127,11 +195,11 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
       <Paper className='assessmentCentreInfo' style={{ clear: "both", borderRadius: 10 }}>
         <div className="streamInfo">
           {statustype === "upcomingAC" ?
-            <MenuList /> :
+            <MenuList statustype={statustype} /> :
             (statustype === "pastAC" ?
-              <MenuList /> :
-              (statustype === "upcomingAC_forInterviewer" ?
-                <MenuList /> :
+              <MenuList statustype={statustype} /> :
+              (statustype === "interviewer" ?
+                <MenuList statustype={statustype} /> :
                 <button className='acDetails'>....</button>
               )
             )

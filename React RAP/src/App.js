@@ -25,6 +25,7 @@ import CandidateApply from './Components/CandidateApply';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import { Button } from '@mui/material';
+import { Update } from '@mui/icons-material';
 
 const FDMtheme = createTheme({
   palette: {
@@ -110,6 +111,10 @@ const App = () => {
       {
         path: "/ac/view-upcoming/:acId",
         element: <ViewUpcomingAC />
+      },
+      {
+        path: "/ac/update/:acId",
+        element: <UpdateAC />
       },
       {
         path: "/ac/view-past/:acId",

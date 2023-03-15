@@ -50,12 +50,12 @@ const Recruiter = () => {
       <NavBar />
 
       <div className='bodySection'>
-      <div className="header" style={{ display: "flex" }}>
-            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Dashboard</Typography>
-            <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
-              <NotificationsIcon fontSize="large" />
-              <Avatar src="/broken-image.jpg" />
-            </div>
+        <div className="header" style={{ display: "flex" }}>
+          <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Dashboard</Typography>
+          <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
+            <NotificationsIcon fontSize="large" />
+            <Avatar src="/broken-image.jpg" />
+          </div>
         </div>
 
         <Divider sx={{ mt: 2, mb: 2 }} />
@@ -108,13 +108,13 @@ const Recruiter = () => {
                 ))}
               </div>
               : // Display AC tab
-              <div className='candidatesInfo' style={{ marginTop: "30px" }}>
+              <div className='acInfo' style={{ marginTop: "30px" }}>
                 <div className='assessmentToolBar' style={{ display: 'flex' }}>
-                  <Typography 
-                    component="h2" 
-                    variant="h4" 
-                    style={{ flex: 1, margin: 10 }}> 
-                    Upcoming 
+                  <Typography
+                    component="h2"
+                    variant="h4"
+                    style={{ flex: 1, margin: 10 }}>
+                    Upcoming
                   </Typography>
                   <div className='filter'>
                     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -130,49 +130,60 @@ const Recruiter = () => {
                     </a>
                   </div>
                 </div>
-                
+
                 {acs.map(ac => (
-                  (ac.completed === "false" 
+                  (ac.completed === false
                     ? // Show incompleted AC
                     <>
-                    <div key={ac.id}>
-                      <AssessmentCentreInfo statustype="upcomingAC" ac={ac} />
-                    </div>
-                    <div className="scrollArrows">
-                      <button className="leftIcon"><ChevronLeftIcon /></button>
-                      <button className="rightIcon"><ChevronRightIcon /></button>
-                    </div>
-    
-                    <div className='assessmentToolBar' style={{ display: 'flex' }}>
-                      <Typography component="h2" variant="h4" style={{ flex: 1, margin: 10 }}> Past </Typography>
-                      <div className='filter'>
-    
-                        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                          <InputLabel id="filter"> Filter </InputLabel>
-                          <Select labelId="filter" id="filter" label="Filter" value={""}>
-                            <MenuItem value="Name">Name</MenuItem>
-                            <MenuItem value="Stream">Stream</MenuItem>
-                            <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
-                          </Select>
-                        </FormControl>
-                        <a href="/ac/create" target="_blank">
-                          <button className='candidateAdd'> <AddIcon /> </button>
-                        </a>
-                      </div>
-                    </div>
-                    </>
-                    : // Show completed AC
-                    <>
                       <div key={ac.id}>
-                        <AssessmentCentreInfo statustype="pastAC" ac={ac} />
+                        <AssessmentCentreInfo statustype="upcomingAC" ac={ac} />
                       </div>
-    
                       <div className="scrollArrows">
                         <button className="leftIcon"><ChevronLeftIcon /></button>
                         <button className="rightIcon"><ChevronRightIcon /></button>
                       </div>
                     </>
-                  )  
+                    : <> </>
+                  )
+                ))}
+
+                <div className='assessmentToolBar' style={{ display: 'flex' }}>
+                  <Typography
+                    component="h2"
+                    variant="h4"
+                    style={{ flex: 1, margin: 10 }}>
+                    Past
+                  </Typography>
+                  <div className='filter'>
+
+                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                      <InputLabel id="filter"> Filter </InputLabel>
+                      <Select labelId="filter" id="filter" label="Filter" value={""}>
+                        <MenuItem value="Name">Name</MenuItem>
+                        <MenuItem value="Stream">Stream</MenuItem>
+                        <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <a href="/ac/create" target="_blank">
+                      <button className='candidateAdd'> <AddIcon /> </button>
+                    </a>
+                  </div>
+                </div>
+                {acs.map(ac => (
+                  (ac.completed === true
+                    ? // Show completed AC
+                    <>
+                      <div key={ac.id}>
+                        <AssessmentCentreInfo statustype="pastAC" ac={ac} />
+                      </div>
+
+                      <div className="scrollArrows">
+                        <button className="leftIcon"><ChevronLeftIcon /></button>
+                        <button className="rightIcon"><ChevronRightIcon /></button>
+                      </div>
+                    </>
+                    : <></>
+                  )
                 ))}
               </div>
             }
