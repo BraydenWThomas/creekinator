@@ -125,8 +125,7 @@ const CreateAC = () => {
       redirect: 'follow',
       headers: { 'content-type': 'application/json' }
     };
-
-    // fetch("http://localhost:8080/api/ac", requestOptions)
+    
     fetch("http://localhost:8080/api/ac?interviewers=" + interviewerString +
       "&recruiters=1&candidates=" + candidateString, requestOptions)
       .then(response => response.json())

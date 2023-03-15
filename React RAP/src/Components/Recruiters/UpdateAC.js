@@ -4,7 +4,7 @@ import NavBar from '../NavBar';
 // React
 import React, { useEffect, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // Material UI
 import { Divider,
@@ -23,7 +23,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 
 const UpdateAC = () => {
   // AC Details
@@ -39,6 +38,12 @@ const UpdateAC = () => {
   // Link to specific ac
   const { acId } = useParams();
   const [ac, setAc] = useState([]);
+
+  // Go back to previous page
+  const navigate = useNavigate();
+  const goBack = () => {
+    navigate(-1);
+  }
 
   // Fetch all candidates + acs
   useEffect(() => {
@@ -60,6 +65,35 @@ const UpdateAC = () => {
     setTimeStart(dayjs(ac.start_time, "hh:mm:ss"));
     setTimeEnd(dayjs(ac.finish_time, "hh:mm:ss"));
   }, [ac])
+
+  // Update AC
+  const handleSubmit = () => {
+    // Go back to previous page
+    goBack();
+
+    const body =
+      JSON.stringify({
+        id: ac.id,
+        title: title,
+        date: date.format('YYYY-MM-DD'),
+        start_time: timeStart.format('HH:mm:ss'),
+        finish_time: timeEnd.format('HH:mm:ss'),
+        coordinatorId: ac.coordinatorId
+      });
+
+    const requestOptions = {
+      method: 'POST',
+      body: body,
+      redirect: 'follow',
+      headers: { 'content-type': 'application/json' }
+    };
+
+    fetch("http://localhost:8080/api/ac", requestOptions)
+      .then(response => response.json())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+  }
+
   return (
     <div>
       <NavBar />
@@ -110,13 +144,18 @@ const UpdateAC = () => {
               onChange={(newTime) => setTimeEnd(newTime)} />
           </LocalizationProvider>
         </div>
-        
-          <Button variant="contained" sx={{ float: 'right' }}>
-            Cancel
-          </Button>
-          <Button variant="contained" sx={{ float: 'right' }}>
-            Save
-          </Button> 
+        <Button 
+          variant="contained" 
+          sx={{ float: 'right' }}
+          onClick={goBack}>
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          sx={{ float: 'right' }}
+          onClick={() => handleSubmit()}>
+          Save
+        </Button> 
         </div>
       </div>
 
