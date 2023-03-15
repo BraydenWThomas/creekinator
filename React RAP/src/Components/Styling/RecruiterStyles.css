@@ -5,7 +5,7 @@
 }
 
 .pageSection {
-    height: 100vh;
+    max-height: 100vh;
 }
 
 
@@ -57,13 +57,7 @@
     color: white;
     
 }
-.acDetails {
-    float: right;
-    background-color: transparent;
-    font-weight: 20px;
-    font-size: 20px;
-    border: none
-}
+
 .streamInfo{
     background-color: rgb(214, 214, 214);
     padding: 10px;
@@ -71,4 +65,8 @@
     border-color: rgb(136, 136, 136);
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
+}
+
+.menu{
+    float: right;
 }

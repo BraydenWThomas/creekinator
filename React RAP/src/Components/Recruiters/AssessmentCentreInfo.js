@@ -8,8 +8,8 @@ import dayjs from 'dayjs';
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
 // Material UI
-import { Box, Paper, Menu, MenuItem, IconButton } from '@mui/material';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { Box, Paper, Menu, MenuItem, IconButton, Typography } from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 const AssessmentCentreInfo = ({ statustype, ac }) => {
@@ -48,103 +48,101 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
   const MenuList = ({ statustype }) => {
     if (statustype === "upcomingAC") {
       return (
-        <div>
-          <IconButton
-            id="basic-button"
-            aria-controls={open ? 'basic-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}>
-            <MoreHorizIcon />
-          </IconButton>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button',
-            }}>
-            <Link to={`/ac/view-upcoming/${ac.id}`}>
+        <div className='menu'>
+          <div className='select-menu'>
+            <IconButton
+              id="basic-button"
+              onClick={handleClick}>
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+            >
+              <Link to={`/ac/view-upcoming/${ac.id}`}>
+                <MenuItem>
+                  View
+                </MenuItem>
+              </Link>
+              <Link to={`/ac/update/${ac.id}`}>
+                <MenuItem>
+                  Update Details
+                </MenuItem>
+              </Link>
+              <Link to={`/ac/update/schedule/${ac.id}`}>
+                <MenuItem>
+                  Schedule Attendees
+                </MenuItem>
+              </Link>
               <MenuItem>
-                View
+                Delete
               </MenuItem>
-            </Link>
-            <Link to={`/ac/update/${ac.id}`}>
-              <MenuItem>
-                Update Details
-              </MenuItem>
-            </Link>
-            <Link to={`/ac/update/schedule/${ac.id}`}>
-              <MenuItem>
-                Schedule Attendees
-              </MenuItem>
-            </Link>
-            <MenuItem>
-              Delete
-            </MenuItem>
-          </Menu>
+            </Menu>
+          </div>
         </div>
       )
     }
-    
+
     if (statustype === "pastAC") {
       return (
-        <div>
-          <IconButton
-            id="basic-button"
-            aria-controls={open ? 'basic-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}>
-            <MoreHorizIcon />
-          </IconButton>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button',
-            }}>
-            <Link to={`/ac/view-upcoming/${ac.id}`}>
+        <div className='menu'>
+          <div className='select-menu'>
+            <IconButton
+              id="basic-button"
+              onClick={handleClick}>
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}>
+              <Link to={`/ac/view-upcoming/${ac.id}`}>
+                <MenuItem>
+                  View
+                </MenuItem>
+              </Link>
               <MenuItem>
-                View
+                Delete
               </MenuItem>
-            </Link>
-            <MenuItem>
-              Delete
-            </MenuItem>
-          </Menu>
+            </Menu>
+          </div>
         </div>
       )
     }
 
     if (statustype === "interviewerAC") {
       return (
-        <div>
-          <IconButton
-            id="basic-button"
-            aria-controls={open ? 'basic-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}>
-            <MoreHorizIcon />
-          </IconButton>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button',
-            }}>
-            <Link to={`/ac/view-upcoming/${ac.id}`}>
-              <MenuItem>
-                View
-              </MenuItem>
-            </Link>
-          </Menu>
+        <div className='menu'>
+          <div className='select-menu'>
+            <IconButton
+              id="basic-button"
+              onClick={handleClick}>
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}>
+              <Link to={`/ac/view-upcoming/${ac.id}`}>
+                <MenuItem>
+                  View
+                </MenuItem>
+              </Link>
+            </Menu>
+          </div>
         </div>
       )
     }
@@ -185,14 +183,13 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
     <Box
       sx={{
         display: 'flex',
-        minWidth: 500,
         '& > :not(style)': {
           m: 1,
           width: '100%',
           height: 300
         }
       }} >
-      <Paper className='assessmentCentreInfo' style={{ clear: "both", borderRadius: 10 }}>
+      <Paper className='assessmentCentreInfo' style={{ borderRadius: 10}}>
         <div className="streamInfo">
           {statustype === "upcomingAC" ?
             <MenuList statustype={statustype} /> :
@@ -204,11 +201,13 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
               )
             )
           }
-          <h2> {ac.title} </h2>
-          <h4>
-            <InfoOutlinedIcon />
-            {dateFormat}
-          </h4>
+          <Typography component="h1" variant="h5">{ac.title}</Typography>
+          <div style={{ display: 'flex' }}>
+            <Typography component="h1" variant="h6" style={{ display: 'flex', alignItems: 'center' }}>
+              <InfoOutlinedIcon fontSize='medium' style={{ marginRight: '5px' }} />
+              {dateFormat}
+            </Typography>
+          </div>
         </div>
         <div style={{ marginRight: "20px", marginLeft: "20px", backgroundColor: "white", paddingLeft: "20px" }}>
           <div style={{ float: "left", width: "35%" }}>

@@ -45,6 +45,7 @@ const CandidateSelectBox = ({ candidate }) => {
       .catch(error => console.log('error', error));
 
       handleCloseDeleteModal();
+      window.location.reload();
   }
 
   return (

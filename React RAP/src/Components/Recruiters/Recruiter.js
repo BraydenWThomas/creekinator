@@ -84,15 +84,7 @@ const Recruiter = () => {
               <div style={{ clear: "both" }}>
                 <div className='applicantToolBar' style={{ display: 'flex', marginLeft: 20}}>
                   <Typography component="h2" variant="h4" style={{ flex: 1 }}> Applied </Typography>
-                  <div className='filter' style={{marginRight: 20}}>
-                    {/* <FormControl sx={{ minWidth: 120 }} size="small">
-                      <InputLabel id="filter"> Filter </InputLabel>
-                      <Select labelId="filter" id="filter" label="Filter" value={""}>
-                        <MenuItem value="Name">Name</MenuItem>
-                        <MenuItem value="Stream">Stream</MenuItem>
-                        <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
-                      </Select>
-                    </FormControl> */}
+                  <div className='add-c' style={{marginRight: 20}}>
                     <a href="/candidate/create" target="_blank">
                       <AddIcon fontSize='large'/>
                     </a>
@@ -105,28 +97,23 @@ const Recruiter = () => {
                 ))}
               </div>
               : // Display AC tab
-              <div className='candidatesInfo' style={{ marginTop: "30px" }}>
-                <div className='assessmentToolBar' style={{ display: 'flex' }}>
-                  <Typography 
-                    component="h2" 
-                    variant="h4" 
-                    style={{ flex: 1, margin: 10 }}> 
-                    Upcoming 
-                  </Typography>
-                  <div className='filter'>
-                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                      <InputLabel id="filter"> Filter </InputLabel>
-                      <Select labelId="filter" id="filter" label="Filter" value={""}>
-                        <MenuItem value="Name">Name</MenuItem>
-                        <MenuItem value="Stream">Stream</MenuItem>
-                        <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <a href="/ac/create" target="_blank">
-                      <button className='candidateAdd'> <AddIcon /> </button>
+              <div className='assessmentCentreInfo'>
+                <div className='assessmentToolBar' style={{ display: 'flex', marginLeft: 20}}>
+                  <Typography component="h2" variant="h4" style={{ flex: 1 }}> Upcoming </Typography>
+                  <div className='add-ac' style={{marginRight: 20}}>
+                    <a href="/candidate/create" target="_blank">
+                      <AddIcon fontSize='large'/>
                     </a>
                   </div>
-                </div>
+                </div >
+                <Box
+              sx={{
+                '& > :not(style)': {
+                  m: 1,
+                  width: '100%',
+                  height: 300
+                }
+              }} >
                 
                 {acs.map(ac => (
                   (ac.completed === "false" 
@@ -171,6 +158,7 @@ const Recruiter = () => {
                     </>
                   )  
                 ))}
+            </Box>
               </div>
             }
           </Box>

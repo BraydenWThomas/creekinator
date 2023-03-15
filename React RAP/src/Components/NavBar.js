@@ -3,7 +3,6 @@ import fdm from './fdm-logo.png';
 import { Tabs, Tab, Paper, Button, } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import TuneIcon from '@mui/icons-material/Tune';
 import LogoutIcon from '@mui/icons-material/Logout';
 import './Styling/NavBar.css';
 
@@ -41,14 +40,10 @@ const NavBar = () => {
             label="Calendar"
           />
           <Tab
-            icon={<TuneIcon />} iconPosition="start"
-            label="Settings"
-          />
-          <Tab
           icon={<LogoutIcon />} iconPosition="start"
           label="Logout"
           onClick={logout}
-          sx={{ mt: 105 }}
+          sx={{ mt: 115 }}
           />
         </Tabs>
       </Paper>
