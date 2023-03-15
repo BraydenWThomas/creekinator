@@ -89,13 +89,13 @@ const CandidateApply = () => {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Sign Up
+                        Apply
                     </Button>
                     <Grid container justifyContent="flex-end">
                         <Grid item>
-                            <Link href="/" variant="body2">
+                            <Button href="/">
                                 Already have an account? Sign in
-                            </Link>
+                            </Button>
                         </Grid>
                     </Grid>
                     <Grid container justifyContent="center">
