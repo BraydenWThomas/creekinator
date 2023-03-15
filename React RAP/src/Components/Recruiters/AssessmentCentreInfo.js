@@ -198,9 +198,9 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
             <MenuList statustype={statustype} /> :
             (statustype === "pastAC" ?
               <MenuList statustype={statustype} /> :
-              (statustype === "interviewer" ?
+              (statustype === "interviewerAC" ?
                 <MenuList statustype={statustype} /> :
-                <button className='acDetails'>....</button>
+                <></>
               )
             )
           }
