@@ -345,6 +345,14 @@ public class EntityController {
 		}
 		return candidateRepository.save(candidate);
 	}
+	
+	// show all candidates in an specific ac 
+	@GetMapping("/candidate/{id}/showACs")
+	public List<AssessmentCenter> showCandidateACs(@PathVariable int id) {
+		Candidate candidate = candidateRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find candidate with id: " + id));
+		return candidate.getAssessmentCenters();
+	}	
+	
 	/* --- End of Candidate --- */
 	
 	
