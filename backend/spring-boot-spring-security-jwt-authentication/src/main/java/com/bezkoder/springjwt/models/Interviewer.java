@@ -30,6 +30,7 @@ public class Interviewer {
 	@JsonIgnore
 	private List<AssessmentCenter> assessmentCenters;
 	@OneToOne
+	@JsonIgnore
 	private User user;
 	/* --- end of fields --- */
 	
@@ -45,12 +46,18 @@ public class Interviewer {
 		this.interviews = new ArrayList<Interview>();
 		this.assessmentCenters = new ArrayList<AssessmentCenter>();
 	}
+	public Interviewer(String name) {
+		this.interviews = new ArrayList<Interview>();
+		this.assessmentCenters = new ArrayList<AssessmentCenter>();
+		this.name = name;
+	}
 	public Interviewer(String name,boolean tech) {
 		this.name = name;
 		this.tech = tech;
 		this.interviews = new ArrayList<Interview>();
 		this.assessmentCenters = new ArrayList<AssessmentCenter>();
 	}
+	
 	/* --- end of constructor --- */
 	
 	

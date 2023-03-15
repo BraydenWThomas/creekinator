@@ -25,7 +25,7 @@ public class Interview {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private String form;
+	private String comment;
 	private LocalTime interviewTime;
 	private int score = -1;
 	
@@ -65,14 +65,17 @@ public class Interview {
 		this.packs = new ArrayList<Pack>();
 		// TODO Auto-generated constructor stub
 	}
+	/*
 	public Interview(String form) {
 		super();
 		this.form = form; // comment should be included in form
 		this.packs = new ArrayList<Pack>();
 	}
-	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, String form,LocalTime interviewTime, int score) {
+	*/
+	
+	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, String comment,LocalTime interviewTime, int score) {
 		super();
-		this.form = form; // comment should be included in form
+		this.comment = comment; // comment should be included in form
 		this.assessmentCenter = assessmentCenter;
 		this.interviewer = interviewer;
 		this.candidate = candidate;	
@@ -80,9 +83,9 @@ public class Interview {
 		this.interviewTime = interviewTime;
 		this.score = score;
 	}
-	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, List<Pack> packs, String form,LocalTime interviewTime, int score) {
+	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, List<Pack> packs, String comment,LocalTime interviewTime, int score) {
 		super();
-		this.form = form; // comment should be included in form
+		this.comment = comment; // comment should be included in form
 		this.assessmentCenter = assessmentCenter;
 		this.interviewer = interviewer;
 		this.candidate = candidate;	
@@ -106,11 +109,11 @@ public class Interview {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getForm() {
-		return form;
+	public String getComment() {
+		return this.comment;
 	}
-	public void setForm(String form) {
-		this.form = form;
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 	/* --- End of unlinked getter and setter --- */
 	
