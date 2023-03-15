@@ -50,6 +50,10 @@ public class Recruiter {
 		this.superRecruiter = superRecruiter;
 		this.assessmentCenters = new ArrayList<AssessmentCenter>();
 	}
+	public Recruiter(String name) {
+		this.name = name;
+		this.assessmentCenters = new ArrayList<AssessmentCenter>();
+	}
 	/* --- End of Constructors --- */
 	
 	
