@@ -21,6 +21,8 @@ import NavBar from './Components/NavBar';
 import { Button } from '@mui/material';
 import Calendar from './Components/Calendar';
 import CandidateApply from './Components/CandidateApply';
+import Candidate from './Components/Candidate/Candidate';
+
 const FDMtheme = createTheme({
   palette: {
     primary: {
@@ -68,7 +70,9 @@ const App = () => {
           else if (result.roles[0] == "ROLE_INTERVIEWER") {
             window.location.href = "/interviewer"
           }
-
+          else if (result.roles[0] == "ROLE_CANDIDATE") {
+            window.location.href = "/candidate"
+          }
 
         }}) 
       .catch(error => console.log('error', error));
@@ -95,9 +99,6 @@ const App = () => {
   {
     path: "/admin",
     element: <AdminDashboard />
-  }, {
-    path: "/candidate",
-    element: <Candidate />
   }]
 
   if (localStorage.getItem('status') == "ROLE_RECRUITER") {
@@ -151,6 +152,13 @@ const App = () => {
         path: "/viewac/:abc",
         element: <ViewAC />
       })
+  }
+
+  if (localStorage.getItem('status') == "ROLE_CANDIDATE") {
+    routes.push( {
+      path: "/candidate",
+      element: <Candidate />
+    })
   }
 
   
