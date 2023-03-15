@@ -61,6 +61,8 @@ const CreateInterview = () => {
 
   return (
     <div>
+
+      <div className="selector">
       <NavBar />
       <FormControl required sx={{ m: 2, minWidth: 450 }}>
               <InputLabel id="select-candidate-label">Select Candidate</InputLabel>
@@ -99,6 +101,7 @@ const CreateInterview = () => {
                             ))}
               </Select>
             </FormControl>
+            </div>
 
     </div>
   )
