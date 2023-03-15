@@ -16,31 +16,28 @@ import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 const CandidateApply = () => {
 
     return (
-        <Container component="main" maxWidth="sm" sx={{ height:"100vh"}}>
+        <Container component="main" maxWidth="xs" sx={{ height:"100vh"}}>
             <Box
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    paddingTop:30
+                    paddingTop:50
                 }}
             >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
+                <Typography component="h1" variant="h3">
                     Sign up
                 </Typography>
                 <Box component="form" noValidate sx={{ mt: 3 }}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
-                                autoComplete="given-name"
-                                name="fullname"
+                                autoComplete="user"
+                                name="username"
                                 required
                                 fullWidth
-                                id="fullname"
-                                label="Full Name"
+                                id="username"
+                                label="Username"
                                 autoFocus
                             />
                         </Grid>
@@ -65,7 +62,7 @@ const CandidateApply = () => {
                                 autoComplete="new-password"
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        {/* <Grid item xs={12}>
                         <FormControl required fullWidth>
                             <InputLabel id="title-select-label">Stream</InputLabel>
                             <Select
@@ -81,7 +78,7 @@ const CandidateApply = () => {
 
                             </Select>
                             </FormControl>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                     <Button
                         type="submit"
@@ -100,7 +97,7 @@ const CandidateApply = () => {
                     </Grid>
                     <Grid container justifyContent="center">
                     <Grid item
-                        sx={{ mt: 35 }}>
+                        sx={{ position: 'absolute', bottom: 75 }}>
                         <img src={fdm} alt="FDM Logo" />
                     </Grid>
                     </Grid>

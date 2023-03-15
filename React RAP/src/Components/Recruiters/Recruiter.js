@@ -176,11 +176,11 @@ const Recruiter = () => {
                       <div key={ac.id}>
                         <AssessmentCentreInfo statustype="pastAC" ac={ac} />
                       </div>
-
-                      <div className="scrollArrows">
+    
+                      {/* <div className="scrollArrows">
                         <button className="leftIcon"><ChevronLeftIcon /></button>
                         <button className="rightIcon"><ChevronRightIcon /></button>
-                      </div>
+                      </div> */}
                     </>
                     : <></>
                   )

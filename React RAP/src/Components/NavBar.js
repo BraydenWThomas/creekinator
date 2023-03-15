@@ -1,9 +1,10 @@
 import React, { Fragment, useState } from 'react';
 import fdm from './fdm-logo.png';
-import { Tabs, Tab, List, ListItemButton, ListItemIcon, ListItemText, Paper } from '@mui/material';
+import { Tabs, Tab, Paper, Button, } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import TuneIcon from '@mui/icons-material/Tune';
+import LogoutIcon from '@mui/icons-material/Logout';
 import './Styling/NavBar.css';
 
 
@@ -14,16 +15,24 @@ const NavBar = () => {
     setValue(newValue);
   };
 
+  const logout = () => {
+
+    localStorage.removeItem('status');
+    localStorage.removeItem('userId')
+    window.location.href = "/"
+
+  }
+
   return (
     <div className="nav-container">
       <Paper elevation={4} sx={{ height: '100vh'}}>
         <nav className="nav-side">
-          <img src={fdm} alt="FDM Logo" />
+          <img src={fdm} alt="FDM Logo"/>
         </nav>
-        <Tabs component="nav" orientation='vertical' variant='scrollable' value={value} onChange={handleChange}
-          TabIndicatorProps={{ sx: { left: 0, width: 5 } }}>
+        <Tabs component="nav" orientation='vertical' variant='scrollable' sx={{ mt: 2 }} value={value} onChange={handleChange}
+          TabIndicatorProps={{ sx: { left: 0, width: 7 } }}>
           <Tab
-            icon={<DashboardIcon />} sx={{ m: 1 }} iconPosition="start"
+            icon={<DashboardIcon />}  iconPosition="start"
             label="Dashboard"
           />
           <Tab
@@ -34,6 +43,12 @@ const NavBar = () => {
           <Tab
             icon={<TuneIcon />} iconPosition="start"
             label="Settings"
+          />
+          <Tab
+          icon={<LogoutIcon />} iconPosition="start"
+          label="Logout"
+          onClick={logout}
+          sx={{ mt: 105 }}
           />
         </Tabs>
       </Paper>

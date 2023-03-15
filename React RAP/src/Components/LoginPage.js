@@ -11,7 +11,6 @@ import fdm from './fdm-logo.png';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import './Styling/LoginPageStyle.css'
-import { Link } from 'react-router-dom';
 
 const FDMtheme = createTheme({
   palette: {
@@ -79,7 +78,7 @@ const LoginPage = (props) => {
               </Grid>
             </Grid>
             <Grid item
-              sx={{ mt: 30 }}>
+              sx={{ position: 'absolute', bottom: 75 }}>
               <img src={fdm} alt="FDM Logo" />
             </Grid>
           </Box>

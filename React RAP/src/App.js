@@ -16,18 +16,21 @@ import ViewPastAC from './Components/Recruiters/ViewPastAC';
 import CreateAC from './Components/Recruiters/CreateAC';
 import UpdateAC from './Components/Recruiters/UpdateAC';
 import LoginPage from './Components/LoginPage';
-import handleClick from './Components/LoginPage';
-import NavBar from './Components/NavBar';
-import Calendar from './Components/Calendar';
-import CandidateApply from './Components/CandidateApply';
+import Candidate from './Components/Candidate/Candidate'
 
 // Material UI
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import { Button } from '@mui/material';
-import { Update } from '@mui/icons-material';
+import Calendar from './Components/Calendar';
+import CandidateApply from './Components/CandidateApply';
+
 
 const FDMtheme = createTheme({
+  typography:{
+    fontFamily: "barlow",
+  },
+
   palette: {
     primary: {
       main: '#6f00ff',
@@ -36,7 +39,10 @@ const FDMtheme = createTheme({
   },
 });
 
+
 const App = () => {
+
+
   const handleClick = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -59,6 +65,7 @@ const App = () => {
       .then(result => {
         if (result.username) {
           localStorage.setItem('status', result.roles[0])
+          localStorage.setItem('userId', result.id)
           if (result.roles[0] == "ROLE_RECRUITER") {
             window.location.href = "/recruiter"
           }
@@ -85,7 +92,11 @@ const App = () => {
   {
     path: "/admin",
     element: <AdminDashboard />
-  }]
+  }, {
+    path: "/candidate",
+    element: <Candidate />
+  }
+]
 
   if (localStorage.getItem('status') == "ROLE_RECRUITER") {
     routes.push({
@@ -142,22 +153,26 @@ const App = () => {
       })
   }
 
+  
+
   const routerPage = createBrowserRouter(routes);
 
-  const logout = () => {
-
-    localStorage.removeItem('status');
-    window.location.href = "/"
-
-  }
   const getCalendar = () => {
     window.location.href = "/calendar"
   }
 
+  const getCandidate = () => {
+
+    
+    window.location.href = "/candidate"
+
+  }
+
   return (
+
     <ThemeProvider theme={FDMtheme}>
-      <Button onClick={logout}>LOGOUT</Button>
-      <Button onClick={getCalendar}>Calendar</Button>
+      {/* <Button onClick={getCandidate}>Candidate</Button> */}
+      
       <RouterProvider router={routerPage} />
     </ThemeProvider>
   )
