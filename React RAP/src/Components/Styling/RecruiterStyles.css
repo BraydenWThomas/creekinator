@@ -5,7 +5,7 @@
 }
 
 .pageSection {
-    height: 100vh;
+    max-height: 100vh;
 }
 
 
@@ -14,11 +14,14 @@
     margin-right: 20px;
     padding: 10px;
     margin-top: 20px;
-    background-color: white
+    background-color: white;
+    border-radius: 20px;
 }
 .candidateSelectBox:hover{
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.575);
-    text-align: center;
+    /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.575); */
+    background-color: #C9C1EE;
+    border-color: blueviolet;
+    border-style: inset;
 }
 
 .candidateDelete{
@@ -54,13 +57,7 @@
     color: white;
     
 }
-.acDetails {
-    float: right;
-    background-color: transparent;
-    font-weight: 20px;
-    font-size: 20px;
-    border: none
-}
+
 .streamInfo{
     background-color: rgb(214, 214, 214);
     padding: 10px;
@@ -68,4 +65,8 @@
     border-color: rgb(136, 136, 136);
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
+}
+
+.menu{
+    float: right;
 }

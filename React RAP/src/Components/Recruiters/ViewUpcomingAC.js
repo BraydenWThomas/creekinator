@@ -5,15 +5,15 @@ import NavBar from '../NavBar';
 import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import { Link, useParams, useNavigate } from 'react-router-dom';
 
 // Material UI
 import { Avatar, Divider, Tab, Stack, Button, FormControl } from "@mui/material";
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { useParams } from 'react-router-dom';
 
 const ViewUpcomingAC = () => {
   // AC Details
-  const [acDetails, setAcDetails] = useState([]);
+  const [ac, setAc] = useState([]);
   const [tabValue1, setTabValue1] = useState("1");
   const [tabValue2, setTabValue2] = useState("1");
   const [tabValue3, setTabValue3] = useState("1");
@@ -21,6 +21,12 @@ const ViewUpcomingAC = () => {
 
   // Link to specific AC
   const { acId } = useParams();
+
+  // Go back to previous page
+  const navigate = useNavigate();
+  const goBack = () => {
+    navigate(-1);
+  }
 
   // Fetch AC details
   useEffect(() => {
@@ -31,17 +37,17 @@ const ViewUpcomingAC = () => {
 
     fetch("http://localhost:8080/api/ac/" + acId, requestOptions)
       .then(response => response.json())
-      .then(data => { setAcDetails(data) })
+      .then(data => { setAc(data) })
       .catch(error => console.log('error', error));
-  })
+  }, [acId])
 
   // Format LocalDate, LocalTime objects from java to dayjs object for javascript
   dayjs.extend(customParseFormat);
-  const formatStart = dayjs(acDetails.start_time, "hh:mm:ss");
-  const formatEnd = dayjs(acDetails.finish_time, "hh:mm:ss");
+  const formatStart = dayjs(ac.start_time, "hh:mm:ss");
+  const formatEnd = dayjs(ac.finish_time, "hh:mm:ss");
 
   const dateFormat =
-    dayjs(acDetails.date).format("dddd, DD MMMM YYYY") + " " +
+    dayjs(ac.date).format("dddd, DD MMMM YYYY") + " " +
     formatStart.format("LT") + " - " +
     formatEnd.format("LT")
 
@@ -72,7 +78,7 @@ const ViewUpcomingAC = () => {
 
         <div className="ac-details" style={{ marginTop: '-0.5%' }}>
           <div style={{ float: 'left', width: '80%' }}>
-            <h1> {acDetails.title} </h1>
+            <h1> {ac.title} </h1>
             <h2 style={{ marginLeft: '15p(t', marginTop: '-5pt' }}>
               {dateFormat}
             </h2>
@@ -227,17 +233,18 @@ const ViewUpcomingAC = () => {
         <div className="bottom-buttons" style={{ float: 'right', marginTop: '2%' }}>
           <Button
             variant="contained"
-            sx={{ float: 'right' }}>
+            sx={{ float: 'right' }}
+            onClick={goBack}>
             Back
           </Button>
 
-          <a href="/ac/update" target="_blank">
+          <Link to={`/recruiter/ac/update/${ac.id}`}>
             <Button
               variant="contained"
               sx={{ float: 'right' }}>
-              Update-show-up-for-ac-coordinator
+              Update
             </Button>
-          </a>
+          </Link>
         </div>
       </div>
 

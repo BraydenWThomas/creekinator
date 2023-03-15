@@ -1,6 +1,7 @@
 // React
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 // Components
 import NavBar from "../NavBar";
@@ -18,6 +19,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Container } from "@mui/system";
+// import { useAnimatedValue } from "react-native/types";
 
 
 const UpdateCandidate = () => {
@@ -44,24 +46,11 @@ const UpdateCandidate = () => {
   const [candidate, setCandidate] = useState([]);
   const [getName, setGetName] = useState([])
 
-  // Testing
-  const [editCandidateData, setEditCandidateData] = useState({
-    title: candidate.title,
-    first_name: candidate.first_name,
-    middle_name: candidate.middle_name,
-    last_name: candidate.last_name,
-    mobile_number: "",
-    email: "",
-    date_of_birth: "",
-    address: "",
-    graduation_year: "",
-    degree: "",
-    university: "",
-    resume: "resume-link",
-    applied_stream: "",
-    recruit_phase: "",
-    past_ac_result: ""
-  })
+  // Go back to previous page
+  const navigate = useNavigate();
+  const goBack = () => {
+    navigate(-1);
+  }
 
   // Fetch specific candidate
   useEffect(() => {
@@ -69,7 +58,7 @@ const UpdateCandidate = () => {
       method: 'GET',
       redirect: 'follow',
     };
-    
+
     Promise.all([
       fetch("http://localhost:8080/api/candidate/" + candidateId, requestOptions),
       fetch("http://localhost:8080/api/candidate/" + candidateId, requestOptions)
@@ -80,74 +69,44 @@ const UpdateCandidate = () => {
       responses[1].json()
         .then(data => { setGetName(data) })
     })).catch(error => console.log('error', error));
-    
-      // .then(response => response.json())
-      // .then(data => { setCandidate(data) })
-      // .then(data => console.log(data))
-      // .then(data => { setGetName(data) })
-      
   }, [candidateId]);
 
-  // Handles the event of user input updating/editing the table row data
-  const handleEditedCandidate = (e) => {
-    const fieldName = e.target.getAttribute("name");
-    const fieldValue = e.target.value;
+  // Create new states to update Candidate details
+  useEffect(() => {
+    // Candidate Details
+    setTitle(candidate.title);
+    setFirstName(candidate.first_name);
+    setMiddleName(candidate.middle_name);
+    setLastName(candidate.last_name);
+    setMobilePhone(candidate.mobile_number);
+    setEmail(candidate.email);
+    setDob(dayjs(candidate.date_of_birth));
+    setAddress(candidate.address);
+    setGradYear(candidate.graduation_year);
+    setDegree(candidate.degree);
+    setUniversity(candidate.university);
 
-    const newData = { ...editCandidateData };
-    newData[fieldName] = fieldValue;
+    // Application Details
+    setAppliedStream(candidate.applied_stream);
+    setRecruitmentPhase(candidate.recruit_phase);
+    setPastACResult(candidate.past_ac_result);
+  }, [candidate])
 
-    setEditCandidateData(newData);
-  };
-
-  // // Handle update
-  // const handleSubmit = (id, title, firstName, middleName, lastName, mobilePhone, email, 
-  //                       dob, address, gradYear, degree, university, appliedStream, 
-  //                       recruitmentPhase, pastACResult) => {
-  //   const body =
-  //     JSON.stringify({
-  //       id: id,
-  //       title: title,
-  //       first_name: firstName,
-  //       middle_name: middleName,
-  //       last_name: lastName,
-  //       mobile_number: mobilePhone,
-  //       email: email,
-  //       date_of_birth: dob,
-  //       address: address,
-  //       graduation_year: gradYear,
-  //       degree: degree,
-  //       university: university,
-  //       resume: "resume-link",
-  //       applied_stream: appliedStream,
-  //       recruit_phase: recruitmentPhase,
-  //       past_ac_result: pastACResult
-  //     });
-
-  //   const requestOptions = {
-  //     method: 'PUT',
-  //     body: body,
-  //     redirect: 'follow',
-  //     headers: { 'content-type': 'application/json' },
-  //   };
-
-  //   fetch("http://localhost:8080/api/candidate", requestOptions)
-  //     .then(response => response.json())
-  //     .then(result => console.log(result))
-  //     .catch(error => console.log('error', error));
-  // }
-  
   // Handle update
-  const handleSubmit = (id) => {
+  const handleSubmit = () => {
+    // Go back to previous page
+    goBack();
+
     const body =
       JSON.stringify({
-        id: id,
+        id: candidate.id,
         title: title,
         first_name: firstName,
         middle_name: middleName,
         last_name: lastName,
         mobile_number: mobilePhone,
         email: email,
-        date_of_birth: dob,
+        date_of_birth: dob.format('YYYY-MM-DD'),
         address: address,
         graduation_year: gradYear,
         degree: degree,
@@ -202,10 +161,8 @@ const UpdateCandidate = () => {
                       labelId="title-select-label"
                       id="title-select"
                       label="Title"
-                      // value={JSON.stringify(editCandidateData.title)}
                       value={title}
-                      onChange={handleEditedCandidate}
-                    >
+                      onChange={(event) => setTitle(event.target.value)}>
                       <MenuItem value={"Mr"}> Mr </MenuItem>
                       <MenuItem value={"Ms"}> Ms </MenuItem>
                       <MenuItem value={"Miss"}> Miss </MenuItem>
@@ -221,8 +178,8 @@ const UpdateCandidate = () => {
                     type="text"
                     autoComplete="current-first-name"
                     fullWidth
-                    value={editCandidateData?.first_name}
-                    onChange={handleEditedCandidate}
+                    value={firstName}
+                    onChange={(event) => setFirstName(event.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={3}>
@@ -232,7 +189,7 @@ const UpdateCandidate = () => {
                     type="text"
                     autoComplete="current-middle-name"
                     fullWidth
-                    // value={candidate.middle_name ?? " "}
+                    value={middleName}
                     onChange={(event) => setMiddleName(event.target.value)}
                   />
                 </Grid>
@@ -243,7 +200,7 @@ const UpdateCandidate = () => {
                     type="text"
                     autoComplete="current-last-name"
                     fullWidth
-                    // value={candidate.last_name ?? " "}
+                    value={lastName}
                     onChange={(event) => setLastName(event.target.value)}
                   />
                 </Grid>
@@ -254,7 +211,7 @@ const UpdateCandidate = () => {
                     type="number"
                     autoComplete="current-mobile"
                     fullWidth
-                    // value={candidate.mobile_number ?? " "}
+                    value={mobilePhone}
                     onChange={(event) => setMobilePhone(event.target.value)}
                   />
                 </Grid>
@@ -265,7 +222,7 @@ const UpdateCandidate = () => {
                     type="text"
                     autoComplete="current-email"
                     fullWidth
-                    // value={candidate.email ?? " "}
+                    value={email}
                     onChange={(event) => setEmail(event.target.value)}
                   />
                 </Grid>
@@ -274,7 +231,8 @@ const UpdateCandidate = () => {
                     <DatePicker
                       format="DD/MM/YYYY"
                       label="D.O.B"
-                    // value={candidate.date_of_birth ?? " "}
+                      value={dob}
+                      onChange={(newDob) => setDob(newDob)}
                     />
                   </LocalizationProvider>
                 </Grid>
@@ -285,7 +243,7 @@ const UpdateCandidate = () => {
                     type="text"
                     autoComplete="current-address"
                     fullWidth
-                    // value={candidate.address ?? " "}
+                    value={address}
                     onChange={(event) => setAddress(event.target.value)}
                   />
                 </Grid>
@@ -296,7 +254,7 @@ const UpdateCandidate = () => {
                     type="number"
                     autoComplete="current-year"
                     fullWidth
-                    // value={candidate.graduation_year ?? " "}
+                    value={gradYear}
                     onChange={(event) => setGradYear(event.target.value)}
                   />
                 </Grid>
@@ -307,7 +265,7 @@ const UpdateCandidate = () => {
                     type="text"
                     autoComplete="current-degree"
                     fullWidth
-                    // value={candidate.degree ?? " "}
+                    value={degree}
                     onChange={(event) => setDegree(event.target.value)}
                   />
                 </Grid>
@@ -318,7 +276,7 @@ const UpdateCandidate = () => {
                     type="text"
                     autoComplete="current-university"
                     fullWidth
-                    // value={candidate.university ?? " "}
+                    value={university}
                     onChange={(event) => setUniversity(event.target.value)}
                   />
                 </Grid>
@@ -342,7 +300,6 @@ const UpdateCandidate = () => {
                       labelId="applied-stream-select-label"
                       id="applied-stream-select"
                       label="Applied Stream"
-                      // value={candidate.applied_stream ?? " "}
                       value={appliedStream}
                       onChange={(event) => setAppliedStream(event.target.value)}
                     >
@@ -354,15 +311,14 @@ const UpdateCandidate = () => {
                       <MenuItem value="Testing"> Testing </MenuItem>
                     </Select>
                   </FormControl>
-                  </Grid>
-                  <Grid item xs sm={6}>
+                </Grid>
+                <Grid item xs sm={6}>
                   <FormControl fullWidth>
                     <InputLabel id="recruitment-phase-select-label">Recruitment Phase</InputLabel>
                     <Select
                       labelId="recruitment-phase-select-label"
                       id="recruitment-phase-select"
                       label="Recruitment Phase"
-                      // value={candidate.recruit_phase ?? " "}
                       value={recruitmentPhase}
                       onChange={(event) => setRecruitmentPhase(event.target.value)}
                     >
@@ -370,37 +326,35 @@ const UpdateCandidate = () => {
                       <MenuItem value={"Interviewed"}>Interviewed</MenuItem>
                     </Select>
                   </FormControl>
-                  </Grid>
-                  <Grid item xs sm={6}>
+                </Grid>
+                <Grid item xs sm={6}>
                   <TextField
                     id="past-ac-result-input"
                     label="Past AC Result"
                     autoComplete="past-ac-result"
                     fullWidth
-                    value={candidate.past_ac_result ?? " "}
+                    value={pastACResult}
                     onChange={(event) => setPastACResult(event.target.value)}
                   />
-                  </Grid>
-                  <Grid item xs={12} sm={12}>
+                </Grid>
+                <Grid item xs={12} sm={12}>
                   <Button
                     variant="contained"
                     component="label"
                     fullWidth
-                    onClick={() => handleSubmit(candidate.id)}>
+                    onClick={handleSubmit}>
                     Update
                   </Button>
-                  </Grid>
-                  <Grid item xs sm={12}>
-                  <a href="/recruiter">
-                    <Button
-                      variant="contained"
-                      component="label"
-                      color="secondary"
-                      fullWidth
-                      >
-                      Back
-                    </Button>
-                  </a>
+                </Grid>
+                <Grid item xs sm={12}>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    color="secondary"
+                    fullWidth
+                    onClick={goBack}>
+                    Back
+                  </Button>
                 </Grid>
               </Grid>
             </div>
@@ -410,4 +364,5 @@ const UpdateCandidate = () => {
     </div >
   )
 }
+
 export default UpdateCandidate;

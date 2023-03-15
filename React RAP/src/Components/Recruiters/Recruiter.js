@@ -1,5 +1,6 @@
 import CandidateSelectBox from '../Candidate/CandidatesSelectBox';
 import AssessmentCentreInfo from './AssessmentCentreInfo';
+import { Link } from 'react-router-dom'
 // import '../Styling/RecruiterStyles.css';
 import NavBar from '../NavBar';
 import React, { useEffect, useState } from 'react';
@@ -51,7 +52,7 @@ const Recruiter = () => {
 
       <div className='bodySection'>
       <div className="header" style={{ display: "flex" }}>
-            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Dashboard</Typography>
+            <Typography component="h1" variant="h3" mt={2} ml={2} sx={{ flex: 1 }}>Dashboard</Typography>
             <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
               <NotificationsIcon fontSize="large" />
               <Avatar src="/broken-image.jpg" />
@@ -61,7 +62,7 @@ const Recruiter = () => {
         <Divider sx={{ mt: 2, mb: 2 }} />
 
         <div className='recruiterToolBar'>
-          <Box sx={{ m: 2, width: '100%' }}>
+          <Box>
             <Tabs value={displayState} aria-label="basic tabs example">
               <Tab value="Candidate" label="Candidates" onClick={() => changeDisplay("Candidate")} />
               <Tab value="AC_Centre" label="Assessment Centre" onClick={() => changeDisplay("AC_Centre")} />
@@ -69,7 +70,7 @@ const Recruiter = () => {
           </Box>
         </div>
 
-        <div className='candidatesInfo' style={{ marginTop: "30px" }}>
+        <div className='candidatesInfo'>
           <Box
             sx={{
               display: 'flex',
@@ -82,22 +83,11 @@ const Recruiter = () => {
             {displayState === "Candidate"
               ? // Display candidate tab
               <div style={{ clear: "both" }}>
-                <div className='applicantToolBar' style={{ display: 'flex' }}>
-                  <Typography component="h2" variant="h4" style={{ flex: 1, margin: 10 }}> Applied </Typography>
-                  <div className='filter'>
-                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                      <InputLabel id="filter"> Filter </InputLabel>
-                      <Select labelId="filter" id="filter" label="Filter" value={""}>
-                        <MenuItem value="Name">Name</MenuItem>
-                        <MenuItem value="Stream">Stream</MenuItem>
-                        <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
-                      </Select>
-                    </FormControl>
+                <div className='applicantToolBar' style={{ display: 'flex', marginLeft: 20}}>
+                  <Typography component="h2" variant="h4" style={{ flex: 1 }}> Applied </Typography>
+                  <div className='add-c' style={{marginRight: 20}}>
                     <a href="/candidate/create" target="_blank">
-                      <button
-                        className='candidateAdd'>
-                        <AddIcon />
-                      </button>
+                      <AddIcon fontSize='large'/>
                     </a>
                   </div>
                 </div >
@@ -108,28 +98,23 @@ const Recruiter = () => {
                 ))}
               </div>
               : // Display AC tab
-              <div className='candidatesInfo' style={{ marginTop: "30px" }}>
-                <div className='assessmentToolBar' style={{ display: 'flex' }}>
-                  <Typography 
-                    component="h2" 
-                    variant="h4" 
-                    style={{ flex: 1, margin: 10 }}> 
-                    Upcoming 
-                  </Typography>
-                  <div className='filter'>
-                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                      <InputLabel id="filter"> Filter </InputLabel>
-                      <Select labelId="filter" id="filter" label="Filter" value={""}>
-                        <MenuItem value="Name">Name</MenuItem>
-                        <MenuItem value="Stream">Stream</MenuItem>
-                        <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <a href="/ac/create" target="_blank">
-                      <button className='candidateAdd'> <AddIcon /> </button>
+              <div className='assessmentCentreInfo'>
+                <div className='assessmentToolBar' style={{ display: 'flex', marginLeft: 20}}>
+                  <Typography component="h2" variant="h4" style={{ flex: 1 }}> Upcoming </Typography>
+                  <div className='add-ac' style={{marginRight: 20}}>
+                    <a href="/candidate/create" target="_blank">
+                      <AddIcon fontSize='large'/>
                     </a>
                   </div>
-                </div>
+                </div >
+                <Box
+              sx={{
+                '& > :not(style)': {
+                  m: 1,
+                  width: '100%',
+                  height: 300
+                }
+              }} >
                 
                 {acs.map(ac => (
                   (ac.completed === "false" 
@@ -167,13 +152,14 @@ const Recruiter = () => {
                         <AssessmentCentreInfo statustype="pastAC" ac={ac} />
                       </div>
     
-                      <div className="scrollArrows">
+                      {/* <div className="scrollArrows">
                         <button className="leftIcon"><ChevronLeftIcon /></button>
                         <button className="rightIcon"><ChevronRightIcon /></button>
-                      </div>
+                      </div> */}
                     </>
                   )  
                 ))}
+            </Box>
               </div>
             }
           </Box>

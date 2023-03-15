@@ -1,5 +1,6 @@
 import { Box, Container, Divider, Grid, Menu, TextField, Typography } from "@mui/material";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import NavBar from "../NavBar";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Avatar from '@mui/material/Avatar';
@@ -32,9 +33,15 @@ const CreateCandidate = () => {
   const [recruitmentPhase, setRecruitmentPhase] = useState('');
   const [pastACResult, setPastACResult] = useState('');
 
-  // const [candidates, setCandidates] = useState();
+  // Go back to previous page
+  const navigate = useNavigate();
+  const goBack = () => {
+    navigate(-1);
+  }
 
   const handleSubmit = () => {
+    goBack();
+    
     setTitle('');
     setFirstName('');
     setMiddleName('');
@@ -287,20 +294,9 @@ const CreateCandidate = () => {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid item xs sm={4}>
-                  <TextField
-                    required
-                    id="past-ac-result-input"
-                    label="Past AC Result"
-                    type="number"
-                    autoComplete="past-ac-result"
-                    value={pastACResult}
-                    fullWidth
-                    onChange={(event) => setPastACResult(event.target.value)}
-                  />
-                </Grid>
                 <Grid item xs sm={12}>
                   <Button variant="contained" component="label" onClick={handleSubmit}>Create</Button>
+                  <Button variant="contained" component="label" onClick={goBack}>Cancel</Button>
                 </Grid>
               </Grid>
             </div>
