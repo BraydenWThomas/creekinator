@@ -20,13 +20,14 @@ import Candidate from './Components/Candidate/Candidate'
 import CreateInterview from './Components/Recruiters/CreateInterview'
 import CandidateInformationInterview from './Components/Candidate/CandidateInformationInterview';
 
+
 // Material UI
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import { Button } from '@mui/material';
 import Calendar from './Components/Calendar';
 import CandidateApply from './Components/CandidateApply';
-import Candidate from './Components/Candidate/Candidate';
+
 
 const FDMtheme = createTheme({
   typography:{
@@ -44,6 +45,7 @@ const FDMtheme = createTheme({
 
 const App = () => {
 
+  const [candidateName, setCandidateName] = useState({});
 
   const handleClick = (event) => {
     event.preventDefault();
@@ -65,9 +67,12 @@ const App = () => {
     fetch(" http://localhost:8080/api/auth/signin", requestOptions)
       .then(response => response.json())
       .then(result => {
+        
         if (result.username) {
+          
           localStorage.setItem('status', result.roles[0])
           localStorage.setItem('userId', result.id)
+          
           if (result.roles[0] == "ROLE_RECRUITER") {
             window.location.href = "/recruiter"
           }
@@ -75,13 +80,29 @@ const App = () => {
             window.location.href = "/interviewer"
           }
           else if (result.roles[0] == "ROLE_CANDIDATE") {
+            
+           
             window.location.href = "/candidate"
+            {
+              var requestOptions = {
+                  headers: { 'content-type': 'application/json' },
+                  method: 'GET',
+                  redirect: 'follow'
+              };
+      
+              fetch("http://localhost:8080/api/auth/user", requestOptions)
+                  .then(response => response.json())
+                  .then(result =>  localStorage.setItem('candidateId', result[localStorage.getItem('userId')-1].candidate.id))
+                  .catch(error => console.log('error', error));
+      
+          }
           }
 
         }}) 
       .catch(error => console.log('error', error));
   };
 
+  
   const routes = [{
     path: "/",
     element: <LoginPage onClick={handleClick} />
@@ -181,6 +202,7 @@ const App = () => {
   }
 
   return (
+    
 
     <ThemeProvider theme={FDMtheme}>
       {/* <Button onClick={getCandidate}>Candidate</Button> */}
