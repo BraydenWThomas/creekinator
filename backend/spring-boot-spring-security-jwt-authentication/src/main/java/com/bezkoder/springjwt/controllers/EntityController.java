@@ -2,6 +2,7 @@ package com.bezkoder.springjwt.controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -95,10 +96,6 @@ public class EntityController {
 	// Delete AC
 	@DeleteMapping("/ac/{acId}")
 	public void deleteAcById(@PathVariable int acId) {
-		// TODO remove this part as it is reduntency
-		if (assessmentCenterRepository.findById(acId).isEmpty()) {
-			throw new NotFoundException("Can't find AC with id: " + acId);
-		}
 		
 		/* --- remove all bidirectional dependencies to avoid delete bug --- */
 		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(acId).orElseThrow(()->
@@ -451,6 +448,23 @@ public class EntityController {
 	@GetMapping("/interview/{interviewId}")
 	public Interview getInterviewbyId(@PathVariable int interviewId) {
 		return interviewRepository.findById(interviewId).orElseThrow(()->new NotFoundException("Can't find interview with id: " +interviewId));
+	}
+	
+	// Get specific Interviews with detailed information (i.e. show linked object info)
+	@GetMapping("/interviewDetailed/{interviewId}")
+	public HashMap<String, Object> getInterviewbyIdDetailed(@PathVariable int interviewId) {
+		HashMap<String, Object> output = new HashMap<String, Object>();
+		Interview interview = interviewRepository.findById(interviewId).orElseThrow(()->new NotFoundException("Can't find interview with id: " +interviewId));
+		AssessmentCenter assessmentCenter = interview.getAssessmentCenter();
+		Interviewer interviewer = interview.getInterviewer();
+		Candidate candidate = interview.getCandidate();
+		List<Pack> packs = interview.getPacks();
+		output.put("interview", interview);
+		output.put("assessmentCenter", assessmentCenter);
+		output.put("interviewer", interviewer);
+		output.put("candidate", candidate);
+		output.put("packs", packs);
+		return output;
 	}
 	
 	
