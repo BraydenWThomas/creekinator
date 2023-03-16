@@ -45,6 +45,37 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
     formatStart.format("LT") + " - " +
     formatEnd.format("LT")
 
+  // Fetch attendees assigned to ac
+  useEffect(() => {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
+
+    Promise.all([
+      fetch("http://localhost:8080/api/ac/" + ac.id + "/showCandidates", requestOptions),
+      fetch("http://localhost:8080/api/ac/" + ac.id + "/showInterviewers", requestOptions),
+      fetch("http://localhost:8080/api/recruiter", requestOptions),
+    ]).then((responses => {
+      console.log(responses)
+      responses[0].json()
+        .then(data => { setCandidates(data) })
+      responses[1].json()
+        .then(data => { setInterviewers(data) })
+      responses[2].json()
+        .then(data => { setRecruiters(data) })
+    })).catch(error => console.log('error', error));
+  }, [ac.id])
+
+  // Get AC Coordinator for AC
+  useEffect(() => {
+    for (var i = 0; i < recruiters.length; i++) {
+      if (recruiters[i].id === ac.coordinatorId) {
+        setAcCoordinator(recruiters[i].name);
+      };
+    };
+  }, [recruiters, ac.coordinatorId]);
+
   // Create menu list of options that changes depending on which user is viewing
   const MenuList = ({ statustype }) => {
     if (statustype === "upcomingAC") {
@@ -108,7 +139,7 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
               MenuListProps={{
                 'aria-labelledby': 'basic-button',
               }}>
-              <Link to={`ac/view-upcoming/${ac.id}`}>
+              <Link to={`ac/view-past/${ac.id}`}>
                 <MenuItem>
                   View
                 </MenuItem>
@@ -150,37 +181,6 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
       )
     }
   }
-
-  // Fetch attendees assigned to ac
-  useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      redirect: 'follow',
-    };
-
-    Promise.all([
-      fetch("http://localhost:8080/api/ac/" + ac.id + "/showCandidates", requestOptions),
-      fetch("http://localhost:8080/api/ac/" + ac.id + "/showInterviewers", requestOptions),
-      fetch("http://localhost:8080/api/recruiter", requestOptions),
-    ]).then((responses => {
-      console.log(responses)
-      responses[0].json()
-        .then(data => { setCandidates(data) })
-      responses[1].json()
-        .then(data => { setInterviewers(data) })
-      responses[2].json()
-        .then(data => { setRecruiters(data) })
-    })).catch(error => console.log('error', error));
-  }, [ac.id])
-
-  // Get AC Coordinator for AC
-  useEffect(() => {
-    for (var i = 0; i < recruiters.length; i++) {
-      if (recruiters[i].id === ac.coordinatorId) {
-        setAcCoordinator(recruiters[i].name);
-      };
-    };
-  }, [recruiters, ac.coordinatorId]);
 
   return (
     <Box

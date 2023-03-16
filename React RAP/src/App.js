@@ -32,12 +32,9 @@ import Calendar from './Components/Calendar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import { Button } from '@mui/material';
-import Calendar from './Components/Calendar';
-import CandidateApply from './Components/CandidateApply';
-
 
 const FDMtheme = createTheme({
-  typography:{
+  typography: {
     fontFamily: "barlow",
   },
 
@@ -73,12 +70,12 @@ const App = () => {
     fetch(" http://localhost:8080/api/auth/signin", requestOptions)
       .then(response => response.json())
       .then(result => {
-        
+
         if (result.username) {
-          
+
           localStorage.setItem('status', result.roles[0])
           localStorage.setItem('userId', result.id)
-          
+
           if (result.roles[0] == "ROLE_RECRUITER") {
             window.location.href = "/recruiter"
           }
@@ -86,29 +83,30 @@ const App = () => {
             window.location.href = "/interviewer"
           }
           else if (result.roles[0] == "ROLE_CANDIDATE") {
-            
-           
+
+
             window.location.href = "/candidate"
             {
               var requestOptions = {
-                  headers: { 'content-type': 'application/json' },
-                  method: 'GET',
-                  redirect: 'follow'
+                headers: { 'content-type': 'application/json' },
+                method: 'GET',
+                redirect: 'follow'
               };
-      
+
               fetch("http://localhost:8080/api/auth/user", requestOptions)
-                  .then(response => response.json())
-                  .then(result =>  localStorage.setItem('candidateId', result[localStorage.getItem('userId')-1].candidate.id))
-                  .catch(error => console.log('error', error));
-      
-          }
+                .then(response => response.json())
+                .then(result => localStorage.setItem('candidateId', result[localStorage.getItem('userId') - 1].candidate.id))
+                .catch(error => console.log('error', error));
+
+            }
           }
 
-        }}) 
+        }
+      })
       .catch(error => console.log('error', error));
   };
 
-  
+
   const routes = [{
     path: "/",
     element: <LoginPage onClick={handleClick} />
@@ -127,10 +125,15 @@ const App = () => {
   }]
 
   if (localStorage.getItem('status') == "ROLE_RECRUITER") {
-    routes.push({
+    routes.push(
+      {
       path: "/recruiter",
       element: <Recruiter />
-    },
+      },
+      {
+        path: "/recruiter/calendar",
+        element: <Calendar />
+      },
       {
         path: "/recruiter/candidate/create",
         element: <CreateCandidate />
@@ -161,20 +164,25 @@ const App = () => {
       },
       {
         path: "/recruiter/ac/update/schedule/sales/:acId",
-        element: <CreateSalesInterview/>
+        element: <CreateSalesInterview />
       },
       {
         path: "/recruiter/ac/update/schedule/technical/:acId",
-        element: <CreateTechnicalInterview/>
+        element: <CreateTechnicalInterview />
       }
     )
   }
 
   if (localStorage.getItem('status') == "ROLE_INTERVIEWER") {
-    routes.push({
+    routes.push(
+      {
       path: "/interviewer",
       element: <Interviewer />
-    },
+      },
+      {
+        path: "/interviewer/calendar",
+        element: <Calendar />
+      },
       {
         path: "/interviewer/candidate/info/:candidateId",
         element: <CandidateInformationInterview />
@@ -186,10 +194,15 @@ const App = () => {
   }
 
   if (localStorage.getItem('status') == "ROLE_CANDIDATE") {
-    routes.push( {
+    routes.push(
+      {
       path: "/candidate",
       element: <Candidate />
-    })
+      },
+      {
+        path: "/candidate/calendar",
+        element: <Calendar />
+      })
   }
 
   const routerPage = createBrowserRouter(routes);

@@ -1,4 +1,7 @@
+// React
 import React, { useState, useEffect } from 'react';
+
+// Material UI
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
@@ -9,7 +12,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import { useParams } from 'react-router-dom';
-import { Box, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 
 const AdminDashboard = () => {
   const [fullname, setFullname] = useState("");
@@ -17,18 +20,49 @@ const AdminDashboard = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
-  const [users, setUsers] = useState([
-    { fullname: "John Doe", username: "johndoe2", email: "johndoe@fdm.com", role: "Recruiter" },
-    { fullname: "Jane Doe", username: "janedoe23", email: "janedoe@fdm.com", role: "Sales Interviewer" },
-    { fullname: "Bob Smith", username: "bobsmith123", email: "bobsm@fdm.com", role: "Recruiter" },
-    { fullname: "Alice Smith", username: "alicesmithi2", email: "alicesmith@fdm.com", role: "Technical Interviewer" },
-  ]);
+
+  // Get users
+  // const [users, setUsers] = useState([
+  //   { fullname: "John Doe", username: "johndoe2", email: "johndoe@fdm.com", role: "Recruiter" },
+  //   { fullname: "Jane Doe", username: "janedoe23", email: "janedoe@fdm.com", role: "Sales Interviewer" },
+  //   { fullname: "Bob Smith", username: "bobsmith123", email: "bobsm@fdm.com", role: "Recruiter" },
+  //   { fullname: "Alice Smith", username: "alicesmithi2", email: "alicesmith@fdm.com", role: "Technical Interviewer" },
+  // ]);
+  const [users, setUsers] = useState([])
 
   // For filter
   const [selection, setSelection] = useState('All');
   const [filteredUsers, setFilteredUsers] = useState([]);
 
+  // Modal
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+    handleClose();
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
   // Fetch all existing users
+  useEffect(() => {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
+
+    fetch("http://localhost:8080/api/auth/getAll", requestOptions)
+      .then(response => response.json())
+      .then(data => setUsers(data))
+      .catch(error => console.log('error', error));
+  }, [])
 
   const handleSubmit = () => {
     const newUser = { fullname, username, password, email, role };
@@ -38,7 +72,7 @@ const AdminDashboard = () => {
     setPassword("");
     setEmail("");
     setRole("");
-    console.log(role.includes("Interviewer"))
+
     if (role.includes("Interviewer")) {
       console.log("Working")
       const body =
@@ -83,6 +117,9 @@ const AdminDashboard = () => {
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
     }
+
+    handleCloseModal();
+    window.location.reload();
   }
 
   const handleFilter = (event) => {
@@ -103,10 +140,6 @@ const AdminDashboard = () => {
       <Container component="main">
         <div className="header" style={{ display: "flex" }}>
           <Typography component="h1" variant="h3" fontFamily="barlow" mt={2} sx={{ flex: 1 }}>Admin Dashboard</Typography>
-          <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
-            <NotificationsIcon fontSize="large" />
-            <Avatar src="/broken-image.jpg" />
-          </div>
         </div>
         <Divider sx={{ mt: 2, mb: 2 }} />
         <Box
@@ -190,7 +223,7 @@ const AdminDashboard = () => {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <Button fullWidth variant='contained' type='button' sx={{ mt: 3, mb: 2 }} onClick={handleSubmit}>Create</Button>
+                <Button fullWidth variant='contained' type='button' sx={{ mt: 3, mb: 2 }} onClick={handleOpenModal}>Create</Button>
               </Grid>
             </Grid>
           </div>
@@ -260,6 +293,14 @@ const AdminDashboard = () => {
           </Container>
         </Box>
       </Container>
+
+      {/* Account Created Modal */}
+      <Dialog open={modalOpen} onClose={handleCloseModal}>
+        <DialogTitle> Account Successfully Created </DialogTitle>
+        <DialogActions>
+          <Button onClick={handleSubmit}> OK </Button>
+        </DialogActions>
+      </Dialog>
     </div >
   )
 }
