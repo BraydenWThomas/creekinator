@@ -125,10 +125,15 @@ const App = () => {
   }]
 
   if (localStorage.getItem('status') == "ROLE_RECRUITER") {
-    routes.push({
+    routes.push(
+      {
       path: "/recruiter",
       element: <Recruiter />
-    },
+      },
+      {
+        path: "/recruiter/calendar",
+        element: <Calendar />
+      },
       {
         path: "/recruiter/candidate/create",
         element: <CreateCandidate />
@@ -169,10 +174,15 @@ const App = () => {
   }
 
   if (localStorage.getItem('status') == "ROLE_INTERVIEWER") {
-    routes.push({
+    routes.push(
+      {
       path: "/interviewer",
       element: <Interviewer />
-    },
+      },
+      {
+        path: "/interviewer/calendar",
+        element: <Calendar />
+      },
       {
         path: "/interviewer/candidate/info/:candidateId",
         element: <CandidateInformationInterview />
@@ -184,10 +194,15 @@ const App = () => {
   }
 
   if (localStorage.getItem('status') == "ROLE_CANDIDATE") {
-    routes.push({
+    routes.push(
+      {
       path: "/candidate",
       element: <Candidate />
-    })
+      },
+      {
+        path: "/candidate/calendar",
+        element: <Calendar />
+      })
   }
 
   const routerPage = createBrowserRouter(routes);

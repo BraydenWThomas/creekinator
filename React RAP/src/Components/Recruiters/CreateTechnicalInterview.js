@@ -102,12 +102,12 @@ const CreateTechnicalInterview = () => {
 
   // Handle scheduling candidates
   const handleScheduleCandidate = (value, index) => {
-    scheduledPacks[index] = value;
+    scheduledCands[index] = value;
   };
 
   // Handle scheduling interview packs
   const handleSchedulePack = (value, index) => {
-    scheduledCands[index] = value;
+    scheduledPacks[index] = value;
   };
 
   // Handle scheduling time
@@ -140,7 +140,7 @@ const CreateTechnicalInterview = () => {
     };
 
     fetch("http://localhost:8080/api/interview?acId=" + ac.id +
-      "&interviewId=" + 2 + "&candidateId=" + scheduledCands[index] +
+      "&interviewId=" + interviewers[index].id + "&candidateId=" + scheduledCands[index] +
       "&packIds=" + scheduledPacks[index], requestOptions)
       .then(response => response.json())
       .then(result => console.log(result))

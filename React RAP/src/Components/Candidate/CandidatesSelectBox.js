@@ -33,7 +33,6 @@ const CandidateSelectBox = ({ candidate }) => {
     setDeleteModalOpen(false);
   };
 
-
   const handleDelete = (id) => {
     const requestOptions = {
       method: 'DELETE',
@@ -44,8 +43,8 @@ const CandidateSelectBox = ({ candidate }) => {
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
 
-      handleCloseDeleteModal();
-      window.location.reload();
+    handleCloseDeleteModal();
+    window.location.reload();
   }
 
   return (

@@ -8,7 +8,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
 // Material UI
-import { Avatar, Divider, Tab, Stack, Button, FormControl, Container, Typography, Box, Grid } from "@mui/material";
+import { Avatar, Divider, Tab, Stack, Button, FormControl, Container, Typography, Box, Grid, TextField } from "@mui/material";
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
@@ -125,7 +125,7 @@ const ViewPastAC = () => {
       <div className="content" style={{ float: 'left', width: '80%' }}>
         <Container component="main">
           <div className="header" style={{ display: "flex" }}>
-            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Upcoming Assessment Centre</Typography>
+            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Past Assessment Centre</Typography>
             <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
               <NotificationsIcon fontSize="large" />
               <Avatar src="/broken-image.jpg" />
@@ -171,18 +171,46 @@ const ViewPastAC = () => {
                       <Tab value="4" label="John Doe" />
                     </TabList>
                     <TabPanel value="1">
+                      <TextField
+                        id="outlined-textarea"
+                        label="Multiline Placeholder"
+                        placeholder="Placeholder"
+                        multiline
+                        rows={4}
+                      />
                       <Button variant="contained"> View profile </Button>
                       <Button variant="contained"> View interview form </Button>
                     </TabPanel>
                     <TabPanel value="2">
+                      <TextField
+                        id="outlined-textarea"
+                        label="Multiline Placeholder"
+                        placeholder="Placeholder"
+                        multiline
+                        rows={4}
+                      />
                       <Button variant="contained"> View profile </Button>
                       <Button variant="contained"> View interview form </Button>
                     </TabPanel>
                     <TabPanel value="3">
+                      <TextField
+                        id="outlined-textarea"
+                        label="Multiline Placeholder"
+                        placeholder="Placeholder"
+                        multiline
+                        rows={4}
+                      />
                       <Button variant="contained"> View profile </Button>
                       <Button variant="contained"> View interview form </Button>
                     </TabPanel>
                     <TabPanel value="4">
+                      <TextField
+                        id="outlined-textarea"
+                        label="Multiline Placeholder"
+                        placeholder="Placeholder"
+                        multiline
+                        rows={4}
+                      />
                       <Button variant="contained"> View profile </Button>
                       <Button variant="contained"> View interview form </Button>
                     </TabPanel>
@@ -199,15 +227,15 @@ const ViewPastAC = () => {
                 (interviewer.tech === true) &&
                 <div key={interviewer.id} style={{ float: 'left', width: '50%' }}>
                   <Typography component="h3" variant="h5"> {interviewer.name} </Typography>
-                    <TabContext value={tabValue1}>
-                      <TabList onChange={handleChangeInterview1}>
-                        <Tab value="1" label="Placeholder" />
-                      </TabList>
-                      <TabPanel value="1">
-                        <Button variant="contained"> View profile </Button>
-                        <Button variant="contained"> View interview form </Button>
-                      </TabPanel>
-                    </TabContext>
+                  <TabContext value={tabValue1}>
+                    <TabList onChange={handleChangeInterview1}>
+                      <Tab value="1" label="Placeholder" />
+                    </TabList>
+                    <TabPanel value="1">
+                      <Button variant="contained"> View profile </Button>
+                      <Button variant="contained"> View interview form </Button>
+                    </TabPanel>
+                  </TabContext>
                 </div>
               )}
             </div>
