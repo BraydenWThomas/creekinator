@@ -4,25 +4,40 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+//import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import fdm from  './fdm-logo.png';
+import fdm from './fdm-logo.png';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 const CandidateApply = () => {
-
+    
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    var cand = {}
+    const handleSubmit = () => {
+        const role = ['candidate']
+        cand = {username: username, email: email, password: password, role: role}
+        
+        localStorage.setItem('loginInfo', JSON.stringify(cand))
+       
+    }
+  
+    
     return (
-        <Container component="main" maxWidth="xs" sx={{ height:"100vh"}}>
+        <Container component="main" maxWidth="xs" sx={{ height: "100vh" }}>
             <Box
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    paddingTop:50
+                    paddingTop: 50
                 }}
             >
                 <Typography component="h1" variant="h3">
@@ -39,6 +54,7 @@ const CandidateApply = () => {
                                 id="username"
                                 label="Username"
                                 autoFocus
+                                onChange={(event) => setUsername(event.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -49,6 +65,7 @@ const CandidateApply = () => {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
+                                onChange={(event) => setEmail(event.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -60,6 +77,7 @@ const CandidateApply = () => {
                                 type="password"
                                 id="password"
                                 autoComplete="new-password"
+                                onChange={(event) => setPassword(event.target.value)}
                             />
                         </Grid>
                         {/* <Grid item xs={12}>
@@ -80,15 +98,19 @@ const CandidateApply = () => {
                             </FormControl>
                         </Grid> */}
                     </Grid>
-                    <Button
-                        href='/'
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                    >
-                        Apply
-                    </Button>
+                    
+                        <Button
+                            href="/candidateregister"
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                            onClick={handleSubmit}
+                        >
+
+                            Apply
+                        </Button>
+                 
                     <Grid container justifyContent="flex-end">
                         <Grid item>
                             <Button href="/">
@@ -97,10 +119,10 @@ const CandidateApply = () => {
                         </Grid>
                     </Grid>
                     <Grid container justifyContent="center">
-                    <Grid item
-                        sx={{ position: 'absolute', bottom: 75 }}>
-                        <img src={fdm} alt="FDM Logo" />
-                    </Grid>
+                        <Grid item
+                            sx={{ position: 'absolute', bottom: 75 }}>
+                            <img src={fdm} alt="FDM Logo" />
+                        </Grid>
                     </Grid>
                 </Box>
             </Box>
