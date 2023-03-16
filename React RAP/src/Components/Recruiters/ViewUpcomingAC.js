@@ -8,7 +8,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
 // Material UI
-import { Avatar, Divider, Tab, Stack, Button, Container, Typography, Box, Grid } from "@mui/material";
+import { Avatar, Divider, Stack, Button, Container, Typography, Box, Grid } from "@mui/material";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { TableViewOutlined } from '@mui/icons-material';
@@ -92,7 +92,7 @@ const ViewUpcomingAC = () => {
     }
   }, [interviewDetails])  
 
-  const GetScheduledInterviewDetails = ({ interview_type }) => {
+  const GetScheduledInterviewDetails = ({ interview_type, id }) => {
     const interviewDetailsForAC = [];
 
     // Sales
@@ -117,7 +117,7 @@ const ViewUpcomingAC = () => {
 
     // Get candidates for sales interviewers
     for (var i = 0; i < interviewDetailsForAC.length; i++) {
-      if (interviewDetailsForAC[i].interviewer.tech === false) {
+      if (interviewDetailsForAC[i].interviewer.tech === false && interviewDetailsForAC[i].interviewer.id === id) {
         candidatesForSales.push(interviewDetailsForAC[i].candidate.first_name + " " + 
                                interviewDetailsForAC[i].candidate.last_name)
         // Get candidate ids for sales interviewers
@@ -131,7 +131,7 @@ const ViewUpcomingAC = () => {
 
     // Get candidates for technical interviewers
     for (var i = 0; i < interviewDetailsForAC.length; i++) {
-      if (interviewDetailsForAC[i].interviewer.tech === true) {
+      if (interviewDetailsForAC[i].interviewer.tech === true && interviewDetailsForAC[i].interviewer.id === id) {
         candidatesForTech.push(interviewDetailsForAC[i].candidate.first_name + " " + 
                                interviewDetailsForAC[i].candidate.last_name)
         // Get candidate ids for tech interviewers
@@ -207,6 +207,7 @@ const ViewUpcomingAC = () => {
   }
 
   console.log(candidates)
+
   // Format LocalDate, LocalTime objects from java to dayjs object for javascript
   dayjs.extend(customParseFormat);
   const formatStart = dayjs(ac.start_time, "hh:mm:ss");
@@ -258,7 +259,7 @@ const ViewUpcomingAC = () => {
                 (interviewer.tech === false) &&
                 <div key={interviewer.id} style={{ float: 'left', width: '50%' }}>
                   <Typography component="h3" variant="h5"> {interviewer.name} </Typography>
-                  <GetScheduledInterviewDetails interview_type="sales" />
+                  <GetScheduledInterviewDetails interview_type="sales" id={interviewer.id} />
                 </div>
               )}
             </div>
@@ -271,7 +272,7 @@ const ViewUpcomingAC = () => {
                 (interviewer.tech === true) &&
                 <div key={interviewer.id} style={{ float: 'left', width: '50%' }}>
                   <Typography component="h3" variant="h5"> {interviewer.name} </Typography>
-                  <GetScheduledInterviewDetails interview_type="tech" />
+                  <GetScheduledInterviewDetails interview_type="tech" id={interviewer.id} />
                 </div>
               )}
             </div>
@@ -297,13 +298,15 @@ const ViewUpcomingAC = () => {
                   {/* </Link> */}
                 </Grid>
                 <Grid item xs sm={12}>
-                  <Button
-                    fullWidth
-                    color='secondary'
-                    variant="contained"
-                    onClick={goBack}>
-                    Back
-                  </Button>
+                  <Link to={"/recruiter"}>
+                    <Button
+                      fullWidth
+                      color='secondary'
+                      variant="contained"
+                      onClick={goBack}>
+                      Back
+                    </Button>
+                  </Link>
                 </Grid>
               </Grid>
             </div>

@@ -26,11 +26,9 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
   // For Material UI Menu
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -76,111 +74,7 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
     };
   }, [recruiters, ac.coordinatorId]);
 
-  // Create menu list of options that changes depending on which user is viewing
-  const MenuList = ({ statustype }) => {
-    if (statustype === "upcomingAC") {
-      return (
-        <div className='menu'>
-          <div className='select-menu'>
-            <IconButton
-              id="basic-button"
-              onClick={handleClick}>
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                'aria-labelledby': 'basic-button',
-              }}
-            >
-              <Link to={`ac/view-upcoming/${ac.id}`}>
-                <MenuItem>
-                  View
-                </MenuItem>
-              </Link>
-              <Link to={`ac/update/${ac.id}`}>
-                <MenuItem>
-                  Update Details
-                </MenuItem>
-              </Link>
-              <Link to={`ac/update/schedule/sales/${ac.id}`}>
-                <MenuItem>
-                  Schedule Sales Interviews
-                </MenuItem>
-              </Link>
-              <Link to={`ac/update/schedule/technical/${ac.id}`}>
-                <MenuItem>
-                  Schedule Technical Interviews
-                </MenuItem>
-              </Link>
-            </Menu>
-          </div>
-        </div>
-      )
-    }
 
-    if (statustype === "pastAC") {
-      return (
-        <div className='menu'>
-          <div className='select-menu'>
-            <IconButton
-              id="basic-button"
-              onClick={handleClick}>
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                'aria-labelledby': 'basic-button',
-              }}>
-              <Link to={`ac/view-past/${ac.id}`}>
-                <MenuItem>
-                  View
-                </MenuItem>
-              </Link>
-              <MenuItem>
-                Delete
-              </MenuItem>
-            </Menu>
-          </div>
-        </div>
-      )
-    }
-
-    if (statustype === "interviewerAC") {
-      return (
-        <div className='menu'>
-          <div className='select-menu'>
-          <IconButton
-              id="basic-button"
-              onClick={handleClick}>
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                'aria-labelledby': 'basic-button',
-              }}>
-              <Link to={`ac/view/${ac.id}`}>
-                <MenuItem>
-                  View
-                </MenuItem>
-              </Link>
-            </Menu>
-          </div>
-        </div>
-      )
-    }
-  }
 
   return (
     <Box
@@ -192,14 +86,103 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
           height: 300
         }
       }} >
-      <Paper className='assessmentCentreInfo' style={{ borderRadius: 10}}>
+      <Paper className='assessmentCentreInfo' style={{ borderRadius: 10 }}>
         <div className="streamInfo">
           {statustype === "upcomingAC" ?
-            <MenuList statustype={statustype} /> :
+            <div className='menu'>
+            <div className='select-menu'>
+              <IconButton
+                id="basic-button"
+                aria-controls={open ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}
+              >
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  'aria-labelledby': 'basic-button',
+                }}
+              >
+                <Link to={`ac/view-upcoming/${ac.id}`}>
+                  <MenuItem>
+                    View
+                  </MenuItem>
+                </Link>
+                <Link to={`ac/update/${ac.id}`}>
+                  <MenuItem>
+                    Update Details
+                  </MenuItem>
+                </Link>
+                <Link to={`ac/update/schedule/sales/${ac.id}`}>
+                  <MenuItem>
+                    Schedule Sales Interviews
+                  </MenuItem>
+                </Link>
+                <Link to={`ac/update/schedule/technical/${ac.id}`}>
+                  <MenuItem>
+                    Schedule Technical Interviews
+                  </MenuItem>
+                </Link>
+              </Menu>
+            </div>
+          </div> :
             (statustype === "pastAC" ?
-              <MenuList statustype={statustype} /> :
+            <div className='menu'>
+            <div className='select-menu'>
+              <IconButton
+                id="basic-button"
+                onClick={handleClick}>
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  'aria-labelledby': 'basic-button',
+                }}>
+                <Link to={`ac/view-past/${ac.id}`}>
+                  <MenuItem>
+                    View
+                  </MenuItem>
+                </Link>
+                <MenuItem>
+                  Delete
+                </MenuItem>
+              </Menu>
+            </div>
+          </div> :
               (statustype === "interviewerAC" ?
-                <MenuList statustype={statustype} /> :
+              <div className='menu'>
+              <div className='select-menu'>
+                <IconButton
+                  id="basic-button"
+                  onClick={handleClick}>
+                  <MoreVertIcon />
+                </IconButton>
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                  }}>
+                  <Link to={`ac/view/${ac.id}`}>
+                    <MenuItem>
+                      View
+                    </MenuItem>
+                  </Link>
+                </Menu>
+              </div>
+            </div> :
                 <></>
               )
             )

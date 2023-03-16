@@ -23,7 +23,9 @@ import {
   Box,
   FormGroup,
   Checkbox,
-  Grid
+  Grid,
+  Container,
+  Typography
 } from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -160,9 +162,22 @@ const CreateTechnicalInterview = () => {
       <NavBar />
 
       <div className="Dashboard" style={{ float: 'left', width: '80%' }}>
-        <h1> Schedule Upcoming Assessment Centre </h1>
+      <Container component="main">
+      <div className="header" style={{ display: "flex" }}>
+            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Schedule Upcoming Assessment Centre</Typography>
+            <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "3%" }}>
+              <Avatar src="/broken-image.jpg" />
+            </div>
+          </div>
+          <Box
+            sx={{
+              flexDirection: 'column',
+              alignItems: 'center',
+              mt: 3,
+            }}>
+      
 
-        <Divider variant="middle" />
+      <Divider sx={{ mt: 2, mb: 2 }} />
 
         <div className="ac-details">
           <div style={{ float: 'left', width: '80%' }}>
@@ -268,6 +283,8 @@ const CreateTechnicalInterview = () => {
             </Button>
           </Link>
         </Grid>
+        </Box>
+        </Container>
       </div>
     </div>
   )

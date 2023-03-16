@@ -58,7 +58,7 @@ const AdminDashboard = () => {
       redirect: 'follow',
     };
 
-    fetch("http://localhost:8080/api/auth/getAll", requestOptions)
+    fetch("http://localhost:8080/api/auth/user", requestOptions)
       .then(response => response.json())
       .then(data => setUsers(data))
       .catch(error => console.log('error', error));
@@ -127,11 +127,56 @@ const AdminDashboard = () => {
     setSelection(filter);
 
     if (filter === "Recruiter") {
-      setFilteredUsers(users.filter(user => user.role === filter));
-    } else if (filter === "Sales Interviewer" || filter === "Technical Interviewer") {
-      setFilteredUsers(users.filter(user => user.role === filter));
+      setFilteredUsers(users.filter(user => user.roles[0].name === "ROLE_RECRUITER"));
+    } else if (filter === "Sales Interviewer") {
+      setFilteredUsers(users.filter(user => user.roles[0].name === "ROLE_INTERVIEWER").filter(user => user.interviewer.tech === false));
+    } else if (filter === "Technical Interviewer") {
+      setFilteredUsers(users.filter(user => user.roles[0].name === "ROLE_INTERVIEWER").filter(user => user.interviewer.tech === true));
     } else {
       console.log("Else called in filter"); //There is an issues if this is being called :))
+    }
+  }
+
+  const RenderUsersDetails = ({ user }) => {
+    if (user.roles[0].name === "ROLE_ADMIN") {
+      return (
+        <>
+          <TableCell component="th" scope="row"> {user.name} </TableCell>
+          <TableCell>{user.email}</TableCell>
+          <TableCell> Administrator </TableCell>
+        </>
+      )
+    }
+
+    if (user.roles[0].name === "ROLE_RECRUITER") {
+      return (
+        <>
+          <TableCell component="th" scope="row"> {user.recruiter.name} </TableCell>
+          <TableCell>{user.email}</TableCell>
+          <TableCell> Recruiter </TableCell>
+        </>
+      )
+    }
+
+    if (user.roles[0].name === "ROLE_INTERVIEWER") {
+      if (user.interviewer.tech === false) {
+        return (
+          <>
+            <TableCell component="th" scope="row"> {user.interviewer.name} </TableCell>
+            <TableCell>{user.email}</TableCell>
+            <TableCell> Sales Interviewer </TableCell>
+          </>
+        )
+      }
+      else {
+        return (
+          <>
+            <TableCell component="th" scope="row"> {user.interviewer.name} </TableCell>
+            <TableCell>{user.email}</TableCell>
+            <TableCell> Technical Interviewer </TableCell>
+          </>
+        )
+      }
     }
   }
 
@@ -267,22 +312,14 @@ const AdminDashboard = () => {
                     </TableHead>
                     <TableBody>
                       {selection === "All"
-                        ? users.map((user) => (
-                          <TableRow key={user.email}>
-                            <TableCell component="th" scope="row">
-                              {user.fullname}
-                            </TableCell>
-                            <TableCell>{user.email}</TableCell>
-                            <TableCell>{user.role}</TableCell>
+                        ? users.map((user, index) => (
+                          <TableRow key={index}>
+                            <RenderUsersDetails user={user} />
                           </TableRow>
                         ))
-                        : filteredUsers.map((filteredUser) => (
-                          <TableRow key={filteredUser.email}>
-                            <TableCell component="th" scope="row">
-                              {filteredUser.fullname}
-                            </TableCell>
-                            <TableCell>{filteredUser.email}</TableCell>
-                            <TableCell>{filteredUser.role}</TableCell>
+                        : filteredUsers.map((filteredUser, index) => (
+                          <TableRow key={index}>
+                            <RenderUsersDetails user={filteredUser} />
                           </TableRow>
                         ))}
                     </TableBody>
