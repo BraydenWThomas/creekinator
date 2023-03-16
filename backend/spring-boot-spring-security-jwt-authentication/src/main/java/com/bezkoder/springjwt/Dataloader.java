@@ -1,3 +1,4 @@
+
 package com.bezkoder.springjwt;
 
 import java.sql.Time;
@@ -25,8 +26,6 @@ import com.bezkoder.springjwt.models.Role;
 import com.bezkoder.springjwt.models.User;
 import com.bezkoder.springjwt.models.*;
 import com.bezkoder.springjwt.repository.AssessmentCenterRepository;
-import com.bezkoder.springjwt.repository.AuthorRepository;
-import com.bezkoder.springjwt.repository.BookRepository;
 import com.bezkoder.springjwt.repository.CandidateRepository;
 import com.bezkoder.springjwt.repository.InterviewerRepository;
 import com.bezkoder.springjwt.repository.InterviewsRepository;
@@ -48,15 +47,12 @@ public class Dataloader implements ApplicationRunner{
 	private RecruiterRepository recruiterRepository;
 	private UserRepository userRepository;
 	private RoleRepository roleRepository;
-	private BookRepository bookRepository;
-	private AuthorRepository authorRepository;
 	
 	
 	@Autowired
 	public Dataloader(AssessmentCenterRepository assessmentCenterRepository, CandidateRepository candidateRepository ,
 			InterviewerRepository interviewerRepository, InterviewsRepository interviewRepository, 
-			PacksRepository packsRepository,RecruiterRepository recruiterRepository,UserRepository userRepository,RoleRepository roleRepository, 
-			AuthorRepository authorRepository, BookRepository bookRepository) {
+			PacksRepository packsRepository,RecruiterRepository recruiterRepository,UserRepository userRepository,RoleRepository roleRepository) {
 		super();
 		this.assessmentCenterRepository = assessmentCenterRepository;
 		this.candidateRepository = candidateRepository;
@@ -66,8 +62,6 @@ public class Dataloader implements ApplicationRunner{
 		this.recruiterRepository = recruiterRepository;
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
-		this.authorRepository = authorRepository;
-		this.bookRepository = bookRepository;
 	}
 	
 	@Override

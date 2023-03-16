@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bezkoder.springjwt.models.*;
 import com.bezkoder.springjwt.repository.AssessmentCenterRepository;
-import com.bezkoder.springjwt.repository.AuthorRepository;
-import com.bezkoder.springjwt.repository.BookRepository;
 import com.bezkoder.springjwt.repository.CandidateRepository;
 import com.bezkoder.springjwt.repository.InterviewerRepository;
 import com.bezkoder.springjwt.repository.InterviewsRepository;
@@ -33,6 +31,7 @@ import com.bezkoder.springjwt.exceptions.NotFoundException;
 import org.json.simple.JSONObject;
 import org.json.simple.*;
 
+// the use this ------------------------------------
 
 //#TODO REMOVE ALL THINGS WITH TRANSACTION
 
@@ -48,8 +47,6 @@ public class EntityController {
 	InterviewsRepository interviewRepository;
 	PacksRepository packsRepository;
 	RecruiterRepository recruiterRepository;
-	BookRepository bookRepository;
-	AuthorRepository authorRepository;
 	UserRepository userRepository;
 	/* --- end of fields --- */
 	
@@ -62,8 +59,6 @@ public class EntityController {
 	public EntityController(AssessmentCenterRepository assessmentCenterRepository, CandidateRepository candidateRepository ,
 			InterviewerRepository interviewerRepository, InterviewsRepository interviewRepository, 
 			PacksRepository packsRepository,RecruiterRepository recruiterRepository,
-			BookRepository bookRepository,
-			AuthorRepository authorRepository,
 			UserRepository userRepository) {
 		super();
 		this.assessmentCenterRepository = assessmentCenterRepository;
@@ -72,8 +67,6 @@ public class EntityController {
 		this.interviewRepository = interviewRepository;
 		this.packsRepository = packsRepository;
 		this.recruiterRepository = recruiterRepository;
-		this.bookRepository = bookRepository;
-		this.authorRepository = authorRepository;
 		this.userRepository = userRepository;
 	}
 	/* --- end of constructor --- */
@@ -544,12 +537,35 @@ public class EntityController {
 		}
 		return packs;
 	}
-		
+	
+	/* ------------------------------------ get linked attribute ------------------------------------ */
+	
 	//Get Pack from interview
 	@GetMapping("/interview/{id}/getPacks")
 	public List<Pack> getPackFromInterview(@PathVariable int id) {
 		return interviewRepository.getReferenceById(id).getPacks();
 	}
+	
+	//Get interviewer from interview
+	@GetMapping("/interview/{id}/getInterviewer")
+	public Interviewer getInterviewerFromInterview(@PathVariable int id) {
+		return interviewRepository.getReferenceById(id).getInterviewer();
+	}
+	
+	//Get candidate from interview
+	@GetMapping("/interview/{id}/getCandidate")
+	public Candidate getCandidateFromInterview(@PathVariable int id) {
+		return interviewRepository.getReferenceById(id).getCandidate();
+	}
+	
+	// get AC from interview
+	@GetMapping("/interview/{id}/getAC")
+	public AssessmentCenter getAssessmentCenterFromInterview(@PathVariable int id) {
+		return interviewRepository.getReferenceById(id).getAssessmentCenter();
+	}
+	
+	/* ------------------------------------ end of get linked attribute ------------------------------------ */
+	
 	
 	//Remove Pack from Interview
 	@PutMapping("/interview/{id}/removePacks")
@@ -568,6 +584,9 @@ public class EntityController {
 		}
 		return packs;
 	}
+	
+	
+	
 	
 	
 	
@@ -701,100 +720,7 @@ public class EntityController {
 	}
 	/* --- End of Recruiter --- */
 	
-	
-	
-	
-	
-	
-	
-	/* --- Book --- */
-	
-	// Get all Recruiter
-	@GetMapping("/book")
-	public List<Book> getAllBook() {
-		return bookRepository.findAll();
-	}
-	
-	// Get specific Recruiter
-	@GetMapping("/book/{id}")
-	public Book getBookbyId(@PathVariable int id) {
-		return bookRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
-	}
-	
-	// Delete Recruiter
-	@DeleteMapping("/book/{id}")
-	public void deleteBookById(@PathVariable int id) {
-		if (bookRepository.findById(id).isEmpty()) {
-			throw new NotFoundException("Can't find transaction with id: " + id);
-		}
-		bookRepository.deleteById(id);
-	}	
-	
-	//Create Recruiter
-	@PostMapping("/book")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Book createBook(@RequestBody Book book) {
-		return bookRepository.save(book);
-	}
-	
-	//Modify Recruiter
-	@PutMapping("/book")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Book modifyBook(@RequestBody Book book) {
-		if (bookRepository.findById(book.getId()).isEmpty()) {
-			throw new NotFoundException("Can't find transaction with id: " + book.getId());
-		}
-		return bookRepository.save(book);
-	}
-	/* --- End of Book --- */
-	
-	
-	
-	
-	
-	
-	
-	/* --- Author --- */
-	
-	// Get all Recruiter
-	@GetMapping("/author")
-	public List<Author> getAllAuthor() {
-		return authorRepository.findAll();
-	}
-	
-	// Get specific Recruiter
-	@GetMapping("/author/{id}")
-	public Author getAuthorbyId(@PathVariable int id) {
-		return authorRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
-	}
-	
-	// Delete Recruiter
-	@DeleteMapping("/author/{id}")
-	public void deleteAuthorById(@PathVariable int id) {
-		if (authorRepository.findById(id).isEmpty()) {
-			throw new NotFoundException("Can't find transaction with id: " + id);
-		}
-		authorRepository.deleteById(id);
-	}	
-	
-	//Create Recruiter
-	@PostMapping("/author")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Author createAuthor(@RequestBody Author author) {
-		return authorRepository.save(author);
-	}
-	
-	//Modify Recruiter
-	@PutMapping("/author")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Author modifyAuthor(@RequestBody Author author) {
-		if (authorRepository.findById(author.getId()).isEmpty()) {
-			throw new NotFoundException("Can't find transaction with id: " + author.getId());
-		}
-		return authorRepository.save(author);
-	}
-	/* --- End of Author --- */
-	
+
 	
 	
 }
