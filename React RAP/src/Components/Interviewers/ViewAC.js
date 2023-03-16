@@ -11,7 +11,7 @@ import NavBar from "../NavBar";
 // Material UI
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Avatar from '@mui/material/Avatar';
-import { Container, Divider, Grid, Stack, Typography } from "@mui/material";
+import { Container, Divider, Grid, Stack, Typography, TextField} from "@mui/material";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
@@ -21,7 +21,7 @@ import { margin } from "@mui/system";
 
 const ViewAC = () => {
   const [value, setValue] = useState(0);
-  const candidates = ["John", "Robert", "Bob", "Joe"]
+  const candidatesDummy = ["John", "Robert", "Bob", "Joe"]
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -29,18 +29,18 @@ const ViewAC = () => {
   const showTextArea = (user) => {
     console.log("dsfsd")
     return (
-
       <textarea placeholder={user} rows={"5"} cols={"100"} style={{ resize: "none" }} />
-
     )
   };
 
   // AC Details
   const [ac, setAc] = useState([]);
-  const [tabValue1, setTabValue1] = useState("1");
-  const [tabValue2, setTabValue2] = useState("1");
-  const [tabValue3, setTabValue3] = useState("1");
-  const [tabValue4, setTabValue4] = useState("1");
+  const [candidates, setCandidates] = useState([]);
+  const [interviewers, setInterviewers] = useState([]);
+
+  // Scheduled interview details
+  const [interviewDetails, setInterviewDetails] = useState([]);
+  const [interviewsForAC, setInterviewsForAC] = useState([]);
 
   // Link to specific AC
   const { acId } = useParams();
@@ -48,6 +48,7 @@ const ViewAC = () => {
   // Get AC + Recruiter info
   const [recruiters, setRecruiters] = useState([]);
   const [acCoordinator, setAcCoordinator] = useState('');
+  const [interviewPacks, setInterviewPacks] = useState([]);
 
   // Go back to previous page
   const navigate = useNavigate();
@@ -64,19 +65,27 @@ const ViewAC = () => {
 
     Promise.all([
       fetch("http://localhost:8080/api/ac/" + acId, requestOptions),
-      fetch("http://localhost:8080/api/recruiter", requestOptions)
+      fetch("http://localhost:8080/api/ac/" + acId + "/showCandidates", requestOptions),
+      fetch("http://localhost:8080/api/ac/" + acId + "/showInterviewers", requestOptions),
+      fetch("http://localhost:8080/api/pack", requestOptions),
+      fetch("http://localhost:8080/api/recruiter", requestOptions),
+      fetch("http://localhost:8080/api/interview", requestOptions)
     ]).then((responses => {
       console.log(responses)
       responses[0].json()
         .then(data => { setAc(data) })
       responses[1].json()
+        .then(data => { setCandidates(data) })
+      responses[2].json()
+        .then(data => { setInterviewers(data) })
+      responses[3].json()
+        .then(data => { setInterviewPacks(data) })
+      responses[4].json()
         .then(data => { setRecruiters(data) })
+      responses[5].json()
+        .then(data => { setInterviewDetails(data) })
     })).catch(error => console.log('error', error));
-
-    // .then(response => response.json())
-    // .then(data => { setAc(data) })
-    // .catch(error => console.log('error', error));
-  }, [acId])
+  }, [acId]);
 
   // Get AC Coordinator for AC
   useEffect(() => {
@@ -96,22 +105,6 @@ const ViewAC = () => {
     dayjs(ac.date).format("dddd, DD MMMM YYYY") + " " +
     formatStart.format("LT") + " - " +
     formatEnd.format("LT")
-
-  const handleChangeInterview1 = (event, newValue) => {
-    setTabValue1(newValue);
-  }
-
-  const handleChangeInterview2 = (event, newValue) => {
-    setTabValue2(newValue);
-  }
-
-  const handleChangeInterview3 = (event, newValue) => {
-    setTabValue3(newValue);
-  }
-
-  const handleChangeInterview4 = (event, newValue) => {
-    setTabValue4(newValue);
-  }
 
   return (
 
@@ -162,52 +155,67 @@ const ViewAC = () => {
                 centered
                 variant="fullWidth"
               >
-
-                {/* <Tab value="one" label="Candidate One" style={{ fontWeight: 'bold', fontSize: "20px", textTransform: "none" }} />
-                        <Tab value="two" label="Candidate Two" style={{ fontWeight: 'bold', fontSize: "20px", textTransform: "none" }} />
-                        <Tab value="three" label="Candidate Three" style={{ fontWeight: 'bold', fontSize: "20px", textTransform: "none" }} />
-                        <Tab value="four" label="Candidate Four" style={{ fontWeight: 'bold', fontSize: "20px", textTransform: "none" }} /> */}
-                {candidates.map((user, index) => <Tab value={index} label={user} style={{ fontWeight: 'bold', fontSize: "20px", textTransform: "none" }} key={index} />
-
-                )
-                }
-
-
+                {candidatesDummy.map((user, index) =>
+                  <Tab
+                    value={index}
+                    label={user}
+                    style={{ fontWeight: 'bold', fontSize: "20px", textTransform: "none" }}
+                    key={index} />
+                )}
               </Tabs>
               <Box sx={{ display: "block" }} >
                 {value === 0 && (
-                  <Box>
-                    <textarea placeholder="" rows={"5"} cols={"100"} style={{ resize: "none", width: '100%' }} />
-                  </Box>
+                  <TextField
+                    id="outlined-textarea"
+                    label="Multiline Placeholder"
+                    placeholder="Placeholder"
+                    fullWidth
+                    multiline
+                    rows={8} 
+                    sx={{ marginTop: "10pt" }}/>
                 )}
                 {value === 1 && (
-                  <Box>
-                    <textarea placeholder="" rows={"5"} cols={"100"} style={{ resize: "none", width: '100%' }} />
-                  </Box>
+                  <TextField
+                    id="outlined-textarea"
+                    label="Multiline Placeholder"
+                    placeholder="Placeholder"
+                    fullWidth
+                    multiline
+                    rows={8} 
+                    sx={{ marginTop: "10pt" }} />
                 )}
                 {value === 2 && (
-                  <Box>
-                    <textarea placeholder="" rows={"5"} cols={"100"} style={{ resize: "none", width: '100%' }} />
-                  </Box>
+                  <TextField
+                    id="outlined-textarea"
+                    label="Multiline Placeholder"
+                    placeholder="Placeholder"
+                    fullWidth
+                    multiline
+                    rows={8}
+                    sx={{ marginTop: "10pt" }} />
                 )}
                 {value === 3 && (
-                  <Box>
-                    <textarea placeholder="" rows={"5"} cols={"100"} style={{ resize: "none", width: '100%' }} />
-                  </Box>
+                 <TextField
+                  id="outlined-textarea"
+                  label="Multiline Placeholder"
+                  placeholder="Placeholder"
+                  fullWidth
+                  multiline
+                  rows={8} 
+                  sx={{ marginTop: "10pt" }} />
                 )}
-
               </Box>
             </Box>
             <div style={{ clear: "both", padding: "20px 0 0 0" }}>
-
-
               <div style={{ float: "right" }}>
-                <a href="/candidateinformation/:abc" target="_blank"><Button variant="contained" component="label" sx={{ m: 5 }}>View Profile</Button></a>
+                <Link to={`/recruiter/candidate/info/:candidateId`}>
+                  <Button variant="contained" component="label" sx={{ m: 5 }}>
+                    View Profile
+                  </Button>
+                </Link>
                 <Button variant="contained" component="label" sx={{ m: 5 }}>View Interview Form</Button>
               </div>
             </div>
-
-
             <div style={{ clear: "both" }}>
               <Divider sx={{ mt: 2, mb: 2 }} />
               <Typography component="h2" variant="h5" mb={2}> Assigned Interviewers </Typography>
@@ -215,55 +223,40 @@ const ViewAC = () => {
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <div className="salesColumn" style={{ float: "left" }}>
-                      <div>
-                        <Typography component='h3' variant='h5'>Sales Interviewer 1</Typography>
-                        <Typography component='p' variant='body'>Sal Innervewer</Typography>
-                        <Typography component='h3' variant='h7'>Assigned Candidates</Typography>
-                        <ul style={{ listStyleType: "none" }}>
-                          <li>John Doe</li>
-                          <li>Jon Doe</li>
-                          <li>Joe Doe</li>
-                          <li>Do Doe</li>
-                        </ul>
-                      </div>
+                      {interviewers.map((interviewer, index) =>
+                        (interviewer.tech === false) &&
+                        <div key={index}>
+                          <Typography component='h3' variant='h7'>Technical Interviewer {index - 1} </Typography>
+                          <Typography component='p' variant='body'>{interviewer.name}</Typography>
+                          <Typography component='h3' variant='h7'>Assigned Candidates</Typography>
 
-                      <div style={{ marginTop: "10px" }}>
-                        <Typography component='h3' variant='h5'>Sales Interviewer 2</Typography>
-                        <Typography component='p' variant='body'>Sal Innervewer</Typography>
-                        <Typography component='h3' variant='h7'>Assigned Candidates</Typography>
-                        <ul style={{ listStyleType: "none" }}>
-                          <li>John Doe</li>
-                          <li>Jon Doe</li>
-                          <li>Joe Doe</li>
-                          <li>Do Doe</li>
-                        </ul>
-                      </div>
+                          <ul style={{ listStyleType: "none" }}>
+                            <li>John Doe</li>
+                            <li>Jon Doe</li>
+                            <li>Joe Doe</li>
+                            <li>Do Doe</li>
+                          </ul>
+                        </div>
+                      )}
                     </div>
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <div className="techColumn" style={{ float: "right" }}>
-                      <div>
-                        <Typography component='h3' variant='h5'>Techinical Interviewer 1</Typography>
-                        <Typography component='p' variant='body'>Sal Innervewer</Typography>
-                        <Typography component='h3' variant='h7'>Assigned Candidates</Typography>
-                        <ul style={{ listStyleType: "none" }}>
-                          <li>John Doe</li>
-                          <li>Jon Doe</li>
-                          <li>Joe Doe</li>
-                          <li>Do Doe</li>
-                        </ul>
-                      </div>
-                      <div style={{ marginTop: "10px" }}>
-                        <Typography component='h3' variant='h5'>Techinical Interviewer 2</Typography>
-                        <Typography component='p' variant='body'>Sal Innervewer</Typography>
-                        <Typography component='h3' variant='h7'>Assigned Candidates</Typography>
-                        <ul style={{ listStyleType: "none" }}>
-                          <li>John Doe</li>
-                          <li>Jon Doe</li>
-                          <li>Joe Doe</li>
-                          <li>Do Doe</li>
-                        </ul>
-                      </div>
+                      {interviewers.map((interviewer, index) =>
+                        (interviewer.tech === true) &&
+                        <div key={index}>
+                          <Typography component='h3' variant='h7'>Sales Interviewer {index + 1} </Typography>
+                          <Typography component='p' variant='body'>{interviewer.name}</Typography>
+                          <Typography component='h3' variant='h7'>Assigned Candidates</Typography>
+
+                          <ul style={{ listStyleType: "none" }}>
+                            <li>John Doe</li>
+                            <li>Jon Doe</li>
+                            <li>Joe Doe</li>
+                            <li>Do Doe</li>
+                          </ul>
+                        </div>
+                      )}
                     </div>
                   </Grid>
                 </Grid>

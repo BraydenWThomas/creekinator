@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bezkoder.springjwt.exceptions.NotFoundException;
 import com.bezkoder.springjwt.models.AssessmentCenter;
-import com.bezkoder.springjwt.models.Author;
 import com.bezkoder.springjwt.models.Candidate;
 import com.bezkoder.springjwt.models.ERole;
 import com.bezkoder.springjwt.models.Interviewer;
@@ -52,31 +51,51 @@ import com.bezkoder.springjwt.security.services.UserDetailsImpl;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-  @Autowired
-  AuthenticationManager authenticationManager;
+	
+	@Autowired
+	AuthenticationManager authenticationManager;
 
-  @Autowired
-  UserRepository userRepository;
+	@Autowired
+	UserRepository userRepository;
 
-  @Autowired
-  RoleRepository roleRepository;
+	@Autowired
+	RoleRepository roleRepository;
   
-  @Autowired
-  RecruiterRepository recruiterRepository;
+	@Autowired
+	RecruiterRepository recruiterRepository;
   
-  @Autowired
-  InterviewerRepository interviewerRepository;
+	@Autowired
+	InterviewerRepository interviewerRepository;
   
-  @Autowired
-  CandidateRepository candidateRepository;
+	@Autowired
+	CandidateRepository candidateRepository;
 
-  @Autowired
-  PasswordEncoder encoder;
+	@Autowired
+	PasswordEncoder encoder;
+
 
   @Autowired
   JwtUtils jwtUtils;
 
-  @PostMapping("/signin")
+  
+  
+  public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository,
+		RoleRepository roleRepository, RecruiterRepository recruiterRepository,
+		InterviewerRepository interviewerRepository, CandidateRepository candidateRepository, PasswordEncoder encoder,
+		JwtUtils jwtUtils) {
+	super();
+	this.authenticationManager = authenticationManager;
+	this.userRepository = userRepository;
+	this.roleRepository = roleRepository;
+	this.recruiterRepository = recruiterRepository;
+	this.interviewerRepository = interviewerRepository;
+	this.candidateRepository = candidateRepository;
+	this.encoder = encoder;
+	this.jwtUtils = jwtUtils;
+}
+
+
+@PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
     Authentication authentication = authenticationManager.authenticate(
@@ -97,20 +116,11 @@ public class AuthController {
                          userDetails.getName(),
                          roles));
   	}
-  
-
-	// Get All Users
-	@GetMapping("/getAll")
-	public List<User> getACbyId() {
-		return userRepository.findAll();
-	}
 
 	
-	
-  @PostMapping("/signup")
-  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest,
-		  
-		  // recruiter part
+	@PostMapping("/signup")
+	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest,
+          // recruiter part
 		  @RequestParam(required = false, name = "recruiterName") String recruiterName,
 		  @RequestParam(required = false, name = "superRecruiter") boolean superRecruiter,
 		  
@@ -177,10 +187,6 @@ public class AuthController {
         	Role recruiterRole = roleRepository.findByName(ERole.ROLE_RECRUITER)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(recruiterRole);
-            
-            // find the recruiter to link
-            //Recruiter recruiter = recruiterRepository.findById(recruiterId).orElseThrow(()->new NotFoundException("Can't find recruiter with id: " + recruiterId));
-            //recruiter.addUser(user)
             break;
         
         case "interviewer":
@@ -223,17 +229,6 @@ public class AuthController {
     
     // update link the user with interviewer, candidate or recruiter if new added roles contain any of them and id is specified
     if (strRoles.contains("recruiter")) {
-    	// create a new recruiter 
-    	/*
-    	Recruiter recruiter = user.getRecruiter();
-    	if (recruiter == null) {
-    		//System.out.println("wadwadwaaaaaaaaaaaaaaaaaaaaaa");
-    		recruiter = new Recruiter(user.getName());
-    	}
-    	else {
-    		user.setRecruiter(null);
-    	}
-    	*/
     	Recruiter recruiter = new Recruiter(recruiterName, superRecruiter);
     	recruiter.addUser(user);
     	recruiterRepository.save(recruiter);
@@ -241,15 +236,6 @@ public class AuthController {
         
     }
     if (strRoles.contains("interviewer")) {
-    	/*
-    	Interviewer interviewer = user.getInterviewer();
-    	if (interviewer == null) {
-    		interviewer = new Interviewer(user.getName());
-    	}
-    	else {
-    		user.setInterviewer(null);
-    	}
-    	*/
     	Interviewer interviewer = new Interviewer(interviewerName, tech);
     	interviewer.addUser(user);
     	interviewerRepository.save(interviewer);
@@ -257,15 +243,6 @@ public class AuthController {
     	
     }
     if (strRoles.contains("candidate")) {
-    	/*
-    	Candidate candidate = user.getCandidate();
-    	if (candidate == null) {
-    		candidate = new Candidate();
-    	}
-    	else {
-    		user.setCandidate(null);
-    	}
-    	*/
     	Candidate candidate = new Candidate(
 								candidateTitle,
 								candidateFirst_name,
@@ -304,21 +281,8 @@ public class AuthController {
   // TODO make this api available to admin only
   @GetMapping("/user/{id}")
   public User getUser(@PathVariable long id) {
-	  return userRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find transaction with id: " + id));
+	  return userRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find user with id: " + id));
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
   
   /* --------- below api should not be public for users, they are still in development stage --------- */
@@ -336,10 +300,10 @@ public class AuthController {
  
  //TODO make this api available to admin only and watch out null
  @DeleteMapping("/user/{id}")
- public void changeUser(@PathVariable long id) {
-	  if (userRepository.findById(id).isEmpty()) {
-			throw new NotFoundException("Can't find user with id: " + id);
-	  }
+ public void deleteUser(@PathVariable long id) {
+//	  if (userRepository.findById(id).isEmpty()) {
+//			throw new NotFoundException("Can't find user with id: " + id);
+//	  } //Pretty sure this is redundant
 	  User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Can't find user with id: " + id));
 	  Interviewer interviewer = user.getInterviewer();
 	  Recruiter recruiter = user.getRecruiter();
@@ -371,24 +335,18 @@ public class AuthController {
 	  Recruiter recruiter = recruiterRepository.findById(recruiterId).orElseThrow(() -> new NotFoundException("Can't find recruiter with id: " + recruiterId));
 	  Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(() -> new NotFoundException("Can't find candidate with id: " + candidateId));
 	  if (recruiterId != null) {
-		  //Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(() -> new NotFoundException("Can't find candidate with id: " + candidateId));
-		  if (user.getRecruiter() != null) {
-			  
-		  }
-		  candidate.addUser(user);
-		  candidateRepository.save(candidate);
+		  recruiter.addUser(user);
+		  recruiterRepository.save(recruiter);
 		  linkedList.add("recruiterId " + recruiterId);
 	  }
 	  
 	  if (interviewerId != null) {
-		  //Interviewer interviewer = interviewerRepository.findById(interviewerId).orElseThrow(() -> new NotFoundException("Can't find interviewer with id: " + interviewerId));
 		  interviewer.addUser(user);
 		  interviewerRepository.save(interviewer);
 		  linkedList.add("interviewerId " + interviewerId);
 	  }
 	  
 	  if (candidateId != null) {
-		  //Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(() -> new NotFoundException("Can't find candidate with id: " + candidateId));
 		  candidate.addUser(user);
 		  candidateRepository.save(candidate);
 		  linkedList.add("candidateId " + candidateId);
@@ -419,15 +377,16 @@ public class AuthController {
 	  Recruiter recruiter = user.getRecruiter();
 	  Interviewer interviewer = user.getInterviewer();
 	  Candidate candidate = user.getCandidate();
-	  if ( (recruiterId != null) & (recruiter != null) ) {
+	  
+	  if ( (recruiterId != null) && (recruiter != null) ) {
 		  user.removeRecruiter();
 		  output.add("removed recruiter " + recruiterId);
 	  }
-	  if ( (interviewerId != null) & (interviewer != null) ) {
+	  if ( (interviewerId != null) && (interviewer != null) ) {
 		  user.removeInterviewer();
 		  output.add("removed interviewer " + interviewerId);
 	  }
-	  if ( (candidateId != null) & (candidate != null) ) {
+	  if ( (candidateId != null) && (candidate != null) ) {
 		  user.removeCandidate();
 		  output.add("removed candidate " + candidateId);
 	  }
@@ -437,107 +396,4 @@ public class AuthController {
 	  candidateRepository.save(candidate);
 	  return output;
   }
-  
-  
-  /*
-  @PutMapping("/user/{id}/update")
-  public List<String> removeRole(@PathVariable long id,
-		  @Valid @RequestBody LoginRequest loginRequest,
-		  @RequestParam(required = false, name = "updateName") Integer updateName,
-		  @RequestParam(required = false, name = "updatePassword") Integer updatePassword,
-		  @RequestParam(required = false, name = "updateEmail") Integer updateEmail,
-		  @RequestParam(required = false, name = "updateUsername") Integer updateUsername,
-		  @RequestParam(required = false, name = "actionRecruiter") String actionRecruiter,
-		  @RequestParam(required = false, name = "actionInterviewer") String actionInterviewer,
-		  @RequestParam(required = false, name = "actionCandidate") String actionCandidate) {
-	  User user = userRepository.findById(id).orElseThrow(() -> new)
-	  
-  }
-  */
-  
-  /*
-  @PutMapping("/user/{id}/removeRole")
-  public List<String> removeRole(@PathVariable long id,
-		  @RequestParam(required = false, name = "removeRecruiter") Integer removeRecruiter,
-		  @RequestParam(required = false, name = "removeInterviewer") Integer removeInterviewer,
-		  @RequestParam(required = false, name = "removeCandidate") Integer removeCandidate){
-	  User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id));
-	  List<String> output = new ArrayList<String>(); // used to hold output message
-	  
-	  if (removeRecruiter != null) {
-		  
-		  // remove the link to recruiter table
-		  Recruiter recruiter = user.getRecruiter();
-		  if (recruiter != null) {
-			  recruiter.removeUser();
-			  output.add("successfully removed recruiter from user with id " + recruiter.getId());
-			  recruiterRepository.save(recruiter);
-		  }
-		  else {
-			  output.add("the user is not linked with any row in the recruiter table");
-		  }
-		  
-		  // remove the link to the user_role_table
-		  Role recruiterRole = roleRepository.findByName(ERole.ROLE_RECRUITER).orElseThrow(() -> new RuntimeException("Error: Role is not found"));
-		  if (user.getRoles().contains(recruiterRole)) {
-			  user.getRoles().remove(recruiterRole);
-			  output.add("successfully removed recruiter role");
-		  }
-		  else {
-			  output.add("recruiter role remove unsuccessful, role not found");
-		  }
-	  }
-	  
-	  if (removeInterviewer != null) {
-		  // remove the link to interviewer table
-		  Interviewer interviewer = user.getInterviewer();
-		  if (interviewer != null) {
-			  interviewer.removeUser();
-			  output.add("successfully removed interviewer from user with id " + interviewer.getId());
-			  interviewerRepository.save(interviewer);
-		  }
-		  else {
-			  output.add("the user is not linked with any row in the interviewer table");
-		  }
-		  
-		  // remove the link to the user_role_table
-		  Role interviewerRole = roleRepository.findByName(ERole.ROLE_INTERVIEWER).orElseThrow(() -> new RuntimeException("Error: Role is not found"));
-		  if (user.getRoles().contains(interviewerRole)) {
-			  user.getRoles().remove(interviewerRole);
-			  output.add("successfully removed interviewer role");
-		  }
-		  else {
-			  output.add("interviewer role remove unsuccessful, role not found");
-		  }
-	  }
-	  
-	  if (removeCandidate != null) {
-		  // remove the link to candidate table
-		  Candidate candidate = user.getCandidate();
-		  if (candidate != null) {
-			  candidate.removeUser();
-			  output.add("successfully removed candidate from user with id " + candidate.getId());
-			  candidateRepository.save(candidate);
-		  }
-		  else {
-			  output.add("the user is not linked with any row in the candidate table");
-		  }
-		  
-		  // remove the link to the user_role_table
-		  Role candidateRole = roleRepository.findByName(ERole.ROLE_CANDIDATE).orElseThrow(() -> new RuntimeException("Error: Role is not found"));
-		  if (user.getRoles().contains(candidateRole)) {
-			  user.getRoles().remove(candidateRole);
-			  output.add("successfully removed candidate role");
-		  }
-		  else {
-			  output.add("candidate role remove unsuccessful, role not found");
-		  }
-	  }
-	  
-	  userRepository.save(user);
-	  
-	  return output;
-	  // if (candidate )
-  }
-  */
 }
