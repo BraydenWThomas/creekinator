@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bezkoder.springjwt.exceptions.NotFoundException;
 import com.bezkoder.springjwt.models.AssessmentCenter;
-import com.bezkoder.springjwt.models.Author;
 import com.bezkoder.springjwt.models.Candidate;
 import com.bezkoder.springjwt.models.ERole;
 import com.bezkoder.springjwt.models.Interviewer;
@@ -52,27 +51,29 @@ import com.bezkoder.springjwt.security.services.UserDetailsImpl;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-  @Autowired
-  AuthenticationManager authenticationManager;
+	
+	@Autowired
+	AuthenticationManager authenticationManager;
 
-  @Autowired
-  UserRepository userRepository;
+	@Autowired
+	UserRepository userRepository;
 
-  @Autowired
-  RoleRepository roleRepository;
+	@Autowired
+	RoleRepository roleRepository;
   
-  @Autowired
-  RecruiterRepository recruiterRepository;
+	@Autowired
+	RecruiterRepository recruiterRepository;
   
-  @Autowired
-  InterviewerRepository interviewerRepository;
+	@Autowired
+	InterviewerRepository interviewerRepository;
   
-  @Autowired
-  CandidateRepository candidateRepository;
+	@Autowired
+	CandidateRepository candidateRepository;
 
-  @Autowired
-  PasswordEncoder encoder;
+	@Autowired
+	PasswordEncoder encoder;
 
+<<<<<<< HEAD
   @Autowired
   JwtUtils jwtUtils;
 
@@ -115,11 +116,45 @@ public class AuthController {
                          userDetails.getName(),
                          roles));
   	}
+=======
+	@Autowired
+	JwtUtils jwtUtils;
 	
-  @PostMapping("/signup")
-  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest,
-		  
-		  // recruiter part
+	
+	@PostMapping("/signin")
+	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+		Authentication authentication = authenticationManager.authenticate(
+	        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+	
+	    SecurityContextHolder.getContext().setAuthentication(authentication); // store user info into contextHolder to avoid login again and again
+	    String jwt = jwtUtils.generateJwtToken(authentication);
+	    
+	    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();    
+	    List<String> roles = userDetails.getAuthorities().stream()
+	        .map(item -> item.getAuthority())
+	        .collect(Collectors.toList());
+	
+	    return ResponseEntity.ok(new JwtResponse(jwt, 
+	                         userDetails.getId(), 
+	                         userDetails.getUsername(), 
+	                         userDetails.getEmail(),
+	                         userDetails.getName(),
+	                         roles));
+	  	}
+  
+
+	// Get All Users
+	@GetMapping("/getAll")
+	public List<User> getACbyId() {
+		return userRepository.findAll();
+	}
+
+	
+>>>>>>> backend_3_16
+	
+	@PostMapping("/signup")
+	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest,
+          // recruiter part
 		  @RequestParam(required = false, name = "recruiterName") String recruiterName,
 		  @RequestParam(required = false, name = "superRecruiter") boolean superRecruiter,
 		  
