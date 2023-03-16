@@ -376,15 +376,16 @@ public class AuthController {
 	  Recruiter recruiter = user.getRecruiter();
 	  Interviewer interviewer = user.getInterviewer();
 	  Candidate candidate = user.getCandidate();
-	  if ( (recruiterId != null) & (recruiter != null) ) {
+	  
+	  if ( (recruiterId != null) && (recruiter != null) ) {
 		  user.removeRecruiter();
 		  output.add("removed recruiter " + recruiterId);
 	  }
-	  if ( (interviewerId != null) & (interviewer != null) ) {
+	  if ( (interviewerId != null) && (interviewer != null) ) {
 		  user.removeInterviewer();
 		  output.add("removed interviewer " + interviewerId);
 	  }
-	  if ( (candidateId != null) & (candidate != null) ) {
+	  if ( (candidateId != null) && (candidate != null) ) {
 		  user.removeCandidate();
 		  output.add("removed candidate " + candidateId);
 	  }

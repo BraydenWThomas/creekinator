@@ -21,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.bezkoder.springjwt.controllers.AuthController;
@@ -31,6 +33,7 @@ import com.bezkoder.springjwt.models.Interviewer;
 import com.bezkoder.springjwt.models.Recruiter;
 import com.bezkoder.springjwt.models.Role;
 import com.bezkoder.springjwt.models.User;
+import com.bezkoder.springjwt.payload.request.LoginRequest;
 import com.bezkoder.springjwt.payload.request.SignupRequest;
 import com.bezkoder.springjwt.repository.CandidateRepository;
 import com.bezkoder.springjwt.repository.InterviewerRepository;
@@ -102,12 +105,26 @@ public class AuthControllerTests {
 		verify(userRepositoryMock,times(1)).findAll();	
 	}
 	
+	//#TODO still needs work
+//	@Test
+//	public void test_authenticate() {
+//		//arrange
+//		LoginRequest loginRequest = new LoginRequest();
+//		loginRequest.setUsername("Username");
+//		loginRequest.setPassword("Password");
+//		//act
+//		ResponseEntity<?> actualValue = authController.authenticateUser(loginRequest);		
+//		//assert
+//		verify(authenticationManagerMock,times(1)).authenticate(null);
+//	}
+	
+	//#TODO need to fix
 //	@Test
 //	public void test_username_already_exists_return_error() {
 //		//arrange
 //		Set<String> roleSet = new HashSet<String>();
 //		roleSet.add("ROLE_ADMIN");
-//		
+//		//ResponseEntity<?> value = new ResponseEntity<>();
 //		SignupRequest signupRequest = new SignupRequest();
 //		signupRequest.setUsername("ExistingName");
 //		signupRequest.setEmail("ExisitingEmail@gmail.com");
@@ -119,7 +136,8 @@ public class AuthControllerTests {
 //		ResponseEntity<?> actualValue = authController.registerUser(signupRequest, null, false, null, false, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 //		//assert
 //		//#TODO how to actually test this..
-//		assertEquals(actualValue,"Asd");
+//		//System.out.println(actualValue.);
+//		//assertEquals(actualValue,"Asd");
 //	}
 	
 	@Test
@@ -148,7 +166,6 @@ public class AuthControllerTests {
 		verify(userRepositoryMock,times(1)).findById(id);
 	}
 	
-	//#TODO Not sure what issues is??
 	@Test
 	public void test_change_user_modifies_user() {
 		//arrange
@@ -243,33 +260,99 @@ public class AuthControllerTests {
 	public void test_link_user_invalid_id_returns_not_found_exception() {
 		//arrange
 		long id = 1l;
+		int intId = 1;
 		String expectedValue = "Can't find user with id: " + id;
 		when(userRepositoryMock.findById(id)).thenReturn(Optional.ofNullable(null));
 		//act
-		NotFoundException actualValue = assertThrows(NotFoundException.class, ()->authController.linkUserWithRole(id, null, null, null));
+		NotFoundException actualValue = assertThrows(NotFoundException.class, ()->authController.linkUserWithRole(id, intId, intId, intId));
 		//assert
 		assertEquals(actualValue.getMessage(),expectedValue);
 		verify(userRepositoryMock,times(1)).findById(id);
 	}
 	
-	//#TODO Cant get to work
-//	@Test
-//	public void test_link_user() {
-//		//arrange
-//		long id = 1l;
-//		int intId = 1;
-//		User user = new User("Username","Email@gmail.com","Password","Name");
-//		Interviewer interviewer = new Interviewer("Interviewer", false);
-//		Recruiter recruiter = new Recruiter("Recruiter", false);
-//		Candidate candidate = new Candidate();
-//		when(userRepositoryMock.findById(id)).thenReturn(Optional.of(user));
-//		when(interviewerRepositoryMock.findById(intId)).thenReturn(Optional.of(interviewer));
-//		when(recruiterRepositoryMock.findById(intId)).thenReturn(Optional.of(recruiter));
-//		when(candidateRepositoryMock.findById(intId)).thenReturn(Optional.of(candidate));
-//		//act
-//		List<String> expectedValue = authController.linkUserWithRole(id, null, null, null);
-//		//assert
-//	}
+	@Test
+	public void test_link_interviewer_invalid_id_returns_not_found_exception() {
+		//arrange
+		long id = 1l;
+		int intId = 1;
+		User user = new User("Username","Email@gmail.com","Password","Name");
+		String expectedValue = "Can't find interviewer with id: " + id;
+		when(userRepositoryMock.findById(id)).thenReturn(Optional.of(user));
+		when(interviewerRepositoryMock.findById(intId)).thenReturn(Optional.ofNullable(null));
+		//act
+		NotFoundException actualValue = assertThrows(NotFoundException.class, ()->authController.linkUserWithRole(id, intId, intId, intId));
+		//assert
+		assertEquals(actualValue.getMessage(),expectedValue);
+		verify(userRepositoryMock,times(1)).findById(id);
+		verify(interviewerRepositoryMock,times(1)).findById(intId);
+	}
+	
+	@Test
+	public void test_link_recruiter_invalid_id_returns_not_found_exception() {
+		//arrange
+		long id = 1l;
+		int intId = 1;
+		User user = new User("Username","Email@gmail.com","Password","Name");
+		Interviewer interviewer = new Interviewer("Interviewer", false);
+		String expectedValue = "Can't find recruiter with id: " + id;
+		when(userRepositoryMock.findById(id)).thenReturn(Optional.of(user));
+		when(interviewerRepositoryMock.findById(intId)).thenReturn(Optional.of(interviewer));
+		when(recruiterRepositoryMock.findById(intId)).thenReturn(Optional.ofNullable(null));
+		//act
+		NotFoundException actualValue = assertThrows(NotFoundException.class, ()->authController.linkUserWithRole(id, intId, intId, intId));
+		//assert
+		assertEquals(actualValue.getMessage(),expectedValue);
+		verify(userRepositoryMock,times(1)).findById(id);
+		verify(interviewerRepositoryMock,times(1)).findById(intId);
+		verify(recruiterRepositoryMock,times(1)).findById(intId);
+	}
+	
+	@Test
+	public void test_link_candidate_invalid_id_returns_not_found_exception() {
+		//arrange
+		long id = 1l;
+		int intId = 1;
+		User user = new User("Username","Email@gmail.com","Password","Name");
+		Interviewer interviewer = new Interviewer("Interviewer", false);
+		Recruiter recruiter = new Recruiter("Recruiter", false);
+		String expectedValue = "Can't find candidate with id: " + id;
+		when(userRepositoryMock.findById(id)).thenReturn(Optional.of(user));
+		when(interviewerRepositoryMock.findById(intId)).thenReturn(Optional.of(interviewer));
+		when(recruiterRepositoryMock.findById(intId)).thenReturn(Optional.of(recruiter));
+		when(candidateRepositoryMock.findById(intId)).thenReturn(Optional.ofNullable(null));
+		//act
+		NotFoundException actualValue = assertThrows(NotFoundException.class, ()->authController.linkUserWithRole(id, intId, intId, intId));
+		//assert
+		assertEquals(actualValue.getMessage(),expectedValue);
+		verify(userRepositoryMock,times(1)).findById(id);
+		verify(interviewerRepositoryMock,times(1)).findById(intId);
+		verify(recruiterRepositoryMock,times(1)).findById(intId);
+		verify(candidateRepositoryMock,times(1)).findById(intId);
+	}
+	
+	@Test
+	public void test_link_user() {
+		//arrange
+		long id = 1l;
+		int intId = 1;
+		List<String> expectedValue = new ArrayList<String>();
+		User user = new User("Username","Email@gmail.com","Password","Name");
+		Interviewer interviewer = new Interviewer("Interviewer", false);
+		Recruiter recruiter = new Recruiter("Recruiter", false);
+		Candidate candidate = new Candidate();
+		expectedValue.add("recruiterId 1");
+		expectedValue.add("interviewerId 1");
+		expectedValue.add("candidateId 1");
+		when(userRepositoryMock.findById(id)).thenReturn(Optional.of(user));
+		when(interviewerRepositoryMock.findById(intId)).thenReturn(Optional.of(interviewer));
+		when(recruiterRepositoryMock.findById(intId)).thenReturn(Optional.of(recruiter));
+		when(candidateRepositoryMock.findById(intId)).thenReturn(Optional.of(candidate));
+		//act
+		List<String> actualValue = authController.linkUserWithRole(id, intId, intId, intId);
+		//assert
+		verify(userRepositoryMock,times(1)).save(user);
+		assertEquals(actualValue,expectedValue);
+	}
 	
 	@Test
 	public void test_unlink_invalid_id_returns_not_found_exception() {
@@ -304,21 +387,73 @@ public class AuthControllerTests {
 		verify(candidateRepositoryMock,times(1)).save(candidate);
 	}
 	
-	//#TODO cant get to work
-//	@Test
-//	public void test_unlink_with_recruiter_unlinks_recruiter() {
-//		//arrange
-//		long id = 1l;
-//		List<String> actualValue = new ArrayList<String>();
-//		User user = new User("Username","Email@gmail.com","Password","Name");
-//
-//
-//		when(userRepositoryMock.findById(id)).thenReturn(Optional.of(user));
-//		//act
-//		List<String> expectedValue = authController.unlinkUserRoles(id, null, null, null);
-//		//assert
-//		assertEquals(actualValue,expectedValue);
-//		verify(userRepositoryMock,times(1)).save(user);
-//	}
+	@Test
+	public void test_unlink_recruiterid_notnull_recruiter_notnull() {
+		//arrange
+		long id = 1l;
+		int intId = 1;
+		List<String> actualValue = new ArrayList<String>();
+		User user = new User("Username","Email@gmail.com","Password","Name");
+		Interviewer interviewer = user.getInterviewer();
+		Recruiter recruiter = new Recruiter("Recruiter", false);
+		Candidate candidate = user.getCandidate();
+		user.setRecruiter(recruiter);
+		actualValue.add("removed recruiter " +intId);
+		when(userRepositoryMock.findById(id)).thenReturn(Optional.of(user));
+		//act
+		List<String> expectedValue = authController.unlinkUserRoles(id, intId, intId, intId);
+		//assert
+		assertEquals(actualValue,expectedValue);
+		verify(userRepositoryMock,times(1)).save(user);
+		verify(recruiterRepositoryMock,times(1)).save(recruiter);
+		verify(interviewerRepositoryMock,times(1)).save(interviewer);
+		verify(candidateRepositoryMock,times(1)).save(candidate);
+	}
+	
+	@Test
+	public void test_unlink_interviewerid_notnull_interviewer_notnull() {
+		//arrange
+		long id = 1l;
+		int intId = 1;
+		List<String> actualValue = new ArrayList<String>();
+		User user = new User("Username","Email@gmail.com","Password","Name");
+		Interviewer interviewer = new Interviewer("Interviewer", false);
+		Recruiter recruiter = user.getRecruiter();
+		Candidate candidate = user.getCandidate();
+		user.setInterviewer(interviewer);
+		actualValue.add("removed interviewer " +intId);
+		when(userRepositoryMock.findById(id)).thenReturn(Optional.of(user));
+		//act
+		List<String> expectedValue = authController.unlinkUserRoles(id, intId, intId, intId);
+		//assert
+		assertEquals(actualValue,expectedValue);
+		verify(userRepositoryMock,times(1)).save(user);
+		verify(recruiterRepositoryMock,times(1)).save(recruiter);
+		verify(interviewerRepositoryMock,times(1)).save(interviewer);
+		verify(candidateRepositoryMock,times(1)).save(candidate);
+	}
+	
+	@Test
+	public void test_unlink_candidateid_notnull_candidate_notnull() {
+		//arrange
+		long id = 1l;
+		int intId = 1;
+		List<String> actualValue = new ArrayList<String>();
+		User user = new User("Username","Email@gmail.com","Password","Name");
+		Interviewer interviewer = user.getInterviewer();
+		Recruiter recruiter = user.getRecruiter();
+		Candidate candidate = new Candidate();
+		user.setCandidate(candidate);
+		actualValue.add("removed candidate " +intId);
+		when(userRepositoryMock.findById(id)).thenReturn(Optional.of(user));
+		//act
+		List<String> expectedValue = authController.unlinkUserRoles(id, intId, intId, intId);
+		//assert
+		assertEquals(actualValue,expectedValue);
+		verify(userRepositoryMock,times(1)).save(user);
+		verify(recruiterRepositoryMock,times(1)).save(recruiter);
+		verify(interviewerRepositoryMock,times(1)).save(interviewer);
+		verify(candidateRepositoryMock,times(1)).save(candidate);
+	}
 
 }
