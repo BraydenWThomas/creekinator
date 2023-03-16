@@ -31,6 +31,7 @@ import com.bezkoder.springjwt.exceptions.NotFoundException;
 import org.json.simple.JSONObject;
 import org.json.simple.*;
 
+// the use this ------------------------------------
 
 //#TODO REMOVE ALL THINGS WITH TRANSACTION
 
@@ -536,12 +537,35 @@ public class EntityController {
 		}
 		return packs;
 	}
-		
+	
+	/* ------------------------------------ get linked attribute ------------------------------------ */
+	
 	//Get Pack from interview
 	@GetMapping("/interview/{id}/getPacks")
 	public List<Pack> getPackFromInterview(@PathVariable int id) {
 		return interviewRepository.getReferenceById(id).getPacks();
 	}
+	
+	//Get interviewer from interview
+	@GetMapping("/interview/{id}/getInterviewer")
+	public Interviewer getInterviewerFromInterview(@PathVariable int id) {
+		return interviewRepository.getReferenceById(id).getInterviewer();
+	}
+	
+	//Get candidate from interview
+	@GetMapping("/interview/{id}/getCandidate")
+	public Candidate getCandidateFromInterview(@PathVariable int id) {
+		return interviewRepository.getReferenceById(id).getCandidate();
+	}
+	
+	// get AC from interview
+	@GetMapping("/interview/{id}/getAC")
+	public AssessmentCenter getAssessmentCenterFromInterview(@PathVariable int id) {
+		return interviewRepository.getReferenceById(id).getAssessmentCenter();
+	}
+	
+	/* ------------------------------------ end of get linked attribute ------------------------------------ */
+	
 	
 	//Remove Pack from Interview
 	@PutMapping("/interview/{id}/removePacks")
@@ -560,6 +584,9 @@ public class EntityController {
 		}
 		return packs;
 	}
+	
+	
+	
 	
 	
 	

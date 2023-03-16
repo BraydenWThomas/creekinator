@@ -73,7 +73,7 @@ public class AuthController {
 	@Autowired
 	PasswordEncoder encoder;
 
-<<<<<<< HEAD
+
   @Autowired
   JwtUtils jwtUtils;
 
@@ -116,41 +116,7 @@ public class AuthController {
                          userDetails.getName(),
                          roles));
   	}
-=======
-	@Autowired
-	JwtUtils jwtUtils;
-	
-	
-	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-		Authentication authentication = authenticationManager.authenticate(
-	        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-	
-	    SecurityContextHolder.getContext().setAuthentication(authentication); // store user info into contextHolder to avoid login again and again
-	    String jwt = jwtUtils.generateJwtToken(authentication);
-	    
-	    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();    
-	    List<String> roles = userDetails.getAuthorities().stream()
-	        .map(item -> item.getAuthority())
-	        .collect(Collectors.toList());
-	
-	    return ResponseEntity.ok(new JwtResponse(jwt, 
-	                         userDetails.getId(), 
-	                         userDetails.getUsername(), 
-	                         userDetails.getEmail(),
-	                         userDetails.getName(),
-	                         roles));
-	  	}
-  
 
-	// Get All Users
-	@GetMapping("/getAll")
-	public List<User> getACbyId() {
-		return userRepository.findAll();
-	}
-
-	
->>>>>>> backend_3_16
 	
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest,

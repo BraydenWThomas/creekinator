@@ -36,6 +36,7 @@ public class Interview {
 	
 	@ManyToOne
 	@JoinColumn(name = "FK_AC_NO")
+	@JsonIgnore
 	private AssessmentCenter assessmentCenter;
 	
 	@ManyToOne
