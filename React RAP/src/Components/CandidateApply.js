@@ -81,6 +81,7 @@ const CandidateApply = () => {
                         </Grid> */}
                     </Grid>
                     <Button
+                        href='/'
                         type="submit"
                         fullWidth
                         variant="contained"

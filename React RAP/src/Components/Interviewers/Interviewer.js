@@ -28,13 +28,10 @@ const Interviewer = () => {
     };
 
     Promise.all([
-      fetch("http://localhost:8080/api/candidate", requestOptions),
       fetch("http://localhost:8080/api/ac", requestOptions)
     ]).then((responses => {
       console.log(responses)
       responses[0].json()
-        .then(data => { setCandidates(data) })
-      responses[1].json()
         .then(data => { setAcs(data) })
     })).catch(error => console.log('error', error));
   }, []);
@@ -43,42 +40,6 @@ const Interviewer = () => {
     setDisplayState(value);
     //console.log(displayState);
   }
-  const moveLeft = () => {
-    if (pos > 0) {
-      setPos(pos - 1)
-    }
-    else {
-      setPos(acList.length - 1)
-    }
-  }
-
-  const moveRight = () => {
-    if (pos < acList.length - 1) {
-      setPos(pos + 1)
-    }
-    else {
-      setPos(0)
-    }
-  }
-
-  const moveDoneLeft = () => {
-    if (donepos > 0) {
-      setDonePos(donepos - 1)
-    }
-    else {
-      setDonePos(doneACList.length - 1)
-    }
-  }
-
-  const moveDoneRight = () => {
-    if (donepos < doneACList.length - 1) {
-      setDonePos(donepos + 1)
-    }
-    else {
-      setDonePos(0)
-    }
-  }
-
 
   return (
     <div className="pageSection" >
@@ -106,36 +67,29 @@ const Interviewer = () => {
           </Box>
         </div>
 
-        <div className='acInfo' style={{ marginTop: "30px" }}>
-          <div className='assessmentToolBar' style={{ float: 'left', display: 'flex' }}>
+        <div className='acInfo'>
+          <div className='assessmentToolBar'>
             <Typography
               component="h2"
               variant="h4"
-              style={{ flex: 1, margin: 10 }}>
+              style={{ marginLeft: "160pt", flex: 1 }}>
               Upcoming
             </Typography>
-            <div className='filter'>
-              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                <InputLabel id="filter"> Filter </InputLabel>
-                <Select labelId="filter" id="filter" label="Filter" value={""}>
-                  <MenuItem value="Name">Name</MenuItem>
-                  <MenuItem value="Stream">Stream</MenuItem>
-                  <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
           </div>
 
-          <Box style={{ 
-              maxHeight: 250, 
-              overflow: 'auto', 
-              width: '85%'}}>
+          <Box
+            sx={{
+              maxHeight: 620,
+              overflow: 'auto',
+              width: 'auto',
+              padding: 2
+            }}>
             {acs.map(ac => (
               (ac.completed === false
                 ? // Show upcoming AC
                 <>
                   <div key={ac.id}>
-                    <AssessmentCentreInfo statustype="interviewAC" ac={ac} />
+                    <AssessmentCentreInfo statustype="interviewerAC" ac={ac} />
                   </div>
                 </>
                 : <> </>
@@ -143,38 +97,21 @@ const Interviewer = () => {
             ))}
           </Box>
 
-          <div className="scrollArrows">
-            <button onClick={moveLeft} className="leftIcon"><ChevronLeftIcon /></button>
-            <button onClick={moveRight} className="rightIcon"><ChevronRightIcon /></button>
-          </div>
-
-          <div className='assessmentToolBar' style={{ float: 'left', display: 'flex' }}>
-            <Typography 
-              component="h2" 
-              variant="h4" 
-              style={{ flex: 1, margin: 10 }}> 
-              Past 
+          <div className='assessmentToolBar'>
+            <Typography
+              component="h2"
+              variant="h4"
+              style={{ marginLeft: "160pt", flex: 1 }}>
+              Completed
             </Typography>
-
-            <div className='filter'>
-              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                <InputLabel id="filter"> Filter </InputLabel>
-                <Select
-                  labelId="filter"
-                  id="filter"
-                >
-                  <MenuItem value="Name">Name</MenuItem>
-                  <MenuItem value="Stream">Stream</MenuItem>
-                  <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
           </div>
-
-          <Box style={{ 
-              maxHeight: 500, 
-              overflow: 'auto', 
-              width: '85%'}}>
+          <Box
+            sx={{
+              maxHeight: 305,
+              overflow: 'auto',
+              width: 'auto',
+              padding: 2
+            }}>
             {acs.map(ac => (
               (ac.completed === true
                 ? // Show completed AC
@@ -186,15 +123,10 @@ const Interviewer = () => {
                 : <> </>
               )
             ))}
-          </Box>    
-          
-
+          </Box>
         </div>
-
       </div>
-
     </div>
-
   )
 }
 

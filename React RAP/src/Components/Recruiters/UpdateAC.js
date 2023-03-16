@@ -7,13 +7,20 @@ import dayjs, { Dayjs } from 'dayjs';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Material UI
-import { Divider,
-         TextField,
-         Button } from "@mui/material";
+import {
+  Divider,
+  TextField,
+  Button,
+  Typography,
+  Avatar,
+  Grid
+} from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { Box, Container } from '@mui/system';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 const UpdateAC = () => {
   // AC Details
@@ -89,66 +96,94 @@ const UpdateAC = () => {
     <div>
       <NavBar />
 
-      <div className="Dashboard" style={{ float: 'left', width: '80%' }}>
-        <h1> Update Assessment Centre Details </h1>
-
-        <Divider variant="middle" />
-         
-        <div className="ac-details" style={{ padding: '2.5%' }}>
-          <h2> Time </h2>
-          <TextField
-            id="title-input"
-            label="Title"
-            type="text"
-            autoComplete="current-title"
-            fullWidth
-            value={title}
-            onChange={(e) => setTitle(e.target.value)} />
-
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Date"
-              disablePast
-              format="DD/MM/YYYY"
-              value={date}
-              onChange={(newDate) => setDate(newDate)}
-              />
-          </LocalizationProvider>
-
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <TimePicker
-              label="Start Time"
-              format="hh:mm a"
-              minTime={startDay}
-              maxTime={timeEnd}
-              value={timeStart}
-              onChange={(newTime) => setTimeStart(newTime)} />
-          </LocalizationProvider>
-
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <TimePicker
-              label="End Time"
-              format="hh:mm a"
-              minTime={timeStart}
-              maxTime={endDay}
-              value={timeEnd}
-              onChange={(newTime) => setTimeEnd(newTime)} />
-          </LocalizationProvider>
-        </div>
-        <Button 
-          variant="contained" 
-          sx={{ float: 'right' }}
-          onClick={goBack}>
-          Cancel
-        </Button>
-        <Button
-          variant="contained"
-          sx={{ float: 'right' }}
-          onClick={() => handleSubmit()}>
-          Save
-        </Button> 
-        </div>
+      <div className="content" style={{ float: 'left', width: '80%' }}>
+        <Container component="main">
+          <div className="header" style={{ display: "flex" }}>
+            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Update Assessment Centre Details</Typography>
+            <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
+              <NotificationsIcon fontSize="large" />
+              <Avatar src="/broken-image.jpg" />
+            </div>
+          </div>
+          <Box
+            sx={{
+              flexDirection: 'column',
+              alignItems: 'center',
+              mt: 3,
+            }}>
+            <Divider sx={{ mt: 2, mb: 2 }} />
+            <div className="ac-details">
+              <Typography component="h2" variant="h4" mb={2}> Time </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    id="title-input"
+                    label="Title"
+                    type="text"
+                    autoComplete="current-title"
+                    fullWidth
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)} />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      sx={{ width: '100%' }}
+                      label="Date"
+                      disablePast
+                      format="DD/MM/YYYY"
+                      value={date}
+                      onChange={(newDate) => setDate(newDate)}
+                    />
+                  </LocalizationProvider>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <TimePicker
+                      sx={{ width: '100%' }}
+                      label="Start Time"
+                      format="hh:mm a"
+                      minTime={startDay}
+                      maxTime={timeEnd}
+                      value={timeStart}
+                      onChange={(newTime) => setTimeStart(newTime)} />
+                  </LocalizationProvider>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <TimePicker
+                      sx={{ width: '100%' }}
+                      label="End Time"
+                      format="hh:mm a"
+                      minTime={timeStart}
+                      maxTime={endDay}
+                      value={timeEnd}
+                      onChange={(newTime) => setTimeEnd(newTime)} />
+                  </LocalizationProvider>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    onClick={() => handleSubmit()}>
+                    Save
+                  </Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    fullWidth
+                    color='error'
+                    variant="contained"
+                    onClick={goBack}>
+                    Cancel
+                  </Button>
+                </Grid>
+              </Grid>
+            </div>
+          </Box>
+        </Container>
       </div>
+    </div>
 
   )
 }

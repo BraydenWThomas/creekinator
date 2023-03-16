@@ -20,7 +20,7 @@ import { Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, Ta
 const Calendar = () => {
 
     const monthList = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    const longerMonth = ["Jan", "March", "May", "Jul", "Aug", "Oct", "Dec"]
+    const longerMonth = ["Jan", "March", "May", "Jul", "Aug", "Oct", "Dec"] // Specifically months
 
     const [displayMonth, setDisplayMonth] = useState(monthList[0]);
     const [displayDay, setDisplayDay] = useState(1);
@@ -120,7 +120,7 @@ const Calendar = () => {
 
             <NavBar />
 
-            <div className='bodySection' style={{ width: "100%" }}>
+            <div className='bodySection' style={{ width: "100%"}}>
                 <div className="header" style={{ display: "flex" }}>
                     <h1 style={{ flex: 1, margin: '1%' }}>Calendar</h1>
                     <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>

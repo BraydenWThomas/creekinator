@@ -1,7 +1,12 @@
-import { Box, Container, Divider, Grid, Menu, TextField, Typography } from "@mui/material";
-import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+// React + css
+import React, { useState } from "react";
+import { Link, useNavigate } from 'react-router-dom';
+
+// Webpage components
 import NavBar from "../NavBar";
+
+// Material UI
+import { Box, Container, Divider, Grid, Menu, TextField, Typography } from "@mui/material";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Avatar from '@mui/material/Avatar';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -21,7 +26,6 @@ const CreateCandidate = () => {
   const [lastName, setLastName] = useState('');
   const [mobilePhone, setMobilePhone] = useState('');
   const [email, setEmail] = useState('');
-  // const [dob, setDob] = useState(new Date());
   const [dob, setDob] = useState('');
   const [address, setAddress] = useState('');
   const [gradYear, setGradYear] = useState('');
@@ -41,7 +45,7 @@ const CreateCandidate = () => {
 
   const handleSubmit = () => {
     goBack();
-    
+
     setTitle('');
     setFirstName('');
     setMiddleName('');
@@ -65,9 +69,9 @@ const CreateCandidate = () => {
         last_name: lastName,
         mobile_number: mobilePhone,
         email: email,
-        date_of_birth: new Date().toISOString(),
+        date_of_birth: dob.format("YYYY-MM-DD"),
         address: address,
-        graduation_year: new Date().toISOString(),
+        graduation_year: gradYear,
         degree: degree,
         university: university,
         resume: "resume-link",
@@ -170,7 +174,7 @@ const CreateCandidate = () => {
                     required
                     id="outlined-mobile-input"
                     label="Mobile Phone"
-                    type="number"
+                    type="text"
                     autoComplete="current-mobile"
                     value={mobilePhone}
                     fullWidth
@@ -194,8 +198,8 @@ const CreateCandidate = () => {
                     <DatePicker
                       label="D.O.B *"
                       format="DD/MM/YYYY"
-                    // value={dob}
-                    // onChange={(event) => setDob(event.target.value)}
+                      value={dob}
+                      onChange={(newDob) => setDob(newDob)}
                     />
                   </LocalizationProvider>
                 </Grid>
@@ -208,7 +212,7 @@ const CreateCandidate = () => {
                     autoComplete="current-address"
                     value={address}
                     fullWidth
-                    onChange={(newDate) => setAddress(newDate)}
+                    onChange={(event) => setAddress(event.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={4}>
@@ -216,7 +220,7 @@ const CreateCandidate = () => {
                     required
                     id="outlined-year-input"
                     label="Graduation Year"
-                    type="number"
+                    type="text"
                     autoComplete="current-year"
                     value={gradYear}
                     fullWidth
@@ -249,6 +253,7 @@ const CreateCandidate = () => {
                 </Grid>
               </Grid>
             </div>
+            
             <Divider sx={{ mt: 2, mb: 2 }} />
 
             <div className="application-details">
@@ -295,8 +300,24 @@ const CreateCandidate = () => {
                   </FormControl>
                 </Grid>
                 <Grid item xs sm={12}>
-                  <Button variant="contained" component="label" onClick={handleSubmit}>Create</Button>
-                  <Button variant="contained" component="label" onClick={goBack}>Cancel</Button>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    fullWidth
+                    onClick={handleSubmit}
+                    style={{ marginBottom: "16px" }}>
+                    Create
+                  </Button>
+                  <Link to={"/recruiter"}>
+                    <Button
+                      variant="contained"
+                      component="label"
+                      color="secondary"
+                      fullWidth
+                      onClick={goBack}>
+                      Cancel
+                    </Button>
+                  </Link>
                 </Grid>
               </Grid>
             </div>
