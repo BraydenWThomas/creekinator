@@ -198,61 +198,16 @@ public class Dataloader implements ApplicationRunner{
 		interviewB.add(new Interview(acList.get(1),interviewerList.get(8),candidateList.get(1),"Feedback Form", time,40));
 		interviewB.add(new Interview(acList.get(1),interviewerList.get(5),candidateList.get(2),"Feedback Form", time,50));
 		interviewB.add(new Interview(acList.get(1),interviewerList.get(7),candidateList.get(2),"Feedback Form", time,60));
-
-		this.assessmentCenterRepository.saveAll(acList);
-			
-//		// INTERVIEWS
-//		// AC 1 (A)
-//		List<Interview> interviewA = new ArrayList<>();
-//		interviewA.add(new Interview(acList.get(0),interviewerList.get(2),candidateList.get(0),"Feedback Form", time,1));
-//		interviewA.add(new Interview(acList.get(0),interviewerList.get(3),candidateList.get(0),"Feedback Form", time,2));
-//		interviewA.add(new Interview(acList.get(0),interviewerList.get(3),candidateList.get(1),"Feedback Form", time,3));
-//		interviewA.add(new Interview(acList.get(0),interviewerList.get(1),candidateList.get(1),"Feedback Form", time,4));
-//		interviewA.add(new Interview(acList.get(0),interviewerList.get(5),candidateList.get(2),"Feedback Form", time,5));
-//		interviewA.add(new Interview(acList.get(0),interviewerList.get(5),candidateList.get(2),"Feedback Form", time,6));
-//		interviewA.add(new Interview(acList.get(0),interviewerList.get(7),candidateList.get(3),"Feedback Form", time,7));
-//		interviewA.add(new Interview(acList.get(0),interviewerList.get(8),candidateList.get(3),"Feedback Form", time,8));
-//
-//		candidateList.get(0).addAssessmentCenter(acList.get(0));
-//		candidateList.get(1).addAssessmentCenter(acList.get(0));
-//		candidateList.get(2).addAssessmentCenter(acList.get(0));
-//		candidateList.get(3).addAssessmentCenter(acList.get(0));
-//		interviewerList.get(2).addAssessmentCenter(acList.get(0));
-//		interviewerList.get(3).addAssessmentCenter(acList.get(0));
-//		interviewerList.get(1).addAssessmentCenter(acList.get(0));
-//		interviewerList.get(5).addAssessmentCenter(acList.get(0));
-//		interviewerList.get(7).addAssessmentCenter(acList.get(0));
-//		interviewerList.get(8).addAssessmentCenter(acList.get(0));
-//		
-//		// AC 2 (B)
-//		List<Interview> interviewB = new ArrayList<>();
-//		interviewB.add(new Interview(acList.get(1),interviewerList.get(4),candidateList.get(0),"Feedback Form", time,10));
-//		interviewB.add(new Interview(acList.get(1),interviewerList.get(3),candidateList.get(0),"Feedback Form", time,20));
-//		interviewB.add(new Interview(acList.get(1),interviewerList.get(3),candidateList.get(1),"Feedback Form", time,30));
-//		interviewB.add(new Interview(acList.get(1),interviewerList.get(8),candidateList.get(1),"Feedback Form", time,40));
-//		interviewB.add(new Interview(acList.get(1),interviewerList.get(5),candidateList.get(2),"Feedback Form", time,50));
-//		interviewB.add(new Interview(acList.get(1),interviewerList.get(7),candidateList.get(2),"Feedback Form", time,60));
-//		
-//		candidateList.get(0).addAssessmentCenter(acList.get(1));
-//		candidateList.get(1).addAssessmentCenter(acList.get(1));
-//		candidateList.get(2).addAssessmentCenter(acList.get(1));
-//		interviewerList.get(4).addAssessmentCenter(acList.get(1));
-//		interviewerList.get(3).addAssessmentCenter(acList.get(1));
-//		interviewerList.get(8).addAssessmentCenter(acList.get(1));
-//		interviewerList.get(5).addAssessmentCenter(acList.get(1));
-//		interviewerList.get(7).addAssessmentCenter(acList.get(1));
-//		
-//		// AC 3	(C)
-//		List<Interview> interviewC = new ArrayList<>();
-//		interviewC.add(new Interview(acList.get(2),interviewerList.get(2),candidateList.get(0),"Feedback Form", time,23));
-//		interviewC.add(new Interview(acList.get(2),interviewerList.get(1),candidateList.get(0),"Feedback Form", time,123));
-//		interviewC.add(new Interview(acList.get(2),interviewerList.get(4),candidateList.get(1),"Feedback Form", time,63));
-//		interviewC.add(new Interview(acList.get(2),interviewerList.get(4),candidateList.get(1),"Feedback Form", time,478));
-//		interviewC.add(new Interview(acList.get(2),interviewerList.get(6),candidateList.get(2),"Feedback Form", time,234));
-//		interviewC.add(new Interview(acList.get(2),interviewerList.get(6),candidateList.get(2),"Feedback Form", time,613));
-//		interviewC.add(new Interview(acList.get(2),interviewerList.get(7),candidateList.get(3),"Feedback Form", time,123));
-//		interviewC.add(new Interview(acList.get(2),interviewerList.get(8),candidateList.get(3),"Feedback Form", time,52));
-
+		
+		candidateList.get(0).addAssessmentCenter(acList.get(1));
+		candidateList.get(1).addAssessmentCenter(acList.get(1));
+		candidateList.get(2).addAssessmentCenter(acList.get(1));
+		interviewerList.get(4).addAssessmentCenter(acList.get(1));
+		interviewerList.get(3).addAssessmentCenter(acList.get(1));
+		interviewerList.get(8).addAssessmentCenter(acList.get(1));
+		interviewerList.get(5).addAssessmentCenter(acList.get(1));
+		interviewerList.get(7).addAssessmentCenter(acList.get(1));
+		
 		// AC 3	(C)
 		List<Interview> interviewC = new ArrayList<>();
 		interviewC.add(new Interview(acList.get(2),interviewerList.get(2),candidateList.get(0),"Feedback Form", time,23));
@@ -275,9 +230,9 @@ public class Dataloader implements ApplicationRunner{
 		interviewerList.get(7).addAssessmentCenter(acList.get(2));
 		interviewerList.get(8).addAssessmentCenter(acList.get(2));
 		
-//		this.interviewRepository.saveAll(interviewA);
-//		this.interviewRepository.saveAll(interviewB);
-//		this.interviewRepository.saveAll(interviewC);
+		this.interviewRepository.saveAll(interviewA);
+		this.interviewRepository.saveAll(interviewB);
+		this.interviewRepository.saveAll(interviewC);
 		
 		// Roles
 		List<Role> rolesList = new ArrayList<>();
@@ -285,10 +240,12 @@ public class Dataloader implements ApplicationRunner{
 		rolesList.add(new Role());
 		rolesList.add(new Role());
 		rolesList.add(new Role());
+
 		rolesList.get(0).setName(ERole.ROLE_ADMIN);
 		rolesList.get(1).setName(ERole.ROLE_INTERVIEWER);
 		rolesList.get(2).setName(ERole.ROLE_RECRUITER);
 		rolesList.get(3).setName(ERole.ROLE_CANDIDATE);
+
 		this.roleRepository.saveAll(rolesList);
 		
 		// Auth Sign-In
@@ -347,9 +304,10 @@ public class Dataloader implements ApplicationRunner{
 		this.interviewerRepository.saveAll(interviewerList);
 		this.packsRepository.saveAll(packList);
 		this.assessmentCenterRepository.saveAll(acList);
-//		this.interviewRepository.saveAll(interviewA);
-//		this.interviewRepository.saveAll(interviewB);
-//		this.interviewRepository.saveAll(interviewC);
+		this.interviewRepository.saveAll(interviewA);
+		this.interviewRepository.saveAll(interviewB);
+		this.interviewRepository.saveAll(interviewC);
 	}
 
 }
+

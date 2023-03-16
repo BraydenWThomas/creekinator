@@ -32,6 +32,8 @@ public class AssessmentCenter {
 	
 	private String title;
 	
+	private String note;
+	
 	private LocalDate date;
 	
 	private LocalTime start_time;
@@ -104,6 +106,22 @@ public class AssessmentCenter {
 		this.candidates = new ArrayList<Candidate>();
 		this.recruiters = new ArrayList<Recruiter>();
 	}
+	
+	public AssessmentCenter(String title, String note, LocalDate date,
+			LocalTime start_time, LocalTime finish_time, boolean completed, int coordinatorId) {
+		this.title = title;
+		this.note = note;
+		this.date = date;
+		this.start_time = start_time;
+		this.finish_time = finish_time;
+		this.completed = completed;
+		this.coordinatorId = coordinatorId;
+		
+		this.interviewers = new ArrayList<Interviewer>();
+		this.interviews = new ArrayList<Interview>();
+		this.candidates = new ArrayList<Candidate>();
+		this.recruiters = new ArrayList<Recruiter>();
+	}
 	/* --- End of Constructor --- */
 	
 	
@@ -129,7 +147,15 @@ public class AssessmentCenter {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
+	
+	public void setNote(String note) {
+		this.note = note;
+	}
+	
+	public String getNote() {
+		return this.note;
+	}
+	
 	public LocalDate getDate() {
 		return date;
 	}

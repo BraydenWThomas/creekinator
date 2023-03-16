@@ -49,8 +49,10 @@ public class Candidate {
 	@JsonIgnore
 	private List<Interview> interviews;
 	@OneToOne
+	@JsonIgnore
 	private User user;
 	@ManyToMany(mappedBy = "candidates")
+	@JsonIgnore
 	private List<Recruiter> recruiters;
 	/* --- end of fields --- */
 	
@@ -90,6 +92,7 @@ public class Candidate {
 		this.interviews = new ArrayList<Interview>();
 	}
 	/* --- end of constructor --- */
+	
 	
 	
 	

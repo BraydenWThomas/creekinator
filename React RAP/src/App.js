@@ -26,7 +26,7 @@ import { blue } from '@mui/material/colors';
 import { Button } from '@mui/material';
 import Calendar from './Components/Calendar';
 import CandidateApply from './Components/CandidateApply';
-
+import Candidate from './Components/Candidate/Candidate';
 
 const FDMtheme = createTheme({
   typography:{
@@ -74,8 +74,11 @@ const App = () => {
           else if (result.roles[0] == "ROLE_INTERVIEWER") {
             window.location.href = "/interviewer"
           }
-        }
-      })
+          else if (result.roles[0] == "ROLE_CANDIDATE") {
+            window.location.href = "/candidate"
+          }
+
+        }}) 
       .catch(error => console.log('error', error));
   };
 
@@ -94,11 +97,7 @@ const App = () => {
   {
     path: "/admin",
     element: <AdminDashboard />
-  }, {
-    path: "/candidate",
-    element: <Candidate />
-  }
-]
+  }]
 
   if (localStorage.getItem('status') == "ROLE_RECRUITER") {
     routes.push({
@@ -157,6 +156,13 @@ const App = () => {
         path: "/ac/view/:acId",
         element: <ViewAC />
       })
+  }
+
+  if (localStorage.getItem('status') == "ROLE_CANDIDATE") {
+    routes.push( {
+      path: "/candidate",
+      element: <Candidate />
+    })
   }
 
   

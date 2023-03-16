@@ -25,11 +25,13 @@ public class Recruiter {
 	@JsonIgnore
 	private List<AssessmentCenter> assessmentCenters;
 	@OneToOne
+	@JsonIgnore
 	private User user;
 	@ManyToMany
 	@JoinTable(name = "recruiter_candidate", 
 		joinColumns = @JoinColumn(name = "recruiter_id"), 
 		inverseJoinColumns = @JoinColumn(name = "candidate_id"))
+	@JsonIgnore
 	private List<Candidate> candidates;
 	/* --- End of Attributes --- */
 	
@@ -46,6 +48,10 @@ public class Recruiter {
 	public Recruiter(String name, boolean superRecruiter) {
 		this.name = name;
 		this.superRecruiter = superRecruiter;
+		this.assessmentCenters = new ArrayList<AssessmentCenter>();
+	}
+	public Recruiter(String name) {
+		this.name = name;
 		this.assessmentCenters = new ArrayList<AssessmentCenter>();
 	}
 	/* --- End of Constructors --- */
@@ -132,5 +138,10 @@ public class Recruiter {
 	}
 	public void removeCandidate(Candidate candidate) {
 		this.getCandidates().remove(candidate);
+		candidate.getRecruiters().remove(this);
+	}
+	public void addCandidate(Candidate candidate) {
+		this.candidates.add(candidate);
+		candidate.getRecruiters().add(this);
 	}
 }
