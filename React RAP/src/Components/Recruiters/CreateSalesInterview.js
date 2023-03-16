@@ -31,7 +31,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 
-const CreateInterview = () => {
+const CreateSalesInterview = () => {
   // AC Details
   const [ac, setAc] = useState([]);
 
@@ -108,7 +108,7 @@ const CreateInterview = () => {
   useEffect(() => {
     setStartTime(dayjs(ac.start_time, "hh:mm:ss"));
   }, [ac])
-
+  
   // Format LocalDate, LocalTime objects from java to dayjs object for javascript
   dayjs.extend(customParseFormat);
   const formatStart = dayjs(ac.start_time, "hh:mm:ss");
@@ -318,4 +318,4 @@ const CreateInterview = () => {
   )
 }
 
-export default CreateInterview;
+export default CreateSalesInterview;

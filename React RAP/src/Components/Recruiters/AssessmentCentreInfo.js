@@ -75,9 +75,14 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
                   Update Details
                 </MenuItem>
               </Link>
-              <Link to={`ac/update/schedule/${ac.id}`}>
+              <Link to={`ac/update/schedule/sales/${ac.id}`}>
                 <MenuItem>
-                  Schedule Attendees
+                  Schedule Sales Interviews
+                </MenuItem>
+              </Link>
+              <Link to={`ac/update/schedule/technical/${ac.id}`}>
+                <MenuItem>
+                  Schedule Technical Interviews
                 </MenuItem>
               </Link>
             </Menu>

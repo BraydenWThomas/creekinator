@@ -31,7 +31,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 
-const CreateInterview = () => {
+const CreateTechnicalInterview = () => {
   // AC Details
   const [ac, setAc] = useState([]);
 
@@ -318,4 +318,4 @@ const CreateInterview = () => {
   )
 }
 
-export default CreateInterview;
+export default CreateTechnicalInterview;

@@ -15,7 +15,8 @@ import ViewUpcomingAC from './Components/Recruiters/ViewUpcomingAC';
 import ViewPastAC from './Components/Recruiters/ViewPastAC';
 import CreateAC from './Components/Recruiters/CreateAC';
 import UpdateAC from './Components/Recruiters/UpdateAC';
-import CreateInterview from './Components/Recruiters/CreateInterview'
+import CreateSalesInterview from './Components/Recruiters/CreateSalesInterview'
+import CreateTechnicalInterview from './Components/Recruiters/CreateTechnicalInterview'
 // Candidate
 import CandidateInformationRec from './Components/Candidate/CandidateInformationRec';
 import CandidateInformationInterview from './Components/Candidate/CandidateInformationInterview';
@@ -134,8 +135,12 @@ const App = () => {
         element: <CreateAC />
       },
       {
-        path: "/recruiter/ac/update/schedule/:acId",
-        element: <CreateInterview/>
+        path: "/recruiter/ac/update/schedule/sales/:acId",
+        element: <CreateSalesInterview/>
+      },
+      {
+        path: "/recruiter/ac/update/schedule/technical/:acId",
+        element: <CreateTechnicalInterview/>
       }
     )
   }
