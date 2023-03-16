@@ -237,11 +237,18 @@ const CandidateInformationRec = () => {
                 </Grid>
               </Grid>
             </div>
+
             <Divider sx={{ mt: 2, mb: 2 }} />
 
             <div className="application-details">
               <Typography component="h2" variant="h4" mb={2}> Application Details </Typography>
               <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Button variant="outlined" component="label" fullWidth>
+                    View Resume
+                    <input hidden accept="image/*" multiple type="file" />
+                  </Button>
+                </Grid>
                 <Grid item xs={6}>
                   <TextField
                     id="applied-stream-select"
@@ -281,19 +288,21 @@ const CandidateInformationRec = () => {
                       variant="contained"
                       component="label"
                       fullWidth
-                      style={{ float: 'right' }}>
+                      style={{ marginBottom: "16px" }}>
                       Update
                     </Button>
                   </Link>
-                  <Link to="/recruiter">
-                    <Button
-                      variant="contained"
-                      component="label"
-                      fullWidth
-                      style={{ float: 'right' }}>
-                      Back
-                    </Button>
-                  </Link>
+                  <Grid item xs sm={12}>
+                    <Link to="/recruiter">
+                      <Button
+                        variant="contained"
+                        component="label"
+                        color="secondary"
+                        fullWidth>
+                        Back
+                      </Button>
+                    </Link>
+                  </Grid>
                 </Grid>
               </Grid>
             </div>

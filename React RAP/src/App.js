@@ -3,22 +3,29 @@ import React, { useState, useEffect } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate, useNavigate, Router } from 'react-router-dom';
 import './App.css';
 
-// Components
+// Webpage Components
+// User dashboards
 import AdminDashboard from './Components/AdminDashboard';
 import Recruiter from './Components/Recruiters/Recruiter';
 import Interviewer from './Components/Interviewers/Interviewer';
-import CreateCandidate from './Components/Candidate/CreateCandidate';
-import UpdateCandidate from './Components/Candidate/UpdateCandidate';
-import CandidateInformationRec from './Components/Candidate/CandidateInformationRec';
+import Candidate from './Components/Candidate/Candidate'
+// AC
 import ViewAC from './Components/Interviewers/ViewAC';
 import ViewUpcomingAC from './Components/Recruiters/ViewUpcomingAC';
 import ViewPastAC from './Components/Recruiters/ViewPastAC';
 import CreateAC from './Components/Recruiters/CreateAC';
 import UpdateAC from './Components/Recruiters/UpdateAC';
-import LoginPage from './Components/LoginPage';
-import Candidate from './Components/Candidate/Candidate'
-import CreateInterview from './Components/Recruiters/CreateInterview'
+import CreateSalesInterview from './Components/Recruiters/CreateSalesInterview'
+import CreateTechnicalInterview from './Components/Recruiters/CreateTechnicalInterview'
+// Candidate
+import CandidateInformationRec from './Components/Candidate/CandidateInformationRec';
 import CandidateInformationInterview from './Components/Candidate/CandidateInformationInterview';
+import CreateCandidate from './Components/Candidate/CreateCandidate';
+import UpdateCandidate from './Components/Candidate/UpdateCandidate';
+import CandidateApply from './Components/CandidateApply';
+// UI Functionality
+import LoginPage from './Components/LoginPage';
+import Calendar from './Components/Calendar';
 
 
 // Material UI
@@ -41,7 +48,6 @@ const FDMtheme = createTheme({
     secondary: blue,
   },
 });
-
 
 const App = () => {
 
@@ -138,10 +144,6 @@ const App = () => {
         element: <CandidateInformationRec />
       },
       {
-        path: "/recruiter/ac/view/:acId",
-        element: <ViewAC />
-      },
-      {
         path: "/recruiter/ac/view-upcoming/:acId",
         element: <ViewUpcomingAC />
       },
@@ -158,8 +160,12 @@ const App = () => {
         element: <CreateAC />
       },
       {
-        path: "/createinterview",
-        element: <CreateInterview/>
+        path: "/recruiter/ac/update/schedule/sales/:acId",
+        element: <CreateSalesInterview/>
+      },
+      {
+        path: "/recruiter/ac/update/schedule/technical/:acId",
+        element: <CreateTechnicalInterview/>
       }
     )
   }
@@ -170,11 +176,11 @@ const App = () => {
       element: <Interviewer />
     },
       {
-        path: "/candidate/info/:candidateId",
+        path: "/interviewer/candidate/info/:candidateId",
         element: <CandidateInformationInterview />
       },
       {
-        path: "/ac/view/:acId",
+        path: "/interviewer/ac/view/:acId",
         element: <ViewAC />
       })
   }
@@ -186,8 +192,6 @@ const App = () => {
     })
   }
 
-  
-
   const routerPage = createBrowserRouter(routes);
 
   const getCalendar = () => {
@@ -195,22 +199,15 @@ const App = () => {
   }
 
   const getCandidate = () => {
-
-    
     window.location.href = "/candidate"
-
   }
 
   return (
-    
-
     <ThemeProvider theme={FDMtheme}>
       {/* <Button onClick={getCandidate}>Candidate</Button> */}
-      
       <RouterProvider router={routerPage} />
     </ThemeProvider>
   )
-
 }
 
 export default App;

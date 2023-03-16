@@ -31,7 +31,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 
-const CreateInterview = () => {
+const CreateSalesInterview = () => {
   // AC Details
   const [ac, setAc] = useState([]);
 
@@ -108,7 +108,7 @@ const CreateInterview = () => {
   useEffect(() => {
     setStartTime(dayjs(ac.start_time, "hh:mm:ss"));
   }, [ac])
-
+  
   // Format LocalDate, LocalTime objects from java to dayjs object for javascript
   dayjs.extend(customParseFormat);
   const formatStart = dayjs(ac.start_time, "hh:mm:ss");
@@ -165,8 +165,7 @@ const CreateInterview = () => {
                 ))}
               </Select>
             </FormControl>
-            {interviewer.tech === false
-              ? // Show sales interview packs
+            {interviewer.tech === false &&
               <FormControl required sx={{ m: 2, minWidth: 350 }}>
                 <InputLabel id="select-interviewer-pack-label"> Select Interview Pack </InputLabel>
                 <Select
@@ -180,25 +179,6 @@ const CreateInterview = () => {
                         <MenuItem key={pack.id} value={pack.pack_name}>
                           {pack.pack_name}
                         </MenuItem>
-                    )
-                  ))
-                  }
-                </Select>
-              </FormControl>
-              : // Show technical interview packs
-              <FormControl required sx={{ m: 2, minWidth: 300 }}>
-                <InputLabel id="select-interviewer-pack-label"> Select Interview Pack </InputLabel>
-                <Select
-                  labelId="select-interviewer-pack-label"
-                  id="interviewer-pack-select"
-                  label="interviewer-pack-select"
-                  >
-                  {interviewPacks.map((pack, index) => (
-                    (pack.pack_type === "Tech"
-                      && // Show tech packs
-                      <div key={index}>
-                        <MenuItem value={pack.id}>{pack.pack_name}</MenuItem>
-                      </div>
                     )
                   ))
                   }
@@ -257,9 +237,7 @@ const CreateInterview = () => {
         <Divider variant="middle" />
 
         <div className="sales-interviews">
-
           <h2> Sales Interviews </h2>
-
           {interviewers.map((interviewer, index) => (
             (interviewer.tech === false &&
               <div>
@@ -270,27 +248,6 @@ const CreateInterview = () => {
               </div>
             )
           ))}
-
-
-        </div>
-
-        <Divider variant="middle" />
-
-        <div className="sales-interviews">
-
-          <h2> Technical Interviews </h2>
-
-          {interviewers.map((interviewer, index) => (
-            (interviewer.tech === true &&
-              <div>
-                <h3 key={index}>
-                  {interviewer.name}
-                </h3>
-                <GetNumberOfCandidates interviewer={interviewer}/>
-              </div>
-            )
-          ))}
-
         </div>
 
         <Grid item xs sm={12}>
@@ -318,4 +275,4 @@ const CreateInterview = () => {
   )
 }
 
-export default CreateInterview;
+export default CreateSalesInterview;

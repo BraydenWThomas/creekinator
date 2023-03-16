@@ -45,6 +45,7 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
     formatStart.format("LT") + " - " +
     formatEnd.format("LT")
 
+  // Create menu list of options that changes depending on which user is viewing
   const MenuList = ({ statustype }) => {
     if (statustype === "upcomingAC") {
       return (
@@ -64,24 +65,26 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
                 'aria-labelledby': 'basic-button',
               }}
             >
-              <Link to={`/ac/view-upcoming/${ac.id}`}>
+              <Link to={`ac/view-upcoming/${ac.id}`}>
                 <MenuItem>
                   View
                 </MenuItem>
               </Link>
-              <Link to={`/ac/update/${ac.id}`}>
+              <Link to={`ac/update/${ac.id}`}>
                 <MenuItem>
                   Update Details
                 </MenuItem>
               </Link>
-              <Link to={`/ac/update/schedule/${ac.id}`}>
+              <Link to={`ac/update/schedule/sales/${ac.id}`}>
                 <MenuItem>
-                  Schedule Attendees
+                  Schedule Sales Interviews
                 </MenuItem>
               </Link>
-              <MenuItem>
-                Delete
-              </MenuItem>
+              <Link to={`ac/update/schedule/technical/${ac.id}`}>
+                <MenuItem>
+                  Schedule Technical Interviews
+                </MenuItem>
+              </Link>
             </Menu>
           </div>
         </div>
@@ -105,7 +108,7 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
               MenuListProps={{
                 'aria-labelledby': 'basic-button',
               }}>
-              <Link to={`/ac/view-upcoming/${ac.id}`}>
+              <Link to={`ac/view-upcoming/${ac.id}`}>
                 <MenuItem>
                   View
                 </MenuItem>
@@ -123,7 +126,7 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
       return (
         <div className='menu'>
           <div className='select-menu'>
-            <IconButton
+          <IconButton
               id="basic-button"
               onClick={handleClick}>
               <MoreVertIcon />
@@ -136,7 +139,7 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
               MenuListProps={{
                 'aria-labelledby': 'basic-button',
               }}>
-              <Link to={`/ac/view-upcoming/${ac.id}`}>
+              <Link to={`ac/view/${ac.id}`}>
                 <MenuItem>
                   View
                 </MenuItem>

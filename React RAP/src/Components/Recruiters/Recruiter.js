@@ -1,9 +1,14 @@
-import CandidateSelectBox from '../Candidate/CandidatesSelectBox';
-import AssessmentCentreInfo from './AssessmentCentreInfo';
+// React + css
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 // import '../Styling/RecruiterStyles.css';
+
+// Webpage Components
 import NavBar from '../NavBar';
-import React, { useEffect, useState } from 'react';
+import CandidateSelectBox from '../Candidate/CandidatesSelectBox';
+import AssessmentCentreInfo from './AssessmentCentreInfo';
+
+// Material UI
 import AddIcon from '@mui/icons-material/Add';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -16,6 +21,7 @@ import Divider from '@mui/material/Divider';
 import { FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 
 const Recruiter = () => {
+  // Change tab options
   const [displayState, setDisplayState] = useState("Candidate");
 
   // AC + Candidate states
@@ -41,6 +47,7 @@ const Recruiter = () => {
     })).catch(error => console.log('error', error));
   }, [])
 
+  // Change display to candidates or to assessment centres
   const changeDisplay = (value) => {
     setDisplayState(value);
   }
@@ -51,21 +58,34 @@ const Recruiter = () => {
       <NavBar />
 
       <div className='bodySection'>
-      <div className="header" style={{ display: "flex" }}>
-            <Typography component="h1" variant="h3" mt={2} ml={2} sx={{ flex: 1 }}>Dashboard</Typography>
-            <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
-              <NotificationsIcon fontSize="large" />
-              <Avatar src="/broken-image.jpg" />
-            </div>
+        <div className="header" style={{ display: "flex" }}>
+          <Typography
+            component="h1"
+            variant="h3"
+            mt={2}
+            ml={2}
+            sx={{ flex: 1 }}>
+            Dashboard
+          </Typography>
+          <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
+            <NotificationsIcon fontSize="large" />
+            <Avatar src="/broken-image.jpg" />
+          </div>
         </div>
 
         <Divider sx={{ mt: 2, mb: 2 }} />
 
         <div className='recruiterToolBar'>
           <Box>
-            <Tabs value={displayState} aria-label="basic tabs example">
-              <Tab value="Candidate" label="Candidates" onClick={() => changeDisplay("Candidate")} />
-              <Tab value="AC_Centre" label="Assessment Centre" onClick={() => changeDisplay("AC_Centre")} />
+            <Tabs value={displayState} aria-label="display-tabs">
+              <Tab
+                value="Candidate"
+                label="Candidates"
+                onClick={() => changeDisplay("Candidate")} />
+              <Tab
+                value="AC_Centre"
+                label="Assessment Centre"
+                onClick={() => changeDisplay("AC_Centre")} />
             </Tabs>
           </Box>
         </div>
@@ -73,22 +93,25 @@ const Recruiter = () => {
         <div className='candidatesInfo'>
           <Box
             sx={{
-              display: 'flex',
-              '& > :not(style)': {
-                m: 1,
-                width: '100%',
-                height: 300
-              }
-            }} >
+              maxHeight: 1000,
+              overflow: 'auto',
+              width: 'auto',
+              padding: 2
+            }}>
             {displayState === "Candidate"
               ? // Display candidate tab
               <div style={{ clear: "both" }}>
-                <div className='applicantToolBar' style={{ display: 'flex', marginLeft: 20}}>
-                  <Typography component="h2" variant="h4" style={{ flex: 1 }}> Applied </Typography>
-                  <div className='add-c' style={{marginRight: 20}}>
-                    <a href="/candidate/create" target="_blank">
-                      <AddIcon fontSize='large'/>
-                    </a>
+                <div className='applicantToolBar' style={{ display: 'flex', marginLeft: 20 }}>
+                  <Typography
+                    component="h2"
+                    variant="h4"
+                    style={{ flex: 1 }}>
+                    Applied
+                  </Typography>
+                  <div className='add-c' style={{ marginRight: 20 }}>
+                    <Link to={"candidate/create"}>
+                      <AddIcon fontSize='large' />
+                    </Link>
                   </div>
                 </div >
                 {candidates.map(candidate => (
@@ -99,67 +122,65 @@ const Recruiter = () => {
               </div>
               : // Display AC tab
               <div className='assessmentCentreInfo'>
-                <div className='assessmentToolBar' style={{ display: 'flex', marginLeft: 20}}>
-                  <Typography component="h2" variant="h4" style={{ flex: 1 }}> Upcoming </Typography>
-                  <div className='add-ac' style={{marginRight: 20}}>
-                    <a href="/candidate/create" target="_blank">
-                      <AddIcon fontSize='large'/>
-                    </a>
+                <div className='assessmentToolBar' style={{ display: 'flex', marginLeft: 20 }}>
+                  <Typography
+                    component="h2"
+                    variant="h4"
+                    style={{ flex: 1 }}>
+                    Upcoming
+                  </Typography>
+                  <div className='add-ac' style={{ marginRight: 20 }}>
+                    <Link to={"ac/create"}>
+                      <AddIcon fontSize='large' />
+                    </Link>
                   </div>
                 </div >
                 <Box
-              sx={{
-                '& > :not(style)': {
-                  m: 1,
-                  width: '100%',
-                  height: 300
-                }
-              }} >
-                
-                {acs.map(ac => (
-                  (ac.completed === "false" 
-                    ? // Show incompleted AC
-                    <>
-                    <div key={ac.id}>
-                      <AssessmentCentreInfo statustype="upcomingAC" ac={ac} />
-                    </div>
-                    <div className="scrollArrows">
-                      <button className="leftIcon"><ChevronLeftIcon /></button>
-                      <button className="rightIcon"><ChevronRightIcon /></button>
-                    </div>
-    
-                    <div className='assessmentToolBar' style={{ display: 'flex' }}>
-                      <Typography component="h2" variant="h4" style={{ flex: 1, margin: 10 }}> Past </Typography>
-                      <div className='filter'>
-    
-                        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                          <InputLabel id="filter"> Filter </InputLabel>
-                          <Select labelId="filter" id="filter" label="Filter" value={""}>
-                            <MenuItem value="Name">Name</MenuItem>
-                            <MenuItem value="Stream">Stream</MenuItem>
-                            <MenuItem value="Year of Graduation">Year of Graduation</MenuItem>
-                          </Select>
-                        </FormControl>
-                        <a href="/ac/create" target="_blank">
-                          <button className='candidateAdd'> <AddIcon /> </button>
-                        </a>
-                      </div>
-                    </div>
-                    </>
-                    : // Show completed AC
-                    <>
-                      <div key={ac.id}>
-                        <AssessmentCentreInfo statustype="pastAC" ac={ac} />
-                      </div>
-    
-                      {/* <div className="scrollArrows">
-                        <button className="leftIcon"><ChevronLeftIcon /></button>
-                        <button className="rightIcon"><ChevronRightIcon /></button>
-                      </div> */}
-                    </>
-                  )  
-                ))}
-            </Box>
+                  sx={{
+                    maxHeight: 620,
+                    overflow: 'auto',
+                    width: 'auto',
+                    padding: 2
+                  }}>
+                  {acs.map(ac => (
+                    (ac.completed === false
+                      ? // Show incompleted AC
+                      <>
+                        <div key={ac.id}>
+                          <AssessmentCentreInfo statustype="upcomingAC" ac={ac} />
+                        </div>
+                      </>
+                      : <> </>
+                    )
+                  ))}
+                </Box>
+                <div className='assessmentToolBar' style={{ display: 'flex' }}>
+                  <Typography
+                    component="h2"
+                    variant="h4"
+                    style={{ flex: 1, margin: 10 }}>
+                    Past
+                  </Typography>
+                </div>
+                <Box
+                  sx={{
+                    maxHeight: 300,
+                    overflow: 'auto',
+                    width: 'auto',
+                    padding: 2
+                  }}>
+                  {acs.map(ac => (
+                    (ac.completed === true
+                      ? // Show completed AC
+                      <>
+                        <div key={ac.id}>
+                          <AssessmentCentreInfo statustype="pastAC" ac={ac} />
+                        </div>
+                      </>
+                      : <></>
+                    )
+                  ))}
+                </Box>
               </div>
             }
           </Box>
