@@ -29,7 +29,7 @@ const ViewUpcomingAC = () => {
 
   // Scheduled interview details
   const [interviewDetails, setInterviewDetails] = useState([]);
-  const [interviewDetailsForAC, setInterviewDetailsForAC] = useState([]);
+  
 
   // Link to specific AC
   const { acId } = useParams();
@@ -80,16 +80,59 @@ const ViewUpcomingAC = () => {
     };
   }, [recruiters, ac.coordinatorId])
 
-  // Get interview details for AC
+  const [interviewsForAC, setInterviewsForAC] = useState([]);
+  const [interviewDetailsForAC, setInterviewDetailsForAC] = useState([]);
+  // const promises = [];
+  // for (var i = 0; i < interviewDetails.length; i++) {
+  //   promises.push(fetch("http://localhost:8080/api/interview/" + interviewDetails[i].id + "/getAC"))
+  // }
+  // Promise.all(promises)
+  //   .then(data => {
+  //     fetch("http://localhost:8080/api")
+  //       .then((response => {
+  //         console.log(response)
+  //         response.json()
+  //           .then(data => setInterviewsForAC(data))
+  //       })).catch(error => console.log('error', error));
+  //   })
+
   useEffect(() => {
+    setInterviewsForAC(interviewDetails.slice().fill([]));
+  }, [interviewDetails])
+  // Get interview details for AC
+  // useEffect(() => {
+  const getACDetails = () => {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
+
     for (var i = 0; i < interviewDetails.length; i++) {
-      if (interviewDetails[i].acId === ac.id) {
-        setInterviewDetailsForAC(interviewDetails)
-      }
+      fetch("http://localhost:8080/api/interview/" + interviewDetails[i].id + "/getAC", requestOptions)
+        .then(response => response.json())
+        // .then(data => setInterviewsForAC(interviewsForAC.map((e, i) => (i === i ? !e : data))))
+        .then (data => setInterviewsForAC(data.id))
+        .catch(error => console.log('error', error));
+      
+      if (interviewsForAC === ac.id) {
+        interviewDetailsForAC[i] = interviewDetails[i]
+      } 
     }
-  },[interviewDetails])
-  
-  console.log(interviewDetailsForAC)
+    console.log(interviewsForAC)
+      console.log(interviewDetailsForAC)
+      // Promise.all([
+      //   fetch("http://localhost:8080/api/interview/" + interviewDetails[i].id + "/getAC", requestOptions)
+      // ]).then((responses => {
+      //   console.log(responses)
+      //   responses[0].json()
+      //     .then(data => setInterviewsForAC(data.id))
+      // })).catch(error => console.log('error', error));
+  }
+  // }, [interviewDetails])
+
+  // console.log(interviewDetails)
+  // console.log(interviewsForAC)
+  // console.log(interviewDetailsForAC)
 
   // Format LocalDate, LocalTime objects from java to dayjs object for javascript
   dayjs.extend(customParseFormat);
@@ -117,7 +160,6 @@ const ViewUpcomingAC = () => {
     setTabValue4(newValue);
   }
 
-  console.log(interviewDetails)
   return (
     <div>
       <NavBar />
