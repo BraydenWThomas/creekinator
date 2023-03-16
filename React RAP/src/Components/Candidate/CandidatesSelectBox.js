@@ -51,7 +51,7 @@ const CandidateSelectBox = ({ candidate }) => {
   return (
 
     <div className='candidateSelectBox' style={{ clear: "both" }}>
-      <div className='candidateSelectBox-menu' style={{ position: 'absolute', right: 30 }}>
+      <div className='candidateSelectBox-menu' style={{right: 40 }}>
         <IconButton
           id="basic-button"
           onClick={handleClick}>

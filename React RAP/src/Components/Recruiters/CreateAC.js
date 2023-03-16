@@ -19,13 +19,18 @@ import {
   IconButton,
   Box,
   FormGroup,
-  Checkbox
+  Checkbox,
+  Typography,
+  Avatar,
+  Grid
 } from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
+import { Container } from '@mui/system';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 const CreateAC = () => {
   // AC Details
@@ -125,7 +130,7 @@ const CreateAC = () => {
         date: date.format('YYYY-MM-DD'),
         start_time: timeStart.format('HH:mm:ss'),
         finish_time: timeEnd.format('HH:mm:ss'),
-        // coordinatorId: 
+        coordinatorId: localStorage.getItem('userId')
       });
 
     const requestOptions = {
@@ -136,7 +141,7 @@ const CreateAC = () => {
     };
 
     fetch("http://localhost:8080/api/ac?interviewers=" + interviewerString +
-      "&recruiters=1&candidates=" + candidateString, requestOptions)
+          "&recruiters=1&candidates=" + candidateString, requestOptions)
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -145,160 +150,186 @@ const CreateAC = () => {
   return (
     <div>
       <NavBar />
+      <div className="content" style={{ float: 'left', width: '80%' }}>
+        <Container component="main">
+          <div className="header" style={{ display: "flex" }}>
+            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Create Assessment Centre</Typography>
+            <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
+              <NotificationsIcon fontSize="large" />
+              <Avatar src="/broken-image.jpg" />
+            </div>
+          </div>
+          <Box
+            sx={{
+              flexDirection: 'column',
+              alignItems: 'center',
+              mt: 3,
+            }}>
+            <Divider sx={{ mt: 2, mb: 2 }} />
+            <div className="ac-details">
+              <Typography component="h2" variant="h4" mb={2}> Time </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    id="title-input"
+                    label="Title"
+                    type="text"
+                    autoComplete="current-title"
+                    fullWidth
+                    required
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      sx={{width:'100%'}}
+                      label="Date"
+                      disablePast
+                      required
+                      format="DD/MM/YYYY"
+                      value={date}
+                      onChange={(newDate) => setDate(newDate)} />
+                  </LocalizationProvider>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <TimePicker
+                    sx={{width:'100%'}}
+                      label="Start Time"
+                      format="hh:mm a"
+                      minTime={startDay}
+                      maxTime={endDay}
+                      value={timeStart}
+                      onChange={(newTime) => setTimeStart(newTime)} />
+                  </LocalizationProvider>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <TimePicker
+                      sx={{width:'100%'}}
+                      label="End Time"
+                      format="hh:mm a"
+                      minTime={startDay}
+                      maxTime={endDay}
+                      value={timeEnd}
+                      onChange={(newTime) => setTimeEnd(newTime)} />
+                  </LocalizationProvider>
+                </Grid>
+              </Grid>
+            </div>
 
-      <div className="Dashboard" style={{ float: 'left', width: '80%' }}>
-        <h1> Create Assessment Centre </h1>
+            <Divider sx={{ mt: 2, mb: 2 }} />
 
-        <Divider variant="middle" />
+            <div className="Interviewers">
+              <Typography component="h2" variant="h4" mb={2}> Interviewers </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs sm={6}>
+                  <div className="sales-packs">
+                    <Typography component="h2" variant="h5"> Sales Interviewer </Typography>
+                    <Box sx={{ maxHeight: 170, overflow: 'auto', backgroundColor: 'white', paddingLeft:2 }}>
+                      <FormGroup>
+                        {isCheckedInterviewer.map((checked, index) => (
+                          (interviewers[index].tech === false) ?
+                            <FormControlLabel
+                              key={interviewers[index].id}
+                              control={
+                                <Checkbox
+                                  key={index}
+                                  checked={checked}
+                                  onClick={() => toggleCheckedInterviewer(index)}
+                                />}
+                              label={interviewers[index].name}
+                            />
+                            : <> </>
+                        ))}
+                      </FormGroup>
+                    </Box>
+                  </div>
+                </Grid>
+                <Grid item xs sm={6}>
+                  <div className="technical-packs">
+                    <Typography component="h2" variant="h5"> Technical Interviewer </Typography>
+                    <Box sx={{ maxHeight: 170, overflow: 'auto', backgroundColor: 'white', paddingLeft:2  }}>
+                      <FormGroup>
+                        {isCheckedInterviewer.map((checked, index) => (
+                          (interviewers[index].tech === true) ?
+                            <FormControlLabel
+                              key={interviewers[index].id}
+                              control={
+                                <Checkbox
+                                  key={index}
+                                  checked={checked}
+                                  onClick={() => toggleCheckedInterviewer(index)}
+                                />}
+                              label={interviewers[index].name}
+                            />
+                            : <> </>
+                        ))}
+                      </FormGroup>
+                    </Box>
+                  </div>
+                </Grid>
+              </Grid>
+            </div>
 
-        <div className="ac-details" style={{ padding: '2.5%' }}>
-          <h2> Time </h2>
-          <TextField
-            id="title-input"
-            label="Title"
-            type="text"
-            autoComplete="current-title"
-            fullWidth
-            required
-            value={title}
-            onChange={(e) => setTitle(e.target.value)} />
+            <Divider sx={{ mt: 2, mb: 2 }} />
 
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Date"
-              disablePast
-              required
-              format="DD/MM/YYYY"
-              value={date}
-              onChange={(newDate) => setDate(newDate)} />
-          </LocalizationProvider>
+            <div className="candidates">
+              <div style={{ display: 'flex', marginBottom: '2%' }}>
+                <Typography component="h2" variant="h4" sx={{ flex: 1 }}> Candidates </Typography>
+                <IconButton aria-label="alpha-sort">
+                  <SortByAlphaIcon fontSize='medium' />
+                </IconButton>
+                <FormControl sx={{ float: 'right', minWidth: '25%' }} size="small">
+                  <InputLabel id="stream-select-label"> Stream </InputLabel>
+                  <Select
+                    id="stream-select"
+                    label="Stream"
+                    required
+                    value={stream}
+                    onChange={(e) => setStream(e.target.value)}>
+                    <MenuItem value="Business Analyst"> Business Analyst </MenuItem>
+                    <MenuItem value="Business Intelligence"> Business Intelligence </MenuItem>
+                    <MenuItem value="Cloud (AWS)"> Cloud (AWS) </MenuItem>
+                    <MenuItem value="Technical Analyst"> Technical Analyst </MenuItem>
+                    <MenuItem value="Software Development"> Software Development </MenuItem>
+                    <MenuItem value="Testing"> Testing </MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
 
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <TimePicker
-              label="Start Time"
-              format="hh:mm a"
-              minTime={startDay}
-              maxTime={endDay}
-              value={timeStart}
-              onChange={(newTime) => setTimeStart(newTime)} />
-          </LocalizationProvider>
-
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <TimePicker
-              label="End Time"
-              format="hh:mm a"
-              minTime={startDay}
-              maxTime={endDay}
-              value={timeEnd}
-              onChange={(newTime) => setTimeEnd(newTime)} />
-          </LocalizationProvider>
-        </div>
-
-        <Divider variant="middle" />
-
-        <div className="Interviewers" style={{ marginTop: '-10pt', padding: '2.5%' }}>
-          <h2> Interviewers </h2>
-          <div className="sales-packs" style={{ float: 'left', width: '50%' }}>
-            <h3> Sales Interviewer </h3>
-            <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
-              <FormGroup>
-                {isCheckedInterviewer.map((checked, index) => (
-                  (interviewers[index].tech === false) ?
+              <Box>
+                <FormGroup sx={{ maxHeight: 200, overflow: 'auto', width: '100%'}}>
+                  {isCheckedCandidates.map((checked, index) => (
                     <FormControlLabel
-                      key={interviewers[index].id}
+                      key={candidates[index].id}
                       control={
                         <Checkbox
                           key={index}
                           checked={checked}
-                          onClick={() => toggleCheckedInterviewer(index)}
+                          onClick={() => toggleCheckedCandidates(index)}
                         />}
-                      label={interviewers[index].name}
-                    />
-                    : <> </>
-                ))}
-              </FormGroup>
-            </Box>
-          </div>
-
-          <div className="technical-packs" style={{ float: 'left', width: '50%' }}>
-            <h3> Technical Interviewer </h3>
-            <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
-              <FormGroup>
-                {isCheckedInterviewer.map((checked, index) => (
-                  (interviewers[index].tech === true) ?
-                    <FormControlLabel
-                      key={interviewers[index].id}
-                      control={
-                        <Checkbox
-                          key={index}
-                          checked={checked}
-                          onClick={() => toggleCheckedInterviewer(index)}
-                        />}
-                      label={interviewers[index].name}
-                    />
-                    : <> </>
-                ))}
-              </FormGroup>
-            </Box>
-          </div>
-        </div>
-
-        <Divider />
-
-        <div className="candidates" style={{ marginTop: '50pt', padding: '2.5%' }}>
-          <div>
-            <h2> Candidates 
-              <FormControl sx={{ float: 'right', minWidth: '25%' }} size="small">
-                <InputLabel id="stream-select-label"> Stream </InputLabel>
-                <Select
-                  id="stream-select"
-                  label="Stream"
-                  required
-                  value={stream}
-                  onChange={(e) => setStream(e.target.value)}>
-                  <MenuItem value="Business Analyst"> Business Analyst </MenuItem>
-                  <MenuItem value="Business Intelligence"> Business Intelligence </MenuItem>
-                  <MenuItem value="Cloud (AWS)"> Cloud (AWS) </MenuItem>
-                  <MenuItem value="Technical Analyst"> Technical Analyst </MenuItem>
-                  <MenuItem value="Software Development"> Software Development </MenuItem>
-                  <MenuItem value="Testing"> Testing </MenuItem>
-                </Select>
-              </FormControl>
-
-              <IconButton aria-label="alpha-sort" sx={{ float: 'right' }}>
-                <SortByAlphaIcon />
-              </IconButton>
-            </h2>
-
-            <Box style={{ maxHeight: 150, overflow: 'auto', width: '100%' }}>
-              <FormGroup style={{ maxHeight: 150, overflow: 'auto', width: '100%'}}>
-                {isCheckedCandidates.map((checked, index) => (
-                  <FormControlLabel
-                    key={candidates[index].id}
-                    control={
-                      <Checkbox
-                        key={index}
-                        checked={checked}
-                        onClick={() => toggleCheckedCandidates(index)}
-                      />}
-                    label={candidates[index].first_name + " " + candidates[index].middle_name + " " + candidates[index].last_name} />
-                ))}
-              </FormGroup>
-            </Box>
-          </div>
-        </div>
-        <Button
-          variant="contained"
-          sx={{ float: 'right' }}
-          onClick={(e) => handleSubmit(e.target.value)}>
-          Create
-        </Button>
-        <Button
-          variant="contained"
-          sx={{ float: 'right' }}
-          onClick={goBack}>
-          Cancel
-        </Button>
+                      label={candidates[index].first_name + " " + candidates[index].middle_name + " " + candidates[index].last_name} />
+                  ))}
+                </FormGroup>
+              </Box>
+            </div>
+            <Grid container spacing={2} sx={{mt: 2}}>
+              <Grid item xs sm={12}>
+                <Button variant="contained" fullWidth onClick={(e) => handleSubmit(e.target.value)}>
+                  Create
+                </Button>
+              </Grid>
+              <Grid item xs sm={12}>
+                <Link to={"/recruiter"}>
+                  <Button variant="contained" color='secondary' fullWidth> Cancel </Button>
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Container>
       </div>
     </div>
   )

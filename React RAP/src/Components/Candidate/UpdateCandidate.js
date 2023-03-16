@@ -282,6 +282,7 @@ const UpdateCandidate = () => {
                 </Grid>
               </Grid>
             </div>
+
             <Divider sx={{ mt: 2, mb: 2 }} />
 
             <div className="application-details">
