@@ -32,8 +32,8 @@ import Calendar from './Components/Calendar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import { Button } from '@mui/material';
-import Calendar from './Components/Calendar';
-import CandidateApply from './Components/CandidateApply';
+import CandidateInfoReg from './Components/CandidateInfoReg';
+
 
 
 const FDMtheme = createTheme({
@@ -116,6 +116,11 @@ const App = () => {
   {
     path: "/apply",
     element: <CandidateApply />
+  
+  },
+  {
+    path: "/candidateregister",
+    element: <CandidateInfoReg />
   },
   {
     path: "/calendar",

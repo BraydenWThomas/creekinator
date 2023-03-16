@@ -44,11 +44,11 @@ const Candidate = () => {
             coordinatorId: 3
         },
         {
-            id: 42,
+            id: 4,
             title: "AC 4",
-            date: "2023-04-08",
-            start_time: "14:30:00",
-            finish_time: "16:30:00",
+            date: "2023-03-16",
+            start_time: "16:30:00",
+            finish_time: "18:30:00",
             completed: false,
             coordinatorId: 4
         }
@@ -110,7 +110,7 @@ const Candidate = () => {
     //         .then(result => setACs(result))
     //         .catch(error => console.log('error', error));
 
-    // }, [candidate]);
+    // }, []);
    
     const displayAC = (ac) => {
         

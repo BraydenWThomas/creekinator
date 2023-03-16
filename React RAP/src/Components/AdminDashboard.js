@@ -32,6 +32,7 @@ const AdminDashboard = () => {
 
   const handleSubmit = () => {
     const newUser = { fullname, username, password, email, role };
+   
     setUsers([...users, newUser]);
     setFullname("");
     setUsername("");
