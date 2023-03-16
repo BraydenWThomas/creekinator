@@ -15,10 +15,21 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 const ViewUpcomingAC = () => {
   // AC Details
   const [ac, setAc] = useState([]);
+  const [candidates, setCandidates] = useState([]);
+  const [interviewers, setInterviewers] = useState([]);
   const [tabValue1, setTabValue1] = useState("1");
   const [tabValue2, setTabValue2] = useState("1");
   const [tabValue3, setTabValue3] = useState("1");
   const [tabValue4, setTabValue4] = useState("1");
+
+  // Get AC + Recruiter info
+  const [recruiters, setRecruiters] = useState([]);
+  const [acCoordinator, setAcCoordinator] = useState('');
+  const [interviewPacks, setInterviewPacks] = useState([]);
+
+  // Scheduled interview details
+  const [interviewDetails, setInterviewDetails] = useState([]);
+  const [interviewDetailsForAC, setInterviewDetailsForAC] = useState([]);
 
   // Link to specific AC
   const { acId } = useParams();
@@ -36,11 +47,49 @@ const ViewUpcomingAC = () => {
       redirect: 'follow',
     };
 
-    fetch("http://localhost:8080/api/ac/" + acId, requestOptions)
-      .then(response => response.json())
-      .then(data => { setAc(data) })
-      .catch(error => console.log('error', error));
-  }, [acId])
+    Promise.all([
+      fetch("http://localhost:8080/api/ac/" + acId, requestOptions),
+      fetch("http://localhost:8080/api/ac/" + acId + "/showCandidates", requestOptions),
+      fetch("http://localhost:8080/api/ac/" + acId + "/showInterviewers", requestOptions),
+      fetch("http://localhost:8080/api/pack", requestOptions),
+      fetch("http://localhost:8080/api/recruiter", requestOptions),
+      fetch("http://localhost:8080/api/interview", requestOptions)
+    ]).then((responses => {
+      console.log(responses)
+      responses[0].json()
+        .then(data => { setAc(data) })
+      responses[1].json()
+        .then(data => { setCandidates(data) })
+      responses[2].json()
+        .then(data => { setInterviewers(data) })
+      responses[3].json()
+        .then(data => { setInterviewPacks(data) })
+      responses[4].json()
+        .then(data => { setRecruiters(data) })
+      responses[5].json()
+        .then(data => { setInterviewDetails(data) })
+    })).catch(error => console.log('error', error));
+  }, [acId]);
+
+  // Get AC Coordinator for AC
+  useEffect(() => {
+    for (var i = 0; i < recruiters.length; i++) {
+      if (recruiters[i].id === ac.coordinatorId) {
+        setAcCoordinator(recruiters[i].name);
+      };
+    };
+  }, [recruiters, ac.coordinatorId])
+
+  // Get interview details for AC
+  useEffect(() => {
+    for (var i = 0; i < interviewDetails.length; i++) {
+      if (interviewDetails[i].acId === ac.id) {
+        setInterviewDetailsForAC(interviewDetails)
+      }
+    }
+  },[interviewDetails])
+  
+  console.log(interviewDetailsForAC)
 
   // Format LocalDate, LocalTime objects from java to dayjs object for javascript
   dayjs.extend(customParseFormat);
@@ -68,6 +117,7 @@ const ViewUpcomingAC = () => {
     setTabValue4(newValue);
   }
 
+  console.log(interviewDetails)
   return (
     <div>
       <NavBar />
@@ -97,48 +147,23 @@ const ViewUpcomingAC = () => {
               <div style={{ float: 'left', width: '20%', marginTop: '4%' }}>
                 <Stack direction="row" spacing={3}>
                   <Avatar> J </Avatar>
-                  <Typography component="h4" variant="button" mb={2}> AC Coordinator: John Doe </Typography>
+                  <Typography component="h4" variant="button" mb={2}> AC Coordinator: {acCoordinator} </Typography>
                 </Stack>
               </div>
             </div>
 
-
             <div className="sales-interview" style={{ float: 'left', width: '100%' }}>
               <Divider sx={{ mt: 2, mb: 2 }} />
               <Typography component="h2" variant="h5"> Sales Interviewer </Typography>
-
-              <div style={{ float: 'left', width: '50%' }}>
-                <Typography component="h3" variant="h5"> Interviewer 1 </Typography>
-                <TabContext value={tabValue1}>
-                  <TabList onChange={handleChangeInterview1}>
-                    <Tab value="1" label="John Doe" />
-                    <Tab value="2" label="John Doe" />
-                    <Tab value="3" label="John Doe" />
-                    <Tab value="4" label="John Doe" />
-                  </TabList>
-                  <TabPanel value="1">
-                    <Button variant="contained"> View profile </Button>
-                    <Button variant="contained"> View interview form </Button>
-                  </TabPanel>
-                  <TabPanel value="2">
-                    <Button variant="contained"> View profile </Button>
-                    <Button variant="contained"> View interview form </Button>
-                  </TabPanel>
-                  <TabPanel value="3">
-                    <Button variant="contained"> View profile </Button>
-                    <Button variant="contained"> View interview form </Button>
-                  </TabPanel>
-                  <TabPanel value="4">
-                    <Button variant="contained"> View profile </Button>
-                    <Button variant="contained"> View interview form </Button>
-                  </TabPanel>
-                </TabContext>
-              </div>
-              <div className="right-side" style={{ float: 'left', width: '50%' }}>
-                <div style={{ float: 'left' }}>
-                  <Typography component="h3" variant="h5"> Interviewer 2 </Typography>
-                  <TabContext value={tabValue2}>
-                    <TabList onChange={handleChangeInterview2}>
+              {interviewers.map(interviewer =>
+                (interviewer.tech === false) &&
+                <div key={interviewer.id} style={{ float: 'left', width: '50%' }}>
+                  <Typography component="h3" variant="h5"> {interviewer.name} </Typography>
+                  {/* {candidates.map(candidate => 
+                    (interviewDetails)
+                  )} */}
+                  <TabContext value={tabValue1}>
+                    <TabList onChange={handleChangeInterview1}>
                       <Tab value="1" label="John Doe" />
                       <Tab value="2" label="John Doe" />
                       <Tab value="3" label="John Doe" />
@@ -162,71 +187,32 @@ const ViewUpcomingAC = () => {
                     </TabPanel>
                   </TabContext>
                 </div>
-              </div>
+              )}
             </div>
 
-            <div className="technical-interview" style={{ float: 'left', width: '100%' }}>
+            {/* <div className="technical-interview" style={{ float: 'left', width: '100%' }}>
               <Divider sx={{ mt: 2, mb: 2 }} />
               <Typography component="h2" variant="h5"> Technical Interviewer </Typography>
 
-              <div style={{ float: 'left', width: '50%' }}>
-                <Typography component="h3" variant="h5"> Interviewer 1 </Typography>
-                <TabContext value={tabValue3}>
-                  <TabList onChange={handleChangeInterview3}>
-                    <Tab value="1" label="John Doe" />
-                    <Tab value="2" label="John Doe" />
-                    <Tab value="3" label="John Doe" />
-                    <Tab value="4" label="John Doe" />
-                  </TabList>
-                  <TabPanel value="1">
-                    <Button variant="contained"> View profile </Button>
-                    <Button variant="contained"> View interview form </Button>
-                  </TabPanel>
-                  <TabPanel value="2">
-                    <Button variant="contained"> View profile </Button>
-                    <Button variant="contained"> View interview form </Button>
-                  </TabPanel>
-                  <TabPanel value="3">
-                    <Button variant="contained"> View profile </Button>
-                    <Button variant="contained"> View interview form </Button>
-                  </TabPanel>
-                  <TabPanel value="4">
-                    <Button variant="contained"> View profile </Button>
-                    <Button variant="contained"> View interview form </Button>
-                  </TabPanel>
-                </TabContext>
-              </div>
-              <div className="right-side" style={{ float: 'left', width: '50%' }}>
-                <div style={{ float: 'left' }}>
-                  <Typography component="h3" variant="h5"> Interviewer 2 </Typography>
-                  <TabContext value={tabValue4}>
-                    <TabList onChange={handleChangeInterview4}>
-                      <Tab value="1" label="John Doe" />
-                      <Tab value="2" label="John Doe" />
-                      <Tab value="3" label="John Doe" />
-                      <Tab value="4" label="John Doe" />
-                    </TabList>
-                    <TabPanel value="1">
-                      <Button variant="contained"> View profile </Button>
-                      <Button variant="contained"> View interview form </Button>
-                    </TabPanel>
-                    <TabPanel value="2">
-                      <Button variant="contained"> View profile </Button>
-                      <Button variant="contained"> View interview form </Button>
-                    </TabPanel>
-                    <TabPanel value="3">
-                      <Button variant="contained"> View profile </Button>
-                      <Button variant="contained"> View interview form </Button>
-                    </TabPanel>
-                    <TabPanel value="4">
-                      <Button variant="contained"> View profile </Button>
-                      <Button variant="contained"> View interview form </Button>
-                    </TabPanel>
-                  </TabContext>
+              {interviewers.map(interviewer =>
+                (interviewer.tech === true) &&
+                <div key={interview.id} style={{ float: 'left', width: '50%' }}>
+                  <Typography component="h3" variant="h5"> {interviewer.name} </Typography>
+                  {candidates.map(candidate =>
+                    ()
+                    <TabContext value={tabValue1}>
+                      <TabList onChange={handleChangeInterview1}>
+                        <Tab value="1" label={candidate.name} />
+                      </TabList>
+                      <TabPanel value="1">
+                        <Button variant="contained"> View profile </Button>
+                        <Button variant="contained"> View interview form </Button>
+                      </TabPanel>
+                    </TabContext>
+                  )}
                 </div>
-              </div>
-            </div>
-
+              )}
+            </div> */}
 
             <div className="interview-pack" style={{ float: 'left', width: '100%' }}>
               <Divider sx={{ mt: 2, mb: 2 }} />
@@ -240,7 +226,6 @@ const ViewUpcomingAC = () => {
                 </Grid>
               </Grid>
             </div>
-
 
             <div className="bottom-buttons">
               <Grid container spacing={2}>

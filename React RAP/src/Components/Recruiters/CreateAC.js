@@ -119,11 +119,7 @@ const CreateAC = () => {
     }
     const candidateString = candidateIds.join(",");
 
-    setTitle('');
-    setDate('');
-    setTimeStart(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));
-    setTimeEnd(dayjs().set('hour', 17).set('minute', 0).startOf('minute'));
-
+    // Update
     const body =
       JSON.stringify({
         title: title,
@@ -145,6 +141,14 @@ const CreateAC = () => {
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
+
+    // Reset fields
+    setTitle('');
+    setDate('');
+    setTimeStart(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));
+    setTimeEnd(dayjs().set('hour', 17).set('minute', 0).startOf('minute'));
+    setIsCheckedInterviewer(interviewers.slice().fill(false));
+    setIsCheckedCandidates(candidates.slice().fill(false));
   };
 
   return (
@@ -231,7 +235,7 @@ const CreateAC = () => {
                     <Box sx={{ maxHeight: 170, overflow: 'auto', backgroundColor: 'white', paddingLeft:2 }}>
                       <FormGroup>
                         {isCheckedInterviewer.map((checked, index) => (
-                          (interviewers[index].tech === false) ?
+                          (interviewers[index].tech === false) &&
                             <FormControlLabel
                               key={interviewers[index].id}
                               control={
@@ -242,7 +246,6 @@ const CreateAC = () => {
                                 />}
                               label={interviewers[index].name}
                             />
-                            : <> </>
                         ))}
                       </FormGroup>
                     </Box>
@@ -254,7 +257,7 @@ const CreateAC = () => {
                     <Box sx={{ maxHeight: 170, overflow: 'auto', backgroundColor: 'white', paddingLeft:2  }}>
                       <FormGroup>
                         {isCheckedInterviewer.map((checked, index) => (
-                          (interviewers[index].tech === true) ?
+                          (interviewers[index].tech === true) &&
                             <FormControlLabel
                               key={interviewers[index].id}
                               control={
@@ -265,7 +268,6 @@ const CreateAC = () => {
                                 />}
                               label={interviewers[index].name}
                             />
-                            : <> </>
                         ))}
                       </FormGroup>
                     </Box>
