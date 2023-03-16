@@ -165,8 +165,7 @@ const CreateSalesInterview = () => {
                 ))}
               </Select>
             </FormControl>
-            {interviewer.tech === false
-              ? // Show sales interview packs
+            {interviewer.tech === false &&
               <FormControl required sx={{ m: 2, minWidth: 350 }}>
                 <InputLabel id="select-interviewer-pack-label"> Select Interview Pack </InputLabel>
                 <Select
@@ -180,25 +179,6 @@ const CreateSalesInterview = () => {
                         <MenuItem key={pack.id} value={pack.pack_name}>
                           {pack.pack_name}
                         </MenuItem>
-                    )
-                  ))
-                  }
-                </Select>
-              </FormControl>
-              : // Show technical interview packs
-              <FormControl required sx={{ m: 2, minWidth: 300 }}>
-                <InputLabel id="select-interviewer-pack-label"> Select Interview Pack </InputLabel>
-                <Select
-                  labelId="select-interviewer-pack-label"
-                  id="interviewer-pack-select"
-                  label="interviewer-pack-select"
-                  >
-                  {interviewPacks.map((pack, index) => (
-                    (pack.pack_type === "Tech"
-                      && // Show tech packs
-                      <div key={index}>
-                        <MenuItem value={pack.id}>{pack.pack_name}</MenuItem>
-                      </div>
                     )
                   ))
                   }
@@ -257,9 +237,7 @@ const CreateSalesInterview = () => {
         <Divider variant="middle" />
 
         <div className="sales-interviews">
-
           <h2> Sales Interviews </h2>
-
           {interviewers.map((interviewer, index) => (
             (interviewer.tech === false &&
               <div>
@@ -270,27 +248,6 @@ const CreateSalesInterview = () => {
               </div>
             )
           ))}
-
-
-        </div>
-
-        <Divider variant="middle" />
-
-        <div className="sales-interviews">
-
-          <h2> Technical Interviews </h2>
-
-          {interviewers.map((interviewer, index) => (
-            (interviewer.tech === true &&
-              <div>
-                <h3 key={index}>
-                  {interviewer.name}
-                </h3>
-                <GetNumberOfCandidates interviewer={interviewer}/>
-              </div>
-            )
-          ))}
-
         </div>
 
         <Grid item xs sm={12}>
