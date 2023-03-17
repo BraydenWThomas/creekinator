@@ -62,7 +62,6 @@ const Interviewer = () => {
           <Box sx={{ m: 2, width: '100%' }}>
             <Tabs value={displayState} aria-label="interviewer-toolbar">
               <Tab value="AC_Centre" label="Assessment Centre" onClick={() => changeDisplay("AC_Centre")} />
-              <Tab value="Candidate" label="Interviews & Feedback" onClick={() => changeDisplay("Candidate")} />
             </Tabs>
           </Box>
         </div>

@@ -22,7 +22,6 @@ const ViewPastAC = () => {
   // Get AC + Recruiter info
   const [recruiters, setRecruiters] = useState([]);
   const [acCoordinator, setAcCoordinator] = useState('');
-  const [interviewPacks, setInterviewPacks] = useState([]);
 
   // Scheduled interview details
   const [interviewDetails, setInterviewDetails] = useState([]);
@@ -48,7 +47,6 @@ const ViewPastAC = () => {
       fetch("http://localhost:8080/api/ac/" + acId, requestOptions),
       fetch("http://localhost:8080/api/ac/" + acId + "/showCandidates", requestOptions),
       fetch("http://localhost:8080/api/ac/" + acId + "/showInterviewers", requestOptions),
-      fetch("http://localhost:8080/api/pack", requestOptions),
       fetch("http://localhost:8080/api/recruiter", requestOptions),
       fetch("http://localhost:8080/api/interview", requestOptions)
     ]).then((responses => {
@@ -60,10 +58,8 @@ const ViewPastAC = () => {
       responses[2].json()
         .then(data => { setInterviewers(data) })
       responses[3].json()
-        .then(data => { setInterviewPacks(data) })
-      responses[4].json()
         .then(data => { setRecruiters(data) })
-      responses[5].json()
+      responses[4].json()
         .then(data => { setInterviewDetails(data) })
     })).catch(error => console.log('error', error));
   }, [acId]);
@@ -113,7 +109,6 @@ const ViewPastAC = () => {
         interviewDetailsForAC.push(interviewsForAC[i]);
       }
     }
-    console.log(interviewDetailsForAC)
 
     // Get candidates for sales interviewers
     for (var i = 0; i < interviewDetailsForAC.length; i++) {
@@ -284,33 +279,13 @@ const ViewPastAC = () => {
             <div className="bottom-buttons">
               <Grid container spacing={2}>
                 <Grid item xs sm={12}>
-                  <Link to={`/recruiter/ac/update/${ac.id}`}>
-                    <Button
-                      fullWidth
-                      variant="contained">
-                      Update AC Details
-                    </Button>
-                  </Link>
-                </Grid>
-                <Grid item xs sm={12}>
-                  {/* <Link to={`/recruiter/ac/update/${ac.id}`}> */}
-                    <Button
-                      fullWidth
-                      variant="contained">
-                      Update Schedule
-                    </Button>
-                  {/* </Link> */}
-                </Grid>
-                <Grid item xs sm={12}>
-                  <Link to={"/recruiter"}>
-                    <Button
-                      fullWidth
-                      color='secondary'
-                      variant="contained"
-                      onClick={goBack}>
-                      Back
-                    </Button>
-                  </Link>
+                  <Button
+                    fullWidth
+                    color='secondary'
+                    variant="contained"
+                    onClick={goBack}>
+                    Back
+                  </Button>
                 </Grid>
               </Grid>
             </div>

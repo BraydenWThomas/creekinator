@@ -22,7 +22,6 @@ const ViewUpcomingAC = () => {
   // Get AC + Recruiter info
   const [recruiters, setRecruiters] = useState([]);
   const [acCoordinator, setAcCoordinator] = useState('');
-  const [interviewPacks, setInterviewPacks] = useState([]);
 
   // Scheduled interview details
   const [interviewDetails, setInterviewDetails] = useState([]);
@@ -48,7 +47,6 @@ const ViewUpcomingAC = () => {
       fetch("http://localhost:8080/api/ac/" + acId, requestOptions),
       fetch("http://localhost:8080/api/ac/" + acId + "/showCandidates", requestOptions),
       fetch("http://localhost:8080/api/ac/" + acId + "/showInterviewers", requestOptions),
-      fetch("http://localhost:8080/api/pack", requestOptions),
       fetch("http://localhost:8080/api/recruiter", requestOptions),
       fetch("http://localhost:8080/api/interview", requestOptions)
     ]).then((responses => {
@@ -60,10 +58,8 @@ const ViewUpcomingAC = () => {
       responses[2].json()
         .then(data => { setInterviewers(data) })
       responses[3].json()
-        .then(data => { setInterviewPacks(data) })
-      responses[4].json()
         .then(data => { setRecruiters(data) })
-      responses[5].json()
+      responses[4].json()
         .then(data => { setInterviewDetails(data) })
     })).catch(error => console.log('error', error));
   }, [acId]);
@@ -113,7 +109,6 @@ const ViewUpcomingAC = () => {
         interviewDetailsForAC.push(interviewsForAC[i]);
       }
     }
-    console.log(interviewDetailsForAC)
 
     // Get candidates for sales interviewers
     for (var i = 0; i < interviewDetailsForAC.length; i++) {
@@ -125,7 +120,9 @@ const ViewUpcomingAC = () => {
         // Get sales interviews times
         salesInterviewTimes.push(interviewDetailsForAC[i].interview.interviewTime)
         // Get sales interview packs
-        salesInterviewPacks.push(interviewDetailsForAC[i].packs[0].pack_name)
+        if (interviewDetailsForAC[i].packs.length > 0) {
+          salesInterviewPacks.push(interviewDetailsForAC[i].packs[0].pack_name)
+        }      
       }
     }
 
@@ -139,7 +136,9 @@ const ViewUpcomingAC = () => {
         // Get tech interviews times
         techInterviewTimes.push(interviewDetailsForAC[i].interview.interviewTime)
         // Get tech interview packs
-        techInterviewPacks.push(interviewDetailsForAC[i].packs[0].pack_name)
+        if (interviewDetailsForAC[i].packs.length > 0) {
+          techInterviewPacks.push(interviewDetailsForAC[i].packs[0].pack_name)
+        }      
       }
     }
 
@@ -289,13 +288,20 @@ const ViewUpcomingAC = () => {
                   </Link>
                 </Grid>
                 <Grid item xs sm={12}>
-                  {/* <Link to={`/recruiter/ac/update/${ac.id}`}> */}
+                  <Link to={`/recruiter/ac/update/schedule/sales/${ac.id}`}>
                     <Button
                       fullWidth
                       variant="contained">
-                      Update Schedule
+                      Update Sales Interview Schedule
                     </Button>
-                  {/* </Link> */}
+                  </Link>
+                  <Link to={`/recruiter/ac/update/schedule/technical/${ac.id}`}>
+                    <Button
+                      fullWidth
+                      variant="contained">
+                      Update Tech Interview Schedule
+                    </Button>
+                  </Link>
                 </Grid>
                 <Grid item xs sm={12}>
                   <Link to={"/recruiter"}>

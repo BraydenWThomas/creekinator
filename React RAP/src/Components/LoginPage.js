@@ -11,6 +11,8 @@ import fdm from './fdm-logo.png';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import './Styling/LoginPageStyle.css'
+import { Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const FDMtheme = createTheme({
   palette: {

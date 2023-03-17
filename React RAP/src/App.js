@@ -23,6 +23,8 @@ import CandidateInformationInterview from './Components/Candidate/CandidateInfor
 import CreateCandidate from './Components/Candidate/CreateCandidate';
 import UpdateCandidate from './Components/Candidate/UpdateCandidate';
 import CandidateApply from './Components/CandidateApply';
+import CandidateInfoReg from './Components/CandidateInfoReg';
+
 // UI Functionality
 import LoginPage from './Components/LoginPage';
 import Calendar from './Components/Calendar';
@@ -32,9 +34,6 @@ import Calendar from './Components/Calendar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import { Button } from '@mui/material';
-import CandidateInfoReg from './Components/CandidateInfoReg';
-
-
 
 const FDMtheme = createTheme({
   typography: {
@@ -79,7 +78,10 @@ const App = () => {
           localStorage.setItem('status', result.roles[0])
           localStorage.setItem('userId', result.id)
 
-          if (result.roles[0] == "ROLE_RECRUITER") {
+          if (result.roles[0] == "ROLE_ADMIN") {
+            window.location.href="/admin"
+          }
+          else if (result.roles[0] == "ROLE_RECRUITER") {
             window.location.href = "/recruiter"
           }
           else if (result.roles[0] == "ROLE_INTERVIEWER") {
@@ -110,27 +112,33 @@ const App = () => {
   };
 
 
-  const routes = [{
-    path: "/",
-    element: <LoginPage onClick={handleClick} />
-  },
-  {
-    path: "/apply",
-    element: <CandidateApply />
-  
-  },
-  {
-    path: "/candidateregister",
-    element: <CandidateInfoReg />
-  },
-  {
-    path: "/calendar",
-    element: <Calendar />
-  },
-  {
-    path: "/admin",
-    element: <AdminDashboard />
-  }]
+  const routes = [
+    {
+      path: "/",
+      element: <LoginPage onClick={handleClick} />
+    },
+    {
+      path: "/apply",
+      element: <CandidateApply />
+    },
+    {
+      path: "/candidate-register",
+      element: <CandidateInfoReg />
+    },
+    {
+      path: "/calendar",
+      element: <Calendar />
+    }
+  ]
+
+  if (localStorage.getItem('status') == "ROLE_ADMIN") {
+    routes.push(
+      {
+        path: "/admin",
+        element: <AdminDashboard />
+      }
+    )
+  }
 
   if (localStorage.getItem('status') == "ROLE_RECRUITER") {
     routes.push(

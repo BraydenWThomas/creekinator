@@ -21,35 +21,12 @@ const AdminDashboard = () => {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
 
-  // Get users
-  // const [users, setUsers] = useState([
-  //   { fullname: "John Doe", username: "johndoe2", email: "johndoe@fdm.com", role: "Recruiter" },
-  //   { fullname: "Jane Doe", username: "janedoe23", email: "janedoe@fdm.com", role: "Sales Interviewer" },
-  //   { fullname: "Bob Smith", username: "bobsmith123", email: "bobsm@fdm.com", role: "Recruiter" },
-  //   { fullname: "Alice Smith", username: "alicesmithi2", email: "alicesmith@fdm.com", role: "Technical Interviewer" },
-  // ]);
+  // Get Users
   const [users, setUsers] = useState([])
 
   // For filter
   const [selection, setSelection] = useState('All');
   const [filteredUsers, setFilteredUsers] = useState([]);
-
-  // Modal
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleOpenModal = () => {
-    setModalOpen(true);
-    handleClose();
-  };
-
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
 
   // Fetch all existing users
   useEffect(() => {
@@ -65,8 +42,8 @@ const AdminDashboard = () => {
   }, [])
 
   const handleSubmit = () => {
+
     const newUser = { fullname, username, password, email, role };
-   
     setUsers([...users, newUser]);
     setFullname("");
     setUsername("");
@@ -118,9 +95,6 @@ const AdminDashboard = () => {
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
     }
-
-    handleCloseModal();
-    window.location.reload();
   }
 
   const handleFilter = (event) => {
@@ -133,6 +107,8 @@ const AdminDashboard = () => {
       setFilteredUsers(users.filter(user => user.roles[0].name === "ROLE_INTERVIEWER").filter(user => user.interviewer.tech === false));
     } else if (filter === "Technical Interviewer") {
       setFilteredUsers(users.filter(user => user.roles[0].name === "ROLE_INTERVIEWER").filter(user => user.interviewer.tech === true));
+    } else if (filter === "Candidate") {
+      setFilteredUsers(users.filter(user => user.roles[0].name === "ROLE_CANDIDATE"));
     } else {
       console.log("Else called in filter"); //There is an issues if this is being called :))
     }
@@ -150,31 +126,84 @@ const AdminDashboard = () => {
     }
 
     if (user.roles[0].name === "ROLE_RECRUITER") {
-      return (
-        <>
-          <TableCell component="th" scope="row"> {user.recruiter.name} </TableCell>
-          <TableCell>{user.email}</TableCell>
-          <TableCell> Recruiter </TableCell>
-        </>
-      )
-    }
-
-    if (user.roles[0].name === "ROLE_INTERVIEWER") {
-      if (user.interviewer.tech === false) {
+      if (user.recruiter.name !== null) {
         return (
           <>
-            <TableCell component="th" scope="row"> {user.interviewer.name} </TableCell>
+            <TableCell component="th" scope="row"> {user.recruiter.name} </TableCell>
             <TableCell>{user.email}</TableCell>
-            <TableCell> Sales Interviewer </TableCell>
+            <TableCell> Recruiter </TableCell>
+          </>
+        )
+      } else {
+        return (
+          <>
+            <TableCell component="th" scope="row"> {user.name} </TableCell>
+            <TableCell>{user.email}</TableCell>
+            <TableCell> Recruiter </TableCell>
           </>
         )
       }
-      else {
+    }
+
+    if (user.roles[0].name === "ROLE_INTERVIEWER") {
+      if (user.interviewer.name !== null) {
+        if (user.interviewer.tech === false) {
+          return (
+            <>
+              <TableCell component="th" scope="row"> {user.interviewer.name} </TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell> Sales Interviewer </TableCell>
+            </>
+          )
+        }
+        else {
+          return (
+            <>
+              <TableCell component="th" scope="row"> {user.interviewer.name} </TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell> Technical Interviewer </TableCell>
+            </>
+          )
+        }
+      } else {
+        if (user.interviewer.tech === false) {
+          return (
+            <>
+              <TableCell component="th" scope="row"> {user.name} </TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell> Sales Interviewer </TableCell>
+            </>
+          )
+        }
+        else {
+          return (
+            <>
+              <TableCell component="th" scope="row"> {user.name} </TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell> Technical Interviewer </TableCell>
+            </>
+          )
+        }
+      }
+    }
+
+    if (user.roles[0].name === "ROLE_CANDIDATE") {
+      if (user.candidate !== null) {
         return (
           <>
-            <TableCell component="th" scope="row"> {user.interviewer.name} </TableCell>
+            <TableCell component="th" scope="row"> 
+              {user.candidate.first_name} {user.candidate.middle_name} {user.candidate.last_name} 
+            </TableCell>
             <TableCell>{user.email}</TableCell>
-            <TableCell> Technical Interviewer </TableCell>
+            <TableCell> Candidate </TableCell>
+          </>
+        )
+      } else {
+        return (
+          <>
+            <TableCell component="th" scope="row"> {user.name} </TableCell>
+            <TableCell>{user.email}</TableCell>
+            <TableCell> Candidate </TableCell>
           </>
         )
       }
@@ -269,7 +298,14 @@ const AdminDashboard = () => {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <Button fullWidth variant='contained' type='button' sx={{ mt: 3, mb: 2 }} onClick={handleOpenModal}>Create</Button>
+                <Button 
+                  fullWidth 
+                  variant='contained' 
+                  type='button' 
+                  sx={{ mt: 3, mb: 2 }} 
+                  onClick={handleSubmit}>
+                    Create
+                  </Button>
               </Grid>
             </Grid>
           </div>
@@ -296,6 +332,7 @@ const AdminDashboard = () => {
                     <MenuItem value={"Recruiter"}>Recruiter</MenuItem>
                     <MenuItem value={"Sales Interviewer"}>Sales Interviewer</MenuItem>
                     <MenuItem value={"Technical Interviewer"}>Technical Interviewer</MenuItem>
+                    <MenuItem value={"Candidate"}>Candidate</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -331,14 +368,6 @@ const AdminDashboard = () => {
           </Container>
         </Box>
       </Container>
-
-      {/* Account Created Modal */}
-      <Dialog open={modalOpen} onClose={handleCloseModal}>
-        <DialogTitle> Account Successfully Created </DialogTitle>
-        <DialogActions>
-          <Button onClick={handleSubmit}> OK </Button>
-        </DialogActions>
-      </Dialog>
     </div >
   )
 }

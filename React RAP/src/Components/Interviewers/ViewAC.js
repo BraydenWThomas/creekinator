@@ -231,10 +231,8 @@ const ViewAC = () => {
                           <Typography component='h3' variant='h7'>Assigned Candidates</Typography>
 
                           <ul style={{ listStyleType: "none" }}>
-                            <li>John Doe</li>
-                            <li>Jon Doe</li>
-                            <li>Joe Doe</li>
-                            <li>Do Doe</li>
+                            <li>Kimberleigh Chambers</li>
+                            <li>Jessi Dixon</li>
                           </ul>
                         </div>
                       )}
@@ -250,10 +248,7 @@ const ViewAC = () => {
                           <Typography component='h3' variant='h7'>Assigned Candidates</Typography>
 
                           <ul style={{ listStyleType: "none" }}>
-                            <li>John Doe</li>
-                            <li>Jon Doe</li>
-                            <li>Joe Doe</li>
-                            <li>Do Doe</li>
+                            <li>Burt Everill</li>
                           </ul>
                         </div>
                       )}
