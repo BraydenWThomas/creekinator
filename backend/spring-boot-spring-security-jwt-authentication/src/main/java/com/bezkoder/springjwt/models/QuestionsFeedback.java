@@ -1,8 +1,11 @@
 package com.bezkoder.springjwt.models;
 
+import javax.persistence.ManyToOne;
+
 public class QuestionsFeedback {
 
 	private int id;
+	@ManyToOne
 	private InterviewFeedback interviewFeedbackId;
 	private Questions questionId;
 	private String response;

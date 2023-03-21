@@ -56,18 +56,13 @@ public class Interview {
 	/* --- Constructors --- */
 	public Interview() {
 		super();
-<<<<<<< backend/spring-boot-spring-security-jwt-authentication/src/main/java/com/bezkoder/springjwt/models/Interview.java
 		// TODO Auto-generated constructor stub
-=======
-		this.packs = new ArrayList<Pack>();
->>>>>>> backend/spring-boot-spring-security-jwt-authentication/src/main/java/com/bezkoder/springjwt/models/Interview.java
 	}
 	
 	public Interview(String comment, LocalTime interviewTime, int score) {
 		this.comment = comment;
 		this.interviewTime = interviewTime;
 		this.score = score;
-		this.packs = new ArrayList<Pack>();
 	}
 	
 	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, String comment,LocalTime interviewTime, int score) {
@@ -89,7 +84,6 @@ public class Interview {
 		
 		this.interviewTime = interviewTime;
 		this.score = score;
-		this.packs = new ArrayList<Pack>();
 	}
 	/* --- End of Constructors --- */
 	

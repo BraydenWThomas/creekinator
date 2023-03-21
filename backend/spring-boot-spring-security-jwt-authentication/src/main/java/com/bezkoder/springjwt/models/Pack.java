@@ -28,14 +28,14 @@ public class Pack {
 	private Integer id;
 	private String pack_name;
 	private String pack_type;
-<<<<<<< backend/spring-boot-spring-security-jwt-authentication/src/main/java/com/bezkoder/springjwt/models/Pack.java
+
 	private String stream;
 	@OneToMany(mappedBy = "pack")
-	private List<Question> questions;
+	private List<Questions> questions;
 	@ManyToOne
 	private AssessmentCenter assessmentCenter;
 	
-=======
+
 	private String link;
 	
 	// linked
@@ -47,12 +47,12 @@ public class Pack {
 	
 	
 	/* --- Constructors --- */
->>>>>>> backend/spring-boot-spring-security-jwt-authentication/src/main/java/com/bezkoder/springjwt/models/Pack.java
+
 	public Pack() {
 		super();
 	}
 
-	public Pack(String pack_name, String pack_type, String stream, List<Question> questions,
+	public Pack(String pack_name, String pack_type, String stream, List<Questions> questions,
 			AssessmentCenter assessmentCenter) {
 		super();
 		this.pack_name = pack_name;
@@ -93,13 +93,12 @@ public class Pack {
 	public void setStream(String stream) {
 		this.stream = stream;
 	}
-<<<<<<< backend/spring-boot-spring-security-jwt-authentication/src/main/java/com/bezkoder/springjwt/models/Pack.java
 
-	public List<Question> getQuestions() {
+	public List<Questions> getQuestions() {
 		return questions;
 	}
 
-	public void setQuestions(List<Question> questions) {
+	public void setQuestions(List<Questions> questions) {
 		this.questions = questions;
 	}
 
@@ -110,11 +109,9 @@ public class Pack {
 	public void setAssessmentCenter(AssessmentCenter assessmentCenter) {
 		this.assessmentCenter = assessmentCenter;
 	}
-=======
 	
 	/* --- End of Normal getters and setters --- */
 	
->>>>>>> backend/spring-boot-spring-security-jwt-authentication/src/main/java/com/bezkoder/springjwt/models/Pack.java
 	
 	
 	

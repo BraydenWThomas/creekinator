@@ -2,16 +2,31 @@ package com.bezkoder.springjwt.models;
 
 import java.util.List;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class InterviewFeedback {
 
 	
-	private int id;
 	
-	private List<QuestionsFeedback> questionFeedback;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	
 	private Interview interviewId;
 	private Pack packId;
 	private String feedback;
 	private int overallScore;
+	
+	@OneToMany(mappedBy = "interviewFeedback")
+	private List<QuestionsFeedback> questionFeedback;
+	
+	
 	public InterviewFeedback(List<QuestionsFeedback> questionFeedback, Interview interviewId, Pack packId,
 			String feedback, int overallScore) {
 		super();
