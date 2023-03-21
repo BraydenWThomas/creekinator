@@ -316,6 +316,8 @@ public class Dataloader implements ApplicationRunner{
 		this.interviewRepository.saveAll(interviewA);
 		this.interviewRepository.saveAll(interviewB);
 		this.interviewRepository.saveAll(interviewC);
+		
+		System.out.println(acList.get(0).getDate());
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.bezkoder.springjwt.controllers;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -270,6 +272,12 @@ public class EntityController {
 			interviewerRepository.save(interviewer);
 		}
 		return interviewers;
+	}
+	
+	@GetMapping("/ac/by-date")
+	public List<AssessmentCenter> findAllAssessmentCentersByDate(@RequestParam Integer year, @RequestParam Integer month, @RequestParam Integer day){
+		LocalDate date = LocalDate.of(year, month, day);
+		return assessmentCenterRepository.findAllByDate(date);
 	}
 
 		
