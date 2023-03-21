@@ -281,12 +281,27 @@ public class Dataloader implements ApplicationRunner{
 		candidateList.get(3).addUser(userList.get(10));
 		
 		
-		
-		
-		
 		this.userRepository.saveAll(userList);
 		
-	
+		
+		
+		// link ac and candidate
+		candidateList.get(0).addAssessmentCenter(acList.get(0));
+		candidateList.get(0).addAssessmentCenter(acList.get(1));
+		candidateList.get(1).addAssessmentCenter(acList.get(1));
+		candidateList.get(2).addAssessmentCenter(acList.get(2));
+		candidateList.get(3).addAssessmentCenter(acList.get(4));
+		candidateList.get(3).addAssessmentCenter(acList.get(5));
+		candidateList.get(3).addAssessmentCenter(acList.get(2));
+		
+		// link candidate and recruiter
+		candidateList.get(0).addRecruiter(recruiterList.get(0));
+		candidateList.get(1).addRecruiter(recruiterList.get(1));
+		candidateList.get(2).addRecruiter(recruiterList.get(2));
+		candidateList.get(2).addRecruiter(recruiterList.get(1));
+		candidateList.get(3).addRecruiter(recruiterList.get(1));
+		candidateList.get(2).addRecruiter(recruiterList.get(1));
+		candidateList.get(1).addRecruiter(recruiterList.get(4));
 		
 	
 		

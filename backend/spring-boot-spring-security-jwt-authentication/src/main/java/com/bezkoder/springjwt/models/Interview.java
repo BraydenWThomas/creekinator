@@ -63,15 +63,14 @@ public class Interview {
 	public Interview() {
 		super();
 		this.packs = new ArrayList<Pack>();
-		// TODO Auto-generated constructor stub
 	}
-	/*
-	public Interview(String form) {
-		super();
-		this.form = form; // comment should be included in form
+	
+	public Interview(String comment, LocalTime interviewTime, int score) {
+		this.comment = comment;
+		this.interviewTime = interviewTime;
+		this.score = score;
 		this.packs = new ArrayList<Pack>();
 	}
-	*/
 	
 	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, String comment,LocalTime interviewTime, int score) {
 		super();
@@ -92,6 +91,7 @@ public class Interview {
 		this.packs = packs;
 		this.interviewTime = interviewTime;
 		this.score = score;
+		this.packs = new ArrayList<Pack>();
 	}
 	/* --- End of Constructors --- */
 	

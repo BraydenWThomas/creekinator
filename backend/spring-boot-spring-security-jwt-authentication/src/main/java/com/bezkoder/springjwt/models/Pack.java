@@ -36,25 +36,6 @@ public class Pack {
 	/* --- end of fileds --- */
 	
 	
-	/*
-	@OneToMany(mappedBy = "pack")
-	@JsonIgnore
-	private List<AssessmentCenter> assessmentCenters;
-	
-	public void addAssessmentCenter(AssessmentCenter assessmentCenter) {
-		this.assessmentCenters.add(assessmentCenter);
-		assessmentCenter.setPack(this);
-	}
-	public void removeAssessmentCenter(AssessmentCenter assessmentCenter) {
-		// System.out.println("wadwadAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWdawd")
-		
-		this.assessmentCenters.remove(assessmentCenter);
-		assessmentCenter.setPack(null);
-		
-	}
-	*/
-	
-	
 	
 	/* --- Constructors --- */
 	public Pack() {
@@ -101,15 +82,6 @@ public class Pack {
 	public void setLink(String link) {
 		this.link = link;
 	}
-	
-	/*
-	public void setAssessmentCenters(List<AssessmentCenter> assessmentCenters) {
-		this.assessmentCenters = assessmentCenters;
-	}
-	public List<AssessmentCenter> getAssessmentCenters() {
-		return this.assessmentCenters;
-	}
-	*/
 	
 	/* --- End of Normal getters and setters --- */
 	

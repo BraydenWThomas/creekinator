@@ -44,15 +44,18 @@ public class Recruiter {
 	/* --- Constructors --- */
 	public Recruiter() {
 		this.assessmentCenters = new ArrayList<AssessmentCenter>();
+		this.candidates = new ArrayList<Candidate>();
 	}
 	public Recruiter(String name, boolean superRecruiter) {
 		this.name = name;
 		this.superRecruiter = superRecruiter;
 		this.assessmentCenters = new ArrayList<AssessmentCenter>();
+		this.candidates = new ArrayList<Candidate>();
 	}
 	public Recruiter(String name) {
 		this.name = name;
 		this.assessmentCenters = new ArrayList<AssessmentCenter>();
+		this.candidates = new ArrayList<Candidate>();
 	}
 	/* --- End of Constructors --- */
 	
@@ -125,8 +128,9 @@ public class Recruiter {
 		user.setRecruiter(this);
 	}
 	public void removeUser() {
+		this.user.setRecruiter(null);
 		this.user = null;
-		user.setRecruiter(null);
+		
 	}
 	
 	// candidates
@@ -137,7 +141,7 @@ public class Recruiter {
 		return this.candidates;
 	}
 	public void removeCandidate(Candidate candidate) {
-		this.getCandidates().remove(candidate);
+		this.candidates.remove(candidate);
 		candidate.getRecruiters().remove(this);
 	}
 	public void addCandidate(Candidate candidate) {
