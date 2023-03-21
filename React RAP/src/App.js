@@ -29,6 +29,9 @@ import CandidateInfoReg from './Components/CandidateInfoReg';
 import LoginPage from './Components/LoginPage';
 import Calendar from './Components/Calendar';
 
+// New merges
+import CreateAC_v2 from './Components/New pages/CreateAC'
+
 
 // Material UI
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -111,7 +114,6 @@ const App = () => {
       .catch(error => console.log('error', error));
   };
 
-
   const routes = [
     {
       path: "/",
@@ -185,6 +187,10 @@ const App = () => {
       {
         path: "/recruiter/ac/update/schedule/technical/:acId",
         element: <CreateTechnicalInterview />
+      },
+      {
+        path:"/create",
+        element: <CreateAC_v2 />
       }
     )
   }
