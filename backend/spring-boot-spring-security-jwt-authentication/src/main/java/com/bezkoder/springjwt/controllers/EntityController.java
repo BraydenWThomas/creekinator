@@ -312,7 +312,8 @@ public class EntityController {
 		for (Interview interview : interviews) {
 			HashMap<String,Object> temp = new HashMap<String,Object>();
 			// JSONObject json = new JSONObject();
-			temp.put("AC_id", interview.getId());
+			AssessmentCenter tempAC = interview.getAssessmentCenter();
+			temp.put("AC_id", (tempAC == null) ? tempAC : tempAC.getId()); // if tempAC is null, return null, else get the id
 			temp.put("interviewer", interview.getInterviewer());
 			temp.put("time", interview.getInterviewTime());
 			temp.put("score", interview.getScore());
@@ -327,18 +328,31 @@ public class EntityController {
 	// Delete Candidate
 	@DeleteMapping("/candidate/{candidateId}")
 	public void deleteCandidateById(@PathVariable int candidateId) {
-		// TODO this part should be removed in the future
-		if (candidateRepository.findById(candidateId).isEmpty()) {
-			throw new NotFoundException("Can't find transaction with id: " + candidateId);
-		}
-		
 		/* remove dependency before deletion */
 		Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(()->new NotFoundException("Can't find candidate with id: " + candidateId));
 		List<Interview> interviews = candidate.getInterviews();
+		List<AssessmentCenter> assessmentCenters = candidate.getAssessmentCenters();
+		User user = candidate.getUser();
+		List<Recruiter> recruiters = candidate.getRecruiters();
+		
 		while (! interviews.isEmpty()) {
 			candidate.removeInterview(interviews.get(interviews.size() - 1));
+			
 		}
+		while (! assessmentCenters.isEmpty()) {
+			candidate.removeAssessmentCenter(assessmentCenters.get(assessmentCenters.size() - 1));
+		}
+		while (! recruiters.isEmpty()) {
+			candidate.removeRecruiter(recruiters.get(recruiters.size() - 1));
+		}
+		if (user != null) {
+			candidate.removeUser();
+			userRepository.save(user);
+		}
+		
 		candidateRepository.save(candidate);
+		assessmentCenterRepository.saveAll(assessmentCenters);
+		recruiterRepository.saveAll(recruiters);
 		interviewRepository.saveAll(interviews);
 		/* End of remove dependency before deletion */
 		
@@ -401,12 +415,23 @@ public class EntityController {
 		/* --- remove all bidirectional dependencies to avoid delete bug --- */
 		Interviewer interviewer = interviewerRepository.findById(interviewerId).orElseThrow(()->new NotFoundException("Can't find interviewer with id: " +interviewerId));
 		List<Interview> interviews = interviewer.getInterviews();
+		List<AssessmentCenter> acs = interviewer.getAssessmentCenters();
+		User user = interviewer.getUser();
 		// remove interviews
 		while (! interviews.isEmpty()) {
 			interviewer.removeInterview(interviews.get(interviews.size()-1)); // remove from last
 		}
+		while (! acs.isEmpty()) {
+			interviewer.removeAssessmentCenter(acs.get(acs.size()-1));
+		}
+		if (user != null) {
+			interviewer.removeUser();
+			userRepository.save(user);
+		}
+		
 		interviewerRepository.save(interviewer);
 		interviewRepository.saveAll(interviews);
+		assessmentCenterRepository.saveAll(acs);
 		/* --- end of remove all bidirectional dependencies to avoid delete bug --- */
 		
 		interviewerRepository.deleteById(interviewerId);
@@ -487,9 +512,6 @@ public class EntityController {
 	// Delete Interview
 	@DeleteMapping("/interview/{interviewId}")
 	public void deleteInterviewById(@PathVariable int interviewId) {
-		if (interviewRepository.findById(interviewId).isEmpty()) {
-			throw new NotFoundException("Can't find interviw with id: " + interviewId);
-		}
 		
 		/* --- unlink before deletion --- */
 		Interview interview = interviewRepository.findById(interviewId).orElseThrow(() -> new NotFoundException("Can't find interview with id: " + interviewId));
@@ -521,17 +543,17 @@ public class EntityController {
 		interviewRepository.deleteById(interviewId);
 	}	
 	
-	//Create Interview
+	//Create Interview, assumption: before creating an interview, one must have AC, interviewer, candidate and packs
 	@PostMapping("/interview")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Interview createInterview(@RequestBody Interview interview,
 			@RequestParam(required = true, name = "acId") int acId,
-			@RequestParam(required = true, name = "interviewId") int interviewId,
+			@RequestParam(required = true, name = "interviewerId") int interviewerId,
 			@RequestParam(required = true, name = "candidateId") int candidateId,
 			@RequestParam(required = true, name = "packIds") int[] packIds) {
 		//if (interviewId == null)
 		interview.addAssessmentCenter(assessmentCenterRepository.findById(acId).orElseThrow(()->new NotFoundException("Can't find AC with id: " + acId)));
-		interview.addInterviewer(interviewerRepository.findById(interviewId).orElseThrow(()->new NotFoundException("Can't find interviewer with id: " + interviewId)));
+		interview.addInterviewer(interviewerRepository.findById(interviewerId).orElseThrow(()->new NotFoundException("Can't find interviewer with id: " + interviewerId)));
 		interview.addCandidate(candidateRepository.findById(candidateId).orElseThrow(()->new NotFoundException("Can't find candidate with id: " + candidateId)));		
 		for (int pack : packIds) {
 			interview.addPack(packsRepository.findById(pack).orElseThrow(()->new NotFoundException("Can't find AC with id: " + pack)));
@@ -552,74 +574,33 @@ public class EntityController {
 	
 	//Add Pack to interview
 	@PutMapping("/interview/{id}/addPacks")
-	public List<Pack> addPackToInterview(@PathVariable int id,@RequestParam(required = true, name = "packIds") int[] packIds) {	
+	public void addPackToInterview(@PathVariable int id,@RequestParam(required = true, name = "packIds") int[] packIds) {	
 		
-		Interview interviews = interviewRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find interview with id: " + id));
-		List<Pack> packs = new ArrayList<Pack>();
+		Interview interview = interviewRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find interview with id: " + id));
 		
 		for (int packId : packIds) {
 			Pack pack = packsRepository.findById(packId).orElseThrow(()->new NotFoundException("Can't find pack with id: " + packId));
-			interviews.addPack(pack);
-			packs.add(pack);
-			packsRepository.saveAll(packs);
-			interviewRepository.save(interviews);
+			interview.addPack(pack);
+			packsRepository.save(pack);
 		}
-		return packs;
+		interviewRepository.save(interview);
 	}
-	
-	/* ------------------------------------ get linked attribute ------------------------------------ */
-	
-	//Get Pack from interview
-	@GetMapping("/interview/{id}/getPacks")
-	public List<Pack> getPackFromInterview(@PathVariable int id) {
-		return interviewRepository.getReferenceById(id).getPacks();
-	}
-	
-	//Get interviewer from interview
-	@GetMapping("/interview/{id}/getInterviewer")
-	public Interviewer getInterviewerFromInterview(@PathVariable int id) {
-		return interviewRepository.getReferenceById(id).getInterviewer();
-	}
-	
-	//Get candidate from interview
-	@GetMapping("/interview/{id}/getCandidate")
-	public Candidate getCandidateFromInterview(@PathVariable int id) {
-		return interviewRepository.getReferenceById(id).getCandidate();
-	}
-	
-	// get AC from interview
-	@GetMapping("/interview/{id}/getAC")
-	public AssessmentCenter getAssessmentCenterFromInterview(@PathVariable int id) {
-		return interviewRepository.getReferenceById(id).getAssessmentCenter();
-	}
-	
-	/* ------------------------------------ end of get linked attribute ------------------------------------ */
 	
 	
 	//Remove Pack from Interview
 	@PutMapping("/interview/{id}/removePacks")
-	public List<Pack> removePackFromInterview(@PathVariable int id,@RequestParam(required = true, name = "packIds") int[] packIds) {	
+	public void removePackFromInterview(@PathVariable int id,@RequestParam(required = true, name = "packIds") int[] packIds) {	
 		
-		Interview interviews = interviewRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find interview with id: " + id));
-		List<Pack> packs = new ArrayList<Pack>();
+		Interview interview = interviewRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find interview with id: " + id));
 		
 		for (int packId : packIds) {
-			System.out.println(packId);
 			Pack pack = packsRepository.findById(packId).orElseThrow(()->new NotFoundException("Can't find pack with id: " + packId));
-			interviews.removePack(pack);
-			packs.add(pack);
-			packsRepository.saveAll(packs);
-			interviewRepository.save(interviews);
+			interview.removePack(pack);
+			packsRepository.save(pack);
+			interviewRepository.save(interview);
 		}
-		return packs;
 	}
 	
-	
-	
-	
-	
-	
-	//remove required
 	
 	
 	/* --- End of Interviews --- */
@@ -714,6 +695,7 @@ public class EntityController {
 		/* --- remove all bidirectional dependencies to avoid delete bug --- */
 		Recruiter recruiter = recruiterRepository.findById(recruiterId).orElseThrow(()->new NotFoundException("Can't find recruiter with id: " +recruiterId));
 		List<AssessmentCenter> assessmentCenters = recruiter.getAssessmentCenters();
+		List<Candidate> candidates = recruiter.getCandidates();
 		User user = recruiter.getUser();
 		
 		if (user != null) {
@@ -723,9 +705,13 @@ public class EntityController {
 		while (! assessmentCenters.isEmpty()) {
 			recruiter.removeAssessmentCenter(assessmentCenters.get(assessmentCenters.size() - 1));
 		}
+		while (! candidates.isEmpty()) {
+			recruiter.removeCandidate(candidates.get(candidates.size() - 1));
+		}
 		
 		this.recruiterRepository.save(recruiter);
 		this.assessmentCenterRepository.saveAll(assessmentCenters);
+		this.candidateRepository.saveAll(candidates);
 		/* --- end of remove all bidirectional dependencies to avoid delete bug --- */
 		
 		recruiterRepository.deleteById(recruiterId);

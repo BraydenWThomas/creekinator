@@ -151,7 +151,6 @@ public Long getId() {
   
   public void setInterviewer(Interviewer interviewer) {
 	  this.interviewer = interviewer;
-	  interviewer.setUser(this);
   }
 
   
@@ -171,7 +170,6 @@ public Long getId() {
   // recruiter
   public void setRecruiter(Recruiter recruiter) {
 	  this.recruiter = recruiter;
-	  recruiter.setUser(this);
   }
   public Recruiter getRecruiter() {
 	  return this.recruiter;
