@@ -467,6 +467,12 @@ public class EntityController {
 		return output;
 	}
 	
+	/**
+	 * Find Interviews with the Assessment Centre ID and Interviewer ID
+	 * @param acId An Assessment Centre ID
+	 * @param interviewerId An Interviewer ID
+	 * @return List of Interviews
+	 */
 	@GetMapping("interview/by-ac-interviewer")
 	public List<Interview> getInterviewsByAssessmentCenterAndInterviewer(@RequestParam Integer acId, Integer interviewerId){
 		AssessmentCenter ac = assessmentCenterRepository.findById(acId)
