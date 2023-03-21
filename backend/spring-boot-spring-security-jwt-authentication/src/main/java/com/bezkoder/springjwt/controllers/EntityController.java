@@ -467,6 +467,15 @@ public class EntityController {
 		return output;
 	}
 	
+	@GetMapping("interview/by-ac-interviewer")
+	public List<Interview> getInterviewsByAssessmentCenterAndInterviewer(@RequestParam Integer acId, Integer interviewerId){
+		AssessmentCenter ac = assessmentCenterRepository.findById(acId)
+				.orElseThrow(() -> new NotFoundException("Unable to find AC with that ID"));
+		Interviewer interviewer = interviewerRepository.findById(interviewerId)
+				.orElseThrow(() -> new NotFoundException("Unable to find Interviewer with that ID"));
+		return interviewRepository.findAllByAssessmentCenterAndInterviewer(ac, interviewer);
+	}
+	
 	
 	
 	// Delete Interview
