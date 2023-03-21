@@ -44,12 +44,6 @@ public class Interview {
 	@JsonIgnore
 	private Candidate candidate;
 	
-	@ManyToMany
-	@JoinTable(name = "interview_pack",
-			joinColumns = @JoinColumn(name = "interview_id"),
-				inverseJoinColumns = @JoinColumn(name = "pack_id"))
-	@JsonIgnore
-	private List<Pack> packs;
 	/* --- End of fields --- */
 	
 	
@@ -62,7 +56,6 @@ public class Interview {
 	/* --- Constructors --- */
 	public Interview() {
 		super();
-		this.packs = new ArrayList<Pack>();
 		// TODO Auto-generated constructor stub
 	}
 	/*
@@ -79,7 +72,7 @@ public class Interview {
 		this.assessmentCenter = assessmentCenter;
 		this.interviewer = interviewer;
 		this.candidate = candidate;	
-		this.packs = new ArrayList<Pack>();
+	
 		this.interviewTime = interviewTime;
 		this.score = score;
 	}
@@ -89,7 +82,7 @@ public class Interview {
 		this.assessmentCenter = assessmentCenter;
 		this.interviewer = interviewer;
 		this.candidate = candidate;	
-		this.packs = packs;
+		
 		this.interviewTime = interviewTime;
 		this.score = score;
 	}
@@ -199,19 +192,5 @@ public class Interview {
 		this.candidate = null;
 	}
 	
-	// pack
-	public List<Pack> getPacks() {
-		return this.packs;
-	}
-	public void setPacks(List<Pack> packs) {
-		this.packs = packs;
-	}
-	public void addPack(Pack pack) {
-		this.getPacks().add(pack);
-		pack.getInterviews().add(this);
-	}
-	public void removePack(Pack pack) {
-		this.getPacks().remove(pack);
-		pack.getInterviews().remove(this);
-	}
+
 }

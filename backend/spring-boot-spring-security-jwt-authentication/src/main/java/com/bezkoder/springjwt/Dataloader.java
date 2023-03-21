@@ -126,14 +126,14 @@ public class Dataloader implements ApplicationRunner{
 		
 		
 		// PACKS
-		List<Pack> packList = new ArrayList<>();
-		packList.add(new Pack("Pack 1","Tech","Link..."));
-		packList.add(new Pack("Pack 2","Tech","Link..."));
-		packList.add(new Pack("Pack 3","Sales","Link..."));
-		packList.add(new Pack("Pack 4","Tech","Link..."));
-		packList.add(new Pack("Pack 5","Sales","Link..."));
-		
-		this.packsRepository.saveAll(packList);
+//		List<Pack> packList = new ArrayList<>();
+//		packList.add(new Pack("Pack 1","Tech","Link..."));
+//		packList.add(new Pack("Pack 2","Tech","Link..."));
+//		packList.add(new Pack("Pack 3","Sales","Link..."));
+//		packList.add(new Pack("Pack 4","Tech","Link..."));
+//		packList.add(new Pack("Pack 5","Sales","Link..."));
+//		
+//		this.packsRepository.saveAll(packList);
 		
 		// ASSESSMENT CENTERS 
 		List<AssessmentCenter> acList = new ArrayList<>();
@@ -296,7 +296,7 @@ public class Dataloader implements ApplicationRunner{
 		this.candidateRepository.saveAll(candidateList);
 		this.recruiterRepository.saveAll(recruiterList);
 		this.interviewerRepository.saveAll(interviewerList);
-		this.packsRepository.saveAll(packList);
+//		this.packsRepository.saveAll(packList);
 		this.assessmentCenterRepository.saveAll(acList);
 		this.interviewRepository.saveAll(interviewA);
 		this.interviewRepository.saveAll(interviewB);
