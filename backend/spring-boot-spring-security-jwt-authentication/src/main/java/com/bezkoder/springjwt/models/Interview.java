@@ -1,11 +1,5 @@
 package com.bezkoder.springjwt.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -25,9 +19,15 @@ public class Interview {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private String comment;
+	private String comment; // #TODO remove
 	private LocalTime interviewTime;
 	private int score = -1;
+	
+	@ManyToOne
+	private Pack packId;
+	
+	@OneToOne
+	private InterviewFeedback feedback;
 	
 	@ManyToOne
 	@JoinColumn(name = "FK_INTERVIEWER_NO")

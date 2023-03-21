@@ -144,11 +144,11 @@ public class AddAndRemoveTest {
 		
 		// PACKS 
 		packList = new ArrayList<>();
-		packList.add(new Pack("Pack 1","Tech","Link..."));
-		packList.add(new Pack("Pack 2","Tech","Link..."));
-		packList.add(new Pack("Pack 3","Sales","Link..."));
-		packList.add(new Pack("Pack 4","Tech","Link..."));
-		packList.add(new Pack("Pack 5","Sales","Link..."));
+//		packList.add(new Pack("Pack 1","Tech","Link..."));
+//		packList.add(new Pack("Pack 2","Tech","Link..."));
+//		packList.add(new Pack("Pack 3","Sales","Link..."));
+//		packList.add(new Pack("Pack 4","Tech","Link..."));
+//		packList.add(new Pack("Pack 5","Sales","Link..."));
 		
 		// ASSESSMENT CENTERS 
 		acList = new ArrayList<>();
@@ -213,47 +213,47 @@ public class AddAndRemoveTest {
 		userList.add(new User("candidate4","candidate4@gmail.com","candidate4","candidateName4"));
 	}
 	
-	@Test
-	// ensure at beginning all entity are not linked with each other
-	void test_condition() {
-		
-		for (AssessmentCenter assessmentCenter : acList) {
-			assertEquals(assessmentCenter.getCandidates().size(), 0);
-			assertEquals(assessmentCenter.getInterviews().size(), 0);
-			assertEquals(assessmentCenter.getInterviewers().size(), 0);
-			assertEquals(assessmentCenter.getRecruiters().size(), 0);
-		}
-		
-		for (Candidate candidate : candidateList) {
-			assertEquals(candidate.getAssessmentCenters().size(), 0);
-			assertEquals(candidate.getInterviews().size(), 0);
-			assertTrue(candidate.getUser() == null);
-			assertEquals(candidate.getRecruiters().size(), 0);
-		}
-		
-		for (Interview interview : interviewA) {
-			assertTrue(interview.getInterviewer() == null);
-			assertTrue(interview.getAssessmentCenter() == null);
-			assertTrue(interview.getCandidate() == null);
-			assertEquals(interview.getPacks().size(), 0);
-		}
-		
-		for (Interviewer interviewer : interviewerList) {
-			assertEquals(interviewer.getInterviews().size(), 0);
-			assertEquals(interviewer.getAssessmentCenters().size(), 0);
-			assertTrue(interviewer.getUser() == null);
-		}
-		
-		for (Pack pack : packList) {
-			assertEquals(pack.getInterviews().size(), 0);
-		}
-		
-		for (Recruiter recruiter : recruiterList) {
-			assertEquals(recruiter.getAssessmentCenters().size(), 0);
-			assertEquals(recruiter.getCandidates().size(), 0);
-		}
-		
-	}
+//	@Test
+//	// ensure at beginning all entity are not linked with each other
+//	void test_condition() {
+//		
+//		for (AssessmentCenter assessmentCenter : acList) {
+//			assertEquals(assessmentCenter.getCandidates().size(), 0);
+//			assertEquals(assessmentCenter.getInterviews().size(), 0);
+//			assertEquals(assessmentCenter.getInterviewers().size(), 0);
+//			assertEquals(assessmentCenter.getRecruiters().size(), 0);
+//		}
+//		
+//		for (Candidate candidate : candidateList) {
+//			assertEquals(candidate.getAssessmentCenters().size(), 0);
+//			assertEquals(candidate.getInterviews().size(), 0);
+//			assertTrue(candidate.getUser() == null);
+//			assertEquals(candidate.getRecruiters().size(), 0);
+//		}
+//		
+//		for (Interview interview : interviewA) {
+//			assertTrue(interview.getInterviewer() == null);
+//			assertTrue(interview.getAssessmentCenter() == null);
+//			assertTrue(interview.getCandidate() == null);
+//			assertEquals(interview.getPacks().size(), 0);
+//		}
+//		
+//		for (Interviewer interviewer : interviewerList) {
+//			assertEquals(interviewer.getInterviews().size(), 0);
+//			assertEquals(interviewer.getAssessmentCenters().size(), 0);
+//			assertTrue(interviewer.getUser() == null);
+//		}
+//		
+//		for (Pack pack : packList) {
+//			assertEquals(pack.getInterviews().size(), 0);
+//		}
+//		
+//		for (Recruiter recruiter : recruiterList) {
+//			assertEquals(recruiter.getAssessmentCenters().size(), 0);
+//			assertEquals(recruiter.getCandidates().size(), 0);
+//		}
+//		
+//	}
 	
 	
 	/* --------------------------------- This section test all add and remove function act properly --------------------------------- */
@@ -505,24 +505,24 @@ public class AddAndRemoveTest {
 		assertTrue(candidate.getInterviews().size() == 0);
 	}
 	
-	@Test
-	void test_interview_add_pack() {
-		Interview interview = interviewA.get(0);
-		Pack pack = packList.get(0);
-		interview.addPack(pack);
-		assertTrue(interview.getPacks().get(0) == pack);
-		assertTrue(pack.getInterviews().get(0) == interview);
-	}
-	
-	@Test
-	void test_interview_remove_pack() {
-		Interview interview = interviewA.get(0);
-		Pack pack = packList.get(0);
-		interview.addPack(pack);
-		interview.removePack(pack);
-		assertTrue(interview.getPacks().size() == 0);
-		assertTrue(pack.getInterviews().size() == 0);
-	}
+//	@Test
+//	void test_interview_add_pack() {
+//		Interview interview = interviewA.get(0);
+//		Pack pack = packList.get(0);
+//		interview.addPack(pack);
+//		assertTrue(interview.getPacks().get(0) == pack);
+//		assertTrue(pack.getInterviews().get(0) == interview);
+//	}
+//	
+//	@Test
+//	void test_interview_remove_pack() {
+//		Interview interview = interviewA.get(0);
+//		Pack pack = packList.get(0);
+//		interview.addPack(pack);
+//		interview.removePack(pack);
+//		assertTrue(interview.getPacks().size() == 0);
+//		assertTrue(pack.getInterviews().size() == 0);
+//	}
 	
 	@Test
 	void test_interviewer_add_interview() {
@@ -562,24 +562,24 @@ public class AddAndRemoveTest {
 		assertTrue(interviewer.getUser() == null);
 	}
 	
-	@Test
-	void test_pack_add_interview() {
-		Pack pack = packList.get(0);
-		Interview interview = interviewA.get(0);
-		pack.addInterviews(interview);
-		assertTrue(pack.getInterviews().get(0) == interview);
-		assertTrue(interview.getPacks().get(0) == pack);
-	}
-	
-	@Test
-	void test_pack_remove_interview() {
-		Pack pack = packList.get(0);
-		Interview interview = interviewA.get(0);
-		pack.addInterviews(interview);
-		pack.removeInterviews(interview);
-		assertTrue(pack.getInterviews().size() == 0);
-		assertTrue(interview.getPacks().size() == 0);
-	}
+//	@Test
+//	void test_pack_add_interview() {
+//		Pack pack = packList.get(0);
+//		Interview interview = interviewA.get(0);
+//		pack.addInterviews(interview);
+//		assertTrue(pack.getInterviews().get(0) == interview);
+//		assertTrue(interview.getPacks().get(0) == pack);
+//	}
+//	
+//	@Test
+//	void test_pack_remove_interview() {
+//		Pack pack = packList.get(0);
+//		Interview interview = interviewA.get(0);
+//		pack.addInterviews(interview);
+//		pack.removeInterviews(interview);
+//		assertTrue(pack.getInterviews().size() == 0);
+//		assertTrue(interview.getPacks().size() == 0);
+//	}
 	
 	@Test
 	void test_recruiter_add_assessmentCenter()  {

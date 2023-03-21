@@ -49,6 +49,10 @@ public class AssessmentCenter {
 	@JsonIgnore
 	private List<Interviewer> interviewers;
 	
+	@ManyToMany(mappedBy = "assessmentCenters")
+	@JsonIgnore
+	private List<Pack> pack;
+	
 	@OneToMany(mappedBy = "assessmentCenter")
 	@JsonIgnore
 	private List<Interview> interviews;

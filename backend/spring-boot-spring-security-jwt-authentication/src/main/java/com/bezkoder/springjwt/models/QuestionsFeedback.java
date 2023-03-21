@@ -1,16 +1,30 @@
 package com.bezkoder.springjwt.models;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="QUESTIONS_FEEDBACK")
 public class QuestionsFeedback {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@ManyToOne
-	private InterviewFeedback interviewFeedbackId;
+	private InterviewFeedback interviewFeedback;
+	
+	@ManyToOne
 	private Questions questionId;
+	
 	private String response;
 	private String feedback;
 	private int score;
+	
+	
 	public QuestionsFeedback() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -19,7 +33,7 @@ public class QuestionsFeedback {
 	public QuestionsFeedback(InterviewFeedback interviewFeedbackId, Questions questionId, String response,
 			String feedback, int score) {
 		super();
-		this.interviewFeedbackId = interviewFeedbackId;
+		this.interviewFeedback = interviewFeedbackId;
 		this.questionId = questionId;
 		this.response = response;
 		this.feedback = feedback;
@@ -33,10 +47,10 @@ public class QuestionsFeedback {
 		this.id = id;
 	}
 	public InterviewFeedback getInterviewFeedbackId() {
-		return interviewFeedbackId;
+		return interviewFeedback;
 	}
 	public void setInterviewFeedbackId(InterviewFeedback interviewFeedbackId) {
-		this.interviewFeedbackId = interviewFeedbackId;
+		this.interviewFeedback = interviewFeedbackId;
 	}
 	public String getResponse() {
 		return response;

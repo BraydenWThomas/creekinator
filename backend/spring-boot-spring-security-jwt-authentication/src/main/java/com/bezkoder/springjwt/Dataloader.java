@@ -15,15 +15,6 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Service;
 
-import com.bezkoder.springjwt.models.AssessmentCenter;
-import com.bezkoder.springjwt.models.Candidate;
-import com.bezkoder.springjwt.models.ERole;
-import com.bezkoder.springjwt.models.Interview;
-import com.bezkoder.springjwt.models.Interviewer;
-import com.bezkoder.springjwt.models.Pack;
-import com.bezkoder.springjwt.models.Recruiter;
-import com.bezkoder.springjwt.models.Role;
-import com.bezkoder.springjwt.models.User;
 import com.bezkoder.springjwt.models.*;
 import com.bezkoder.springjwt.repository.AssessmentCenterRepository;
 import com.bezkoder.springjwt.repository.CandidateRepository;
@@ -124,14 +115,24 @@ public class Dataloader implements ApplicationRunner{
 		
 		this.interviewerRepository.saveAll(interviewerList);
 		
+
 		
-		// PACKS
+//		//QUESTIONS
+//		List<Questions> questionList = new ArrayList<>();
+//		questionList.add(new Questions(null, "Question", "Answer"));
+//		questionList.add(new Questions(null, "Question", "Answer"));
+//		questionList.add(new Questions(null, "Question", "Answer"));
+//		questionList.add(new Questions(null, "Question", "Answer"));
+//		
+//		
+//		// PACKS
 //		List<Pack> packList = new ArrayList<>();
-//		packList.add(new Pack("Pack 1","Tech","Link..."));
-//		packList.add(new Pack("Pack 2","Tech","Link..."));
-//		packList.add(new Pack("Pack 3","Sales","Link..."));
-//		packList.add(new Pack("Pack 4","Tech","Link..."));
-//		packList.add(new Pack("Pack 5","Sales","Link..."));
+//		new Pack("Pack1", "Tech", "Java", questionList, null, null);
+////		packList.add(new Pack("Pack 1","Tech","Link..."));
+////		packList.add(new Pack("Pack 2","Tech","Link..."));
+////		packList.add(new Pack("Pack 3","Sales","Link..."));
+////		packList.add(new Pack("Pack 4","Tech","Link..."));
+////		packList.add(new Pack("Pack 5","Sales","Link..."));
 //		
 //		this.packsRepository.saveAll(packList);
 		
