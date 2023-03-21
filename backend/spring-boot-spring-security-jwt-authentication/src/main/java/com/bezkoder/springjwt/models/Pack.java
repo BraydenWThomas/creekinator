@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,9 +25,17 @@ public class Pack {
 	/* --- fields --- */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	private String pack_name;
 	private String pack_type;
+<<<<<<< backend/spring-boot-spring-security-jwt-authentication/src/main/java/com/bezkoder/springjwt/models/Pack.java
+	private String stream;
+	@OneToMany(mappedBy = "pack")
+	private List<Question> questions;
+	@ManyToOne
+	private AssessmentCenter assessmentCenter;
+	
+=======
 	private String link;
 	
 	// linked
@@ -38,71 +47,76 @@ public class Pack {
 	
 	
 	/* --- Constructors --- */
+>>>>>>> backend/spring-boot-spring-security-jwt-authentication/src/main/java/com/bezkoder/springjwt/models/Pack.java
 	public Pack() {
-		//super();
-		this.interviews = new ArrayList<Interview>();
+		super();
 	}
-	public Pack(String pack_name, String tech_pack, String sales_pack) {
-		//super();
-		this.pack_name = pack_name;
-		this.pack_type = tech_pack;
-		this.link = sales_pack;
-		this.interviews = new ArrayList<Interview>();
-	}
-	/* --- End of Constructors --- */
-	
-	
-	
-	
-	
-	
-	/* --- Normal getters and setters --- */
 
-	public int getId() {
+	public Pack(String pack_name, String pack_type, String stream, List<Question> questions,
+			AssessmentCenter assessmentCenter) {
+		super();
+		this.pack_name = pack_name;
+		this.pack_type = pack_type;
+		this.stream = stream;
+		this.questions = questions;
+		this.assessmentCenter = assessmentCenter;
+	}
+
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+
+	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	public String getPack_name() {
 		return pack_name;
 	}
+
 	public void setPack_name(String pack_name) {
 		this.pack_name = pack_name;
 	}
+
 	public String getPack_type() {
 		return pack_type;
 	}
+
 	public void setPack_type(String pack_type) {
 		this.pack_type = pack_type;
 	}
-	public String getLink() {
-		return link;
+
+	public String getStream() {
+		return stream;
 	}
-	public void setLink(String link) {
-		this.link = link;
+
+	public void setStream(String stream) {
+		this.stream = stream;
 	}
+<<<<<<< backend/spring-boot-spring-security-jwt-authentication/src/main/java/com/bezkoder/springjwt/models/Pack.java
+
+	public List<Question> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
+	}
+
+	public AssessmentCenter getAssessmentCenter() {
+		return assessmentCenter;
+	}
+
+	public void setAssessmentCenter(AssessmentCenter assessmentCenter) {
+		this.assessmentCenter = assessmentCenter;
+	}
+=======
 	
 	/* --- End of Normal getters and setters --- */
 	
+>>>>>>> backend/spring-boot-spring-security-jwt-authentication/src/main/java/com/bezkoder/springjwt/models/Pack.java
 	
 	
 	
 	
-	/* --- linked --- */
-	// interview
-	public void setInterviews(List<Interview> interviews) {
-		this.interviews = interviews;
-	}
-	public List<Interview> getInterviews(){
-		return this.interviews;
-	}
-	public void addInterviews(Interview interview) {
-		this.interviews.add(interview);
-		interview.getPacks().add(this);
-	}
-	public void removeInterviews(Interview interview) {
-		this.interviews.remove(interview);
-		interview.getPacks().remove(this);
-	}
 }

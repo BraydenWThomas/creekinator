@@ -44,12 +44,6 @@ public class Interview {
 	@JsonIgnore
 	private Candidate candidate;
 	
-	@ManyToMany
-	@JoinTable(name = "interview_pack",
-			joinColumns = @JoinColumn(name = "interview_id"),
-				inverseJoinColumns = @JoinColumn(name = "pack_id"))
-	@JsonIgnore
-	private List<Pack> packs;
 	/* --- End of fields --- */
 	
 	
@@ -62,7 +56,11 @@ public class Interview {
 	/* --- Constructors --- */
 	public Interview() {
 		super();
+<<<<<<< backend/spring-boot-spring-security-jwt-authentication/src/main/java/com/bezkoder/springjwt/models/Interview.java
+		// TODO Auto-generated constructor stub
+=======
 		this.packs = new ArrayList<Pack>();
+>>>>>>> backend/spring-boot-spring-security-jwt-authentication/src/main/java/com/bezkoder/springjwt/models/Interview.java
 	}
 	
 	public Interview(String comment, LocalTime interviewTime, int score) {
@@ -78,7 +76,7 @@ public class Interview {
 		this.assessmentCenter = assessmentCenter;
 		this.interviewer = interviewer;
 		this.candidate = candidate;	
-		this.packs = new ArrayList<Pack>();
+	
 		this.interviewTime = interviewTime;
 		this.score = score;
 	}
@@ -88,7 +86,7 @@ public class Interview {
 		this.assessmentCenter = assessmentCenter;
 		this.interviewer = interviewer;
 		this.candidate = candidate;	
-		this.packs = packs;
+		
 		this.interviewTime = interviewTime;
 		this.score = score;
 		this.packs = new ArrayList<Pack>();
@@ -199,19 +197,5 @@ public class Interview {
 		this.candidate = null;
 	}
 	
-	// pack
-	public List<Pack> getPacks() {
-		return this.packs;
-	}
-	public void setPacks(List<Pack> packs) {
-		this.packs = packs;
-	}
-	public void addPack(Pack pack) {
-		this.getPacks().add(pack);
-		pack.getInterviews().add(this);
-	}
-	public void removePack(Pack pack) {
-		this.getPacks().remove(pack);
-		pack.getInterviews().remove(this);
-	}
+
 }
