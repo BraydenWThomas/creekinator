@@ -130,11 +130,12 @@ public class Pack {
 	public void setAssessmentCenters(List<AssessmentCenter> assessmentCenters) {
 		this.assessmentCenters = assessmentCenters;
 	}
-	
-	
 
-	
-	
-	
+	@Override
+	public String toString() {
+		return "Pack [id=" + id + ", pack_name=" + pack_name + ", pack_type=" + pack_type + ", stream=" + stream
+				+ ", feedback=" + feedback + ", questions=" + questions + ", interviews=" + interviews
+				+ ", assessmentCenters=" + assessmentCenters + "]";
+	}	
 	
 }
