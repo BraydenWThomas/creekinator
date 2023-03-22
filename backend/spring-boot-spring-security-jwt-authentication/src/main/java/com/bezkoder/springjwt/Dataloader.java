@@ -150,7 +150,7 @@ public class Dataloader implements ApplicationRunner{
 		List<InterviewFeedback> interviewFeedbackList = new ArrayList<InterviewFeedback>();
 		interviewFeedbackList.add(new InterviewFeedback(null, null, packList.get(0), "Feedback", 2));
 		
-		
+		this.interviewFeedbackRepository.saveAll(interviewFeedbackList);
 		
 		//QUESTIONS FEEDBACK
 		List<QuestionsFeedback> questionsFeedbackList = new ArrayList<QuestionsFeedback>();
