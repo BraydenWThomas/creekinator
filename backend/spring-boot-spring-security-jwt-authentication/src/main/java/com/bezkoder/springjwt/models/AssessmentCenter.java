@@ -49,6 +49,10 @@ public class AssessmentCenter {
 	@JsonIgnore
 	private List<Interviewer> interviewers;
 	
+	@ManyToMany(mappedBy = "assessmentCenters")
+	@JsonIgnore
+	private List<Pack> pack;
+	
 	@OneToMany(mappedBy = "assessmentCenter")
 	@JsonIgnore
 	private List<Interview> interviews;
@@ -195,6 +199,14 @@ public class AssessmentCenter {
 	public int getCoordinatorId() {
 		return this.coordinatorId;
 	}
+	
+	public List<Pack> getPack() {
+		return pack;
+	}
+	public void setPack(List<Pack> pack) {
+		this.pack = pack;
+	}
+	
 	/* --- End of normal setter and getters --- */
 	
 	
@@ -203,7 +215,7 @@ public class AssessmentCenter {
 	
 	
 	
-	
+
 	/* --- add and remove functions --- */
 	// interviewer
 	public List<Interviewer> getInterviewers() {
