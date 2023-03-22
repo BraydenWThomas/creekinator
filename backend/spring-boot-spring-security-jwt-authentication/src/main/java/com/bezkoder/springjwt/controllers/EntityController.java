@@ -584,6 +584,7 @@ public class EntityController {
 		return interviewRepository.save(interview);
 	}
 	
+	
 //	//Add Pack to interview
 //	@PutMapping("/interview/{id}/addPacks")
 //	public void addPackToInterview(@PathVariable int id,@RequestParam(required = true, name = "packIds") int[] packIds) {	
@@ -618,64 +619,106 @@ public class EntityController {
 	/* --- End of Interviews --- */
 	
 	
+	/* --- Interview Feedback --- */
 	
+	@GetMapping("/interview-feedback")
+	public List<InterviewFeedback> getAllInterviewFeedbacks(){
+		return interviewFeedbackRepository.findAll();
+	}
 	
+	@GetMapping("/interview-feedback/{id}")
+	public InterviewFeedback getInterviewFeedbackById(@PathVariable Integer id) {
+		return interviewFeedbackRepository.findById(id)
+				.orElseThrow(() -> new NotFoundException("Unable to find Interview Feedback with ID of: " + id));
+	}
+	
+	@GetMapping("/interview-feedback/from-interview/{interviewId}")
+	public InterviewFeedback getInterviewFeedBackByInterviewId(@PathVariable Integer interviewId) {
+		Interview interview = interviewRepository.findById(interviewId)
+				.orElseThrow(() -> new NotFoundException("Unable to find Interview with that ID"));
+		return interview.getFeedback();
+	}
+	
+	@PostMapping("/interview-feedback/{packId}")
+	@ResponseStatus(HttpStatus.CREATED)
+	public InterviewFeedback createNewInterviewFeedback(@PathVariable Integer packId, @RequestBody InterviewFeedback interviewFeedback) {
+		Pack pack = packsRepository.findById(packId)
+				.orElseThrow(() -> new NotFoundException("Unable to find Pack with that ID"));
+		interviewFeedback.setPackId(pack);
+		return interviewFeedbackRepository.save(interviewFeedback);
+	}
+	
+	/* --- End of Interview Feedback --- */
+	
+	/* --- Questions Feedback --- */
+	@GetMapping("/questions-feedback")
+	public List<QuestionsFeedback> getAllQuestionsFeedbacks(){
+		return questionsFeedbackRepository.findAll();
+	}
+	
+	@GetMapping("/questions-feedback/{id}")
+	public QuestionsFeedback getQuestionsFeedbackById(@PathVariable Integer id) {
+		return questionsFeedbackRepository.findById(id)
+				.orElseThrow(() -> new NotFoundException("Unable to find QuestionFeedback with ID of: " + id));
+	}
+	
+	@GetMapping("/questions-feedback/from-interview-feedback/{interviewFeedbackId}")
+	public List<QuestionsFeedback> getQuestionsFeedbackByInterviewFormId(@PathVariable Integer interviewFeedbackId) {
+		InterviewFeedback interviewFeedback = interviewFeedbackRepository.findById(interviewFeedbackId)
+				.orElseThrow(() -> new NotFoundException("Unable to find Interview Feedback Form with that ID"));
+		return interviewFeedback.getQuestionFeedback();
+	}
+	
+	@PostMapping("/questions-feedback/{interviewFeedbackId}")
+	@ResponseStatus(HttpStatus.CREATED)
+	public QuestionsFeedback createNewQuestionsFeedback(@PathVariable Integer interviewFeedbackId, @RequestBody QuestionsFeedback questionsFeedback) {
+		InterviewFeedback interviewFeedback = interviewFeedbackRepository.findById(interviewFeedbackId)
+				.orElseThrow(() -> new NotFoundException("Unable To Find Interview Feedback Form of that ID"));
+		questionsFeedback.setInterviewFeedback(interviewFeedback);
+		return questionsFeedbackRepository.save(questionsFeedback);
+	}
 	
 	
 	
 	
 //	/* --- Packs --- */
 //	
-	// Get all Packs
+	//getAllPacks
 	@GetMapping("/pack")
-	public List<Pack> getAllPacks() {
-		return packsRepository.findAll();
-	}
-
-//	// Get specific Pack
-//	@GetMapping("/pack/{packId}")
-//	public Pack getPackbyId(@PathVariable int packId) {
-//		return packsRepository.findById(packId).orElseThrow(()->new NotFoundException("Can't find pack with id: " +packId));
-//	}	
-//	
-//	// Delete Pack
-//	@DeleteMapping("/pack/{packId}")
-//	public void deletePackById(@PathVariable int packId) {
-//		if (packsRepository.findById(packId).isEmpty()) {
-//			throw new NotFoundException("Can't find transaction with id: " + packId);
-//		}
-//		
-//		/* --- remove all bidirectional dependencies to avoid delete bug --- */
-//		Pack pack = packsRepository.findById(packId).orElseThrow(()->new NotFoundException("Can't find pack with id: " +packId));
-//		// remove interviews
-//		List<Interview> interviews = pack.getInterviews();
-//		while (! interviews.isEmpty()) {
-//			pack.removeInterviews(interviews.get(interviews.size() - 1));
-//		}
-//		this.packsRepository.save(pack);
-//		this.interviewRepository.saveAll(interviews);
-//		/* --- end of remove all bidirectional dependencies to avoid delete bug --- */
-//		
-//		packsRepository.deleteById(packId);
-//	}	
-//	
-//	//Create Pack
-//	@PostMapping("/pack")
-//	@ResponseStatus(HttpStatus.CREATED)
-//	public Pack createPack(@RequestBody Pack pack) {
-//		return packsRepository.save(pack);
-//	}
-//	
-//	//Modify Pack
-//	@PutMapping("/pack")
-//	@ResponseStatus(HttpStatus.CREATED)
-//	public Pack modifyPack(@RequestBody Pack pack) {
-//		if (packsRepository.findById(pack.getId()).isEmpty()) {
-//			throw new NotFoundException("Can't find pack with id: " + pack.getId());
-//		}
-//		return packsRepository.save(pack);
-//	}
-//	/* --- End of Packs --- */
+    public List<Pack> getAllPacks() {
+        return packsRepository.findAll();
+    }
+    // Get specific Pack    @GetMapping("/pack/{id}")
+    public Pack getPackbyId(@PathVariable int id) {
+        return packsRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find pack with id: " +id));
+    }   
+    //Create Pack    @PostMapping("/pack")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Pack createPack(@RequestBody Pack pack) {
+        return packsRepository.save(pack);
+    }
+    // Get all Questions    @GetMapping("/question")
+    public List<Questions> getAllQuestions() {
+        return questionsRepository.findAll();
+    }
+    // Get specific Question    @GetMapping("/question/{id}")
+    public Questions getQuestionbyId(@PathVariable int id) {
+        return questionsRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find question with id: " +id));
+    }   
+    // Get Question by pack id    @GetMapping("/question/pack/{id}")
+    public List<Questions> getQuestionbyPackId(@PathVariable int id) {
+        if (packsRepository.findById(id).isEmpty()) {
+            throw new NotFoundException("Can't find interview with id: " + id);
+        }
+        return packsRepository.findById(id).get().getQuestions();
+    }   
+    //Create Question    @PostMapping("/question")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Questions createQuestion(@RequestBody Questions question) {
+        return questionsRepository.save(question);
+    }
+    
+    /* --- End of Packs --- */
 	
 	
 	

@@ -39,6 +39,21 @@ public class Interview {
 	@JsonIgnore
 	private AssessmentCenter assessmentCenter;
 	
+	public Pack getPack() {
+		return pack;
+	}
+
+	public void setPack(Pack pack) {
+		this.pack = pack;
+	}
+
+	public InterviewFeedback getFeedback() {
+		return feedback;
+	}
+
+	public void setFeedback(InterviewFeedback feedback) {
+		this.feedback = feedback;
+	}
 	@ManyToOne
 	@JoinColumn(name = "FK_CANDIDATE_NO")
 	@JsonIgnore

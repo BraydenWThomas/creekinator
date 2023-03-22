@@ -335,6 +335,7 @@ public class Dataloader implements ApplicationRunner{
 		
 		
 		interviewFeedbackList.get(0).setInterview(interviewA.get(0));
+		interviewA.get(0).setFeedback(interviewFeedbackList.get(0));
 		//acList.get(0).setPack(packList);
 		packList.get(0).setAssessmentCenters(acList);
 		

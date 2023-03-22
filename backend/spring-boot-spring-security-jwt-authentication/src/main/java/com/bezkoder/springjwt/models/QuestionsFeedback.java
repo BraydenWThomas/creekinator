@@ -17,7 +17,6 @@ public class QuestionsFeedback {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@ManyToOne
-	@JsonIgnore
 	private InterviewFeedback interviewFeedback;
 	
 	@ManyToOne
