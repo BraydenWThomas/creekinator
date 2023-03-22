@@ -24,7 +24,7 @@ public class Interview {
 	private int score = -1;
 	
 	@ManyToOne
-	private Pack packId;
+	private Pack pack;
 	
 	@OneToOne
 	private InterviewFeedback feedback;

@@ -13,44 +13,46 @@ public class QuestionsFeedback {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@ManyToOne
 	private InterviewFeedback interviewFeedback;
 	
 	@ManyToOne
-	private Questions questionId;
+	private Questions question;
 	
 	private String response;
 	private String feedback;
 	private int score;
-	
-	
 	public QuestionsFeedback() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	public QuestionsFeedback(InterviewFeedback interviewFeedbackId, Questions questionId, String response,
-			String feedback, int score) {
+	public QuestionsFeedback(InterviewFeedback interviewFeedback, Questions question, String response, String feedback,
+			int score) {
 		super();
-		this.interviewFeedback = interviewFeedbackId;
-		this.questionId = questionId;
+		this.interviewFeedback = interviewFeedback;
+		this.question = question;
 		this.response = response;
 		this.feedback = feedback;
 		this.score = score;
 	}
-
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
-	public InterviewFeedback getInterviewFeedbackId() {
+	public InterviewFeedback getInterviewFeedback() {
 		return interviewFeedback;
 	}
-	public void setInterviewFeedbackId(InterviewFeedback interviewFeedbackId) {
-		this.interviewFeedback = interviewFeedbackId;
+	public void setInterviewFeedback(InterviewFeedback interviewFeedback) {
+		this.interviewFeedback = interviewFeedback;
+	}
+	public Questions getQuestion() {
+		return question;
+	}
+	public void setQuestion(Questions question) {
+		this.question = question;
 	}
 	public String getResponse() {
 		return response;
@@ -69,14 +71,6 @@ public class QuestionsFeedback {
 	}
 	public void setScore(int score) {
 		this.score = score;
-	}
-
-	public Questions getQuestionId() {
-		return questionId;
-	}
-
-	public void setQuestionId(Questions questionId) {
-		this.questionId = questionId;
 	}
 	
 	

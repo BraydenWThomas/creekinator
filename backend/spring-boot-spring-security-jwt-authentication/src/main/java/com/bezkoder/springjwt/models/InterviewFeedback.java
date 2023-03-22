@@ -21,23 +21,23 @@ public class InterviewFeedback {
 	private Integer id;
 	
 	@OneToOne
-	private Interview interviewId;
+	private Interview interview;
 	private String feedback;
 	private int overallScore;
 	
 	@ManyToOne
-	private Pack packId;
+	private Pack pack;
 	
 	@OneToMany(mappedBy = "interviewFeedback")
 	private List<QuestionsFeedback> questionFeedback;
 	
 	
-	public InterviewFeedback(List<QuestionsFeedback> questionFeedback, Interview interviewId, Pack packId,
+	public InterviewFeedback(List<QuestionsFeedback> questionFeedback, Interview interview, Pack packId,
 			String feedback, int overallScore) {
 		super();
 		this.questionFeedback = questionFeedback;
-		this.interviewId = interviewId;
-		this.packId = packId;
+		this.interview = interview;
+		this.pack = packId;
 		this.feedback = feedback;
 		this.overallScore = overallScore;
 	}
@@ -52,16 +52,16 @@ public class InterviewFeedback {
 		this.questionFeedback = questionFeedback;
 	}
 	public Interview getInterviewId() {
-		return interviewId;
+		return interview;
 	}
 	public void setInterviewId(Interview interviewId) {
-		this.interviewId = interviewId;
+		this.interview = interviewId;
 	}
 	public Pack getPackId() {
-		return packId;
+		return pack;
 	}
 	public void setPackId(Pack packId) {
-		this.packId = packId;
+		this.pack = packId;
 	}
 	public String getFeedback() {
 		return feedback;
@@ -81,6 +81,17 @@ public class InterviewFeedback {
 	public void setId(int id) {
 		this.id = id;
 	}
+	public Interview getInterview() {
+		return interview;
+	}
+	public void setInterview(Interview interview) {
+		this.interview = interview;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	
 	
 	
 	

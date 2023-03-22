@@ -17,7 +17,7 @@ public class Questions {
 	private Integer id;
 	
 	@ManyToOne
-	private Pack packId;
+	private Pack pack;
 	
 	private String question;
 	private String answer;
@@ -29,36 +29,55 @@ public class Questions {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Questions(Pack packId, String question, String answer) {
+
+	public Questions(Pack pack, String question, String answer, List<QuestionsFeedback> feedback) {
 		super();
-		this.packId = packId;
+		this.pack = pack;
 		this.question = question;
 		this.answer = answer;
+		this.feedback = feedback;
 	}
+
 	public Integer getId() {
 		return id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	public Pack getPackId() {
-		return packId;
+		return pack;
 	}
+
 	public void setPackId(Pack packId) {
-		this.packId = packId;
+		this.pack = packId;
 	}
+
 	public String getQuestion() {
 		return question;
 	}
+
 	public void setQuestion(String question) {
 		this.question = question;
 	}
+
 	public String getAnswer() {
 		return answer;
 	}
+
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
+
+	public List<QuestionsFeedback> getFeedback() {
+		return feedback;
+	}
+
+	public void setFeedback(List<QuestionsFeedback> feedback) {
+		this.feedback = feedback;
+	}
+	
 	
 	
 	
