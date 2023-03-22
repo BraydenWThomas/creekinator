@@ -148,7 +148,8 @@ public class Dataloader implements ApplicationRunner{
 		
 		//INTERVIEW FEEDBACK
 		List<InterviewFeedback> interviewFeedbackList = new ArrayList<InterviewFeedback>();
-		interviewFeedbackList.add(new InterviewFeedback(null, null, packList.get(0), "Feedback", 2));
+		interviewFeedbackList.add(new InterviewFeedback(null, null, null, "Feedback", 2));
+		interviewFeedbackList.get(0).setPackId(packList.get(0));
 		
 		this.interviewFeedbackRepository.saveAll(interviewFeedbackList);
 		
@@ -332,19 +333,25 @@ public class Dataloader implements ApplicationRunner{
 		candidateList.get(2).addRecruiter(recruiterList.get(1));
 		candidateList.get(1).addRecruiter(recruiterList.get(4));
 		
-	
 		
+		interviewFeedbackList.get(0).setInterview(interviewA.get(0));
+		//acList.get(0).setPack(packList);
+		packList.get(0).setAssessmentCenters(acList);
+		
+		
+
 		// Update all changes
 		this.userRepository.saveAll(userList);
 		this.roleRepository.saveAll(rolesList);
 		this.candidateRepository.saveAll(candidateList);
 		this.recruiterRepository.saveAll(recruiterList);
 		this.interviewerRepository.saveAll(interviewerList);
-//		this.packsRepository.saveAll(packList);
+		this.packsRepository.saveAll(packList);
 		this.assessmentCenterRepository.saveAll(acList);
 		this.interviewRepository.saveAll(interviewA);
 		this.interviewRepository.saveAll(interviewB);
 		this.interviewRepository.saveAll(interviewC);
+		this.interviewFeedbackRepository.saveAll(interviewFeedbackList);
 	}
 
 }

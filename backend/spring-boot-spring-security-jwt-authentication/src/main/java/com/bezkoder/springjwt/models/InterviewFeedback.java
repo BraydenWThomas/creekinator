@@ -51,12 +51,6 @@ public class InterviewFeedback {
 	public void setQuestionFeedback(List<QuestionsFeedback> questionFeedback) {
 		this.questionFeedback = questionFeedback;
 	}
-	public Interview getInterviewId() {
-		return interview;
-	}
-	public void setInterviewId(Interview interviewId) {
-		this.interview = interviewId;
-	}
 	public Pack getPackId() {
 		return pack;
 	}
