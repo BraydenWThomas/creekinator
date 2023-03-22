@@ -117,24 +117,26 @@ public class Dataloader implements ApplicationRunner{
 		
 
 		
-//		//QUESTIONS
-//		List<Questions> questionList = new ArrayList<>();
-//		questionList.add(new Questions(null, "Question", "Answer"));
-//		questionList.add(new Questions(null, "Question", "Answer"));
-//		questionList.add(new Questions(null, "Question", "Answer"));
-//		questionList.add(new Questions(null, "Question", "Answer"));
-//		
-//		
-//		// PACKS
-//		List<Pack> packList = new ArrayList<>();
-//		new Pack("Pack1", "Tech", "Java", questionList, null, null);
-////		packList.add(new Pack("Pack 1","Tech","Link..."));
-////		packList.add(new Pack("Pack 2","Tech","Link..."));
-////		packList.add(new Pack("Pack 3","Sales","Link..."));
-////		packList.add(new Pack("Pack 4","Tech","Link..."));
-////		packList.add(new Pack("Pack 5","Sales","Link..."));
-//		
-//		this.packsRepository.saveAll(packList);
+		//QUESTIONS
+		List<Questions> questionList = new ArrayList<>();
+		questionList.add(new Questions(null, "Question", "Answer", null));
+		questionList.add(new Questions(null, "Question", "Answer", null));
+		questionList.add(new Questions(null, "Question", "Answer", null));
+		questionList.add(new Questions(null, "Question", "Answer", null));
+		
+		//this.Que
+		
+		
+		// PACKS
+		List<Pack> packList = new ArrayList<>();
+		new Pack("Pack1", "Tech", "Java", null, null, null, null);
+//		packList.add(new Pack("Pack 1","Tech","Link..."));
+//		packList.add(new Pack("Pack 2","Tech","Link..."));
+//		packList.add(new Pack("Pack 3","Sales","Link..."));
+//		packList.add(new Pack("Pack 4","Tech","Link..."));
+//		packList.add(new Pack("Pack 5","Sales","Link..."));
+		
+		this.packsRepository.saveAll(packList);
 		
 		// ASSESSMENT CENTERS 
 		List<AssessmentCenter> acList = new ArrayList<>();
