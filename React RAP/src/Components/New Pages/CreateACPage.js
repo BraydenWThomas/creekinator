@@ -1,8 +1,9 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 // React
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { Link } from "react-router-dom";
 
 // import "./Styling/CreateAnACPage.scss";
@@ -15,7 +16,7 @@ import Calendar from "../Extra/Calendar";
 import NavBar from "../NavBar";
 
 // Material UI
-import { Divider, Typography, Grid, Button } from "@mui/material";
+import { Divider, Typography, Grid, Button, TextField } from "@mui/material";
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import { Container } from '@mui/system';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -27,8 +28,8 @@ const CreateACPage = () => {
   // AC Details
   const [title, setTitle] = useState('');
   const [timeError, setTimeError] = useState(false);
-  const [startTime, setStartTime] = useState(dayjs());
-  const [endTime, setEndTime] = useState(dayjs().add(2, "hour"));
+  const [startTime, setStartTime] = useState(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));
+  const [endTime, setEndTime] = useState(dayjs().set('hour', 17).set('minute', 30).startOf('minute'));
   const [calendarSelected, setCalendarSelected] = useState(dayjs(new Date()));
 
   // Find existing ACs
@@ -164,8 +165,8 @@ const CreateACPage = () => {
 
     // Reset fields
     setTitle('');
-    setStartTime(dayjs());
-    setEndTime(dayjs().add(2, "hour"));
+    setStartTime(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));
+    setEndTime(dayjs().set('hour', 17).set('minute', 30).startOf('minute'));
     setCalendarSelected(dayjs(new Date()));
     setIsCheckedInterviewer(interviewers.slice().fill(false));
     setIsCheckedCandidates(candidates.slice().fill(false));
@@ -176,6 +177,22 @@ const CreateACPage = () => {
     setEndTime(dayjs(time).add(2, "hour"));
   };
 
+  // Create MenuItem of selectable time-intervals
+  dayjs.extend(customParseFormat);
+  var start = startTime;
+  var end = endTime;
+  var selectTimes = [];
+  while (start <= end) {
+    selectTimes.push(start.add(30, "minute").format("HH:mm:ss"));
+
+    if (selectTimes.at(-1) === end.format("HH:mm:ss")) {
+      break
+    }
+
+    start = dayjs(selectTimes.at(-1), "HH:mm:ss");
+  }
+  console.log(selectTimes);
+
   useEffect(() => {
     refresh();
   }, [calendarSelected])
@@ -185,92 +202,116 @@ const CreateACPage = () => {
       <NavBar />
 
       <div className="content" style={{ float: 'left', width: '80%' }}>
-        <div className="header" style={{ display: "flex" }}>
-          <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}> Create Assessment Centre </Typography>
-        </div>
+        <Container component="main">
+          <div className="header">
+            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}> Create Assessment Centre </Typography>
+          </div>
 
-        <Divider sx={{ mt: 2, mb:2 }} />
+          <Divider sx={{ mt: 2, mb: 2 }} />
 
-        <Grid2 container justify="center">
-          <Calendar
-            times={true}
-            scheduled={scheduledACs}
-            calendarSelected={calendarSelected}
-            setCalendarSelected={setCalendarSelected} />
-        </Grid2>
-
-        <Grid2 xs={12}>
-          <StartDatePicker date={calendarSelected} />
-        </Grid2>
-
-        <Grid2 xd={6}>
-          <TimeRange
-            error={timeError}
-            helperText={"Time is currently booked"}
-            label={"Start Time"}
-            hourOffset={0}
-            time={startTime}
-            onChange={setTimes}
-          />
-        </Grid2>
-
-        <Grid2 xd={6}>
-          <TimeRange
-            error={timeError}
-            label={"End Time"}
-            hourOffset={2}
-            time={endTime}
-            onChange={true}
-          />
-        </Grid2>
-
-        <div className="Interviewers">
-          <Typography component="h2" variant="h4" mb={2}> Interviewers </Typography>
           <Grid container spacing={2}>
-            <Grid item xs sm={4}>
-              <AttendeeCheckbox
-                attendee={"sales"}
-                attendeeTitle={"Sales Interview"}
-                attendeeChecked={isCheckedInterviewer}
-                attendeeType={interviewers}
-                toggleFunction={toggleCheckedInterviewer} />
+            <Grid item xs={12}>
+              <TextField
+                id="title-input"
+                label="Title"
+                type="text"
+                autoComplete="current-title"
+                fullWidth
+                required
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
             </Grid>
-            <Grid item xs sm={4}>
-              <AttendeeCheckbox
-                attendee={"tech"}
-                attendeeTitle={"Technical Interview"}
-                attendeeChecked={isCheckedInterviewer}
-                attendeeType={interviewers}
-                toggleFunction={toggleCheckedInterviewer} />
+
+            <Grid item xs={8}>
+              <Grid container justify="center">
+                <Calendar
+                  times={true}
+                  scheduled={scheduledACs}
+                  calendarSelected={calendarSelected}
+                  setCalendarSelected={setCalendarSelected}
+                />
+              </Grid>
+            </Grid>
+
+            <Grid item xs={4}>
+              <Grid>
+                <StartDatePicker date={calendarSelected} />
+              </Grid>
+
+              <Grid mt={4}>
+                <TimeRange
+                  error={timeError}
+                  helperText={"Time is currently booked"}
+                  label={"Start Time"}
+                  hourOffset={0}
+                  time={startTime}
+                  onChange={setTimes}
+                // selectTimes={selectTimes}
+                />
+              </Grid>
+
+              <Grid mt={4}>
+                <TimeRange
+                  error={timeError}
+                  label={"End Time"}
+                  hourOffset={2}
+                  time={endTime}
+                  onChange={true}
+                />
+              </Grid>
             </Grid>
           </Grid>
-        </div>
+          <Divider sx={{ mt: 2, mb: 2 }} />
 
-        <Divider sx={{ mt: 2, mb: 2 }} />
-
-        <div className="candidates">
-          <StreamFilter header={"Candidate"} />
-          <AttendeeCheckbox
-            attendee={"candidate"}
-            attendeeChecked={isCheckedCandidates}
-            attendeeType={candidates}
-            toggleFunction={toggleCheckedCandidates} />
-        </div>
-
-        <div className="buttons">
-          <Grid container spacing={2} sx={{ mt: 2 }}>
-            <Grid item xs sm={12}>
-              <Button variant="contained" fullWidth onClick={(e) => submitNewACForm(e.target.value)}>
-                Create
-              </Button>
+          <div className="Interviewers">
+            <Typography component="h2" variant="h4" mb={2}> Interviewers </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs sm={6}>
+                <AttendeeCheckbox
+                  attendee={"sales"}
+                  attendeeTitle={"Sales Interview"}
+                  attendeeChecked={isCheckedInterviewer}
+                  attendeeType={interviewers}
+                  toggleFunction={toggleCheckedInterviewer} />
+              </Grid>
+              <Grid item xs sm={6}>
+                <AttendeeCheckbox
+                  attendee={"tech"}
+                  attendeeTitle={"Technical Interview"}
+                  attendeeChecked={isCheckedInterviewer}
+                  attendeeType={interviewers}
+                  toggleFunction={toggleCheckedInterviewer} />
+              </Grid>
             </Grid>
-            <Grid item xs sm={12}>
-              <Link to={"/recruiter"}>
-                <Button variant="contained" color='secondary' fullWidth> Cancel </Button>
-              </Link>
+          </div>
+
+          <Divider sx={{ mt: 2, mb: 2 }} />
+
+          <div className="candidates">
+            <StreamFilter header={"Candidate"} />
+            <AttendeeCheckbox
+              attendee={"candidate"}
+              attendeeChecked={isCheckedCandidates}
+              attendeeType={candidates}
+              toggleFunction={toggleCheckedCandidates} />
+          </div>
+
+          <div className="buttons">
+            <Grid container spacing={2} sx={{ mt: 2 }}>
+              <Grid item xs sm={12}>
+                <Button variant="contained" fullWidth onClick={(e) => submitNewACForm(e.target.value)}>
+                  Create
+                </Button>
+              </Grid>
+              <Grid item xs sm={12}>
+                <Link to={"/recruiter"}>
+                  <Button variant="contained" color='secondary' fullWidth> Cancel </Button>
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
-        </div>
+          </div>
+        </Container>
       </div>
     </div>
   )
