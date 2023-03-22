@@ -21,14 +21,17 @@ public class InterviewFeedback {
 	private Integer id;
 	
 	@OneToOne
+	@JsonIgnore
 	private Interview interview;
 	private String feedback;
 	private int overallScore;
 	
 	@ManyToOne
+	@JsonIgnore
 	private Pack pack;
 	
 	@OneToMany(mappedBy = "interviewFeedback")
+	@JsonIgnore
 	private List<QuestionsFeedback> questionFeedback;
 	
 	

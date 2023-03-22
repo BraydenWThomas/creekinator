@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="QUESTIONS_FEEDBACK")
 public class QuestionsFeedback {
@@ -15,9 +17,11 @@ public class QuestionsFeedback {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@ManyToOne
+	@JsonIgnore
 	private InterviewFeedback interviewFeedback;
 	
 	@ManyToOne
+	@JsonIgnore
 	private Questions question;
 	
 	private String response;

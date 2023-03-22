@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Questions {
 
@@ -16,13 +18,16 @@ public class Questions {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	
 	@ManyToOne
+	@JsonIgnore
 	private Pack pack;
 	
 	private String question;
 	private String answer;
 	
 	@OneToMany(mappedBy = "question")
+	@JsonIgnore
 	private List<QuestionsFeedback> feedback;
 	
 	public Questions() {

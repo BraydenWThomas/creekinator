@@ -22,10 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bezkoder.springjwt.models.*;
 import com.bezkoder.springjwt.repository.AssessmentCenterRepository;
 import com.bezkoder.springjwt.repository.CandidateRepository;
+import com.bezkoder.springjwt.repository.InterviewFeedbackRepository;
 import com.bezkoder.springjwt.repository.InterviewerRepository;
 import com.bezkoder.springjwt.repository.InterviewsRepository;
 import com.bezkoder.springjwt.repository.PacksRepository;
+import com.bezkoder.springjwt.repository.QuestionsFeedbackRepository;
+import com.bezkoder.springjwt.repository.QuestionsRepository;
 import com.bezkoder.springjwt.repository.RecruiterRepository;
+import com.bezkoder.springjwt.repository.RoleRepository;
 import com.bezkoder.springjwt.repository.UserRepository;
 import com.bezkoder.springjwt.exceptions.NotFoundException;
 
@@ -49,6 +53,10 @@ public class EntityController {
 	PacksRepository packsRepository;
 	RecruiterRepository recruiterRepository;
 	UserRepository userRepository;
+	RoleRepository roleRepository;
+	QuestionsFeedbackRepository questionsFeedbackRepository;
+	InterviewFeedbackRepository interviewFeedbackRepository;
+	QuestionsRepository questionsRepository;
 	/* --- end of fields --- */
 	
 	
@@ -59,8 +67,8 @@ public class EntityController {
 	// TODO autowire attribute should be able to avoid doing this section
 	public EntityController(AssessmentCenterRepository assessmentCenterRepository, CandidateRepository candidateRepository ,
 			InterviewerRepository interviewerRepository, InterviewsRepository interviewRepository, 
-			PacksRepository packsRepository,RecruiterRepository recruiterRepository,
-			UserRepository userRepository) {
+			PacksRepository packsRepository,RecruiterRepository recruiterRepository,UserRepository userRepository,RoleRepository roleRepository, 
+			QuestionsFeedbackRepository questionsFeedbackRepository, InterviewFeedbackRepository interviewFeedbackRepository, QuestionsRepository questionsRepository) {
 		super();
 		this.assessmentCenterRepository = assessmentCenterRepository;
 		this.candidateRepository = candidateRepository;
@@ -69,6 +77,10 @@ public class EntityController {
 		this.packsRepository = packsRepository;
 		this.recruiterRepository = recruiterRepository;
 		this.userRepository = userRepository;
+		this.roleRepository = roleRepository;
+		this.questionsFeedbackRepository = questionsFeedbackRepository;
+		this.interviewFeedbackRepository = interviewFeedbackRepository;
+		this.questionsRepository = questionsRepository;
 	}
 	/* --- end of constructor --- */
 	
@@ -614,12 +626,12 @@ public class EntityController {
 	
 //	/* --- Packs --- */
 //	
-//	// Get all Packs
-//	@GetMapping("/pack")
-//	public List<Pack> getAllPacks() {
-//		return packsRepository.findAll();
-//	}
-//	
+	// Get all Packs
+	@GetMapping("/pack")
+	public List<Pack> getAllPacks() {
+		return packsRepository.findAll();
+	}
+
 //	// Get specific Pack
 //	@GetMapping("/pack/{packId}")
 //	public Pack getPackbyId(@PathVariable int packId) {

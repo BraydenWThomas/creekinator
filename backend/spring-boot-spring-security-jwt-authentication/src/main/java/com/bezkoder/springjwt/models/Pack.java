@@ -35,12 +35,15 @@ public class Pack {
 	private String stream;
 	
 	@OneToMany(mappedBy = "pack")
+	@JsonIgnore
 	private List<InterviewFeedback> feedback;
 	
 	@OneToMany(mappedBy = "pack")
+	@JsonIgnore
 	private List<Questions> questions;
 	
 	@OneToMany(mappedBy = "pack")
+	@JsonIgnore
 	private List<Interview> interviews;
 	
 	@ManyToMany
