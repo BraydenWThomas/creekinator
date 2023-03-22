@@ -18,9 +18,12 @@ import org.springframework.stereotype.Service;
 import com.bezkoder.springjwt.models.*;
 import com.bezkoder.springjwt.repository.AssessmentCenterRepository;
 import com.bezkoder.springjwt.repository.CandidateRepository;
+import com.bezkoder.springjwt.repository.InterviewFeedbackRepository;
 import com.bezkoder.springjwt.repository.InterviewerRepository;
 import com.bezkoder.springjwt.repository.InterviewsRepository;
 import com.bezkoder.springjwt.repository.PacksRepository;
+import com.bezkoder.springjwt.repository.QuestionsFeedbackRepository;
+import com.bezkoder.springjwt.repository.QuestionsRepository;
 import com.bezkoder.springjwt.repository.RecruiterRepository;
 import com.bezkoder.springjwt.repository.RoleRepository;
 import com.bezkoder.springjwt.repository.UserRepository;
@@ -38,12 +41,17 @@ public class Dataloader implements ApplicationRunner{
 	private RecruiterRepository recruiterRepository;
 	private UserRepository userRepository;
 	private RoleRepository roleRepository;
+	private QuestionsFeedbackRepository questionsFeedbackRepository;
+	private InterviewFeedbackRepository interviewFeedbackRepository;
+	private QuestionsRepository questionsRepository;
+	
 	
 	
 	@Autowired
 	public Dataloader(AssessmentCenterRepository assessmentCenterRepository, CandidateRepository candidateRepository ,
 			InterviewerRepository interviewerRepository, InterviewsRepository interviewRepository, 
-			PacksRepository packsRepository,RecruiterRepository recruiterRepository,UserRepository userRepository,RoleRepository roleRepository) {
+			PacksRepository packsRepository,RecruiterRepository recruiterRepository,UserRepository userRepository,RoleRepository roleRepository, 
+			QuestionsFeedbackRepository questionsFeedbackRepository, InterviewFeedbackRepository interviewFeedbackRepository, QuestionsRepository questionsRepository) {
 		super();
 		this.assessmentCenterRepository = assessmentCenterRepository;
 		this.candidateRepository = candidateRepository;
@@ -53,6 +61,9 @@ public class Dataloader implements ApplicationRunner{
 		this.recruiterRepository = recruiterRepository;
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
+		this.questionsFeedbackRepository = questionsFeedbackRepository;
+		this.interviewFeedbackRepository = interviewFeedbackRepository;
+		this.questionsRepository = questionsRepository;
 	}
 	
 	@Override
@@ -115,21 +126,9 @@ public class Dataloader implements ApplicationRunner{
 		
 		this.interviewerRepository.saveAll(interviewerList);
 		
-
-		
-		//QUESTIONS
-		List<Questions> questionList = new ArrayList<>();
-		questionList.add(new Questions(null, "Question", "Answer", null));
-		questionList.add(new Questions(null, "Question", "Answer", null));
-		questionList.add(new Questions(null, "Question", "Answer", null));
-		questionList.add(new Questions(null, "Question", "Answer", null));
-		
-		//this.Que
-		
-		
 		// PACKS
 		List<Pack> packList = new ArrayList<>();
-		new Pack("Pack1", "Tech", "Java", null, null, null, null);
+		packList.add(new Pack("Pack1", "Tech", "Java", null, null, null, null));
 //		packList.add(new Pack("Pack 1","Tech","Link..."));
 //		packList.add(new Pack("Pack 2","Tech","Link..."));
 //		packList.add(new Pack("Pack 3","Sales","Link..."));
@@ -137,6 +136,33 @@ public class Dataloader implements ApplicationRunner{
 //		packList.add(new Pack("Pack 5","Sales","Link..."));
 		
 		this.packsRepository.saveAll(packList);
+		
+		//QUESTIONS
+		List<Questions> questionList = new ArrayList<>();
+		questionList.add(new Questions(packList.get(0), "Question", "Answer", null));
+		questionList.add(new Questions(packList.get(0), "Question", "Answer", null));
+		questionList.add(new Questions(packList.get(0), "Question", "Answer", null));
+		questionList.add(new Questions(packList.get(0), "Question", "Answer", null));
+		
+		this.questionsRepository.saveAll(questionList);
+		
+		//INTERVIEW FEEDBACK
+		List<InterviewFeedback> interviewFeedbackList = new ArrayList<InterviewFeedback>();
+		interviewFeedbackList.add(new InterviewFeedback(null, null, packList.get(0), "Feedback", 2));
+		
+		
+		
+		//QUESTIONS FEEDBACK
+		List<QuestionsFeedback> questionsFeedbackList = new ArrayList<QuestionsFeedback>();
+		questionsFeedbackList.add(new QuestionsFeedback(null, questionList.get(0), "Response", "Feedback", 6));
+		questionsFeedbackList.add(new QuestionsFeedback(null, questionList.get(1), "Response", "Feedback", 3));
+		questionsFeedbackList.add(new QuestionsFeedback(null, questionList.get(2), "Response", "Feedback", 1));
+		questionsFeedbackList.add(new QuestionsFeedback(null, questionList.get(3), "Response", "Feedback", 9));
+		
+		interviewFeedbackList.get(0).setQuestionFeedback(questionsFeedbackList);
+		questionsFeedbackList.forEach(qf -> qf.setInterviewFeedback(interviewFeedbackList.get(0)));
+		this.interviewFeedbackRepository.saveAll(interviewFeedbackList);
+		this.questionsFeedbackRepository.saveAll(questionsFeedbackList);
 		
 		// ASSESSMENT CENTERS 
 		List<AssessmentCenter> acList = new ArrayList<>();
