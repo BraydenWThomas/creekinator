@@ -72,13 +72,13 @@ public class InterviewFeedback {
 	public int getOverallScore() {
 		return overallScore;
 	}
-	public void setOverallScore(int overallScore) {
+	public void setOverallScore(Integer overallScore) {
 		this.overallScore = overallScore;
 	}
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public Interview getInterview() {
@@ -87,9 +87,7 @@ public class InterviewFeedback {
 	public void setInterview(Interview interview) {
 		this.interview = interview;
 	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
+
 	
 	
 	
