@@ -244,10 +244,9 @@ const CreateACPage = () => {
                   error={timeError}
                   helperText={"Time is currently booked"}
                   label={"Start Time"}
-                  hourOffset={0}
                   time={startTime}
                   onChange={setTimes}
-                // selectTimes={selectTimes}
+                  selectTimes={selectTimes}
                 />
               </Grid>
 
@@ -255,7 +254,6 @@ const CreateACPage = () => {
                 <TimeRange
                   error={timeError}
                   label={"End Time"}
-                  hourOffset={2}
                   time={endTime}
                   onChange={true}
                 />

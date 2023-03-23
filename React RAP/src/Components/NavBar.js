@@ -23,67 +23,77 @@ const NavBar = () => {
   }
 
   return (
-    <div className="nav-container">
+    <div className="Sidebar">
       <Paper elevation={4} sx={{ height: '100vh' }}>
-        <nav className="nav-side">
-          <img src={fdm} alt="FDM Logo" />
-        </nav>
-        {localStorage.getItem("status") === "ROLE_RECRUITER"
-          ? // If recruiter user is logged onto system
-          <Tabs component="nav" orientation='vertical' variant='scrollable' sx={{ mt: 2 }} value={value} onChange={handleChange}
-            TabIndicatorProps={{ sx: { left: 0, width: 7 } }}>
-            <Tab
-              icon={<DashboardIcon />} iconPosition="start"
-              href='/recruiter'
-              label="Dashboard"
-            />
-            <Tab
-              icon={<CalendarMonthIcon />} iconPosition="start"
-              href='/recruiter/calendar'
-              label="Calendar"
-            />
-          </Tabs>
-          : // If interviewer user is logged onto system  
-          (localStorage.getItem("status") === "ROLE_INTERVIEWER"
-            ? <Tabs component="nav" orientation='vertical' variant='scrollable' sx={{ mt: 2 }} value={value} onChange={handleChange}
+        <img src={fdm} alt="FDM Logo" />
+
+        <ul className="side-links">
+          {localStorage.getItem("status") === "ROLE_RECRUITER"
+            ? // If recruiter user is logged onto system
+            <Tabs component="nav" orientation='vertical' variant='scrollable' sx={{ mt: 2 }} value={value} onChange={handleChange}
               TabIndicatorProps={{ sx: { left: 0, width: 7 } }}>
               <Tab
                 icon={<DashboardIcon />} iconPosition="start"
-                href='/interviewer'
+                href='/recruiter'
                 label="Dashboard"
               />
               <Tab
                 icon={<CalendarMonthIcon />} iconPosition="start"
-                href='/interviewer/calendar'
+                href='/recruiter/calendar'
                 label="Calendar"
               />
+              <Tab
+                icon={<LogoutIcon />} iconPosition="start"
+                label="Logout"
+                onClick={logout}
+              />
             </Tabs>
-            : // If candidate user is logged onto system  
-            (localStorage.getItem("status") === "ROLE_CANDIDATE"
+            : // If interviewer user is logged onto system  
+            (localStorage.getItem("status") === "ROLE_INTERVIEWER"
               ? <Tabs component="nav" orientation='vertical' variant='scrollable' sx={{ mt: 2 }} value={value} onChange={handleChange}
                 TabIndicatorProps={{ sx: { left: 0, width: 7 } }}>
                 <Tab
                   icon={<DashboardIcon />} iconPosition="start"
-                  href='/candidate'
+                  href='/interviewer'
                   label="Dashboard"
                 />
                 <Tab
                   icon={<CalendarMonthIcon />} iconPosition="start"
-                  href='/candidate/calendar'
+                  href='/interviewer/calendar'
                   label="Calendar"
                 />
+                <Tab
+                  icon={<LogoutIcon />} iconPosition="start"
+                  label="Logout"
+                  onClick={logout}
+                />
               </Tabs>
-              : <></>
+              : // If candidate user is logged onto system  
+              (localStorage.getItem("status") === "ROLE_CANDIDATE"
+                ? <Tabs component="nav" orientation='vertical' variant='scrollable' sx={{ mt: 2 }} value={value} onChange={handleChange}
+                  TabIndicatorProps={{ sx: { left: 0, width: 7 } }}>
+                  <Tab
+                    icon={<DashboardIcon />} iconPosition="start"
+                    href='/candidate'
+                    label="Dashboard"
+                  />
+                  <Tab
+                    icon={<CalendarMonthIcon />} iconPosition="start"
+                    href='/candidate/calendar'
+                    label="Calendar"
+                  />
+                  <Tab
+                    icon={<LogoutIcon />} iconPosition="start"
+                    label="Logout"
+                    onClick={logout}
+                  />
+                </Tabs>
+                : <></>
+              )
             )
-          )
-        }
-        <Tab
-          icon={<LogoutIcon />} iconPosition="start"
-          label="Logout"
-          onClick={logout}
-          sx={{ mt: 115 }}
-        />
-    </Paper>
+          }
+        </ul>
+      </Paper>
     </div >
   );
 };

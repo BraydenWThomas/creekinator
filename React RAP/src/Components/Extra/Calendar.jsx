@@ -54,7 +54,7 @@ const Calendar = (props) => {
             <List
               dense={false}
               subheader={
-                <ListSubheader component="div" className="nested-list-subheader">
+                <ListSubheader component="div" className="nested-list-subheader" sx={{borderRadius:2, mt:1}}>
                   Scheduled
                 </ListSubheader>
               }>

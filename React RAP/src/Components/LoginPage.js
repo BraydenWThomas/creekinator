@@ -13,6 +13,7 @@ import { blue } from '@mui/material/colors';
 import './Styling/LoginPageStyle.css'
 import { Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { Navbar } from '@mantine/core';
 
 const FDMtheme = createTheme({
   palette: {
@@ -27,6 +28,7 @@ const LoginPage = (props) => {
   return (
     <div className='login-container'>
       <ThemeProvider theme={FDMtheme}>
+        <Navbar/>
         <Container component="main" maxWidth="xs">
           <Box
             sx={{
