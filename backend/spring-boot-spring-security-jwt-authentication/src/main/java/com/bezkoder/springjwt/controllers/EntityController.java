@@ -696,31 +696,37 @@ public class EntityController {
     public List<Pack> getAllPacks() {
         return packsRepository.findAll();
     }
-    // Get specific Pack    @GetMapping("/pack/{id}")
+    // Get specific Pack    
+	@GetMapping("/pack/{id}")
     public Pack getPackbyId(@PathVariable int id) {
         return packsRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find pack with id: " +id));
     }   
-    //Create Pack    @PostMapping("/pack")
+    //Create Pack    
+	@PostMapping("/pack")
     @ResponseStatus(HttpStatus.CREATED)
     public Pack createPack(@RequestBody Pack pack) {
         return packsRepository.save(pack);
     }
-    // Get all Questions    @GetMapping("/question")
+    // Get all Questions    
+	@GetMapping("/question")
     public List<Questions> getAllQuestions() {
         return questionsRepository.findAll();
     }
-    // Get specific Question    @GetMapping("/question/{id}")
+    // Get specific Question    
+	@GetMapping("/question/{id}")
     public Questions getQuestionbyId(@PathVariable int id) {
         return questionsRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find question with id: " +id));
     }   
-    // Get Question by pack id    @GetMapping("/question/pack/{id}")
+    // Get Question by pack id    
+	@GetMapping("/question/pack/{id}")
     public List<Questions> getQuestionbyPackId(@PathVariable int id) {
         if (packsRepository.findById(id).isEmpty()) {
             throw new NotFoundException("Can't find interview with id: " + id);
         }
         return packsRepository.findById(id).get().getQuestions();
     }   
-    //Create Question    @PostMapping("/question")
+    //Create Question    
+	@PostMapping("/question")
     @ResponseStatus(HttpStatus.CREATED)
     public Questions createQuestion(@RequestBody Questions question) {
         return questionsRepository.save(question);
