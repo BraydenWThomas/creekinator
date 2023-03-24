@@ -28,7 +28,6 @@ const LoginPage = (props) => {
   return (
     <div className='login-container'>
       <ThemeProvider theme={FDMtheme}>
-        <Navbar/>
         <Container component="main" maxWidth="xs">
           <Box
             sx={{

@@ -16,10 +16,13 @@ import Calendar from "../Extra/Calendar";
 import NavBar from "../NavBar";
 
 // Material UI
-import { Divider, Typography, Grid, Button, TextField } from "@mui/material";
+import { Divider, Typography, Grid, Button, TextField, FormControl } from "@mui/material";
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import { Container } from '@mui/system';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+
+// TimePicker
+// import TimePicker from 'basic-react-timepicker'
 
 const CreateACPage = () => {
   // URL
@@ -30,6 +33,8 @@ const CreateACPage = () => {
   const [timeError, setTimeError] = useState(false);
   const [startTime, setStartTime] = useState(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));
   const [endTime, setEndTime] = useState(dayjs().set('hour', 17).set('minute', 30).startOf('minute'));
+  const [startTimeSelect, setStartTimeSelect] = useState("");
+  const [endTimeSelect, setEndTimeSelect] = useState("");
   const [calendarSelected, setCalendarSelected] = useState(dayjs(new Date()));
 
   // Find existing ACs
@@ -97,20 +102,21 @@ const CreateACPage = () => {
 
   // Create POST request body
   const createNewACDetails = (title, date, startTime, endTime) => {
+    dayjs.extend(customParseFormat);
     let formattedDate = dayjs(date).format("YYYY-MM-DD");
-    let formattedStartTime = dayjs(startTime).format("HH:mm:ss");
-    let formattedEndTime = dayjs(endTime).format("HH:mm:ss");
+    let formattedStartTime = dayjs(startTime, "LT");
+    let formattedEndTime = dayjs(endTime, "LT");
 
     try {
       // Validate
       for (let i = 0; i < scheduledACs.length; i++) {
         if (
-          (dayjs(startTime).isSame(scheduledACs[i].startTime, "minute") &&
-            dayjs(endTime).isSame(scheduledACs[i].endTime, "minute")) ||
-          (dayjs(startTime).isBefore(scheduledACs[i].startTime, "minute") &&
-            dayjs(endTime).isAfter(scheduledACs[i].startTime, "minute")) ||
-          (dayjs(startTime).isAfter(scheduledACs[i].startTime, "minute") &&
-            dayjs(startTime).isBefore(scheduledACs[i].endTime, "minute"))
+          (dayjs(formattedStartTime).isSame(scheduledACs[i].start_time, "minute") &&
+            dayjs(formattedEndTime).isSame(scheduledACs[i].finish_time, "minute")) ||
+          (dayjs(formattedStartTime).isBefore(scheduledACs[i].start_time, "minute") &&
+            dayjs(formattedEndTime).isAfter(scheduledACs[i].start_time, "minute")) ||
+          (dayjs(formattedStartTime).isAfter(scheduledACs[i].start_time, "minute") &&
+            dayjs(formattedEndTime).isBefore(scheduledACs[i].finish_time, "minute"))
         ) {
           throw console.error();
         }
@@ -119,8 +125,8 @@ const CreateACPage = () => {
       return {
         title: title,
         date: formattedDate,
-        start_time: formattedStartTime,
-        finish_time: formattedEndTime,
+        start_time: formattedStartTime.format("HH:mm:ss"),
+        finish_time: formattedEndTime.format("HH:mm:ss"),
         coordinatorId: localStorage.getItem("userId")
       };
     } catch (error) {
@@ -149,7 +155,7 @@ const CreateACPage = () => {
     const candidateString = candidateIds.join(",");
 
     // POST body
-    const newAC = createNewACDetails(title, calendarSelected, startTime, endTime);
+    const newAC = createNewACDetails(title, calendarSelected, startTimeSelect, endTimeSelect);
     console.log(newAC)
 
     // POST request
@@ -172,33 +178,27 @@ const CreateACPage = () => {
     setIsCheckedCandidates(candidates.slice().fill(false));
   };
 
-  const setTimes = (time) => {
-    setStartTime(time);
-    setEndTime(dayjs(time).add(2, "hour"));
-  };
-
   // Create MenuItem of selectable time-intervals
   dayjs.extend(customParseFormat);
   var start = startTime;
   var end = endTime;
-  var selectTimes = [];
+  var selectTimes = [start.format("LT")];
   while (start <= end) {
-    selectTimes.push(start.add(30, "minute").format("HH:mm:ss"));
+    selectTimes.push(start.add(30, "minute").format("LT"));
 
-    if (selectTimes.at(-1) === end.format("HH:mm:ss")) {
+    if (selectTimes.at(-1) === end.format("LT")) {
       break
     }
 
-    start = dayjs(selectTimes.at(-1), "HH:mm:ss");
+    start = dayjs(selectTimes.at(-1), "LT");
   }
-  console.log(selectTimes);
 
   useEffect(() => {
     refresh();
   }, [calendarSelected])
 
   return (
-    <div>
+    <div style={{display: 'flex'}}>
       <NavBar />
 
       <div className="content" style={{ float: 'left', width: '80%' }}>
@@ -239,24 +239,29 @@ const CreateACPage = () => {
                 <StartDatePicker date={calendarSelected} />
               </Grid>
 
-              <Grid mt={4}>
+              <Grid container mt={4}>
+                <FormControl fullWidth>
                 <TimeRange
                   error={timeError}
                   helperText={"Time is currently booked"}
                   label={"Start Time"}
-                  time={startTime}
-                  onChange={setTimes}
+                  time={startTimeSelect}
+                  onChange={setStartTimeSelect}
                   selectTimes={selectTimes}
                 />
+                </FormControl>
               </Grid>
-
-              <Grid mt={4}>
+              <Grid container mt={4}>
+                <FormControl fullWidth>
                 <TimeRange
                   error={timeError}
                   label={"End Time"}
-                  time={endTime}
-                  onChange={true}
+                  time={endTimeSelect}
+                  onChange={setEndTimeSelect}
+                  selectTimes={selectTimes}
+                  full
                 />
+                </FormControl>
               </Grid>
             </Grid>
           </Grid>
