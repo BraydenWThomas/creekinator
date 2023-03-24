@@ -15,21 +15,15 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Service;
 
-import com.bezkoder.springjwt.models.AssessmentCenter;
-import com.bezkoder.springjwt.models.Candidate;
-import com.bezkoder.springjwt.models.ERole;
-import com.bezkoder.springjwt.models.Interview;
-import com.bezkoder.springjwt.models.Interviewer;
-import com.bezkoder.springjwt.models.Pack;
-import com.bezkoder.springjwt.models.Recruiter;
-import com.bezkoder.springjwt.models.Role;
-import com.bezkoder.springjwt.models.User;
 import com.bezkoder.springjwt.models.*;
 import com.bezkoder.springjwt.repository.AssessmentCenterRepository;
 import com.bezkoder.springjwt.repository.CandidateRepository;
+import com.bezkoder.springjwt.repository.InterviewFeedbackRepository;
 import com.bezkoder.springjwt.repository.InterviewerRepository;
 import com.bezkoder.springjwt.repository.InterviewsRepository;
 import com.bezkoder.springjwt.repository.PacksRepository;
+import com.bezkoder.springjwt.repository.QuestionsFeedbackRepository;
+import com.bezkoder.springjwt.repository.QuestionsRepository;
 import com.bezkoder.springjwt.repository.RecruiterRepository;
 import com.bezkoder.springjwt.repository.RoleRepository;
 import com.bezkoder.springjwt.repository.UserRepository;
@@ -47,12 +41,17 @@ public class Dataloader implements ApplicationRunner{
 	private RecruiterRepository recruiterRepository;
 	private UserRepository userRepository;
 	private RoleRepository roleRepository;
+	private QuestionsFeedbackRepository questionsFeedbackRepository;
+	private InterviewFeedbackRepository interviewFeedbackRepository;
+	private QuestionsRepository questionsRepository;
+	
 	
 	
 	@Autowired
 	public Dataloader(AssessmentCenterRepository assessmentCenterRepository, CandidateRepository candidateRepository ,
 			InterviewerRepository interviewerRepository, InterviewsRepository interviewRepository, 
-			PacksRepository packsRepository,RecruiterRepository recruiterRepository,UserRepository userRepository,RoleRepository roleRepository) {
+			PacksRepository packsRepository,RecruiterRepository recruiterRepository,UserRepository userRepository,RoleRepository roleRepository, 
+			QuestionsFeedbackRepository questionsFeedbackRepository, InterviewFeedbackRepository interviewFeedbackRepository, QuestionsRepository questionsRepository) {
 		super();
 		this.assessmentCenterRepository = assessmentCenterRepository;
 		this.candidateRepository = candidateRepository;
@@ -62,6 +61,9 @@ public class Dataloader implements ApplicationRunner{
 		this.recruiterRepository = recruiterRepository;
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
+		this.questionsFeedbackRepository = questionsFeedbackRepository;
+		this.interviewFeedbackRepository = interviewFeedbackRepository;
+		this.questionsRepository = questionsRepository;
 	}
 	
 	@Override
@@ -124,16 +126,44 @@ public class Dataloader implements ApplicationRunner{
 		
 		this.interviewerRepository.saveAll(interviewerList);
 		
-		
 		// PACKS
 		List<Pack> packList = new ArrayList<>();
-		packList.add(new Pack("Pack 1","Tech","Link..."));
-		packList.add(new Pack("Pack 2","Tech","Link..."));
-		packList.add(new Pack("Pack 3","Sales","Link..."));
-		packList.add(new Pack("Pack 4","Tech","Link..."));
-		packList.add(new Pack("Pack 5","Sales","Link..."));
+		packList.add(new Pack("Pack1", "Tech", "Java", null, null, null, null));
+//		packList.add(new Pack("Pack 1","Tech","Link..."));
+//		packList.add(new Pack("Pack 2","Tech","Link..."));
+//		packList.add(new Pack("Pack 3","Sales","Link..."));
+//		packList.add(new Pack("Pack 4","Tech","Link..."));
+//		packList.add(new Pack("Pack 5","Sales","Link..."));
 		
 		this.packsRepository.saveAll(packList);
+		
+		//QUESTIONS
+		List<Questions> questionList = new ArrayList<>();
+		questionList.add(new Questions(packList.get(0), "Question", "Answer", null));
+		questionList.add(new Questions(packList.get(0), "Question", "Answer", null));
+		questionList.add(new Questions(packList.get(0), "Question", "Answer", null));
+		questionList.add(new Questions(packList.get(0), "Question", "Answer", null));
+		
+		this.questionsRepository.saveAll(questionList);
+		
+		//INTERVIEW FEEDBACK
+		List<InterviewFeedback> interviewFeedbackList = new ArrayList<InterviewFeedback>();
+		interviewFeedbackList.add(new InterviewFeedback(null, null, null, "Feedback", 2));
+		interviewFeedbackList.get(0).setPackId(packList.get(0));
+		
+		this.interviewFeedbackRepository.saveAll(interviewFeedbackList);
+		
+		//QUESTIONS FEEDBACK
+		List<QuestionsFeedback> questionsFeedbackList = new ArrayList<QuestionsFeedback>();
+		questionsFeedbackList.add(new QuestionsFeedback(null, questionList.get(0), "Response", "Feedback", 6));
+		questionsFeedbackList.add(new QuestionsFeedback(null, questionList.get(1), "Response", "Feedback", 3));
+		questionsFeedbackList.add(new QuestionsFeedback(null, questionList.get(2), "Response", "Feedback", 1));
+		questionsFeedbackList.add(new QuestionsFeedback(null, questionList.get(3), "Response", "Feedback", 9));
+		
+		interviewFeedbackList.get(0).setQuestionFeedback(questionsFeedbackList);
+		questionsFeedbackList.forEach(qf -> qf.setInterviewFeedback(interviewFeedbackList.get(0)));
+		this.interviewFeedbackRepository.saveAll(interviewFeedbackList);
+		this.questionsFeedbackRepository.saveAll(questionsFeedbackList);
 		
 		// ASSESSMENT CENTERS 
 		List<AssessmentCenter> acList = new ArrayList<>();
@@ -281,15 +311,36 @@ public class Dataloader implements ApplicationRunner{
 		candidateList.get(3).addUser(userList.get(10));
 		
 		
-		
-		
-		
 		this.userRepository.saveAll(userList);
 		
-	
 		
-	
 		
+		// link ac and candidate
+		candidateList.get(0).addAssessmentCenter(acList.get(0));
+		candidateList.get(0).addAssessmentCenter(acList.get(1));
+		candidateList.get(1).addAssessmentCenter(acList.get(1));
+		candidateList.get(2).addAssessmentCenter(acList.get(2));
+		candidateList.get(3).addAssessmentCenter(acList.get(4));
+		candidateList.get(3).addAssessmentCenter(acList.get(5));
+		candidateList.get(3).addAssessmentCenter(acList.get(2));
+		
+		// link candidate and recruiter
+		candidateList.get(0).addRecruiter(recruiterList.get(0));
+		candidateList.get(1).addRecruiter(recruiterList.get(1));
+		candidateList.get(2).addRecruiter(recruiterList.get(2));
+		candidateList.get(2).addRecruiter(recruiterList.get(1));
+		candidateList.get(3).addRecruiter(recruiterList.get(1));
+		candidateList.get(2).addRecruiter(recruiterList.get(1));
+		candidateList.get(1).addRecruiter(recruiterList.get(4));
+		
+		
+		interviewFeedbackList.get(0).setInterview(interviewA.get(0));
+		interviewA.get(0).setFeedback(interviewFeedbackList.get(0));
+		//acList.get(0).setPack(packList);
+		packList.get(0).setAssessmentCenters(acList);
+		
+		
+
 		// Update all changes
 		this.userRepository.saveAll(userList);
 		this.roleRepository.saveAll(rolesList);
@@ -301,6 +352,9 @@ public class Dataloader implements ApplicationRunner{
 		this.interviewRepository.saveAll(interviewA);
 		this.interviewRepository.saveAll(interviewB);
 		this.interviewRepository.saveAll(interviewC);
+
+		this.interviewFeedbackRepository.saveAll(interviewFeedbackList);
+
 	}
 
 }

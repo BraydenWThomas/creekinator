@@ -29,6 +29,8 @@ import CandidateInfoReg from './Components/CandidateInfoReg';
 import LoginPage from './Components/LoginPage';
 import Calendar from './Components/Calendar';
 
+// NEW pages //
+import CreateACPage from './Components/New Pages/CreateACPage';
 
 // Material UI
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -190,9 +192,13 @@ const App = () => {
         path: "/recruiter/ac/view-past/:acId",
         element: <ViewPastAC />
       },
-      {
-        path: "/recruiter/ac/create",
+      {        
+path: "/recruiter/ac/create",
         element: <CreateAC />
+      },
+      {
+        path: "/create",
+        element: <CreateACPage />
       },
       {
         path: "/recruiter/ac/update/schedule/sales/:acId",

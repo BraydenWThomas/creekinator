@@ -68,7 +68,9 @@ public class Candidate {
 		super();
 		this.assessmentCenters = new ArrayList<AssessmentCenter>();
 		this.interviews = new ArrayList<Interview>();
+		this.recruiters = new ArrayList<Recruiter>();
 	}
+	
 	public Candidate(String title, String first_name, String middle_name, String last_name, String mobile_number,
 			String email, LocalDate date_of_birth, String address, int graduation_year, String degree,
 			String university, String resume, String applied_stream, String recruit_phase, String past_ac_result) {
@@ -90,6 +92,7 @@ public class Candidate {
 		this.past_ac_result = past_ac_result;
 		this.assessmentCenters = new ArrayList<AssessmentCenter>();
 		this.interviews = new ArrayList<Interview>();
+		this.recruiters = new ArrayList<Recruiter>();
 	}
 	/* --- end of constructor --- */
 	
@@ -272,26 +275,16 @@ public class Candidate {
 	public void setRecruiters(List<Recruiter> recruiters) {
 		this.recruiters = recruiters;
 	}
+	
 	public void removeRecruiter(Recruiter recruiter) {
 		this.recruiters.remove(recruiter);
-		recruiter.removeCandidate(this);
+		recruiter.getCandidates().remove(this);
+		// recruiter.removeCandidate(this);
 	}
 	public void addRecruiter(Recruiter recruiter) {
 		this.recruiters.add(recruiter);
 		recruiter.getCandidates().add(this);
 	}
-	/*
-	public void addAssessmentCenter(AssessmentCenter assessmentCenters) {
-		List<AssessmentCenter> assessmentCentersList = new ArrayList<AssessmentCenter>();
-		if (this.getAssessmentCenters() != null) {
-			assessmentCentersList = this.getAssessmentCenters();
-		}	
-		assessmentCentersList.add(assessmentCenters);
-		this.assessmentCenters = assessmentCentersList;
-	}
-	*/
-	
-	
 	
 	
 }

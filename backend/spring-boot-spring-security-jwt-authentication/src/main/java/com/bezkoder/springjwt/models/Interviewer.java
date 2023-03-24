@@ -94,45 +94,10 @@ public class Interviewer {
 	
 	
 	
-	/*
-	public void setAssessmentCenters(List<AssessmentCenter> assessmentCenters) {
-		this.assessmentCenters = new ArrayList<AssessmentCenter>();
-		for (AssessmentCenter assessmentCenter : assessmentCenters) {
-			addAssessmentCenter(assessmentCenter);
-		}
-	}
-	
-	
-
-	public void setInterviews(List<Interview> interviews) {
-		this.interviews = new ArrayList<Interview>();
-		for (Interview interview : interviews) {
-			addInterview(interview);
-		}
-	}
-	*/
-	
-	/*
-	public void addAssessmentCenter(AssessmentCenter assessmentCenters) {
-		List<AssessmentCenter> assessmentCentersList = new ArrayList<AssessmentCenter>();
-		if (this.getAssessmentCenters() != null) {
-			assessmentCentersList = this.getAssessmentCenters();
-		}	
-		assessmentCentersList.add(assessmentCenters);
-		this.assessmentCenters = assessmentCentersList;
-	}
-	*/
-	
-	
 	/* --- end of getter and setter --- */
 	
 	
 	
-	
-
-	
-	
-
 	/* add, remove or get the linked reference --- */
 	// interview
 	public void addInterview(Interview interview) {

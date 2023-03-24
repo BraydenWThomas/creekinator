@@ -1,11 +1,5 @@
 package com.bezkoder.springjwt.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -25,9 +19,15 @@ public class Interview {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private String comment;
+	private String comment; // #TODO remove
 	private LocalTime interviewTime;
 	private int score = -1;
+	
+	@ManyToOne
+	private Pack pack;
+	
+	@OneToOne
+	private InterviewFeedback feedback;
 	
 	@ManyToOne
 	@JoinColumn(name = "FK_INTERVIEWER_NO")
@@ -39,17 +39,26 @@ public class Interview {
 	@JsonIgnore
 	private AssessmentCenter assessmentCenter;
 	
+	public Pack getPack() {
+		return pack;
+	}
+
+	public void setPack(Pack pack) {
+		this.pack = pack;
+	}
+
+	public InterviewFeedback getFeedback() {
+		return feedback;
+	}
+
+	public void setFeedback(InterviewFeedback feedback) {
+		this.feedback = feedback;
+	}
 	@ManyToOne
 	@JoinColumn(name = "FK_CANDIDATE_NO")
 	@JsonIgnore
 	private Candidate candidate;
 	
-	@ManyToMany
-	@JoinTable(name = "interview_pack",
-			joinColumns = @JoinColumn(name = "interview_id"),
-				inverseJoinColumns = @JoinColumn(name = "pack_id"))
-	@JsonIgnore
-	private List<Pack> packs;
 	/* --- End of fields --- */
 	
 	
@@ -62,16 +71,14 @@ public class Interview {
 	/* --- Constructors --- */
 	public Interview() {
 		super();
-		this.packs = new ArrayList<Pack>();
 		// TODO Auto-generated constructor stub
 	}
-	/*
-	public Interview(String form) {
-		super();
-		this.form = form; // comment should be included in form
-		this.packs = new ArrayList<Pack>();
+	
+	public Interview(String comment, LocalTime interviewTime, int score) {
+		this.comment = comment;
+		this.interviewTime = interviewTime;
+		this.score = score;
 	}
-	*/
 	
 	public Interview(AssessmentCenter assessmentCenter,Interviewer interviewer,Candidate candidate, String comment,LocalTime interviewTime, int score) {
 		super();
@@ -79,7 +86,7 @@ public class Interview {
 		this.assessmentCenter = assessmentCenter;
 		this.interviewer = interviewer;
 		this.candidate = candidate;	
-		this.packs = new ArrayList<Pack>();
+	
 		this.interviewTime = interviewTime;
 		this.score = score;
 	}
@@ -89,7 +96,7 @@ public class Interview {
 		this.assessmentCenter = assessmentCenter;
 		this.interviewer = interviewer;
 		this.candidate = candidate;	
-		this.packs = packs;
+		
 		this.interviewTime = interviewTime;
 		this.score = score;
 	}
@@ -199,19 +206,5 @@ public class Interview {
 		this.candidate = null;
 	}
 	
-	// pack
-	public List<Pack> getPacks() {
-		return this.packs;
-	}
-	public void setPacks(List<Pack> packs) {
-		this.packs = packs;
-	}
-	public void addPack(Pack pack) {
-		this.getPacks().add(pack);
-		pack.getInterviews().add(this);
-	}
-	public void removePack(Pack pack) {
-		this.getPacks().remove(pack);
-		pack.getInterviews().remove(this);
-	}
+
 }

@@ -1,0 +1,28 @@
+@import "../util/_variables";
+.MuiContainer-root {
+  max-width: 1200px !important;
+  margin: auto;
+  padding: 0 !important;
+}
+
+.MuiDateCalendar-root {
+  margin: 0 !important;
+}
+
+.calendar-wrapper {
+  padding: 0 !important;
+}
+
+.datecalendar-wrapper {
+  width: fit-content !important;
+}
+
+.other-wrapper {
+  justify-content: start !important;
+}
+
+.create-an-ac-page-wrapper {
+  @media (max-width: 1200px) {
+    margin: 1rem !important;
+  }
+}
