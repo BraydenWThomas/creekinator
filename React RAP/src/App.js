@@ -34,8 +34,11 @@ import Calendar from './Components/Calendar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import { Button } from '@mui/material';
+import FormView from './Components/FormSelect'
 
-import InterviewForm from './Components/InterviewForm';
+import AssignQuestionPack from './Components/AssignQuestionPack';
+import PackView from './Components/PackView';
+import FormSelect from './Components/FormSelect';
 const FDMtheme = createTheme({
   typography: {
     fontFamily: "barlow",
@@ -131,8 +134,16 @@ const App = () => {
       element: <Calendar />
     },
     {
-      path: "/form",
-      element: <InterviewForm />
+      path: "/questions",
+      element: <AssignQuestionPack />
+    },
+    {
+      path: "/pack",
+      element: <PackView />
+    },
+    {
+      path: "/formselect",
+      element: <FormSelect />
     }
   ]
 
