@@ -82,9 +82,9 @@ const CandidateInformationRec = () => {
   const pageTitle = candidate.first_name + " " + candidate.last_name + "'s " + "Profile"
 
   return (
-    <div className="candidate-info">
+    <div className="candidate-info" style={{display:'flex'}}>
       <NavBar />
-      <div className="content" style={{ float: 'left', width: '80%' }}>
+      <div className="content" style={{ float: 'left', width: '100%' }}>
         <Container component="main">
           <div className="header" style={{ display: "flex" }}>
             <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>{pageTitle}</Typography>

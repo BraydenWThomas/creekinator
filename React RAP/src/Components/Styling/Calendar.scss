@@ -1,0 +1,94 @@
+@import "../util/_variables";
+
+@keyframes load-in {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+.calendar {
+  display: flex;
+  width: 1200px;
+  margin: auto;
+  gap: 1rem;
+
+  ul.MuiList-root {
+    margin-top: 60px;
+  }
+}
+
+// List item in times
+div.MuiListItemText-root {
+  animation: load-in 0.35s cubic-bezier(0.14, 0.94, 0.85, 1.01);
+  color: white;
+  background-color: $primary;
+  border-radius: 1rem;
+  padding: 0.2rem 0.75rem;
+  margin: 0;
+  font-size: 8px;
+}
+
+span.MuiTypography-root {
+  font-family: sans-serif;
+  font-size: 0.75rem;
+}
+
+.mantine-Calendar-calendarHeaderLevel {
+  font-weight: 300;
+}
+
+.mantine-Calendar-calendar {
+  background-color: shade(white, 3%);
+  border: 1px solid $materialui-border;
+  border-radius: 16px;
+  height: 400px;
+  padding: 0.2rem;
+}
+
+.mantine-Day-day[data-selected] {
+  background-color: $primary;
+  border-radius: 2rem;
+}
+
+.mantine-Day-day[data-selected]:hover {
+  background-color: tint($primary, 10%);
+  border-radius: 2rem;
+}
+
+.MuiListSubheader-root {
+  height: 36px;
+}
+
+.container {
+  border-radius: 1rem;
+  margin-top: 2.75rem !important;
+  height: 400px;
+}
+
+.times {
+  &__allClear {
+    animation: load-in 0.35s cubic-bezier(0.14, 0.94, 0.85, 1.01);
+    width: fit-content;
+    font-family: sans-serif;
+    color: tint(black, 60%);
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .calendar {
+    flex-direction: column;
+    ul.MuiList-root {
+      max-width: fit-content;
+      margin-top: 0;
+    }
+  }
+}

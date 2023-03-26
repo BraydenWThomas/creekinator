@@ -13,6 +13,7 @@ import { blue } from '@mui/material/colors';
 import './Styling/LoginPageStyle.css'
 import { Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { Navbar } from '@mantine/core';
 
 const FDMtheme = createTheme({
   palette: {

@@ -18,11 +18,14 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import { FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { FormControl, IconButton, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import CreateCandidate from '../Candidate/CreateCandidate';
 
 const Recruiter = () => {
   // Change tab options
   const [displayState, setDisplayState] = useState("Candidate");
+
+  const [createModalOpen, setCreateModalOpen] = useState(false);
 
   // AC + Candidate states
   const [candidates, setCandidates] = useState([]);
@@ -53,11 +56,11 @@ const Recruiter = () => {
   }
 
   return (
-    <div className="pageSection">
+    <div style={{ display: 'flex' }}>
 
       <NavBar />
 
-      <div className='bodySection'>
+      <div className="content" style={{ float: 'left', width: '100%' }}>
         <div className="header" style={{ display: "flex" }}>
           <Typography
             component="h1"
@@ -109,9 +112,10 @@ const Recruiter = () => {
                     Applied
                   </Typography>
                   <div className='add-c' style={{ marginRight: 20 }}>
-                    <Link to={"candidate/create"}>
-                      <AddIcon fontSize='large' />
-                    </Link>
+                    {/* <Link to={"candidate/create"}> */}
+                    <IconButton onClick={() => setCreateModalOpen(true)}  >
+                      <AddIcon fontSize='large'/>
+                    {/* </Link> */}</IconButton>
                   </div>
                 </div >
                 {candidates.map(candidate => (
@@ -130,7 +134,7 @@ const Recruiter = () => {
                     Upcoming
                   </Typography>
                   <div className='add-ac' style={{ marginRight: 20 }}>
-                    <Link to={"ac/create"}>
+                    <Link to={"/create"}>
                       <AddIcon fontSize='large' />
                     </Link>
                   </div>
@@ -181,9 +185,14 @@ const Recruiter = () => {
                     )
                   ))}
                 </Box>
+
               </div>
             }
           </Box>
+            <CreateCandidate
+              createModalOpen={createModalOpen}
+              setCreateModalOpen={setCreateModalOpen}
+            />
         </div>
       </div>
     </div >

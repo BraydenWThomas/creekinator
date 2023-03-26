@@ -4,6 +4,7 @@ import NavBar from '../NavBar';
 // React
 import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { Link, useNavigate } from 'react-router-dom'
 
 // Material UI
@@ -60,6 +61,21 @@ const CreateAC = () => {
     navigate(-1);
   }
 
+   // Create MenuItem of selectable time-intervals
+   dayjs.extend(customParseFormat);
+   var start = timeStart;
+   var end = timeEnd;
+   var selectTimes = [];
+   while (start <= end) {
+     selectTimes.push(start.add(30, "minute").format("HH:mm:ss"));
+ 
+     if (selectTimes.at(-1) === end.format("HH:mm:ss")) {
+       break
+     }
+ 
+     start = dayjs(selectTimes.at(-1), "HH:mm:ss");
+   }
+   
   // Fetch all candidates
   useEffect(() => {
     const requestOptions = {
@@ -194,13 +210,13 @@ const CreateAC = () => {
                       required
                       format="DD/MM/YYYY"
                       value={date}
-                      onChange={(newDate) => setDate(newDate)} />
+                      onChange={(newDate) => setDate(newDate)} />                        
                   </LocalizationProvider>
                 </Grid>
                 <Grid item xs={12} sm={4}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <TimePicker
-                    sx={{width:'100%'}}
+                      sx={{width:'100%'}}
                       label="Start Time"
                       format="hh:mm a"
                       minTime={startDay}
