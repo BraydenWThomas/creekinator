@@ -38,7 +38,7 @@ const Candidate = () => {
     {
       id: 3,
       title: "AC 3",
-      date: "2023-03-17",
+      date: "2023-03-31",
       start_time: "12:50:00",
       finish_time: "14:30:00",
       completed: true,
@@ -47,8 +47,8 @@ const Candidate = () => {
     {
       id: 4,
       title: "AC 4",
-      date: "2023-03-16",
-      start_time: "16:30:00",
+      date: "2023-03-24",
+      start_time: "11:30:00",
       finish_time: "18:30:00",
       completed: false,
       coordinatorId: 4
@@ -157,7 +157,7 @@ const Candidate = () => {
       <div className="content" style={{ float: 'left', width: '80%' }}>
         <Container component="main">
           <div className="header" style={{ display: "flex" }}>
-            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Create Assessment Centre</Typography>
+            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Candidate Dashboard</Typography>
             <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
               <NotificationsIcon fontSize="large" />
               <Avatar src="/broken-image.jpg" />
