@@ -72,7 +72,7 @@ const FormSelect = () => {
                         mt={2}
                         ml={2}
                         sx={{ flex: 1 }}>
-                        Technical Interview
+                        Interview Forms
                     </Typography>
                     <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
                         <NotificationsIcon fontSize="large" />

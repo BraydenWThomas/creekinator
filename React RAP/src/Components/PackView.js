@@ -14,9 +14,13 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Box, Button, IconButton, Modal, Paper, Typography } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
 import PackModal from './PackModal';
+import axios from 'axios';
 // This should be a component for Recruiter users, should be another tab
 
-// Change buttons to modals,
+// Re-think how the packs work
+//  Packs are either 'sales', or technical
+//  Sales packs are universal, no need to filter by stream
+//  Tech packs are more focussed, need to be filtered by stream
 
 const PackView = () => {
 
@@ -28,6 +32,13 @@ const PackView = () => {
     const [openTech, setOpenTech] = useState(false);
     const handleOpenTech = () => setOpenTech(true);
     const handleCloseTech = () => setOpenTech(false);
+
+    const [packList, setPackList] = useState([]);
+
+    useEffect(() => {
+        axios.get(`http://localhost:8080/api/pack`)
+            .then(response => setPackList(response.data));
+    }, [packList]);
 
     const style = {
         position: 'absolute',
@@ -172,7 +183,7 @@ const PackView = () => {
 
                 <div style={{ clear: "both" }}>
                     {
-                        packDummyList.map((pack) =>
+                        packList.map((pack) =>
                             <div>
                                 {packListItem(pack)}
                             </div>
