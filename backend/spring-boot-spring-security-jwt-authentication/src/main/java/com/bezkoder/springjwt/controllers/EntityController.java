@@ -145,19 +145,24 @@ public class EntityController {
 			@RequestParam(required = false, name = "recruiters") int[] recruiters) {
 
 		// check if ac time overlaps
+		// TODO: Need to write a check if an AC Will span over multiple assessent centers
 		for (AssessmentCenter ac : getAllAC()) {
 			if (ac.getDate().equals(assessmentCenter.getDate())) {
-				
+
 				if ((assessmentCenter.getStart_time().isAfter(ac.getStart_time())
 						|| assessmentCenter.getStart_time().equals(ac.getStart_time()))
+						&& (assessmentCenter.getFinish_time().isBefore(ac.getFinish_time())
+								|| assessmentCenter.getFinish_time().equals(ac.getFinish_time()))
+
+						|| (assessmentCenter.getStart_time().isAfter(ac.getStart_time())
+								|| assessmentCenter.getStart_time().equals(ac.getStart_time()))
+								&& (assessmentCenter.getStart_time().isBefore(ac.getFinish_time())
+										|| assessmentCenter.getStart_time().equals(ac.getFinish_time()))
+
+						|| (assessmentCenter.getFinish_time().isAfter(ac.getStart_time())
+								|| assessmentCenter.getFinish_time().equals(ac.getStart_time()))
 								&& (assessmentCenter.getFinish_time().isBefore(ac.getFinish_time())
-						|| assessmentCenter.getFinish_time().equals(ac.getFinish_time()))
-						
-						|| assessmentCenter.getStart_time().isAfter(ac.getStart_time())
-								&& assessmentCenter.getStart_time().isBefore(ac.getFinish_time())
-								
-						|| assessmentCenter.getFinish_time().isAfter(ac.getStart_time())
-								&& assessmentCenter.getFinish_time().isBefore(ac.getFinish_time())) {
+										|| assessmentCenter.getFinish_time().equals(ac.getFinish_time()))) {
 					System.out.println(ac.getDate() + " " + ac.getStart_time() + " " + ac.getFinish_time());
 					throw new BadRequestException("An AC has been scheduled in this time");
 				}
