@@ -60,7 +60,7 @@ const CreateCandidate = ({ createModalOpen, setCreateModalOpen }) => {
 
 
   const handleSubmit = () => {
-    goBack();
+    setCreateModalOpen(false);
 
     setTitle('');
     setFirstName('');

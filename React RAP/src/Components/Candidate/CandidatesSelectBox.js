@@ -8,11 +8,13 @@ import '../Styling/RecruiterStyles.css';
 // Material UI
 import { Button, Menu, MenuItem, IconButton, Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import CandidateInformationRec from './CandidateInformationRec';
 
 const CandidateSelectBox = ({ candidate }) => {
   // For Material UI Menu
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [readModalOpen, setReadModalOpen] = useState(false);
 
   const open = Boolean(anchorEl);
 
@@ -47,6 +49,7 @@ const CandidateSelectBox = ({ candidate }) => {
     window.location.reload();
   }
 
+
   return (
 
     <div className='candidateSelectBox' style={{ clear: "both" }}>
@@ -64,11 +67,9 @@ const CandidateSelectBox = ({ candidate }) => {
           MenuListProps={{
             'aria-labelledby': 'basic-button',
           }}>
-          <Link to={`candidate/info/${candidate.id}`}>
-            <MenuItem>
+            <MenuItem onClick={() => setReadModalOpen(true)}>
               View
             </MenuItem>
-          </Link>
           <Link to={`candidate/update/${candidate.id}`}>
             <MenuItem>
               Update
@@ -102,6 +103,11 @@ const CandidateSelectBox = ({ candidate }) => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <CandidateInformationRec
+            readModalOpen={readModalOpen}
+            setReadModelOpen={setReadModalOpen}
+          />
     </div>
 
   )

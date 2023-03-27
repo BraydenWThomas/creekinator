@@ -80,8 +80,8 @@ const LoginPage = (props) => {
                 </Button>
               </Grid>
             </Grid>
-            <Grid item
-              sx={{ position: 'absolute', bottom: 75 }}>
+            <Grid item xs
+              sx={{ bottom: 10 }}>
               <img src={fdm} alt="FDM Logo" />
             </Grid>
           </Box>
