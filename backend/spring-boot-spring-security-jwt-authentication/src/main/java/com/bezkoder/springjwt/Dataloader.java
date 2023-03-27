@@ -174,19 +174,15 @@ public class Dataloader implements ApplicationRunner{
 		
 		// ASSESSMENT CENTERS 
 		List<AssessmentCenter> acList = new ArrayList<>();
-		acList.add(new AssessmentCenter("AC Thursday 16/3",LocalDate.of(2023, 3, 16),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));//past
-		acList.add(new AssessmentCenter("AC Tuesday 21/3",LocalDate.of(2023, 3, 21),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));//future
-		acList.add(new AssessmentCenter("AC Thursday 23/3",LocalDate.of(2023, 3, 23),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));//future
+		acList.add(new AssessmentCenter("AC Thursday 16/3", "", LocalDate.of(2023, 3, 16),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));//past
+		acList.add(new AssessmentCenter("AC Tuesday 21/3", "", LocalDate.of(2023, 3, 21),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));//future
+		acList.add(new AssessmentCenter("AC Thursday 23/3", "", LocalDate.of(2023, 3, 23),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));//future
 		
 		List<Recruiter> acRecruiter = new ArrayList<>();
 		acRecruiter.add(recruiterList.get(0));
 		acRecruiter.add(recruiterList.get(3));
 		acRecruiter.add(recruiterList.get(6));
-		
-		
-		acList.get(0).setCoordinatorId(0);
-		acList.get(1).setCoordinatorId(1);
-		acList.get(2).setCoordinatorId(2);	
+			
 		acList.get(0).setRecruiters(acRecruiter);
 		acList.get(1).setRecruiters(acRecruiter);
 		acList.get(2).setRecruiters(acRecruiter);
