@@ -1,3 +1,4 @@
+
 package com.bezkoder.springjwt;
 
 import java.sql.Time;
@@ -356,3 +357,4 @@ public class Dataloader implements ApplicationRunner{
 	}
 
 }
+
