@@ -111,6 +111,7 @@ const PackView = () => {
                                             <PackModal 
                                                 open={openSale}
                                                 handleClose={handleCloseSale}
+                                                // TODO: Fetch list of all sales interviews
                                                 interviews={interviewDummySales}
                                             />
 
@@ -130,6 +131,7 @@ const PackView = () => {
                                             <PackModal 
                                                 open={openTech}
                                                 handleClose={handleCloseTech}
+                                                // TODO: Fetch filtered list of interviews by technical and stream
                                                 interviews={interviewDummyTech}
                                             />
                                         </TableCell>

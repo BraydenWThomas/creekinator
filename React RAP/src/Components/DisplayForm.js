@@ -16,8 +16,10 @@ import Radio from '@mui/material/Radio';
 import NavBar from './NavBar';
 const DisplayForm = () => {
   localStorage.setItem("status", "ROLE_RECRUITER")
+  const performanceQuestions = ["How was their ability to organise their language?", "How well did they communicate their answers?", "How was their non verbal communication skills"]
   const [questions, setQuestions] = useState([1, 2, 3, 4])
   const [selectedValue, setSelectedValue] = useState(questions.slice().fill(1));
+  const [selectedValueComm, setSelectedValueComm] = useState(questions.slice().fill(1));
   const [totalValue, setTotalValue] = useState(0);
   const navigate = useNavigate();
   const goBack = () => {
@@ -26,9 +28,14 @@ const DisplayForm = () => {
   const handleChange = (index, item) => {
 
     setSelectedValue(selectedValue.map((v, i) => (i == index ? item : v)));
-
+    
   };
+  const handleChangeComm = (index, item) => {
 
+    setSelectedValueComm(selectedValueComm.map((v, i) => (i == index ? item : v)));
+    
+  };
+  
   const controlProps = (item, index) => ({
     checked: selectedValue[index] == item,
     onChange: () => handleChange(index, item),
@@ -36,11 +43,21 @@ const DisplayForm = () => {
     value: item,
     inputProps: { 'aria-label': item },
   }
+  
   );
-  useEffect(() => {
-    setTotalValue(selectedValue.reduce((a, v) => a = a + v, 0))
 
-  }, [selectedValue]);
+  const controlPropsComm = (item, index) => ({
+    checked: selectedValueComm[index] == item,
+    onChange: () => handleChangeComm(index, item),
+
+    value: item,
+    inputProps: { 'aria-label': item },
+  })
+
+  useEffect(() => {
+    setTotalValue(selectedValue.reduce((a, v) => a = a + v, 0) + selectedValueComm.reduce((a, v) => a = a + v, 0))
+
+  }, [selectedValue, selectedValueComm]);
 
   return (
     <div className="pageSection">
@@ -90,6 +107,7 @@ const DisplayForm = () => {
 
             />
             <div key={index}>
+              <p>Answer Integrity</p>
               <FormControlLabel
                 value="bottom"
                 control={<Radio {...controlProps(1, index)} color="secondary" />}
@@ -103,6 +121,26 @@ const DisplayForm = () => {
               <FormControlLabel
                 value="bottom"
                 control={<Radio {...controlProps(5, index)} color="secondary" />}
+                label="Satisfactory"
+                labelPlacement="end"
+              />
+
+            </div>
+            <div key={index}>
+            <p>Communication Quality</p>
+              <FormControlLabel
+                value="bottom"
+                control={<Radio {...controlPropsComm(1, index)} color="secondary" />}
+                label="Unsatisfactory"
+                labelPlacement="start"
+              />
+
+              <Radio {...controlPropsComm(2, index)} color="secondary" />
+              <Radio {...controlPropsComm(3, index)} color="secondary" />
+              <Radio {...controlPropsComm(4, index)} color="secondary" />
+              <FormControlLabel
+                value="bottom"
+                control={<Radio {...controlPropsComm(5, index)} color="secondary" />}
                 label="Satisfactory"
                 labelPlacement="end"
               />
@@ -138,6 +176,73 @@ const DisplayForm = () => {
           </Box>
 
         </div> 
+         
+        {questions.map((question, index) => (<Box
+            sx={{
+
+              '& > :not(style)': {
+                m: 1,
+                width: '50%',
+
+              }
+            }} key={index}>
+
+            <h2>{question} dsfsdfsfsdffds</h2>
+
+            <TextField
+
+              id="outlined-multiline-flexible"
+              label="Comment"
+              multiline
+              maxRows={4}
+
+
+            />
+            <div key={index}>
+              <p>Answer Integrity</p>
+              <FormControlLabel
+                value="bottom"
+                control={<Radio {...controlProps(1, index)} color="secondary" />}
+                label="Unsatisfactory"
+                labelPlacement="start"
+              />
+
+              <Radio {...controlProps(2, index)} color="secondary" />
+              <Radio {...controlProps(3, index)} color="secondary" />
+              <Radio {...controlProps(4, index)} color="secondary" />
+              <FormControlLabel
+                value="bottom"
+                control={<Radio {...controlProps(5, index)} color="secondary" />}
+                label="Satisfactory"
+                labelPlacement="end"
+              />
+
+            </div>
+            <div key={index}>
+            <p>Communication Quality</p>
+              <FormControlLabel
+                value="bottom"
+                control={<Radio {...controlPropsComm(1, index)} color="secondary" />}
+                label="Unsatisfactory"
+                labelPlacement="start"
+              />
+
+              <Radio {...controlPropsComm(2, index)} color="secondary" />
+              <Radio {...controlPropsComm(3, index)} color="secondary" />
+              <Radio {...controlPropsComm(4, index)} color="secondary" />
+              <FormControlLabel
+                value="bottom"
+                control={<Radio {...controlPropsComm(5, index)} color="secondary" />}
+                label="Satisfactory"
+                labelPlacement="end"
+              />
+
+            </div>
+          </Box>
+          ))
+
+
+          }
         <Stack direction="column" spacing={2} sx={{marginTop: "2%"}}>
         <Button variant="contained">Submit</Button>
         <Button variant="contained" color='secondary' onClick={goBack}> Back </Button>

@@ -184,6 +184,18 @@ public class EntityController {
 				recruiterRepository.save(recruiter);
 			}
 		}
+		
+		for (AssessmentCenter ac: getAllAC()) {
+			if(ac.getDate().equals(assessmentCenter.getDate())) {
+				System.out.println("Same Date");
+				if(assessmentCenter.getStart_time().isAfter(ac.getStart_time()) || assessmentCenter.getStart_time().equals(ac.getStart_time())
+						&& assessmentCenter.getFinish_time().isBefore(ac.getFinish_time()) || assessmentCenter.getFinish_time().equals(ac.getFinish_time())) {
+					System.out.println("Error");
+					throw new RuntimeException("An AC has been scheduled in this time");
+				}
+			}
+		}
+		
 		return assessmentCenterRepository.save(assessmentCenter);
 	}
 	
@@ -726,9 +738,10 @@ public class EntityController {
         return packsRepository.findById(id).get().getQuestions();
     }   
     //Create Question    
-	@PostMapping("/question")
+	@PostMapping("/question/{packId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Questions createQuestion(@RequestBody Questions question) {
+    public Questions createQuestion(@RequestBody Questions question, @PathVariable Integer packId) {
+		question.setPackId(packsRepository.findById(packId).orElseThrow(() -> new NotFoundException("Pack Not Found")));
         return questionsRepository.save(question);
     }
     
