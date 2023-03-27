@@ -2,13 +2,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 
-// Webpage components
-import NavBar from "../NavBar";
-
 // Material UI
 import { Backdrop, Box, Container, Divider, Fade, Grid, Menu, Modal, TextField, Typography } from "@mui/material";
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import Avatar from '@mui/material/Avatar';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';

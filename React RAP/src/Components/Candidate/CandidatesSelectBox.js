@@ -6,15 +6,17 @@ import { Link } from 'react-router-dom';
 import '../Styling/RecruiterStyles.css';
 
 // Material UI
-import { Button, Menu, MenuItem, IconButton, Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import { Button, Menu, MenuItem, IconButton, Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Avatar } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CandidateInformationRec from './CandidateInformationRec';
+import UpdateCandidate from './UpdateCandidate';
 
 const CandidateSelectBox = ({ candidate }) => {
   // For Material UI Menu
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [readModalOpen, setReadModalOpen] = useState(false);
+  const [updateModalOpen, setUpdateModalOpen] = useState(false);
 
   const open = Boolean(anchorEl);
 
@@ -33,7 +35,7 @@ const CandidateSelectBox = ({ candidate }) => {
 
   const handleCloseDeleteModal = () => {
     setDeleteModalOpen(false);
-  };
+  }
 
   const handleDelete = (id) => {
     const requestOptions = {
@@ -49,11 +51,10 @@ const CandidateSelectBox = ({ candidate }) => {
     window.location.reload();
   }
 
-
   return (
 
     <div className='candidateSelectBox' style={{ clear: "both" }}>
-      <div className='candidateSelectBox-menu' style={{right: 40 }}>
+      <div className='candidateSelectBox-menu' style={{ right: 40 }}>
         <IconButton
           id="basic-button"
           onClick={handleClick}>
@@ -67,16 +68,14 @@ const CandidateSelectBox = ({ candidate }) => {
           MenuListProps={{
             'aria-labelledby': 'basic-button',
           }}>
-            <MenuItem onClick={() => setReadModalOpen(true)}>
-              View
-            </MenuItem>
-          <Link to={`candidate/update/${candidate.id}`}>
-            <MenuItem>
+          <MenuItem onClick={() => setReadModalOpen(true)}>
+            View
+          </MenuItem>
+            <MenuItem onClick={() => setUpdateModalOpen(true)}>
               Update
             </MenuItem>
-          </Link>
-          <MenuItem 
-          onClick={handleOpenDeleteModal}>Delete
+          <MenuItem
+            onClick={handleOpenDeleteModal}>Delete
           </MenuItem>
         </Menu>
       </div>
@@ -105,9 +104,15 @@ const CandidateSelectBox = ({ candidate }) => {
       </Dialog>
 
       <CandidateInformationRec
-            readModalOpen={readModalOpen}
-            setReadModelOpen={setReadModalOpen}
-          />
+        readModalOpen={readModalOpen}
+        setReadModalOpen={setReadModalOpen}
+        candidateId={candidate.id}
+      />
+      <UpdateCandidate
+        updateModalOpen={updateModalOpen}
+        setUpdateModalOpen={setUpdateModalOpen}
+        candidateId={candidate.id}
+      />
     </div>
 
   )
