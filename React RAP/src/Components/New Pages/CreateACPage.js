@@ -84,6 +84,7 @@ const CreateACPage = () => {
     setIsCheckedCandidates(isCheckedCandidates.map((v, i) => (i === index ? !v : v)));
   };
 
+  // Get existing AC's by date
   const refresh = () => {
     if (calendarSelected.length !== 0) {
       fetch(
@@ -171,8 +172,8 @@ const CreateACPage = () => {
 
     // Reset fields
     setTitle('');
-    setStartTime(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));
-    setEndTime(dayjs().set('hour', 17).set('minute', 30).startOf('minute'));
+    setStartTimeSelect('');
+    setEndTimeSelect('');
     setCalendarSelected(dayjs(new Date()));
     setIsCheckedInterviewer(interviewers.slice().fill(false));
     setIsCheckedCandidates(candidates.slice().fill(false));
@@ -192,6 +193,10 @@ const CreateACPage = () => {
 
     start = dayjs(selectTimes.at(-1), "LT");
   }
+
+  console.log(dayjs(selectTimes[2], "LT") > dayjs(selectTimes[1], "LT"))
+  console.log(dayjs(selectTimes[2], "LT"))
+  console.log(selectTimes[1])
 
   useEffect(() => {
     refresh();
@@ -258,7 +263,7 @@ const CreateACPage = () => {
                   label={"End Time"}
                   time={endTimeSelect}
                   onChange={setEndTimeSelect}
-                  selectTimes={selectTimes}
+                  selectTimes={Array.from(selectTimes, x => dayjs(x, "LT") > dayjs(startTimeSelect, "LT"))}
                   full
                 />
                 </FormControl>

@@ -58,7 +58,6 @@ const CreateCandidate = ({ createModalOpen, setCreateModalOpen }) => {
     }
   };
 
-
   const handleSubmit = () => {
     goBack();
 
@@ -76,7 +75,6 @@ const CreateCandidate = ({ createModalOpen, setCreateModalOpen }) => {
     setAppliedStream('');
     setRecruitmentPhase('');
     setPastACResult('');
-
 
     const body =
       JSON.stringify({
