@@ -21,8 +21,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Box } from "@mui/system";
 
-
-const CandidateInformationRec = ({ readModalOpen, setReadModalOpen }) => {
+const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId }) => {
   // Candidate Details
   const [title, setTitle] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -42,8 +41,9 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen }) => {
   const [pastACResult, setPastACResult] = useState('');
 
   // To Link to specific candidate
-  const { candidateId } = useParams();
   const [candidate, setCandidate] = useState([]);
+
+  const [readOnly, setReadOnly] = useState(true);
 
   // Fetch specific candidate
   useEffect(() => {
@@ -99,6 +99,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen }) => {
     setRecruitmentPhase('');
     setPastACResult('');
   }
+  
 
   const style = {
     editModal: {
@@ -152,7 +153,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen }) => {
                       type="text"
                       value={title}
                       InputProps={{
-                        readOnly: true
+                        readOnly: readOnly
                       }}
                       fullWidth
                     />
@@ -164,7 +165,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen }) => {
                       type="text"
                       value={firstName}
                       InputProps={{
-                        readOnly: true
+                        readOnly: readOnly
                       }}
                       fullWidth
                     />
@@ -176,7 +177,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen }) => {
                       type="text"
                       value={middleName}
                       InputProps={{
-                        readOnly: true
+                        readOnly: readOnly
                       }}
                       fullWidth
                     />
@@ -188,7 +189,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen }) => {
                       type="text"
                       value={lastName}
                       InputProps={{
-                        readOnly: true
+                        readOnly: readOnly
                       }}
                       fullWidth
                     />
@@ -200,7 +201,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen }) => {
                       type="number"
                       value={mobilePhone}
                       InputProps={{
-                        readOnly: true
+                        readOnly: readOnly
                       }}
                       fullWidth
                     />
@@ -212,7 +213,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen }) => {
                       type="text"
                       value={email}
                       InputProps={{
-                        readOnly: true
+                        readOnly: readOnly
                       }}
                       fullWidth
                     />
@@ -224,7 +225,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen }) => {
                       type="text"
                       value={dob}
                       InputProps={{
-                        readOnly: true
+                        readOnly: readOnly
                       }}
                       fullWidth
                     />
@@ -236,7 +237,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen }) => {
                       type="text"
                       value={address}
                       InputProps={{
-                        readOnly: true
+                        readOnly: readOnly
                       }}
                       fullWidth
                     />
@@ -248,7 +249,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen }) => {
                       type="number"
                       value={gradYear}
                       InputProps={{
-                        readOnly: true
+                        readOnly: readOnly
                       }}
                       fullWidth
                     />
@@ -260,7 +261,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen }) => {
                       type="text"
                       value={degree}
                       InputProps={{
-                        readOnly: true
+                        readOnly: readOnly
                       }}
                       fullWidth
                     />
@@ -272,7 +273,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen }) => {
                       type="text"
                       value={university}
                       InputProps={{
-                        readOnly: true
+                        readOnly: readOnly
                       }}
                       fullWidth
                     />
@@ -298,7 +299,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen }) => {
                       type="text"
                       value={appliedStream}
                       InputProps={{
-                        readOnly: true
+                        readOnly: readOnly
                       }}
                       fullWidth />
                   </Grid>
@@ -309,7 +310,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen }) => {
                       type="text"
                       value={recruitmentPhase}
                       InputProps={{
-                        readOnly: true
+                        readOnly: readOnly
                       }}
                       fullWidth />
                   </Grid>
@@ -320,20 +321,19 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen }) => {
                       type="text"
                       value={pastACResult}
                       InputProps={{
-                        readOnly: true
+                        readOnly: readOnly
                       }}
                       fullWidth />
                   </Grid>
                   <Grid item xs sm={12}>
-                    <Link to={`/recruiter/candidate/update/${candidate.id}`}>
                       <Button
+                        onClick={() => setReadOnly(false)}
                         variant="contained"
                         component="label"
                         fullWidth
                         style={{ marginBottom: "16px" }}>
                         Update
                       </Button>
-                    </Link>
                     <Grid item xs sm={12}>
                       <Link to="/recruiter">
                         <Button
