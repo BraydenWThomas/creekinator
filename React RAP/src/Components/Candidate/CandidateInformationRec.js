@@ -43,6 +43,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
   // To Link to specific candidate
   const [candidate, setCandidate] = useState([]);
 
+  // Read status of Text Fields
   const [readOnly, setReadOnly] = useState(true);
 
   // Fetch specific candidate
@@ -83,24 +84,9 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
 
   const handleReadModalClose = () => {
     setReadModalOpen(false);
-
-    setTitle('');
-    setFirstName('');
-    setMiddleName('');
-    setLastName('');
-    setMobilePhone('');
-    setEmail('');
-    setDob('');
-    setAddress('');
-    setGradYear('');
-    setDegree('');
-    setUniversity('');
-    setAppliedStream('');
-    setRecruitmentPhase('');
-    setPastACResult('');
+    setReadOnly(true);
   }
   
-
   const style = {
     editModal: {
       position: 'absolute',
@@ -115,6 +101,44 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
       p: 4,
     }
   };
+
+  // Handle update
+  const handleSubmit = () => {
+    const body =
+      JSON.stringify({
+        id: candidate.id,
+        title: title,
+        first_name: firstName,
+        middle_name: middleName,
+        last_name: lastName,
+        mobile_number: mobilePhone,
+        email: email,
+        date_of_birth: dob.format('YYYY-MM-DD'),
+        address: address,
+        graduation_year: gradYear,
+        degree: degree,
+        university: university,
+        resume: "resume-link",
+        applied_stream: appliedStream,
+        recruit_phase: recruitmentPhase,
+        past_ac_result: pastACResult
+      });
+
+    const requestOptions = {
+      method: 'PUT',
+      body: body,
+      redirect: 'follow',
+      headers: { 'content-type': 'application/json' },
+    };
+
+    fetch("http://localhost:8080/api/candidate", requestOptions)
+      .then(response => response.json())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+    
+    handleReadModalClose();
+    window.location.reload();
+  }
 
   return (
     <Modal
@@ -147,16 +171,25 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                 <Typography component="h2" variant="h4" mb={2}> Details </Typography>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={2}>
-                    <TextField
-                      id="title_select"
-                      label="Title"
-                      type="text"
-                      value={title}
-                      InputProps={{
-                        readOnly: readOnly
-                      }}
-                      fullWidth
-                    />
+                    <FormControl fullWidth>
+                      <InputLabel id="title-select-label"> Title </InputLabel>
+                      <Select
+                        labelId="title-select-label"
+                        id="title-select"
+                        label="Title"
+                        value={title}
+                        inputProps={{
+                          readOnly: readOnly
+                        }}
+                        fullWidth
+                        onChange={(event) => setTitle(event.target.value)}>
+                        <MenuItem value={"Mr"}> Mr </MenuItem>
+                        <MenuItem value={"Ms"}> Ms </MenuItem>
+                        <MenuItem value={"Miss"}> Miss </MenuItem>
+                        <MenuItem value={"Mrs"}> Mrs </MenuItem>
+                        <MenuItem value={"Dr"}> Dr </MenuItem>
+                      </Select>
+                    </FormControl>
                   </Grid>
                   <Grid item xs={12} sm={3}>
                     <TextField
@@ -168,6 +201,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                         readOnly: readOnly
                       }}
                       fullWidth
+                      onChange={(event) => setFirstName(event.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={3}>
@@ -180,6 +214,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                         readOnly: readOnly
                       }}
                       fullWidth
+                      onChange={(e) => setMiddleName(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={4}>
@@ -192,18 +227,20 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                         readOnly: readOnly
                       }}
                       fullWidth
+                      onChange={(e) => setLastName(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       id="outlined-mobile-input"
                       label="Mobile Phone"
-                      type="number"
+                      type="text"
                       value={mobilePhone}
                       InputProps={{
                         readOnly: readOnly
                       }}
                       fullWidth
+                      onChange={(e) => setMobilePhone(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -216,10 +253,11 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                         readOnly: readOnly
                       }}
                       fullWidth
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={2}>
-                    <TextField
+                    {/* <TextField
                       id="outlined-date-input"
                       label="D.O.B"
                       type="text"
@@ -228,7 +266,18 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                         readOnly: readOnly
                       }}
                       fullWidth
-                    />
+                      onChange={(e) => setDob(e.target.value)}
+                    /> */}
+                     <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        format="DD/MM/YYYY"
+                        label="D.O.B"
+                        value={dob}
+                        readOnly={readOnly}
+                        fullWidth
+                        onChange={(newDob) => setDob(newDob)}
+                      />
+                    </LocalizationProvider>
                   </Grid>
                   <Grid item xs={12} sm={10}>
                     <TextField
@@ -240,18 +289,20 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                         readOnly: readOnly
                       }}
                       fullWidth
+                      onChange={(e) => setAddress(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={4}>
                     <TextField
                       id="outlined-year-input"
                       label="Graduation Year"
-                      type="number"
+                      type="text"
                       value={gradYear}
                       InputProps={{
                         readOnly: readOnly
                       }}
                       fullWidth
+                      onChange={(e) => setGradYear(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={4}>
@@ -264,6 +315,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                         readOnly: readOnly
                       }}
                       fullWidth
+                      onChange={(e) => setDegree(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={4}>
@@ -276,6 +328,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                         readOnly: readOnly
                       }}
                       fullWidth
+                      onChange={(e) => setUniversity(e.target.value)}
                     />
                   </Grid>
                 </Grid>
@@ -293,26 +346,40 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                     </Button>
                   </Grid>
                   <Grid item xs={6}>
-                    <TextField
-                      id="applied-stream-select"
-                      label="Applied Stream"
-                      type="text"
-                      value={appliedStream}
-                      InputProps={{
-                        readOnly: readOnly
-                      }}
-                      fullWidth />
+                    <FormControl fullWidth>
+                      <InputLabel id="applied-stream-select-label">Applied Stream</InputLabel>
+                      <Select
+                        labelId="applied-stream-select-label"
+                        id="applied-stream-select"
+                        label="Applied Stream"
+                        value={appliedStream}
+                        inputProps={{ readOnly: readOnly }}
+                        onChange={(event) => setAppliedStream(event.target.value)}
+                      >
+                        <MenuItem value="Business Analyst"> Business Analyst </MenuItem>
+                        <MenuItem value="Business Intelligence"> Business Intelligence </MenuItem>
+                        <MenuItem value="Cloud (AWS)"> Cloud (AWS) </MenuItem>
+                        <MenuItem value="Technical Analyst"> Technical Analyst </MenuItem>
+                        <MenuItem value="Software Development"> Software Development </MenuItem>
+                        <MenuItem value="Testing"> Testing </MenuItem>
+                      </Select>
+                    </FormControl>
                   </Grid>
                   <Grid item xs sm={6}>
-                    <TextField
-                      id="recruitment-phase-select-label"
-                      label="Recruitment Phase"
-                      type="text"
-                      value={recruitmentPhase}
-                      InputProps={{
-                        readOnly: readOnly
-                      }}
-                      fullWidth />
+                  <FormControl fullWidth>
+                      <InputLabel id="recruitment-phase-select-label">Recruitment Phase</InputLabel>
+                      <Select
+                        labelId="recruitment-phase-select-label"
+                        id="recruitment-phase-select"
+                        label="Recruitment Phase"
+                        value={recruitmentPhase}
+                        inputProps={{ readOnly: readOnly }}
+                        onChange={(event) => setRecruitmentPhase(event.target.value)}
+                      >
+                        <MenuItem value={"Applied"}>Applied</MenuItem>
+                        <MenuItem value={"Interviewed"}>Interviewed</MenuItem>
+                      </Select>
+                    </FormControl>
                   </Grid>
                   <Grid item xs sm={6}>
                     <TextField
@@ -323,10 +390,12 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                       InputProps={{
                         readOnly: readOnly
                       }}
-                      fullWidth />
+                      fullWidth 
+                      onChange={(e) => setPastACResult(e.target.value)} />
                   </Grid>
                   <Grid item xs sm={12}>
-                      <Button
+                    {readOnly
+                      ? <Button
                         onClick={() => setReadOnly(false)}
                         variant="contained"
                         component="label"
@@ -334,17 +403,24 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                         style={{ marginBottom: "16px" }}>
                         Update
                       </Button>
+                      : <Button
+                        variant="contained"
+                        component="label"
+                        fullWidth
+                        style={{ marginBottom: "16px" }}
+                        onClick={handleSubmit}>
+                        Save
+                      </Button>
+                    }
                     <Grid item xs sm={12}>
-                      <Link to="/recruiter">
-                        <Button
-                          variant="contained"
-                          component="label"
-                          color="secondary"
-                          fullWidth
-                          onClick={handleReadModalClose}>
-                          Close
-                        </Button>
-                      </Link>
+                      <Button
+                        variant="contained"
+                        component="label"
+                        color="secondary"
+                        fullWidth
+                        onClick={handleReadModalClose}>
+                        Close
+                      </Button>
                     </Grid>
                   </Grid>
                 </Grid>
