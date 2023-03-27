@@ -24,6 +24,7 @@ import CreateCandidate from './Components/Candidate/CreateCandidate';
 import UpdateCandidate from './Components/Candidate/UpdateCandidate';
 import CandidateApply from './Components/CandidateApply';
 import CandidateInfoReg from './Components/CandidateInfoReg';
+import DisplayForm from './Components/DisplayForm';
 
 // UI Functionality
 import LoginPage from './Components/LoginPage';
@@ -146,6 +147,10 @@ const App = () => {
     {
       path: "/formselect",
       element: <FormSelect />
+    },
+    {
+      path: "/formview",
+      element: <DisplayForm />
     }
   ]
 
