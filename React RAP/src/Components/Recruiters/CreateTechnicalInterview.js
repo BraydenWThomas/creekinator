@@ -158,12 +158,12 @@ const CreateTechnicalInterview = () => {
   }
 
   return (
-    <div>
+    <div style={{ display: 'flex' }}>
       <NavBar />
 
       <div className="Dashboard" style={{ float: 'left', width: '80%' }}>
-      <Container component="main">
-      <div className="header" style={{ display: "flex" }}>
+        <Container component="main">
+          <div className="header" style={{ display: "flex" }}>
             <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Schedule Upcoming Assessment Centre</Typography>
             <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "3%" }}>
               <Avatar src="/broken-image.jpg" />
@@ -175,115 +175,119 @@ const CreateTechnicalInterview = () => {
               alignItems: 'center',
               mt: 3,
             }}>
-      
 
-      <Divider sx={{ mt: 2, mb: 2 }} />
 
-        <div className="ac-details">
-          <div style={{ float: 'left', width: '80%' }}>
-            <h1> {ac.title} </h1>
-            <h2 style={{ marginTop: '5pt' }}>
-              {dateFormat}
-            </h2>
-          </div>
+            <Divider sx={{ mt: 2, mb: 2 }} />
 
-          <div style={{ float: 'left', width: '20%', marginTop: '4%' }}>
-            <Stack direction="row" spacing={3}>
-              <Avatar> J </Avatar>
-              <h4 style={{ marginTop: '3%' }}> AC Coorindator: {acCoordinator} </h4>
-            </Stack>
-          </div>
-        </div>
-
-        <Divider variant="middle" />
-
-        <div className="sales-interviews">
-          <h2> Technical Interviews </h2>
-          {interviewers.map((interviewer, index) => (
-            (interviewer.tech === true &&
-              <div>
-                <h3 key={index}>
-                  {interviewer.name}
-                </h3>
-                <Grid container spacing={2} columns={32}>
-                  <FormControl required sx={{ m: 2, minWidth: 450 }}>
-                    <InputLabel id="select-candidate-label"> Select Candidate </InputLabel>
-                    <Select
-                      labelId="select-candidate-label"
-                      id="candidate-select"
-                      label="candidate-select"
-                      value={scheduledCands[index]}
-                      onChange={(e) => handleScheduleCandidate(e.target.value, index)}>
-                      {candidates.map(candidate => (
-                        <MenuItem key={candidate.id} value={candidate.id}>
-                          {candidate.first_name + " " + candidate.last_name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <FormControl required sx={{ m: 2, minWidth: 350 }}>
-                    <InputLabel id="select-interviewer-pack-label"> Select Interview Pack </InputLabel>
-                    <Select
-                      labelId="select-interviewer-pack-label"
-                      id="interviewer-pack-select"
-                      label="interviewer-pack-select"
-                      value={scheduledPacks[index]}
-                      onChange={(e) => handleSchedulePack(e.target.value, index)}>
-                      {interviewPacks.map(pack => (
-                        (pack.pack_type === "Tech"
-                          && // Show sales packs
-                          <MenuItem key={pack.id} value={pack.id}>
-                            {pack.pack_name}
-                          </MenuItem>
-                        )
-                      ))
-                      }
-                    </Select>
-                  </FormControl>
-
-                  <Grid item xs sm={4}>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <TimePicker
-                        label="Start Time"
-                        format="hh:mm a"
-                        minTime={formatStart}
-                        value={scheduledTimes[index]}
-                        onChange={(newTime) => handleScheduleTime(newTime, index)} />
-                    </LocalizationProvider>
-                  </Grid>
-                  <Grid item xs sm={4}>
-                    <Button
-                      variant="outlined"
-                      onClick={() => handleSubmit(index)}>
-                      Submit
-                    </Button>
-                  </Grid>
-                </Grid>
+            <div className="ac-details">
+              <div style={{ float: 'left', width: '80%' }}>
+                <h1> {ac.title} </h1>
+                <h2 style={{ marginTop: '5pt' }}>
+                  {dateFormat}
+                </h2>
               </div>
-            )
-          ))}
-        </div>
 
-        <Grid item xs sm={12}>
-          <Button
-            variant="contained"
-            component="label"
-            fullWidth
-            onClick={handleResetFields}>
-            Reset fields
-          </Button>
-          <Link to={"/recruiter"}>
-            <Button
-              variant="contained"
-              component="label"
-              color="secondary"
-              fullWidth
-              onClick={goBack}>
-              Back
-            </Button>
-          </Link>
-        </Grid>
-        </Box>
+              <div style={{ float: 'left', width: '20%', marginTop: '4%' }}>
+                <Stack direction="row" spacing={3}>
+                  <Avatar> J </Avatar>
+                  <h4 style={{ marginTop: '3%' }}> AC Coorindator: {acCoordinator} </h4>
+                </Stack>
+              </div>
+            </div>
+
+            <Divider variant="middle" />
+
+            <div className="sales-interviews">
+              <h2> Technical Interviews </h2>
+              {interviewers.map((interviewer, index) => (
+                (interviewer.tech === true &&
+                  <div>
+                    <h3 key={index}>
+                      {interviewer.name}
+                    </h3>
+                    <Grid container spacing={2} mt={1} mb={1}>
+                      <Grid item xs={4}>
+                        <FormControl required fullWidth>
+                          <InputLabel id="select-candidate-label"> Select Candidate </InputLabel>
+                          <Select
+                            labelId="select-candidate-label"
+                            id="candidate-select"
+                            label="candidate-select"
+                            value={scheduledCands[index]}
+                            onChange={(e) => handleScheduleCandidate(e.target.value, index)}>
+                            {candidates.map(candidate => (
+                              <MenuItem key={candidate.id} value={candidate.id}>
+                                {candidate.first_name + " " + candidate.last_name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <FormControl required fullWidth>
+                          <InputLabel id="select-interviewer-pack-label"> Select Interview Pack </InputLabel>
+                          <Select
+                            labelId="select-interviewer-pack-label"
+                            id="interviewer-pack-select"
+                            label="interviewer-pack-select"
+                            value={scheduledPacks[index]}
+                            onChange={(e) => handleSchedulePack(e.target.value, index)}>
+                            {interviewPacks.map(pack => (
+                              (pack.pack_type === "Tech"
+                                && // Show sales packs
+                                <MenuItem key={pack.id} value={pack.id}>
+                                  {pack.pack_name}
+                                </MenuItem>
+                              )
+                            ))
+                            }
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <TimePicker
+                            label="Start Time"
+                            format="hh:mm a"
+                            minTime={formatStart}
+                            value={scheduledTimes[index]}
+                            onChange={(newTime) => handleScheduleTime(newTime, index)} />
+                        </LocalizationProvider>
+                      </Grid>
+                      <Grid item xs={2} mt={1}>
+                        <Button
+                          variant="outlined"
+                          onClick={() => handleSubmit(index)}>
+                          Submit
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </div>
+                )
+              ))}
+            </div>
+
+            <Grid item xs sm={12} mb={2}>
+              <Button
+                variant="contained"
+                component="label"
+                fullWidth
+                onClick={handleResetFields}>
+                Reset fields
+              </Button>
+              </Grid>
+              <Link to={"/recruiter"}>
+                <Button
+                  variant="contained"
+                  component="label"
+                  color="secondary"
+                  fullWidth
+                  onClick={goBack}>
+                  Back
+                </Button>
+              </Link>
+            
+          </Box>
         </Container>
       </div>
     </div>

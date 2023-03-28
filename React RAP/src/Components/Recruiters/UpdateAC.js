@@ -3,7 +3,7 @@ import NavBar from '../NavBar';
 
 // React
 import React, { useEffect, useState } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Material UI

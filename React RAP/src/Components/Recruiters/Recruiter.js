@@ -97,7 +97,7 @@ const Recruiter = () => {
         <div className='candidatesInfo'>
           <Box
             sx={{
-              maxHeight: 1000,
+              maxHeight: 'auto',
               overflow: 'auto',
               width: 'auto',
               padding: 2
@@ -142,7 +142,7 @@ const Recruiter = () => {
                 </div >
                 <Box
                   sx={{
-                    maxHeight: 620,
+                    maxHeight: '620',
                     overflow: 'auto',
                     width: 'auto',
                     padding: 2
@@ -169,7 +169,7 @@ const Recruiter = () => {
                 </div>
                 <Box
                   sx={{
-                    maxHeight: 300,
+                    maxHeight: 400,
                     overflow: 'auto',
                     width: 'auto',
                     padding: 2
