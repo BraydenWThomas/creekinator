@@ -50,11 +50,12 @@ const CreateAC = () => {
   // GET requests
   const [candidates, setCandidates] = useState([]);
   const [interviewers, setInterviewers] = useState([]);
-
+  const [recruiters, setRecruiters] = useState([]);
+  const [currentUser, setCurrentUser] = useState([]);
   // Checkbox states
   const [isCheckedInterviewer, setIsCheckedInterviewer] = useState([]);
   const [isCheckedCandidates, setIsCheckedCandidates] = useState([]);
-
+  const [isCheckedRecruiters, setIsCheckedRecruiters] = useState([]);
   // Go back to previous page
   const navigate = useNavigate();
   const goBack = () => {
@@ -78,22 +79,41 @@ const CreateAC = () => {
    
   // Fetch all candidates
   useEffect(() => {
+    
     const requestOptions = {
       method: 'GET',
       redirect: 'follow',
     };
-
+    
+  
+    console.log(localStorage.getItem('userId'))
     Promise.all([
       fetch("http://localhost:8080/api/candidate", requestOptions),
-      fetch("http://localhost:8080/api/interviewer", requestOptions)
+      fetch("http://localhost:8080/api/interviewer", requestOptions),
+      fetch("http://localhost:8080/api/recruiter", requestOptions),
+      fetch("http://localhost:8080/api/auth/user", requestOptions)
     ]).then((responses => {
       console.log(responses)
       responses[0].json()
         .then(data => { setCandidates(data) })
       responses[1].json()
         .then(data => { setInterviewers(data) })
+        responses[2].json()
+        .then(data => { setRecruiters(data) })
+        responses[3].json()
+        .then()
+        // .then(result => setCurrentUser(result[localStorage.getItem('userId') - 1].recruiter.id))
     })).catch(error => console.log('error', error));
+
+    // for (var i=0; i<recruiters.length;i++){
+    //   if(recruiters[i].id == currentUser){
+    //     recruiters.remove(recruiters[i])
+    //   }
+    
+    // }
+    
   }, []);
+  
 
   // Handle adding interviewers
   useEffect(() => {
@@ -111,6 +131,15 @@ const CreateAC = () => {
 
   const toggleCheckedCandidates = (index) => {
     setIsCheckedCandidates(isCheckedCandidates.map((v, i) => (i === index ? !v : v)));
+  };
+
+   // Handle adding recruiter
+   useEffect(() => {
+    setIsCheckedRecruiters(recruiters.slice().fill(false));
+  }, [recruiters]);
+
+  const toggleCheckedRecruiters = (index) => {
+    setIsCheckedRecruiters(isCheckedRecruiters.map((v, i) => (i === index ? !v : v)));
   };
 
   // Handle creating AC
@@ -135,6 +164,16 @@ const CreateAC = () => {
     }
     const candidateString = candidateIds.join(",");
 
+    // Get attending recruiters
+    const recruiterIds = [];
+    for (var j = 0; j < isCheckedRecruiters.length; j++) {
+      if (isCheckedRecruiters[j]) {
+        candidateIds.push(recruiters[j].id);
+      }
+    }
+    const recruiterString = recruiterIds.join(",");
+
+
     // Update
     const body =
       JSON.stringify({
@@ -153,7 +192,7 @@ const CreateAC = () => {
     };
 
     fetch("http://localhost:8080/api/ac?interviewers=" + interviewerString +
-          "&recruiters=1&candidates=" + candidateString, requestOptions)
+      "&recruiters=1&candidates=" + candidateString, requestOptions)
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -204,7 +243,7 @@ const CreateAC = () => {
                 <Grid item xs={12} sm={4}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                      sx={{width:'100%'}}
+                      sx={{ width: '100%' }}
                       label="Date"
                       disablePast
                       required
@@ -216,7 +255,7 @@ const CreateAC = () => {
                 <Grid item xs={12} sm={4}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <TimePicker
-                      sx={{width:'100%'}}
+                      sx={{ width: '100%' }}
                       label="Start Time"
                       format="hh:mm a"
                       minTime={startDay}
@@ -228,7 +267,7 @@ const CreateAC = () => {
                 <Grid item xs={12} sm={4}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <TimePicker
-                      sx={{width:'100%'}}
+                      sx={{ width: '100%' }}
                       label="End Time"
                       format="hh:mm a"
                       minTime={startDay}
@@ -248,20 +287,20 @@ const CreateAC = () => {
                 <Grid item xs sm={6}>
                   <div className="sales-packs">
                     <Typography component="h2" variant="h5"> Sales Interviewer </Typography>
-                    <Box sx={{ maxHeight: 170, overflow: 'auto', backgroundColor: 'white', paddingLeft:2 }}>
+                    <Box sx={{ maxHeight: 170, overflow: 'auto', backgroundColor: 'white', paddingLeft: 2 }}>
                       <FormGroup>
                         {isCheckedInterviewer.map((checked, index) => (
                           (interviewers[index].tech === false) &&
-                            <FormControlLabel
-                              key={interviewers[index].id}
-                              control={
-                                <Checkbox
-                                  key={index}
-                                  checked={checked}
-                                  onClick={() => toggleCheckedInterviewer(index)}
-                                />}
-                              label={interviewers[index].name}
-                            />
+                          <FormControlLabel
+                            key={interviewers[index].id}
+                            control={
+                              <Checkbox
+                                key={index}
+                                checked={checked}
+                                onClick={() => toggleCheckedInterviewer(index)}
+                              />}
+                            label={interviewers[index].name}
+                          />
                         ))}
                       </FormGroup>
                     </Box>
@@ -270,20 +309,20 @@ const CreateAC = () => {
                 <Grid item xs sm={6}>
                   <div className="technical-packs">
                     <Typography component="h2" variant="h5"> Technical Interviewer </Typography>
-                    <Box sx={{ maxHeight: 170, overflow: 'auto', backgroundColor: 'white', paddingLeft:2  }}>
+                    <Box sx={{ maxHeight: 170, overflow: 'auto', backgroundColor: 'white', paddingLeft: 2 }}>
                       <FormGroup>
                         {isCheckedInterviewer.map((checked, index) => (
                           (interviewers[index].tech === true) &&
-                            <FormControlLabel
-                              key={interviewers[index].id}
-                              control={
-                                <Checkbox
-                                  key={index}
-                                  checked={checked}
-                                  onClick={() => toggleCheckedInterviewer(index)}
-                                />}
-                              label={interviewers[index].name}
-                            />
+                          <FormControlLabel
+                            key={interviewers[index].id}
+                            control={
+                              <Checkbox
+                                key={index}
+                                checked={checked}
+                                onClick={() => toggleCheckedInterviewer(index)}
+                              />}
+                            label={interviewers[index].name}
+                          />
                         ))}
                       </FormGroup>
                     </Box>
@@ -319,7 +358,7 @@ const CreateAC = () => {
               </div>
 
               <Box>
-                <FormGroup sx={{ maxHeight: 200, overflow: 'auto', width: '100%'}}>
+                <FormGroup sx={{ maxHeight: 200, overflow: 'auto', width: '100%' }}>
                   {isCheckedCandidates.map((checked, index) => (
                     <FormControlLabel
                       key={candidates[index].id}
@@ -334,7 +373,38 @@ const CreateAC = () => {
                 </FormGroup>
               </Box>
             </div>
-            <Grid container spacing={2} sx={{mt: 2}}>
+
+            <Divider sx={{ mt: 2, mb: 2 }} />
+
+            <div className="recruiter">
+              <div style={{ display: 'flex', marginBottom: '2%' }}>
+                <Typography component="h2" variant="h4" sx={{ flex: 1 }}> Recruiter </Typography>
+            
+                
+              </div>
+
+              <Box>
+                <FormGroup sx={{ maxHeight: 200, overflow: 'auto', width: '100%' }}>
+                  {isCheckedRecruiters.map((checked, index) => (
+                    <FormControlLabel
+                      key={recruiters[index].id}
+                      control={
+                        <Checkbox
+                          key={index}
+                          checked={checked}
+                          onClick={() => toggleCheckedRecruiters(index)}
+                        />}
+                      label={recruiters[index].name} />
+                  ))}
+                </FormGroup>
+              </Box>
+            </div>
+
+
+
+
+
+            <Grid container spacing={2} sx={{ mt: 2 }}>
               <Grid item xs sm={12}>
                 <Button variant="contained" fullWidth onClick={(e) => handleSubmit(e.target.value)}>
                   Create
