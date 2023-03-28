@@ -253,6 +253,30 @@ public class EntityController {
 
 		return ongoingAssessmentCentres;
 	}
+	
+	//Get Past ACs
+	@GetMapping("ac/past")
+	public List<AssessmentCenter> getAllPastAssessmentCenters(){
+		List<AssessmentCenter> pastAssessmentCentres = new ArrayList<AssessmentCenter>();
+		for (AssessmentCenter ac : getAllAC()) {
+			if (ac.getDate().isBefore(LocalDate.now()) && ac.getFinish_time().isBefore(LocalTime.now())) {
+				pastAssessmentCentres.add(ac);
+			}
+		}
+		return pastAssessmentCentres;
+	}
+	
+	//Get Future ACs
+		@GetMapping("ac/future")
+		public List<AssessmentCenter> getAllFutureAssessmentCenters(){
+			List<AssessmentCenter> futureAssessmentCentres = new ArrayList<AssessmentCenter>();
+			for (AssessmentCenter ac : getAllAC()) {
+				if (ac.getDate().isAfter(LocalDate.now()) && ac.getStart_time().isAfter(LocalTime.now())) {
+					futureAssessmentCentres.add(ac);
+				}
+			}
+			return futureAssessmentCentres;
+		}
 
 	// add new candidates with a specific ac, raise error if ac not exist or any id
 	// of candidate id list not existed in database
