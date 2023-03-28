@@ -17,6 +17,7 @@ import CreateAC from './Components/Recruiters/CreateAC';
 import UpdateAC from './Components/Recruiters/UpdateAC';
 import CreateSalesInterview from './Components/Recruiters/CreateSalesInterview'
 import CreateTechnicalInterview from './Components/Recruiters/CreateTechnicalInterview'
+
 // Candidate
 import CandidateInformationRec from './Components/Candidate/CandidateInformationRec';
 import CandidateInformationInterview from './Components/Candidate/CandidateInformationInterview';
@@ -24,6 +25,7 @@ import CreateCandidate from './Components/Candidate/CreateCandidate';
 import UpdateCandidate from './Components/Candidate/UpdateCandidate';
 import CandidateApply from './Components/CandidateApply';
 import CandidateInfoReg from './Components/CandidateInfoReg';
+import DisplayForm from './Components/DisplayForm';
 
 // UI Functionality
 import LoginPage from './Components/LoginPage';
@@ -36,7 +38,11 @@ import CreateACPage from './Components/New Pages/CreateACPage';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import { Button } from '@mui/material';
+import FormView from './Components/FormSelect'
 
+import AssignQuestionPack from './Components/AssignQuestionPack';
+import PackView from './Components/PackView';
+import FormSelect from './Components/FormSelect';
 const FDMtheme = createTheme({
   typography: {
     fontFamily: "barlow",
@@ -129,7 +135,24 @@ const App = () => {
     {
       path: "/calendar",
       element: <Calendar />
+    },
+    {
+      path: "/questions",
+      element: <AssignQuestionPack />
+    },
+    {
+      path: "/pack",
+      element: <PackView />
+    },
+    {
+      path: "/formselect",
+      element: <FormSelect />
+    },
+    {
+      path: "/formview",
+      element: <DisplayForm />
     }
+   
   ]
 
   if (localStorage.getItem('status') == "ROLE_ADMIN") {

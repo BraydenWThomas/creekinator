@@ -1,3 +1,4 @@
+// REMEMBER TO FETCH ALL RECRUITERS OF AN AC
 // Components
 import '../Styling/RecruiterStyles.css';
 
