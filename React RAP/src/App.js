@@ -17,6 +17,7 @@ import CreateAC from './Components/Recruiters/CreateAC';
 import UpdateAC from './Components/Recruiters/UpdateAC';
 import CreateSalesInterview from './Components/Recruiters/CreateSalesInterview'
 import CreateTechnicalInterview from './Components/Recruiters/CreateTechnicalInterview'
+
 // Candidate
 import CandidateInformationRec from './Components/Candidate/CandidateInformationRec';
 import CandidateInformationInterview from './Components/Candidate/CandidateInformationInterview';
@@ -152,6 +153,7 @@ const App = () => {
       path: "/formview",
       element: <DisplayForm />
     }
+   
   ]
 
   if (localStorage.getItem('status') == "ROLE_ADMIN") {
