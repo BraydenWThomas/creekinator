@@ -119,7 +119,6 @@ const App = () => {
       .catch(error => console.log('error', error));
   };
 
-
   const routes = [
     {
       path: "/",
@@ -200,7 +199,7 @@ const App = () => {
         element: <ViewPastAC />
       },
       {        
-path: "/recruiter/ac/create",
+        path: "/recruiter/ac/create",
         element: <CreateAC />
       },
       {

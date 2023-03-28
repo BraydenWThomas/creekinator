@@ -1,8 +1,9 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 // React
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { Link } from "react-router-dom";
 
 // import "./Styling/CreateAnACPage.scss";
@@ -15,10 +16,13 @@ import Calendar from "../Extra/Calendar";
 import NavBar from "../NavBar";
 
 // Material UI
-import { Divider, Typography, Grid, Button } from "@mui/material";
+import { Divider, Typography, Grid, Button, TextField, FormControl } from "@mui/material";
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import { Container } from '@mui/system';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+
+// TimePicker
+// import TimePicker from 'basic-react-timepicker'
 
 const CreateACPage = () => {
   // URL
@@ -27,8 +31,8 @@ const CreateACPage = () => {
   // AC Details
   const [title, setTitle] = useState('');
   const [timeError, setTimeError] = useState(false);
-  const [startTime, setStartTime] = useState(dayjs());
-  const [endTime, setEndTime] = useState(dayjs().add(2, "hour"));
+  const [startTimeSelect, setStartTimeSelect] = useState("");
+  const [endTimeSelect, setEndTimeSelect] = useState("");
   const [calendarSelected, setCalendarSelected] = useState(dayjs(new Date()));
 
   // Find existing ACs
@@ -78,6 +82,7 @@ const CreateACPage = () => {
     setIsCheckedCandidates(isCheckedCandidates.map((v, i) => (i === index ? !v : v)));
   };
 
+  // Get existing AC's by date
   const refresh = () => {
     if (calendarSelected.length !== 0) {
       fetch(
@@ -93,24 +98,40 @@ const CreateACPage = () => {
         });
     }
   };
+  dayjs.extend(customParseFormat);
+  console.log(timeError);
+  console.log(scheduledACs);
+  console.log(dayjs(scheduledACs[0].start_time));
+  console.log(startTimeSelect);
+  let formattedStartTime = dayjs(startTimeSelect, "LT");
+  console.log(formattedStartTime);
+  let formattedScheduledACStartTime = dayjs(scheduledACs[0].start_time, "HH:mm:ss");
+  let formattedScheduledACEndTime = dayjs(scheduledACs[0].finish_time, "HH:mm:ss");
+  console.log(formattedScheduledACStartTime);
+  console.log(formattedScheduledACEndTime);
+  console.log(dayjs(formattedStartTime.format("HH:mm:ss")).isSame(formattedScheduledACStartTime, "minute"));
 
   // Create POST request body
   const createNewACDetails = (title, date, startTime, endTime) => {
+    dayjs.extend(customParseFormat);
     let formattedDate = dayjs(date).format("YYYY-MM-DD");
-    let formattedStartTime = dayjs(startTime).format("HH:mm:ss");
-    let formattedEndTime = dayjs(endTime).format("HH:mm:ss");
+    let formattedStartTime = dayjs(startTime, "LT");
+    let formattedEndTime = dayjs(endTime, "LT");
 
     try {
       // Validate
       for (let i = 0; i < scheduledACs.length; i++) {
+        let formattedScheduledACStartTime = dayjs(scheduledACs[i].start_time, "HH:mm:ss");
+        let formattedScheduledACEndTime = dayjs(scheduledACs[i].finish_time, "HH:mm:ss");
         if (
-          (dayjs(startTime).isSame(scheduledACs[i].startTime, "minute") &&
-            dayjs(endTime).isSame(scheduledACs[i].endTime, "minute")) ||
-          (dayjs(startTime).isBefore(scheduledACs[i].startTime, "minute") &&
-            dayjs(endTime).isAfter(scheduledACs[i].startTime, "minute")) ||
-          (dayjs(startTime).isAfter(scheduledACs[i].startTime, "minute") &&
-            dayjs(startTime).isBefore(scheduledACs[i].endTime, "minute"))
+          (dayjs(formattedStartTime).isSame(scheduledACs[i].start_time, "minute") &&
+            dayjs(formattedEndTime).isSame(scheduledACs[i].finish_time, "minute")) ||
+          (dayjs(formattedStartTime).isBefore(scheduledACs[i].start_time, "minute") &&
+            dayjs(formattedEndTime).isAfter(scheduledACs[i].start_time, "minute")) ||
+          (dayjs(formattedStartTime).isAfter(scheduledACs[i].start_time, "minute") &&
+            dayjs(formattedEndTime).isBefore(scheduledACs[i].finish_time, "minute"))
         ) {
+          console.log(console.error());
           throw console.error();
         }
       }
@@ -118,8 +139,8 @@ const CreateACPage = () => {
       return {
         title: title,
         date: formattedDate,
-        start_time: formattedStartTime,
-        finish_time: formattedEndTime,
+        start_time: formattedStartTime.format("HH:mm:ss"),
+        finish_time: formattedEndTime.format("HH:mm:ss"),
         coordinatorId: localStorage.getItem("userId")
       };
     } catch (error) {
@@ -127,7 +148,7 @@ const CreateACPage = () => {
       return null;
     }
   };
-
+ 
   const submitNewACForm = async (e) => {
     // Get attending interviewers
     const interviewerIds = [];
@@ -148,7 +169,7 @@ const CreateACPage = () => {
     const candidateString = candidateIds.join(",");
 
     // POST body
-    const newAC = createNewACDetails(title, calendarSelected, startTime, endTime);
+    const newAC = createNewACDetails(title, calendarSelected, startTimeSelect, endTimeSelect);
     console.log(newAC)
 
     // POST request
@@ -164,113 +185,214 @@ const CreateACPage = () => {
 
     // Reset fields
     setTitle('');
-    setStartTime(dayjs());
-    setEndTime(dayjs().add(2, "hour"));
+    setStartTimeSelect('');
+    setEndTimeSelect('');
     setCalendarSelected(dayjs(new Date()));
     setIsCheckedInterviewer(interviewers.slice().fill(false));
     setIsCheckedCandidates(candidates.slice().fill(false));
   };
 
-  const setTimes = (time) => {
-    setStartTime(time);
-    setEndTime(dayjs(time).add(2, "hour"));
-  };
+  // Create MenuItem of selectable time-intervals
+  const startDay = dayjs().set('hour', 9).set('minute', 0).startOf('minute');
+  const endDay = dayjs().set('hour', 17).set('minute', 30).startOf('minute');
+
+  const startTimeMenu = (endTime) => {
+    dayjs.extend(customParseFormat);
+
+    if (endTime !== "") {
+      var start = startDay;
+      var end = dayjs(endTime, "LT");
+
+      var selectTimes = [start.format("LT")];
+      while (start <= end) {
+        selectTimes.push(start.add(30, "minute").format("LT"));
+
+        if (selectTimes.at(-1) === end.format("LT")) {
+          break
+        }
+
+        start = dayjs(selectTimes.at(-1), "LT");
+      }
+
+      return selectTimes;
+    } else {
+      var start = startDay;
+      var end = endDay;
+
+      var selectTimes = [start.format("LT")];
+      while (start <= end) {
+        selectTimes.push(start.add(30, "minute").format("LT"));
+
+        if (selectTimes.at(-1) === end.format("LT")) {
+          break
+        }
+
+        start = dayjs(selectTimes.at(-1), "LT");
+      }
+
+      return selectTimes;
+    }
+  }
+
+  const endTimeMenu = (startTime) => {
+    dayjs.extend(customParseFormat);
+    
+    if (startTime !== "") {
+      var start = dayjs(startTime, "LT");
+      var end = endDay;
+
+      var selectTimes = [start.format("LT")];
+      while (start <= end) {
+        selectTimes.push(start.add(30, "minute").format("LT"));
+
+        if (selectTimes.at(-1) === end.format("LT")) {
+          break
+        }
+
+        start = dayjs(selectTimes.at(-1), "LT");
+      }
+
+      return selectTimes;
+    } else {
+      var start = startDay;
+      var end = endDay;
+
+      var selectTimes = [start.format("LT")];
+      while (start <= end) {
+        selectTimes.push(start.add(30, "minute").format("LT"));
+
+        if (selectTimes.at(-1) === end.format("LT")) {
+          break
+        }
+
+        start = dayjs(selectTimes.at(-1), "LT");
+      }
+
+      return selectTimes;
+    }
+  }
 
   useEffect(() => {
     refresh();
   }, [calendarSelected])
 
   return (
-    <div>
+    <div style={{display: 'flex'}}>
       <NavBar />
 
       <div className="content" style={{ float: 'left', width: '80%' }}>
-        <div className="header" style={{ display: "flex" }}>
-          <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}> Create Assessment Centre </Typography>
-        </div>
+        <Container component="main">
+          <div className="header">
+            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}> Create Assessment Centre </Typography>
+          </div>
 
-        <Divider sx={{ mt: 2, mb:2 }} />
+          <Divider sx={{ mt: 2, mb: 2 }} />
 
-        <Grid2 container justify="center">
-          <Calendar
-            times={true}
-            scheduled={scheduledACs}
-            calendarSelected={calendarSelected}
-            setCalendarSelected={setCalendarSelected} />
-        </Grid2>
-
-        <Grid2 xs={12}>
-          <StartDatePicker date={calendarSelected} />
-        </Grid2>
-
-        <Grid2 xd={6}>
-          <TimeRange
-            error={timeError}
-            helperText={"Time is currently booked"}
-            label={"Start Time"}
-            hourOffset={0}
-            time={startTime}
-            onChange={setTimes}
-          />
-        </Grid2>
-
-        <Grid2 xd={6}>
-          <TimeRange
-            error={timeError}
-            label={"End Time"}
-            hourOffset={2}
-            time={endTime}
-            onChange={true}
-          />
-        </Grid2>
-
-        <div className="Interviewers">
-          <Typography component="h2" variant="h4" mb={2}> Interviewers </Typography>
           <Grid container spacing={2}>
-            <Grid item xs sm={4}>
-              <AttendeeCheckbox
-                attendee={"sales"}
-                attendeeTitle={"Sales Interview"}
-                attendeeChecked={isCheckedInterviewer}
-                attendeeType={interviewers}
-                toggleFunction={toggleCheckedInterviewer} />
+            <Grid item xs={12}>
+              <TextField
+                id="title-input"
+                label="Title"
+                type="text"
+                autoComplete="current-title"
+                fullWidth
+                required
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
             </Grid>
-            <Grid item xs sm={4}>
-              <AttendeeCheckbox
-                attendee={"tech"}
-                attendeeTitle={"Technical Interview"}
-                attendeeChecked={isCheckedInterviewer}
-                attendeeType={interviewers}
-                toggleFunction={toggleCheckedInterviewer} />
+
+            <Grid item xs={8}>
+              <Grid container justify="center">
+                <Calendar
+                  times={true}
+                  scheduled={scheduledACs}
+                  calendarSelected={calendarSelected}
+                  setCalendarSelected={setCalendarSelected}
+                />
+              </Grid>
+            </Grid>
+
+            <Grid item xs={4}>
+              <Grid>
+                <StartDatePicker date={calendarSelected} />
+              </Grid>
+
+              <Grid container mt={4}>
+                <FormControl fullWidth>
+                <TimeRange
+                  error={timeError}
+                  helperText={"Time is currently booked"}
+                  label={"Start Time"}
+                  time={startTimeSelect}
+                  onChange={setStartTimeSelect}
+                  selectTimes={startTimeMenu(endTimeSelect)}
+                />
+                </FormControl>
+              </Grid>
+              <Grid container mt={4}>
+                <FormControl fullWidth>
+                <TimeRange
+                  error={timeError}
+                  label={"End Time"}
+                  time={endTimeSelect}
+                  onChange={setEndTimeSelect}
+                  selectTimes={endTimeMenu(startTimeSelect)}
+                />
+                </FormControl>
+              </Grid>
             </Grid>
           </Grid>
-        </div>
+          <Divider sx={{ mt: 2, mb: 2 }} />
 
-        <Divider sx={{ mt: 2, mb: 2 }} />
-
-        <div className="candidates">
-          <StreamFilter header={"Candidate"} />
-          <AttendeeCheckbox
-            attendee={"candidate"}
-            attendeeChecked={isCheckedCandidates}
-            attendeeType={candidates}
-            toggleFunction={toggleCheckedCandidates} />
-        </div>
-
-        <div className="buttons">
-          <Grid container spacing={2} sx={{ mt: 2 }}>
-            <Grid item xs sm={12}>
-              <Button variant="contained" fullWidth onClick={(e) => submitNewACForm(e.target.value)}>
-                Create
-              </Button>
+          <div className="Interviewers">
+            <Typography component="h2" variant="h4" mb={2}> Interviewers </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs sm={6}>
+                <AttendeeCheckbox
+                  attendee={"sales"}
+                  attendeeTitle={"Sales Interview"}
+                  attendeeChecked={isCheckedInterviewer}
+                  attendeeType={interviewers}
+                  toggleFunction={toggleCheckedInterviewer} />
+              </Grid>
+              <Grid item xs sm={6}>
+                <AttendeeCheckbox
+                  attendee={"tech"}
+                  attendeeTitle={"Technical Interview"}
+                  attendeeChecked={isCheckedInterviewer}
+                  attendeeType={interviewers}
+                  toggleFunction={toggleCheckedInterviewer} />
+              </Grid>
             </Grid>
-            <Grid item xs sm={12}>
-              <Link to={"/recruiter"}>
-                <Button variant="contained" color='secondary' fullWidth> Cancel </Button>
-              </Link>
+          </div>
+
+          <Divider sx={{ mt: 2, mb: 2 }} />
+
+          <div className="candidates">
+            <StreamFilter header={"Candidate"} />
+            <AttendeeCheckbox
+              attendee={"candidate"}
+              attendeeChecked={isCheckedCandidates}
+              attendeeType={candidates}
+              toggleFunction={toggleCheckedCandidates} />
+          </div>
+
+          <div className="buttons">
+            <Grid container spacing={2} sx={{ mt: 2 }}>
+              <Grid item xs sm={12}>
+                <Button variant="contained" fullWidth onClick={(e) => submitNewACForm(e.target.value)}>
+                  Create
+                </Button>
+              </Grid>
+              <Grid item xs sm={12}>
+                <Link to={"/recruiter"}>
+                  <Button variant="contained" color='secondary' fullWidth> Cancel </Button>
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
-        </div>
+          </div>
+        </Container>
       </div>
     </div>
   )
