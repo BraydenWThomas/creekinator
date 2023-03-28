@@ -31,8 +31,6 @@ const CreateACPage = () => {
   // AC Details
   const [title, setTitle] = useState('');
   const [timeError, setTimeError] = useState(false);
-  const [startTime, setStartTime] = useState(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));
-  const [endTime, setEndTime] = useState(dayjs().set('hour', 17).set('minute', 30).startOf('minute'));
   const [startTimeSelect, setStartTimeSelect] = useState("");
   const [endTimeSelect, setEndTimeSelect] = useState("");
   const [calendarSelected, setCalendarSelected] = useState(dayjs(new Date()));
@@ -100,6 +98,18 @@ const CreateACPage = () => {
         });
     }
   };
+  dayjs.extend(customParseFormat);
+  console.log(timeError);
+  console.log(scheduledACs);
+  console.log(dayjs(scheduledACs[0].start_time));
+  console.log(startTimeSelect);
+  let formattedStartTime = dayjs(startTimeSelect, "LT");
+  console.log(formattedStartTime);
+  let formattedScheduledACStartTime = dayjs(scheduledACs[0].start_time, "HH:mm:ss");
+  let formattedScheduledACEndTime = dayjs(scheduledACs[0].finish_time, "HH:mm:ss");
+  console.log(formattedScheduledACStartTime);
+  console.log(formattedScheduledACEndTime);
+  console.log(dayjs(formattedStartTime.format("HH:mm:ss")).isSame(formattedScheduledACStartTime, "minute"));
 
   // Create POST request body
   const createNewACDetails = (title, date, startTime, endTime) => {
@@ -111,6 +121,8 @@ const CreateACPage = () => {
     try {
       // Validate
       for (let i = 0; i < scheduledACs.length; i++) {
+        let formattedScheduledACStartTime = dayjs(scheduledACs[i].start_time, "HH:mm:ss");
+        let formattedScheduledACEndTime = dayjs(scheduledACs[i].finish_time, "HH:mm:ss");
         if (
           (dayjs(formattedStartTime).isSame(scheduledACs[i].start_time, "minute") &&
             dayjs(formattedEndTime).isSame(scheduledACs[i].finish_time, "minute")) ||
@@ -119,6 +131,7 @@ const CreateACPage = () => {
           (dayjs(formattedStartTime).isAfter(scheduledACs[i].start_time, "minute") &&
             dayjs(formattedEndTime).isBefore(scheduledACs[i].finish_time, "minute"))
         ) {
+          console.log(console.error());
           throw console.error();
         }
       }
@@ -135,7 +148,7 @@ const CreateACPage = () => {
       return null;
     }
   };
-
+ 
   const submitNewACForm = async (e) => {
     // Get attending interviewers
     const interviewerIds = [];
@@ -180,23 +193,84 @@ const CreateACPage = () => {
   };
 
   // Create MenuItem of selectable time-intervals
-  dayjs.extend(customParseFormat);
-  var start = startTime;
-  var end = endTime;
-  var selectTimes = [start.format("LT")];
-  while (start <= end) {
-    selectTimes.push(start.add(30, "minute").format("LT"));
+  const startDay = dayjs().set('hour', 9).set('minute', 0).startOf('minute');
+  const endDay = dayjs().set('hour', 17).set('minute', 30).startOf('minute');
 
-    if (selectTimes.at(-1) === end.format("LT")) {
-      break
+  const startTimeMenu = (endTime) => {
+    dayjs.extend(customParseFormat);
+
+    if (endTime !== "") {
+      var start = startDay;
+      var end = dayjs(endTime, "LT");
+
+      var selectTimes = [start.format("LT")];
+      while (start <= end) {
+        selectTimes.push(start.add(30, "minute").format("LT"));
+
+        if (selectTimes.at(-1) === end.format("LT")) {
+          break
+        }
+
+        start = dayjs(selectTimes.at(-1), "LT");
+      }
+
+      return selectTimes;
+    } else {
+      var start = startDay;
+      var end = endDay;
+
+      var selectTimes = [start.format("LT")];
+      while (start <= end) {
+        selectTimes.push(start.add(30, "minute").format("LT"));
+
+        if (selectTimes.at(-1) === end.format("LT")) {
+          break
+        }
+
+        start = dayjs(selectTimes.at(-1), "LT");
+      }
+
+      return selectTimes;
     }
-
-    start = dayjs(selectTimes.at(-1), "LT");
   }
 
-  console.log(dayjs(selectTimes[2], "LT") > dayjs(selectTimes[1], "LT"))
-  console.log(dayjs(selectTimes[2], "LT"))
-  console.log(selectTimes[1])
+  const endTimeMenu = (startTime) => {
+    dayjs.extend(customParseFormat);
+    
+    if (startTime !== "") {
+      var start = dayjs(startTime, "LT");
+      var end = endDay;
+
+      var selectTimes = [start.format("LT")];
+      while (start <= end) {
+        selectTimes.push(start.add(30, "minute").format("LT"));
+
+        if (selectTimes.at(-1) === end.format("LT")) {
+          break
+        }
+
+        start = dayjs(selectTimes.at(-1), "LT");
+      }
+
+      return selectTimes;
+    } else {
+      var start = startDay;
+      var end = endDay;
+
+      var selectTimes = [start.format("LT")];
+      while (start <= end) {
+        selectTimes.push(start.add(30, "minute").format("LT"));
+
+        if (selectTimes.at(-1) === end.format("LT")) {
+          break
+        }
+
+        start = dayjs(selectTimes.at(-1), "LT");
+      }
+
+      return selectTimes;
+    }
+  }
 
   useEffect(() => {
     refresh();
@@ -252,7 +326,7 @@ const CreateACPage = () => {
                   label={"Start Time"}
                   time={startTimeSelect}
                   onChange={setStartTimeSelect}
-                  selectTimes={selectTimes}
+                  selectTimes={startTimeMenu(endTimeSelect)}
                 />
                 </FormControl>
               </Grid>
@@ -263,8 +337,7 @@ const CreateACPage = () => {
                   label={"End Time"}
                   time={endTimeSelect}
                   onChange={setEndTimeSelect}
-                  selectTimes={Array.from(selectTimes, x => dayjs(x, "LT") > dayjs(startTimeSelect, "LT"))}
-                  full
+                  selectTimes={endTimeMenu(startTimeSelect)}
                 />
                 </FormControl>
               </Grid>
