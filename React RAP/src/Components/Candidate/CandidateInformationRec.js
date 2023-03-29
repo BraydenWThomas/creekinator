@@ -1,4 +1,3 @@
-import { TextArea } from './TextArea';
 // React
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -7,6 +6,7 @@ import { Link } from 'react-router-dom'
 
 // Components
 import NavBar from "../NavBar";
+import TextArea from '../Extra/TextArea';
 
 // Material UI
 import { Backdrop, Container, Divider, Fade, Grid, Modal, TextField, Typography } from "@mui/material";

@@ -41,10 +41,19 @@ const CreateACPage = () => {
   // GET requests
   const [candidates, setCandidates] = useState([]);
   const [interviewers, setInterviewers] = useState([]);
+  const [recruiters, setRecruiters] = useState([]);
 
   // Checkbox states
   const [isCheckedInterviewer, setIsCheckedInterviewer] = useState([]);
   const [isCheckedCandidates, setIsCheckedCandidates] = useState([]);
+  const [isCheckedRecruiters, setIsCheckedRecruiters] = useState([]);
+
+  // For filter
+  const [selection, setSelection] = useState("All");
+  const [filteredCandidates, setFilteredCandidates] = useState([]);
+
+  //show text when invalid date is shown
+  const [invalidDateEnter, setInavlidDateEnter] = useState(true);
 
   // Fetch all attendees
   useEffect(() => {
@@ -55,12 +64,15 @@ const CreateACPage = () => {
 
     Promise.all([
       fetch("http://localhost:8080/api/candidate", requestOptions),
-      fetch("http://localhost:8080/api/interviewer", requestOptions)
+      fetch("http://localhost:8080/api/interviewer", requestOptions),
+      fetch("http://localhost:8080/api/recruiter", requestOptions),
     ]).then((responses => {
       responses[0].json()
         .then(data => { setCandidates(data) })
       responses[1].json()
         .then(data => { setInterviewers(data) })
+      responses[2].json()
+        .then(data => { setRecruiters(data) })
     })).catch(error => console.log('error', error));
   }, []);
 
@@ -82,6 +94,15 @@ const CreateACPage = () => {
     setIsCheckedCandidates(isCheckedCandidates.map((v, i) => (i === index ? !v : v)));
   };
 
+  // Handle adding recruiter
+  useEffect(() => {
+    setIsCheckedRecruiters(recruiters.slice().fill(false));
+  }, [recruiters]);
+
+  const toggleCheckedRecruiters = (index) => {
+    setIsCheckedRecruiters(isCheckedRecruiters.map((v, i) => (i === index ? !v : v)));
+  };
+
   // Get existing AC's by date
   const refresh = () => {
     if (calendarSelected.length !== 0) {
@@ -98,18 +119,6 @@ const CreateACPage = () => {
         });
     }
   };
-  dayjs.extend(customParseFormat);
-  console.log(timeError);
-  console.log(scheduledACs);
-  console.log(dayjs(scheduledACs[0].start_time));
-  console.log(startTimeSelect);
-  let formattedStartTime = dayjs(startTimeSelect, "LT");
-  console.log(formattedStartTime);
-  let formattedScheduledACStartTime = dayjs(scheduledACs[0].start_time, "HH:mm:ss");
-  let formattedScheduledACEndTime = dayjs(scheduledACs[0].finish_time, "HH:mm:ss");
-  console.log(formattedScheduledACStartTime);
-  console.log(formattedScheduledACEndTime);
-  console.log(dayjs(formattedStartTime.format("HH:mm:ss")).isSame(formattedScheduledACStartTime, "minute"));
 
   // Create POST request body
   const createNewACDetails = (title, date, startTime, endTime) => {
@@ -118,37 +127,15 @@ const CreateACPage = () => {
     let formattedStartTime = dayjs(startTime, "LT");
     let formattedEndTime = dayjs(endTime, "LT");
 
-    try {
-      // Validate
-      for (let i = 0; i < scheduledACs.length; i++) {
-        let formattedScheduledACStartTime = dayjs(scheduledACs[i].start_time, "HH:mm:ss");
-        let formattedScheduledACEndTime = dayjs(scheduledACs[i].finish_time, "HH:mm:ss");
-        if (
-          (dayjs(formattedStartTime).isSame(scheduledACs[i].start_time, "minute") &&
-            dayjs(formattedEndTime).isSame(scheduledACs[i].finish_time, "minute")) ||
-          (dayjs(formattedStartTime).isBefore(scheduledACs[i].start_time, "minute") &&
-            dayjs(formattedEndTime).isAfter(scheduledACs[i].start_time, "minute")) ||
-          (dayjs(formattedStartTime).isAfter(scheduledACs[i].start_time, "minute") &&
-            dayjs(formattedEndTime).isBefore(scheduledACs[i].finish_time, "minute"))
-        ) {
-          console.log(console.error());
-          throw console.error();
-        }
-      }
-
-      return {
-        title: title,
-        date: formattedDate,
-        start_time: formattedStartTime.format("HH:mm:ss"),
-        finish_time: formattedEndTime.format("HH:mm:ss"),
-        coordinatorId: localStorage.getItem("userId")
-      };
-    } catch (error) {
-      setTimeError(true);
-      return null;
-    }
+    return {
+      title: title,
+      date: formattedDate,
+      start_time: formattedStartTime.format("HH:mm:ss"),
+      finish_time: formattedEndTime.format("HH:mm:ss"),
+      coordinatorId: localStorage.getItem("userId")
+    };
   };
- 
+
   const submitNewACForm = async (e) => {
     // Get attending interviewers
     const interviewerIds = [];
@@ -168,6 +155,15 @@ const CreateACPage = () => {
     }
     const candidateString = candidateIds.join(",");
 
+    // Get attending recruiters
+    const recruiterIds = [];
+    for (var j = 0; j < isCheckedRecruiters.length; j++) {
+      if (isCheckedRecruiters[j]) {
+        candidateIds.push(recruiters[j].id);
+      }
+    }
+    const recruiterString = recruiterIds.join(",");
+
     // POST body
     const newAC = createNewACDetails(title, calendarSelected, startTimeSelect, endTimeSelect);
     console.log(newAC)
@@ -175,12 +171,18 @@ const CreateACPage = () => {
     // POST request
     try {
       if (newAC !== null) {
-        const response = await axios.post(`${API_URL}?interviewers=${interviewerString}&recruiters=1&candidates=${candidateString}`, newAC);
+        const response = await axios.post(
+          `${API_URL}
+          ?interviewers=${interviewerString}
+          &recruiters=${recruiterString}
+          &candidates=${candidateString}`, newAC
+        );
         setTimeError(false);
         refresh();
       }
     } catch (error) {
-      console.log(error.response);
+      setInavlidDateEnter(false);
+      console.log("Overlap Dates");
     }
 
     // Reset fields
@@ -190,12 +192,36 @@ const CreateACPage = () => {
     setCalendarSelected(dayjs(new Date()));
     setIsCheckedInterviewer(interviewers.slice().fill(false));
     setIsCheckedCandidates(candidates.slice().fill(false));
+    setIsCheckedRecruiters(recruiters.slice().fill(false));
   };
+
+  // Handle stream filtering
+  const onCandidateFilterChange = (e) => {
+    const filter = e;
+    setSelection(filter);
+    let temp = candidates;
+    console.log(selection);
+    console.log(filter);
+    if (filter === "All") {
+      setFilteredCandidates(candidates);
+      console.log(isCheckedCandidates);
+    } else {
+      temp = candidates.filter(candidate => candidate.applied_stream === filter)
+      setFilteredCandidates(temp);
+      
+      console.log(isCheckedCandidates);
+    }
+
+    if (temp.length > 1) {
+      setIsCheckedCandidates(temp.slice().fill(false));
+    } else {
+      setIsCheckedCandidates([false]);
+    }
+  }
 
   // Create MenuItem of selectable time-intervals
   const startDay = dayjs().set('hour', 9).set('minute', 0).startOf('minute');
   const endDay = dayjs().set('hour', 17).set('minute', 30).startOf('minute');
-
   const startTimeMenu = (endTime) => {
     dayjs.extend(customParseFormat);
 
@@ -341,6 +367,16 @@ const CreateACPage = () => {
                 />
                 </FormControl>
               </Grid>
+              <Grid mt={4}>
+                <Typography  
+                  hidden={invalidDateEnter}
+                  color="red"
+                  align="center"
+                  mt={2}
+                  variant="h5">
+                    Time is currently booked!
+                </Typography>
+              </Grid>
             </Grid>
           </Grid>
           <Divider sx={{ mt: 2, mb: 2 }} />
@@ -370,12 +406,36 @@ const CreateACPage = () => {
           <Divider sx={{ mt: 2, mb: 2 }} />
 
           <div className="candidates">
-            <StreamFilter header={"Candidate"} />
+            <StreamFilter 
+              stream={selection}
+              header={"Candidate"} 
+              onFilterChange={onCandidateFilterChange}/>
+            {selection === "All"
+              ? <AttendeeCheckbox
+                  attendee={"candidate"}
+                  attendeeChecked={isCheckedCandidates}
+                  attendeeType={candidates}
+                  toggleFunction={toggleCheckedCandidates} />
+              :  
+               (filteredCandidates != null &&
+                <AttendeeCheckbox
+                  attendee={"candidate"}
+                  attendeeChecked={isCheckedCandidates}
+                  attendeeType={filteredCandidates}
+                  toggleFunction={toggleCheckedCandidates} /> )
+            }
+            
+          </div>
+
+          <Divider sx={{ mt: 2, mb: 2 }} />
+
+          <div className="candidates">
+          <Typography component="h2" variant="h4" mb={2}> Recruiters </Typography>
             <AttendeeCheckbox
-              attendee={"candidate"}
-              attendeeChecked={isCheckedCandidates}
-              attendeeType={candidates}
-              toggleFunction={toggleCheckedCandidates} />
+              attendee={"recruiter"}
+              attendeeChecked={isCheckedRecruiters}
+              attendeeType={recruiters}
+              toggleFunction={toggleCheckedRecruiters} />
           </div>
 
           <div className="buttons">

@@ -198,12 +198,12 @@ const App = () => {
         path: "/recruiter/ac/view-past/:acId",
         element: <ViewPastAC />
       },
-      {        
-        path: "/recruiter/ac/create",
-        element: <CreateAC />
-      },
+      // {        
+      //   path: "/recruiter/ac/create",
+      //   element: <CreateAC />
+      // },
       {
-        path: "/create",
+        path: "/recruiter/ac/create",
         element: <CreateACPage />
       },
       {

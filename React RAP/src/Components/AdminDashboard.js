@@ -5,13 +5,10 @@ import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import Avatar from '@mui/material/Avatar';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
-import { useParams } from 'react-router-dom';
 import { Box, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 
 const AdminDashboard = () => {
@@ -98,7 +95,7 @@ const AdminDashboard = () => {
   }
 
   const handleFilter = (event) => {
-    const filter = event.target.value
+    const filter = event.target.value 
     setSelection(filter);
 
     if (filter === "Recruiter") {
