@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 
 // Material UI
-<<<<<<< React RAP/src/Components/AdminDashboard.js
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
@@ -93,11 +92,7 @@ const AdminDashboard = () => {
   };
 
   const handleFilter = (event) => {
-<<<<<<< React RAP/src/Components/AdminDashboard.js
-    const filter = event.target.value 
-=======
     const filter = event.target.value;
->>>>>>> React RAP/src/Components/AdminDashboard.js
     setSelection(filter);
 
     if (filter === "Recruiter") {
