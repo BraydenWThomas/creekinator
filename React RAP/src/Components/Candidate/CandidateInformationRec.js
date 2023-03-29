@@ -44,8 +44,9 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
   // To Link to specific candidate
   const [candidate, setCandidate] = useState([]);
 
-  // Read status of Text Fields
+  // Read status of Text Fields / Form validation
   const [readOnly, setReadOnly] = useState(true);
+  const [emptyError, setEmptyError] = useState(false);
 
   // Fetch specific candidate
   useEffect(() => {
@@ -86,6 +87,24 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
   const handleReadModalClose = () => {
     setReadModalOpen(false);
     setReadOnly(true);
+
+    // Reset Candidate Details
+    setTitle(candidate.title);
+    setFirstName(candidate.first_name);
+    setMiddleName(candidate.middle_name);
+    setLastName(candidate.last_name);
+    setMobilePhone(candidate.mobile_number);
+    setEmail(candidate.email);
+    setDob(dayjs(candidate.date_of_birth));
+    setAddress(candidate.address);
+    setGradYear(candidate.graduation_year);
+    setDegree(candidate.degree);
+    setUniversity(candidate.university);
+
+    // Reset Application Details
+    setAppliedStream(candidate.applied_stream);
+    setRecruitmentPhase(candidate.recruit_phase);
+    setPastACResult(candidate.past_ac_result);
   }
   
   const style = {
@@ -132,13 +151,19 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
       headers: { 'content-type': 'application/json' },
     };
 
-    fetch("http://localhost:8080/api/candidate", requestOptions)
-      .then(response => response.json())
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
-    
-    handleReadModalClose();
-    window.location.reload();
+    if (firstName.trim() === "") {
+      setEmptyError(true)
+    } else if (lastName.trim() === "") {
+      setEmptyError(true)
+    } else {
+      fetch("http://localhost:8080/api/candidate", requestOptions)
+        .then(response => response.json())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+
+      handleReadModalClose();
+      window.location.reload();
+    }
   }
 
   return (
@@ -171,166 +196,100 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
               <div className="details">
                 <Typography component="h2" variant="h4" mb={2}> Details </Typography>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sm={2}>
-                    <FormControl fullWidth>
-                      <InputLabel id="title-select-label"> Title </InputLabel>
-                      <Select
-                        labelId="title-select-label"
-                        id="title-select"
-                        label="Title"
-                        value={title}
-                        inputProps={{
-                          readOnly: readOnly
-                        }}
-                        fullWidth
-                        onChange={(event) => setTitle(event.target.value)}>
-                        <MenuItem value={"Mr"}> Mr </MenuItem>
-                        <MenuItem value={"Ms"}> Ms </MenuItem>
-                        <MenuItem value={"Miss"}> Miss </MenuItem>
-                        <MenuItem value={"Mrs"}> Mrs </MenuItem>
-                        <MenuItem value={"Dr"}> Dr </MenuItem>
-                      </Select>
-                    </FormControl>
+                  <Grid item xs={12} sm={1.5}>
+                   <TextArea
+                      isTitle={true} 
+                      label="Title"
+                      textType={title}
+                      canEdit={readOnly}
+                      onChange={setTitle}/>
                   </Grid>
-                  <Grid item xs={12} sm={3}>
-                    <TextField
-                      id="outlined-first-name-input"
+                  <Grid item xs={12} sm={3.5}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
                       label="First Name"
-                      type="text"
-                      value={firstName}
-                      InputProps={{
-                        readOnly: readOnly
-                      }}
-                      fullWidth
-                      onChange={(event) => setFirstName(event.target.value)}
-                    />
+                      textType={firstName}
+                      canEdit={readOnly}
+                      onChange={setFirstName} />
+                  </Grid>
+                  <Grid item xs={12} sm={3.5}>
+                    <TextArea
+                      label="Middle Name"
+                      textType={middleName}
+                      canEdit={readOnly}
+                      onChange={setMiddleName} />
+                  </Grid>
+                  <Grid item xs={12} sm={3.5}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="Last Name"
+                      textType={lastName}
+                      canEdit={readOnly}
+                      onChange={setLastName} />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="Mobile Number"
+                      textType={mobilePhone}
+                      canEdit={readOnly}
+                      onChange={setMobilePhone} />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="Email"
+                      textType={email}
+                      canEdit={readOnly}
+                      onChange={setEmail} />
                   </Grid>
                   <Grid item xs={12} sm={3}>
-                    <TextField
-                      id="outlined-middle-name-input"
-                      label="Middle Name"
-                      type="text"
-                      value={middleName}
-                      InputProps={{
-                        readOnly: readOnly
-                      }}
-                      fullWidth
-                      onChange={(e) => setMiddleName(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <TextField
-                      id="outlined-last-name-input"
-                      label="Last Name"
-                      type="text"
-                      value={lastName}
-                      InputProps={{
-                        readOnly: readOnly
-                      }}
-                      fullWidth
-                      onChange={(e) => setLastName(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      id="outlined-mobile-input"
-                      label="Mobile Phone"
-                      type="text"
-                      value={mobilePhone}
-                      InputProps={{
-                        readOnly: readOnly
-                      }}
-                      fullWidth
-                      onChange={(e) => setMobilePhone(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      id="outlined-email-input"
-                      label="Email"
-                      type="text"
-                      value={email}
-                      InputProps={{
-                        readOnly: readOnly
-                      }}
-                      fullWidth
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={2}>
-                    {/* <TextField
-                      id="outlined-date-input"
+                    <TextArea
+                      isDob={true}
                       label="D.O.B"
-                      type="text"
-                      value={dob}
-                      InputProps={{
-                        readOnly: readOnly
-                      }}
-                      fullWidth
-                      onChange={(e) => setDob(e.target.value)}
-                    /> */}
-                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        format="DD/MM/YYYY"
-                        label="D.O.B"
-                        value={dob}
-                        readOnly={readOnly}
-                        fullWidth
-                        onChange={(newDob) => setDob(newDob)}
-                      />
-                    </LocalizationProvider>
+                      textType={dob}
+                      canEdit={readOnly}
+                      onChange={setDob} />
                   </Grid>
-                  <Grid item xs={12} sm={10}>
-                    <TextField
-                      id="outlined-address-input"
+                  <Grid item xs={12} sm={9}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
                       label="Address"
-                      type="text"
-                      value={address}
-                      InputProps={{
-                        readOnly: readOnly
-                      }}
-                      fullWidth
-                      onChange={(e) => setAddress(e.target.value)}
-                    />
+                      textType={address}
+                      canEdit={readOnly}
+                      onChange={setAddress} />
                   </Grid>
                   <Grid item xs={12} sm={4}>
-                    <TextField
-                      id="outlined-year-input"
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
                       label="Graduation Year"
-                      type="text"
-                      value={gradYear}
-                      InputProps={{
-                        readOnly: readOnly
-                      }}
-                      fullWidth
-                      onChange={(e) => setGradYear(e.target.value)}
-                    />
+                      textType={gradYear}
+                      canEdit={readOnly}
+                      onChange={setGradYear} />
                   </Grid>
                   <Grid item xs={12} sm={4}>
-                    <TextField
-                      id="outlined-degree-input"
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
                       label="Degree"
-                      type="text"
-                      value={degree}
-                      InputProps={{
-                        readOnly: readOnly
-                      }}
-                      fullWidth
-                      onChange={(e) => setDegree(e.target.value)}
-                    />
+                      textType={degree}
+                      canEdit={readOnly}
+                      onChange={setDegree} />
                   </Grid>
                   <Grid item xs={12} sm={4}>
-                    <TextField
-                      id="outlined-university-input"
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
                       label="University"
-                      type="text"
-                      value={university}
-                      InputProps={{
-                        readOnly: readOnly
-                      }}
-                      fullWidth
-                      onChange={(e) => setUniversity(e.target.value)}
-                    />
+                      textType={university}
+                      canEdit={readOnly}
+                      onChange={setUniversity} />
                   </Grid>
                 </Grid>
               </div>
@@ -377,29 +336,17 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                         inputProps={{ readOnly: readOnly }}
                         onChange={(event) => setRecruitmentPhase(event.target.value)}
                       >
-                        <MenuItem value={"Applied"}>Applied</MenuItem>
-                        <MenuItem value={"Interviewed"}>Interviewed</MenuItem>
+                        <MenuItem value={"applied"}> Applied </MenuItem>
+                        <MenuItem value={"interviewed"}> Interviewed </MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
                   <Grid item xs sm={6}>
-                    <TextField
-                      id="past-ac-result-input"
-                      label="Past AC Result"
-                      type="text"
-                      value={pastACResult}
-                      InputProps={{
-                        readOnly: readOnly
-                      }}
-                      fullWidth 
-                      onChange={(e) => setPastACResult(e.target.value)} />
                     <TextArea
-                      id="past-ac-result-input"
-                      label="Past AC Result"
-                      type="text"
-                      value={pastACResult}
-                      InputProps={readOnly}
-                      />
+                      label="Email"
+                      textType={pastACResult}
+                      canEdit={readOnly}
+                      onChange={setPastACResult} />
                   </Grid>
                   <Grid item xs sm={12}>
                     {readOnly
