@@ -14,9 +14,9 @@ const TextArea = (props) => {
       value={props.value}
       // InputProps={{ readOnly }}
       fullWidth
-      onChange={handleChange} />
-  )
-}
+      onChange={handleChange}
+    />
+  );
+};
 
 export default TextArea;
-
