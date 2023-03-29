@@ -65,7 +65,7 @@ const Interviewer = () => {
         <Divider variant='middle' />
 
         <div>
-          <Box sx={{ m: 2, width: '100%' }}>
+          <Box sx={{ m: 2, width: '95%' }}>
             <Tabs value={displayState} aria-label="interviewer-toolbar">
               <Tab value="AC_Centre" label="Assessment Centre" onClick={() => changeDisplay("AC_Centre")} />
             </Tabs>

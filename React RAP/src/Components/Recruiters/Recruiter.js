@@ -27,7 +27,7 @@ const Recruiter = () => {
   const [displayState, setDisplayState] = useState("Candidate");
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
-  
+
   // AC + Candidate states
   const [candidates, setCandidates] = useState([]);
   const [acs, setAcs] = useState([]);
@@ -71,16 +71,16 @@ const Recruiter = () => {
             sx={{ flex: 1 }}>
             Dashboard
           </Typography>
-          <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
+          <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "1%" }}>
             <NotificationsIcon fontSize="large" />
             <Avatar src="/broken-image.jpg" />
           </div>
         </div>
 
-        <Divider sx={{ mt: 2, mb: 2 }} />
+        <Divider variant='middle' />
 
         <div className='recruiterToolBar'>
-          <Box>
+          <Box sx={{ m: 2}}>
             <Tabs value={displayState} aria-label="display-tabs">
               <Tab
                 value="Candidate"
@@ -97,55 +97,52 @@ const Recruiter = () => {
         <div className='candidatesInfo'>
           <Box
             sx={{
-              maxHeight: 'auto',
-              overflow: 'auto',
-              width: 'auto',
-              padding: 2
+              margin: 2
             }}>
             {displayState === "Candidate"
               ? // Display candidate tab
               <div style={{ clear: "both" }}>
-                <div className='applicantToolBar' style={{ display: 'flex', marginLeft: 20 }}>
+                <div className='applicantToolBar' style={{ display: 'flex'}}>
                   <Typography
                     component="h2"
                     variant="h4"
                     style={{ flex: 1 }}>
                     Applied
                   </Typography>
-                  <div className='add-c' style={{ marginRight: 20 }}>
-                    {/* <Link to={"candidate/create"}> */}
+                  <div className='add-c'>
                     <IconButton onClick={() => setCreateModalOpen(true)}  >
                       <AddIcon fontSize='large' />
-                      {/* </Link> */}</IconButton>
+                    </IconButton>
                   </div>
                 </div >
-                {candidates.map(candidate => (
-                  <div key={candidate.id}>
-                    <CandidateSelectBox candidate={candidate} />
-                  </div>
-                ))}
+                <div className='candidateSelectBox-container'>
+                  {candidates.map(candidate => (
+                    <div key={candidate.id} className='candidateSelectBox'>
+                      <CandidateSelectBox candidate={candidate} />
+                    </div>
+                  ))}
+                </div>
               </div>
               : // Display AC tab
               <div className='assessmentCentreInfo'>
-                <div className='assessmentToolBar' style={{ display: 'flex', marginLeft: 20 }}>
+                <div className='assessmentToolBar' style={{ display: 'flex'}}>
                   <Typography
                     component="h2"
                     variant="h4"
                     style={{ flex: 1 }}>
                     Upcoming
                   </Typography>
-                  <div className='add-ac' style={{ marginRight: 20 }}>
+                  <div className='add-ac' >
+                    <IconButton>
                     <Link to={"/create"}>
                       <AddIcon fontSize='large' />
                     </Link>
+                    </IconButton>
                   </div>
                 </div >
                 <Box
                   sx={{
-                    maxHeight: '620',
-                    overflow: 'auto',
-                    width: 'auto',
-                    padding: 2
+                    maxHeight: '620'                 
                   }}>
                   {acs.map(ac => (
                     (ac.completed === false
@@ -170,9 +167,6 @@ const Recruiter = () => {
                 <Box
                   sx={{
                     maxHeight: 400,
-                    overflow: 'auto',
-                    width: 'auto',
-                    padding: 2
                   }}>
                   {acs.map(ac => (
                     (ac.completed === true

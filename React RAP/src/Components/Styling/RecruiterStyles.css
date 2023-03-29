@@ -1,24 +1,8 @@
-* {
-    margin: 0;
-    padding: 0;
-    
-}
-
-
-.candidateSelectBox {
-    margin-left: 20px;
-    margin-right: 20px;
-    padding: 10px;
-    margin-top: 20px;
-    background-color: white;
-    border-radius: 20px;
-}
-.candidateSelectBox:hover{
-    /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.575); */
-    background-color: #C9C1EE;
-    border-color: blueviolet;
-    border-style: inset;
-}
+.candidateSelectBox-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(735px, 0));
+    grid-gap: 16px;
+  }
 
 .candidateDelete{
     float: right;

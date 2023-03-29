@@ -108,7 +108,7 @@ const ViewAC = () => {
 
   return (
 
-    <div>
+    <div style={{display:'flex'}}>
       <NavBar />
 
       <div className="content" style={{ float: 'left', width: '80%' }}>
