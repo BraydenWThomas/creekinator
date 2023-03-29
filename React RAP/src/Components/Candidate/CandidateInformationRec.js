@@ -407,13 +407,6 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                       fullWidth
                       onChange={(e) => setPastACResult(e.target.value)}
                     />
-                    <TextArea
-                      id="past-ac-result-input"
-                      label="Past AC Result"
-                      type="text"
-                      value={pastACResult}
-                      InputProps={readOnly}
-                    />
                   </Grid>
                   <Grid item xs sm={12}>
                     {readOnly ? (
