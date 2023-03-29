@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 
 // Components
 import NavBar from "../NavBar";
+import TextArea from '../Extra/TextArea';
 
 // Material UI
 import {

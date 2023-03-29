@@ -12,7 +12,7 @@ const TextArea = (props) => {
       label={props.label}
       type={props.type}
       value={props.value}
-      InputProps={"readOnly"}
+      // InputProps={{ readOnly }}
       fullWidth
       onChange={handleChange}
     />

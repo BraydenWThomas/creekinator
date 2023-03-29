@@ -2,27 +2,16 @@
 import React, { useState, useEffect } from "react";
 
 // Material UI
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Divider from "@mui/material/Divider";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
+<<<<<<< React RAP/src/Components/AdminDashboard.js
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Divider from '@mui/material/Divider';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import { Box, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import {
-  Box,
-  Container,
-  Grid,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@mui/material";
 
 const AdminDashboard = () => {
   const [fullname, setFullname] = useState("");
@@ -104,7 +93,11 @@ const AdminDashboard = () => {
   };
 
   const handleFilter = (event) => {
+<<<<<<< React RAP/src/Components/AdminDashboard.js
+    const filter = event.target.value 
+=======
     const filter = event.target.value;
+>>>>>>> React RAP/src/Components/AdminDashboard.js
     setSelection(filter);
 
     if (filter === "Recruiter") {

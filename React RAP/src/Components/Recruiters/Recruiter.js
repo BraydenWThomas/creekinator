@@ -136,7 +136,7 @@ const Recruiter = () => {
                     Upcoming
                   </Typography>
                   <div className='add-ac' style={{ marginRight: 20 }}>
-                    <Link to={"/create"}>
+                    <Link to={"ac/create"}>
                       <AddIcon fontSize='large' />
                     </Link>
                   </div>

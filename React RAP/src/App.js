@@ -188,13 +188,13 @@ const App = () => {
         path: "/recruiter/ac/view-past/:acId",
         element: <ViewPastAC />,
       },
+      // {        
+      //   path: "/recruiter/ac/create",
+      //   element: <CreateAC />
+      // },
       {
         path: "/recruiter/ac/create",
-        element: <CreateAC />,
-      },
-      {
-        path: "/create",
-        element: <CreateACPage />,
+        element: <CreateACPage />
       },
       {
         path: "/recruiter/ac/update/schedule/sales/:acId",
