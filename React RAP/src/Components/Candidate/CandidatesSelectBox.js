@@ -19,8 +19,6 @@ const CandidateSelectBox = ({ candidate }) => {
   // For Material UI Menu
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [readModalOpen, setReadModalOpen] = useState(false);
-  const [updateModalOpen, setUpdateModalOpen] = useState(false);
 
   const open = Boolean(anchorEl);
 
@@ -39,7 +37,7 @@ const CandidateSelectBox = ({ candidate }) => {
 
   const handleCloseDeleteModal = () => {
     setDeleteModalOpen(false);
-  }
+  };
 
   const handleDelete = (id) => {
     const requestOptions = {

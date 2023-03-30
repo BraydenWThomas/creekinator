@@ -152,25 +152,16 @@ public class AddAndRemoveTest {
 		
 		// ASSESSMENT CENTERS 
 		acList = new ArrayList<>();
-		acList.add(new AssessmentCenter("AC 1",LocalDate.of(2023, 3, 7),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));
-		acList.add(new AssessmentCenter("AC 2",LocalDate.of(2023, 3, 8),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));
-		acList.add(new AssessmentCenter("AC 3",LocalDate.of(2023, 3, 9),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));
-		acList.add(new AssessmentCenter("AC 4",LocalDate.of(2023, 3, 10),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));
-		acList.add(new AssessmentCenter("AC 5",LocalDate.of(2023, 3, 13),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));
-		acList.add(new AssessmentCenter("AC 6",LocalDate.of(2023, 3, 14),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));
-		acList.add(new AssessmentCenter("AC 7",LocalDate.of(2023, 3, 15),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));
-		acList.add(new AssessmentCenter("AC 8",LocalDate.of(2023, 3, 16),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));
-		acList.add(new AssessmentCenter("AC 9",LocalDate.of(2023, 3, 17),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));
+		acList.add(new AssessmentCenter("AC 1",null,LocalDate.of(2023, 3, 7),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));
+		acList.add(new AssessmentCenter("AC 2",null,LocalDate.of(2023, 3, 8),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));
+		acList.add(new AssessmentCenter("AC 3",null,LocalDate.of(2023, 3, 9),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));
+		acList.add(new AssessmentCenter("AC 4",null,LocalDate.of(2023, 3, 10),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));
+		acList.add(new AssessmentCenter("AC 5",null,LocalDate.of(2023, 3, 13),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));
+		acList.add(new AssessmentCenter("AC 6",null,LocalDate.of(2023, 3, 14),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));
+		acList.add(new AssessmentCenter("AC 7",null,LocalDate.of(2023, 3, 15),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));
+		acList.add(new AssessmentCenter("AC 8",null,LocalDate.of(2023, 3, 16),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));
+		acList.add(new AssessmentCenter("AC 9",null,LocalDate.of(2023, 3, 17),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));
 		
-		acList.get(0).setCoordinatorId(1);
-		acList.get(1).setCoordinatorId(2);
-		acList.get(2).setCoordinatorId(3);
-		acList.get(3).setCoordinatorId(4);
-		acList.get(4).setCoordinatorId(5);
-		acList.get(5).setCoordinatorId(6);
-		acList.get(6).setCoordinatorId(7);
-		acList.get(7).setCoordinatorId(8);
-		acList.get(8).setCoordinatorId(9);
 		
 		
 		// AC 1 (A) 
