@@ -50,13 +50,15 @@ const Recruiter = () => {
       responses[1].json()
         .then(data => { setAcs(data) })
     })).catch(error => console.log('error', error));
+
+    
   }, [])
 
   // Change display to candidates or to assessment centres
   const changeDisplay = (value) => {
     setDisplayState(value);
   }
-
+  console.log(acs)
   return (
     <div style={{ display: 'flex' }}>
 

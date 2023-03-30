@@ -120,7 +120,7 @@ const ViewPastAC = () => {
         // Get sales interviews times
         salesInterviewTimes.push(interviewDetailsForAC[i].interview.interviewTime)
         // Get sales interview packs
-        if (interviewDetailsForAC[i].packs.length > 0) {
+        if (interviewDetailsForAC[i].interview.pack.length > 0) {
           salesInterviewPacks.push(interviewDetailsForAC[i].packs[0].pack_name)
         }
       }
@@ -136,7 +136,7 @@ const ViewPastAC = () => {
         // Get tech interviews times
         techInterviewTimes.push(interviewDetailsForAC[i].interview.interviewTime)
         // Get tech interview packs
-        if (interviewDetailsForAC[i].packs.length > 0) {
+        if (interviewDetailsForAC[i].interview.pack.length > 0) {
           techInterviewPacks.push(interviewDetailsForAC[i].packs[0].pack_name)
         }
       }

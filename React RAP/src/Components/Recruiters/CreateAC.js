@@ -23,7 +23,8 @@ import {
   Checkbox,
   Typography,
   Avatar,
-  Grid
+  Grid,
+  Modal
 } from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -32,13 +33,48 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import { Container } from '@mui/system';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 const CreateAC = () => {
   // AC Details
   const [title, setTitle] = useState('');
+  useEffect(() => {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
+
+    Promise.all([
+      fetch("http://localhost:8080/api/ac", requestOptions),
+      fetch("http://localhost:8080/api/auth/user", requestOptions)
+    ]).then((responses => {
+      responses[0].json()
+        .then(data => setTitle("AC" + (data.length + 1)))
+      responses[1].json()
+        .then(result => setCurrentUser(result[localStorage.getItem('userId') - 1].recruiter.id))
+    })).catch(error => console.log('error', error));
+
+
+  }, []);
+
+  
   const [date, setDate] = useState('');
   const [timeStart, setTimeStart] = useState(dayjs().set('hour', 9).set('minute', 0).startOf('minute'));
   const [timeEnd, setTimeEnd] = useState(dayjs().set('hour', 17).set('minute', 0).startOf('minute'));
+
+  //handle modal
+  const [open, setOpen] = useState(false);
+ 
+  const handleClose = () => setOpen(false);
 
   // Filter
   const [stream, setStream] = useState('');
@@ -51,7 +87,8 @@ const CreateAC = () => {
   const [candidates, setCandidates] = useState([]);
   const [interviewers, setInterviewers] = useState([]);
   const [recruiters, setRecruiters] = useState([]);
-  const [currentUser, setCurrentUser] = useState([]);
+  const [withACMaker, setWithACMaker] = useState([]);
+  const [currentUser, setCurrentUser] = useState(0);
   // Checkbox states
   const [isCheckedInterviewer, setIsCheckedInterviewer] = useState([]);
   const [isCheckedCandidates, setIsCheckedCandidates] = useState([]);
@@ -62,6 +99,9 @@ const CreateAC = () => {
     navigate(-1);
   }
 
+<<<<<<< HEAD
+  // Fetch all candidates, interviewers and recruiters
+=======
    // Create MenuItem of selectable time-intervals
    dayjs.extend(customParseFormat);
    var start = timeStart;
@@ -78,42 +118,35 @@ const CreateAC = () => {
    }
    
   // Fetch all candidates
+>>>>>>> d95bd18f8214f5f25565d817d221c527fee39648
   useEffect(() => {
-    
+
     const requestOptions = {
       method: 'GET',
       redirect: 'follow',
     };
-    
-  
-    console.log(localStorage.getItem('userId'))
+
+
+
     Promise.all([
       fetch("http://localhost:8080/api/candidate", requestOptions),
       fetch("http://localhost:8080/api/interviewer", requestOptions),
-      fetch("http://localhost:8080/api/recruiter", requestOptions),
-      fetch("http://localhost:8080/api/auth/user", requestOptions)
+      fetch("http://localhost:8080/api/recruiter", requestOptions)
     ]).then((responses => {
       console.log(responses)
       responses[0].json()
         .then(data => { setCandidates(data) })
       responses[1].json()
         .then(data => { setInterviewers(data) })
-        responses[2].json()
-        .then(data => { setRecruiters(data) })
-        responses[3].json()
-        .then()
-        // .then(result => setCurrentUser(result[localStorage.getItem('userId') - 1].recruiter.id))
+      responses[2].json()
+        .then(data => { setWithACMaker(data) })
     })).catch(error => console.log('error', error));
+    
+    
+    
 
-    // for (var i=0; i<recruiters.length;i++){
-    //   if(recruiters[i].id == currentUser){
-    //     recruiters.remove(recruiters[i])
-    //   }
-    
-    // }
-    
-  }, []);
-  
+  }, [currentUser]);
+
 
   // Handle adding interviewers
   useEffect(() => {
@@ -133,8 +166,16 @@ const CreateAC = () => {
     setIsCheckedCandidates(isCheckedCandidates.map((v, i) => (i === index ? !v : v)));
   };
 
-   // Handle adding recruiter
-   useEffect(() => {
+  // Handle adding recruiter
+  useEffect(() => {  
+   //do not show AC creator as removable
+   
+   setRecruiters(withACMaker.filter((item) => item.id !== currentUser))
+   
+  }, [withACMaker]);
+
+  useEffect(() => {
+   
     setIsCheckedRecruiters(recruiters.slice().fill(false));
   }, [recruiters]);
 
@@ -144,9 +185,31 @@ const CreateAC = () => {
 
   // Handle creating AC
   const handleSubmit = () => {
-    goBack()
+    var salesIntCount = 0;
+    var techIntCount = 0;
+    for (var i = 0; i < interviewers.length; i++) {
+      
+    
+      if (interviewers[i].tech == false && isCheckedInterviewer[i] == true) {
+        salesIntCount += 1;
+      } else if ((interviewers[i].tech == true && isCheckedInterviewer[i] == true)) {
+        techIntCount += 1;
+      }
+      
+    }
 
-    // Get attending interviewers
+    console.log(interviewers)
+    console.log(isCheckedInterviewer)
+
+    if (date == '' || !isCheckedInterviewer.includes(true) || !isCheckedCandidates.includes(true) || salesIntCount < 1 || techIntCount < 1) {
+      setOpen(true)
+
+    }
+    
+    else {
+      goBack()
+
+       // Get attending interviewers
     const interviewerIds = [];
     for (var i = 0; i < isCheckedInterviewer.length; i++) {
       if (isCheckedInterviewer[i]) {
@@ -166,9 +229,10 @@ const CreateAC = () => {
 
     // Get attending recruiters
     const recruiterIds = [];
+    recruiterIds.push(currentUser)
     for (var j = 0; j < isCheckedRecruiters.length; j++) {
       if (isCheckedRecruiters[j]) {
-        candidateIds.push(recruiters[j].id);
+        recruiterIds.push(recruiters[j].id);
       }
     }
     const recruiterString = recruiterIds.join(",");
@@ -192,7 +256,7 @@ const CreateAC = () => {
     };
 
     fetch("http://localhost:8080/api/ac?interviewers=" + interviewerString +
-      "&recruiters=1&candidates=" + candidateString, requestOptions)
+      "&recruiters=" + recruiterString + "&candidates=" + candidateString, requestOptions)
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -204,6 +268,12 @@ const CreateAC = () => {
     setTimeEnd(dayjs().set('hour', 17).set('minute', 0).startOf('minute'));
     setIsCheckedInterviewer(interviewers.slice().fill(false));
     setIsCheckedCandidates(candidates.slice().fill(false));
+    setIsCheckedRecruiters(recruiters.slice().fill(false));
+    console.log(recruiterIds)
+    }
+    
+
+   
   };
 
   return (
@@ -225,6 +295,21 @@ const CreateAC = () => {
               mt: 3,
             }}>
             <Divider sx={{ mt: 2, mb: 2 }} />
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+               <Box sx={style}>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  Missed Areas
+                </Typography>
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  Please fill all fields
+                </Typography>
+              </Box>
+            </Modal>
             <div className="ac-details">
               <Typography component="h2" variant="h4" mb={2}> Time </Typography>
               <Grid container spacing={2}>
@@ -379,8 +464,8 @@ const CreateAC = () => {
             <div className="recruiter">
               <div style={{ display: 'flex', marginBottom: '2%' }}>
                 <Typography component="h2" variant="h4" sx={{ flex: 1 }}> Recruiter </Typography>
-            
-                
+
+
               </div>
 
               <Box>
@@ -406,6 +491,7 @@ const CreateAC = () => {
 
             <Grid container spacing={2} sx={{ mt: 2 }}>
               <Grid item xs sm={12}>
+              <p style={{float: 'right'}}>*Please fill in every field, Recruiter not mandatory</p> <br/>
                 <Button variant="contained" fullWidth onClick={(e) => handleSubmit(e.target.value)}>
                   Create
                 </Button>
@@ -415,6 +501,8 @@ const CreateAC = () => {
                   <Button variant="contained" color='secondary' fullWidth> Cancel </Button>
                 </Link>
               </Grid>
+              
+              
             </Grid>
           </Box>
         </Container>
