@@ -16,15 +16,21 @@ import {
   InputLabel,
   MenuItem,
   FormControl,
+  FormControlLabel,
   Select,
+  IconButton,
   Box,
+  FormGroup,
+  Checkbox,
   Grid,
   Container,
   Typography
 } from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 
 const CreateSalesInterview = () => {
   // AC Details
@@ -150,12 +156,12 @@ const CreateSalesInterview = () => {
   }
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div>
       <NavBar />
 
-      <div className="content" style={{ float: 'left', width: '100%', paddingLeft:20, paddingRight:20 }}>
-        
-          <div className="header" style={{ display: "flex" }}>
+      <div className="content" style={{ float: 'left', width: '80%' }}>
+      <Container component="main">
+      <div className="header" style={{ display: "flex" }}>
             <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Schedule Upcoming Assessment Centre</Typography>
             <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "3%" }}>
               <Avatar src="/broken-image.jpg" />
@@ -167,124 +173,116 @@ const CreateSalesInterview = () => {
               alignItems: 'center',
               mt: 3,
             }}>
+      
 
+      <Divider sx={{ mt: 2, mb: 2 }} />
 
-            <Divider sx={{ mt: 2, mb: 2 }} />
+        <div className="ac-details">
+          <div style={{ float: 'left', width: '80%' }}>
+            <h1> {ac.title} </h1>
+            <h2 style={{ marginTop: '5pt' }}>
+              {dateFormat}
+            </h2>
+          </div>
 
-            <div className="ac-details">
-              <div style={{ float: 'left', width: '80%' }}>
-                <h1> {ac.title} </h1>
-                <h2 style={{ marginTop: '5pt' }}>
-                  {dateFormat}
-                </h2>
+          <div style={{ float: 'left', width: '20%', marginTop: '4%' }}>
+            <Stack direction="row" spacing={3}>
+              <Avatar> J </Avatar>
+              <h4 style={{ marginTop: '3%' }}> AC Coorindator: {acCoordinator} </h4>
+            </Stack>
+          </div>
+        </div>
+
+        <Divider variant="middle" />
+
+        <div className="sales-interviews">
+          <h2> Sales Interviews </h2>
+          {interviewers.map((interviewer, index) => (
+            (interviewer.tech === false &&
+              <div>
+                <h3 key={index}>
+                  {interviewer.name}
+                </h3>
+                <Grid container spacing={2} columns={32}>
+                  <FormControl required sx={{ m: 2, minWidth: 450 }}>
+                    <InputLabel id="select-candidate-label"> Select Candidate </InputLabel>
+                    <Select
+                      labelId="select-candidate-label"
+                      id="candidate-select"
+                      label="candidate-select"
+                      value={scheduledCands[index]}
+                      onChange={(e) => handleScheduleCandidate(e.target.value, index)}>
+                      {candidates.map(candidate => (
+                        <MenuItem key={candidate.id} value={candidate.id}>
+                          {candidate.first_name + " " + candidate.last_name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <FormControl required sx={{ m: 2, minWidth: 350 }}>
+                    <InputLabel id="select-interviewer-pack-label"> Select Interview Pack </InputLabel>
+                    <Select
+                      labelId="select-interviewer-pack-label"
+                      id="interviewer-pack-select"
+                      label="interviewer-pack-select"
+                      value={scheduledPacks[index]}
+                      onChange={(e) => handleSchedulePack(e.target.value, index)}>
+                      {interviewPacks.map(pack => (
+                        (pack.pack_type === "Sales"
+                          && // Show sales packs
+                          <MenuItem key={pack.id} value={pack.id}>
+                            {pack.pack_name}
+                          </MenuItem>
+                        )
+                      ))
+                      }
+                    </Select>
+                  </FormControl>
+
+                  <Grid item xs sm={4}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <TimePicker
+                        label="Start Time"
+                        format="hh:mm a"
+                        minTime={formatStart}
+                        value={scheduledTimes[index]}
+                        onChange={(newTime) => handleScheduleTime(newTime, index)} />
+                    </LocalizationProvider>
+                  </Grid>
+                  <Grid item xs sm={4}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => handleSubmit(index)}>
+                      Submit
+                    </Button>
+                  </Grid>
+                </Grid>
               </div>
+            )
+          ))}
+        </div>
 
-              <div style={{ float: 'left', width: '20%', marginTop: '4%' }}>
-                <Stack direction="row" spacing={3}>
-                  <Avatar> J </Avatar>
-                  <h4 style={{ marginTop: '3%' }}> AC Coorindator: {acCoordinator} </h4>
-                </Stack>
-              </div>
-            </div>
-
-            <Divider variant="middle" />
-
-            <div className="sales-interviews">
-              <h2> Sales Interviews </h2>
-              {interviewers.map((interviewer, index) => (
-                (interviewer.tech === false &&
-                  <div>
-                    <h3 key={index}>
-                      {interviewer.name}
-                    </h3>
-                    <Grid container spacing={2} mt={1} mb={1}>
-                      <Grid item xs={4}>
-                        <FormControl required fullWidth>
-                          <InputLabel id="select-candidate-label"> Select Candidate </InputLabel>
-                          <Select
-                            labelId="select-candidate-label"
-                            id="candidate-select"
-                            label="candidate-select"
-                            value={scheduledCands[index]}
-                            onChange={(e) => handleScheduleCandidate(e.target.value, index)}>
-                            {candidates.map(candidate => (
-                              <MenuItem key={candidate.id} value={candidate.id}>
-                                {candidate.first_name + " " + candidate.last_name}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={4}>
-                        <FormControl required fullWidth>
-                          <InputLabel id="select-interviewer-pack-label"> Select Interview Pack </InputLabel>
-                          <Select
-                            labelId="select-interviewer-pack-label"
-                            id="interviewer-pack-select"
-                            label="interviewer-pack-select"
-                            value={scheduledPacks[index]}
-                            onChange={(e) => handleSchedulePack(e.target.value, index)}>
-                            {interviewPacks.map(pack => (
-                              (pack.pack_type === "Sales"
-                                && // Show sales packs
-                                <MenuItem key={pack.id} value={pack.id}>
-                                  {pack.pack_name}
-                                </MenuItem>
-                              )
-                            ))
-                            }
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs sm={2}>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <TimePicker
-                            sx={{width:'100%'}}
-                            label="Start Time"
-                            format="hh:mm a"
-                            minTime={formatStart}
-                            value={scheduledTimes[index]}
-                            onChange={(newTime) => handleScheduleTime(newTime, index)} />
-                        </LocalizationProvider>
-                      </Grid>
-                      <Grid item xs sm={2}>
-                        <Button
-                          sx={{height:'55px'}}
-                          fullWidth
-                          size='large'
-                          variant="outlined"
-                          onClick={() => handleSubmit(index)}>
-                          Submit
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  </div>
-                )
-              ))}
-            </div>
-
-            <Grid item xs sm={12} mb={2}>
-              <Button
-                variant="contained"
-                component="label"
-                fullWidth
-                onClick={handleResetFields}>
-                Reset fields
-              </Button>
-              </Grid>
-              <Link to={"/recruiter"}>
-                <Button
-                  variant="contained"
-                  component="label"
-                  color="secondary"
-                  fullWidth
-                  onClick={goBack}>
-                  Back
-                </Button>
-              </Link>
-            
-          </Box>
-   
+        <Grid item xs sm={12}>
+          <Button
+            variant="contained"
+            component="label"
+            fullWidth
+            onClick={handleResetFields}>
+            Reset fields
+          </Button>
+          <Link to={"/recruiter"}>
+            <Button
+              variant="contained"
+              component="label"
+              color="secondary"
+              fullWidth
+              onClick={goBack}>
+              Back
+            </Button>
+          </Link>
+        </Grid>
+        </Box>
+        </Container>
       </div>
     </div>
   )

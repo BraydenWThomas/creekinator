@@ -28,7 +28,7 @@ const Recruiter = () => {
   const [displayState, setDisplayState] = useState("Candidate");
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
-
+  
   // AC + Candidate states
   const [candidates, setCandidates] = useState([]);
   const [acs, setAcs] = useState([]);
@@ -72,16 +72,16 @@ const Recruiter = () => {
             sx={{ flex: 1 }}>
             Dashboard
           </Typography>
-          <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "1%" }}>
+          <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
             <NotificationsIcon fontSize="large" />
             <Avatar src="/broken-image.jpg" />
           </div>
         </div>
 
-        <Divider variant='middle' />
+        <Divider sx={{ mt: 2, mb: 2 }} />
 
         <div className='recruiterToolBar'>
-          <Box sx={{ m: 2}}>
+          <Box>
             <Tabs value={displayState} aria-label="display-tabs">
               <Tab
                 value="Candidate"
@@ -98,52 +98,55 @@ const Recruiter = () => {
         <div className='candidatesInfo'>
           <Box
             sx={{
-              margin: 2
+              maxHeight: 1000,
+              overflow: 'auto',
+              width: 'auto',
+              padding: 2
             }}>
             {displayState === "Candidate"
               ? // Display candidate tab
               <div style={{ clear: "both" }}>
-                <div className='applicantToolBar' style={{ display: 'flex'}}>
+                <div className='applicantToolBar' style={{ display: 'flex', marginLeft: 20 }}>
                   <Typography
                     component="h2"
                     variant="h4"
                     style={{ flex: 1 }}>
                     Applied
                   </Typography>
-                  <div className='add-c'>
+                  <div className='add-c' style={{ marginRight: 20 }}>
+                    {/* <Link to={"candidate/create"}> */}
                     <IconButton onClick={() => setCreateModalOpen(true)}  >
                       <AddIcon fontSize='large' />
-                    </IconButton>
+                      {/* </Link> */}</IconButton>
                   </div>
                 </div >
-                <div className='candidateSelectBox-container'>
-                  {candidates.map(candidate => (
-                    <div key={candidate.id} className='candidateSelectBox'>
-                      <CandidateSelectBox candidate={candidate} />
-                    </div>
-                  ))}
-                </div>
+                {candidates.map(candidate => (
+                  <div key={candidate.id}>
+                    <CandidateSelectBox candidate={candidate} />
+                  </div>
+                ))}
               </div>
               : // Display AC tab
               <div className='assessmentCentreInfo'>
-                <div className='assessmentToolBar' style={{ display: 'flex'}}>
+                <div className='assessmentToolBar' style={{ display: 'flex', marginLeft: 20 }}>
                   <Typography
                     component="h2"
                     variant="h4"
                     style={{ flex: 1 }}>
                     Upcoming
                   </Typography>
-                  <div className='add-ac' >
-                    <IconButton>
-                    <Link to={"/create"}>
+                  <div className='add-ac' style={{ marginRight: 20 }}>
+                    <Link to={"ac/create"}>
                       <AddIcon fontSize='large' />
                     </Link>
-                    </IconButton>
                   </div>
                 </div >
                 <Box
                   sx={{
-                    maxHeight: '620'                 
+                    maxHeight: 620,
+                    overflow: 'auto',
+                    width: 'auto',
+                    padding: 2
                   }}>
                   {acs.map(ac => (
                     (ac.completed === false
@@ -167,7 +170,10 @@ const Recruiter = () => {
                 </div>
                 <Box
                   sx={{
-                    maxHeight: 400,
+                    maxHeight: 300,
+                    overflow: 'auto',
+                    width: 'auto',
+                    padding: 2
                   }}>
                   {acs.map(ac => (
                     (ac.completed === true
