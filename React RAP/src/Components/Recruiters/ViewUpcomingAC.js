@@ -220,10 +220,10 @@ const ViewUpcomingAC = () => {
     formatEnd.format("LT")
   
   return (
-    <div>
+    <div style={{display:'flex'}}>
       <NavBar />
-      <div className="content" style={{ float: 'left', width: '80%' }}>
-        <Container component="main">
+      <div className="content" style={{ float: 'left', width: '100%', paddingLeft:20, paddingRight:20 }}>
+        
           <div className="header" style={{ display: "flex" }}>
             <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Upcoming Assessment Centre</Typography>
             <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
@@ -293,6 +293,7 @@ const ViewUpcomingAC = () => {
                   <Link to={`/recruiter/ac/update/schedule/sales/${ac.id}`}>
                     <Button
                       fullWidth
+                      sx={{mb:2}}
                       variant="contained">
                       Update Sales Interview Schedule
                     </Button>
@@ -319,7 +320,6 @@ const ViewUpcomingAC = () => {
               </Grid>
             </div>
           </Box>
-        </Container>
       </div>
     </div >
   )
