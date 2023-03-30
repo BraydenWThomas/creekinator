@@ -46,8 +46,7 @@ const Interviewer = () => {
 
       <NavBar />
 
-      <div className='bodySection' style={{ width: '100%' }}>
-
+      <div className="content" style={{ float: 'left', width: '100%' }}>
         <div className="header" style={{ display: "flex" }}>
           <Typography
             component="h1"
@@ -57,7 +56,7 @@ const Interviewer = () => {
             sx={{ flex: 1 }}>
             Dashboard
           </Typography>
-          <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
+          <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "1%" }}>
             <NotificationsIcon fontSize="large" />
             <Avatar src="/broken-image.jpg" />
           </div>
@@ -66,7 +65,7 @@ const Interviewer = () => {
         <Divider variant='middle' />
 
         <div>
-          <Box sx={{ m: 2, width: '100%' }}>
+          <Box sx={{ m: 2, width: '95%' }}>
             <Tabs value={displayState} aria-label="interviewer-toolbar">
               <Tab value="AC_Centre" label="Assessment Centre" onClick={() => changeDisplay("AC_Centre")} />
             </Tabs>
@@ -85,7 +84,7 @@ const Interviewer = () => {
 
           <Box
             sx={{
-              maxHeight: 620,
+              maxHeight: '620',
               overflow: 'auto',
               width: 'auto',
               padding: 2
@@ -113,7 +112,7 @@ const Interviewer = () => {
           </div>
           <Box
             sx={{
-              maxHeight: 305,
+              maxHeight: 400,
               overflow: 'auto',
               width: 'auto',
               padding: 2
