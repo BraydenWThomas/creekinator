@@ -4,16 +4,12 @@ import { Link } from 'react-router-dom';
 
 // Components
 import '../Styling/RecruiterStyles.css';
-import CandidateInformationRec from './CandidateInformationRec';
-import UpdateCandidate from './UpdateCandidate';
 
 // Material UI
-import { Button, Menu, MenuItem, IconButton, Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Avatar, Card, List, ListItem, ListItemAvatar, ListItemText, ListItemIcon } from '@mui/material';
+import { Button, Menu, MenuItem, IconButton, Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Avatar } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import EmailIcon from '@mui/icons-material/Email';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
-import WorkIcon from '@mui/icons-material/Work';
+import CandidateInformationRec from './CandidateInformationRec';
+import UpdateCandidate from './UpdateCandidate';
 
 const CandidateSelectBox = ({ candidate }) => {
   // For Material UI Menu
@@ -55,90 +51,66 @@ const CandidateSelectBox = ({ candidate }) => {
 
   return (
 
-    <div className='candidateSelectBox'>
-      <Card>
-        <div className='candidateSelectBox-menu'>
-          <IconButton
-            id="basic-button"
-            onClick={handleClick}>
-            <MoreVertIcon />
-          </IconButton>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button',
-            }}>
-            <MenuItem onClick={() => setReadModalOpen(true)}>
-              View
-            </MenuItem>
+    <div className='candidateSelectBox' style={{ clear: "both" }}>
+      <div className='candidateSelectBox-menu' style={{ right: 40 }}>
+        <IconButton
+          id="basic-button"
+          onClick={handleClick}>
+          <MoreVertIcon />
+        </IconButton>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}>
+          <MenuItem onClick={() => setReadModalOpen(true)}>
+            View
+          </MenuItem>
             <MenuItem onClick={() => setUpdateModalOpen(true)}>
               Update
             </MenuItem>
-            <MenuItem
-              onClick={handleOpenDeleteModal}>Delete
-            </MenuItem>
-          </Menu>
-        </div>
+          <MenuItem
+            onClick={handleOpenDeleteModal}>Delete
+          </MenuItem>
+        </Menu>
+      </div>
 
-        <List>
-          <ListItem disablePadding sx={{marginLeft:'10px', marginBottom:'1%'}}>
-            <ListItemIcon>
-              <Avatar>
-                <AccountBoxIcon />
-              </Avatar>
-            </ListItemIcon>
-            <ListItemText sx={{marginLeft:'8px', fontSize:'25px', fontWeight:'bold'}} disableTypography primary={candidate.first_name + " " + candidate.last_name} />
-          </ListItem>
-          <ListItem>
-            <ListItemIcon>
-                <EmailIcon />
-            </ListItemIcon>
-            <ListItemText primary={candidate.email.toLowerCase()} />
-          </ListItem>
-          <ListItem>
-            <ListItemIcon>
-                <PhoneInTalkIcon />
-            </ListItemIcon>
-            <ListItemText primary={candidate.mobile_number} />
-          </ListItem>
-          <ListItem>
-            <ListItemIcon> 
-                <WorkIcon />
-            </ListItemIcon>
-            <ListItemText primary={candidate.applied_stream} />
-          </ListItem>
-        </List>
+      <div className='box' style={{ margin: "20px" }}>
+        <Typography component="h3" variant='h5'> {candidate.first_name + " " + candidate.last_name} </Typography>
+        <Typography component="h3" variant='h6'> {candidate.mobile_number} </Typography>
+        <Typography component="h3" variant='h6'> {candidate.email} </Typography>
+        <Typography component="h3" variant='h6'> {candidate.applied_stream} </Typography>
+      </div>
 
-        {/* Delete Confirmation Modal */}
-        <Dialog open={deleteModalOpen} onClose={handleCloseDeleteModal}>
-          <DialogTitle>Delete Candidate</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Are you sure you want to delete {candidate.first_name + ' ' + candidate.last_name}?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDeleteModal}>Cancel</Button>
-            <Button onClick={() => handleDelete(candidate.id)} color="error">
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
+      {/* Delete Confirmation Modal */}
+      <Dialog open={deleteModalOpen} onClose={handleCloseDeleteModal}>
+        <DialogTitle>Delete Candidate</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete {candidate.first_name + ' ' + candidate.last_name}?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteModal}>Cancel</Button>
+          <Button onClick={() => handleDelete(candidate.id)} color="error">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-        <CandidateInformationRec
-          readModalOpen={readModalOpen}
-          setReadModalOpen={setReadModalOpen}
-          candidateId={candidate.id}
-        />
-        <UpdateCandidate
-          updateModalOpen={updateModalOpen}
-          setUpdateModalOpen={setUpdateModalOpen}
-          candidateId={candidate.id}
-        />
-      </Card>
+      <CandidateInformationRec
+        readModalOpen={readModalOpen}
+        setReadModalOpen={setReadModalOpen}
+        candidateId={candidate.id}
+      />
+      <UpdateCandidate
+        updateModalOpen={updateModalOpen}
+        setUpdateModalOpen={setUpdateModalOpen}
+        candidateId={candidate.id}
+      />
     </div>
 
   )
