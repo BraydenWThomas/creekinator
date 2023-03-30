@@ -50,19 +50,18 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
       redirect: 'follow',
     };
 
-    Promise.all([
-      fetch("http://localhost:8080/api/ac/" + ac.id + "/candidates", requestOptions),
-      fetch("http://localhost:8080/api/ac/" + ac.id + "/interviewers", requestOptions),
-      fetch("http://localhost:8080/api/ac/" + ac.id + "/recruiters", requestOptions),
-    ]).then((responses => {
-    
-      responses[0].json()
-        .then(data => { setCandidates(data.candidates) })
-      responses[1].json()
-        .then(data => { setInterviewers(data.interviewers) })
-      responses[2].json()
-        .then(data => { setRecruiters(data.recruiters) })
-    })).catch(error => console.log('error', error));
+
+
+    fetch("http://localhost:8080/api/ac/" + ac.id + "/detailed", requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        setRecruiters(result.recruiters);
+        setCandidates(result.candidates);
+        setInterviewers(result.interviewers)
+
+      })
+      .catch(error => console.log('error', error));
+
   }, [ac.id])
 
   // // Get AC Coordinator for AC
@@ -73,7 +72,7 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
   //     };
   //   };
   // }, [recruiters, ac.coordinatorId]);
-console.log(candidates)
+  console.log(candidates)
 
 
   return (
@@ -90,81 +89,14 @@ console.log(candidates)
         <div className="streamInfo">
           {statustype === "upcomingAC" ?
             <div className='menu'>
-            <div className='select-menu'>
-              <IconButton
-                id="basic-button"
-                aria-controls={open ? 'basic-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                onClick={handleClick}
-              >
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  'aria-labelledby': 'basic-button',
-                }}
-              >
-                <Link to={`ac/view-upcoming/${ac.id}`}>
-                  <MenuItem>
-                    View
-                  </MenuItem>
-                </Link>
-                <Link to={`ac/update/${ac.id}`}>
-                  <MenuItem>
-                    Update Details
-                  </MenuItem>
-                </Link>
-                <Link to={`ac/update/schedule/sales/${ac.id}`}>
-                  <MenuItem>
-                    Schedule Sales Interviews
-                  </MenuItem>
-                </Link>
-                <Link to={`ac/update/schedule/technical/${ac.id}`}>
-                  <MenuItem>
-                    Schedule Technical Interviews
-                  </MenuItem>
-                </Link>
-              </Menu>
-            </div>
-          </div> :
-            (statustype === "pastAC" ?
-            <div className='menu'>
-            <div className='select-menu'>
-              <IconButton
-                id="basic-button"
-                onClick={handleClick}>
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  'aria-labelledby': 'basic-button',
-                }}>
-                <Link to={`ac/view-past/${ac.id}`}>
-                  <MenuItem>
-                    View
-                  </MenuItem>
-                </Link>
-                <MenuItem>
-                  Delete
-                </MenuItem>
-              </Menu>
-            </div>
-          </div> :
-              (statustype === "interviewerAC" ?
-              <div className='menu'>
               <div className='select-menu'>
                 <IconButton
                   id="basic-button"
-                  onClick={handleClick}>
+                  aria-controls={open ? 'basic-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                  onClick={handleClick}
+                >
                   <MoreVertIcon />
                 </IconButton>
                 <Menu
@@ -174,15 +106,82 @@ console.log(candidates)
                   onClose={handleClose}
                   MenuListProps={{
                     'aria-labelledby': 'basic-button',
-                  }}>
-                  <Link to={`ac/view/${ac.id}`}>
+                  }}
+                >
+                  <Link to={`ac/view-upcoming/${ac.id}`}>
                     <MenuItem>
                       View
+                    </MenuItem>
+                  </Link>
+                  <Link to={`ac/update/${ac.id}`}>
+                    <MenuItem>
+                      Update Details
+                    </MenuItem>
+                  </Link>
+                  <Link to={`ac/update/schedule/sales/${ac.id}`}>
+                    <MenuItem>
+                      Schedule Sales Interviews
+                    </MenuItem>
+                  </Link>
+                  <Link to={`ac/update/schedule/technical/${ac.id}`}>
+                    <MenuItem>
+                      Schedule Technical Interviews
                     </MenuItem>
                   </Link>
                 </Menu>
               </div>
             </div> :
+            (statustype === "pastAC" ?
+              <div className='menu'>
+                <div className='select-menu'>
+                  <IconButton
+                    id="basic-button"
+                    onClick={handleClick}>
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      'aria-labelledby': 'basic-button',
+                    }}>
+                    <Link to={`ac/view-past/${ac.id}`}>
+                      <MenuItem>
+                        View
+                      </MenuItem>
+                    </Link>
+                    <MenuItem>
+                      Delete
+                    </MenuItem>
+                  </Menu>
+                </div>
+              </div> :
+              (statustype === "interviewerAC" ?
+                <div className='menu'>
+                  <div className='select-menu'>
+                    <IconButton
+                      id="basic-button"
+                      onClick={handleClick}>
+                      <MoreVertIcon />
+                    </IconButton>
+                    <Menu
+                      id="basic-menu"
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                      }}>
+                      <Link to={`ac/view/${ac.id}`}>
+                        <MenuItem>
+                          View
+                        </MenuItem>
+                      </Link>
+                    </Menu>
+                  </div>
+                </div> :
                 <></>
               )
             )
@@ -197,7 +196,7 @@ console.log(candidates)
         </div>
         <div style={{ marginRight: "20px", marginLeft: "20px", backgroundColor: "white", paddingLeft: "20px" }}>
 
-        <div style={{ float: "left", width: "25%" }}>
+          <div style={{ float: "left", width: "25%" }}>
             <h4> Recruiters </h4>
             <ul style={{ marginLeft: "20px" }}>
               {recruiters.map(recruiter => (
@@ -244,7 +243,7 @@ console.log(candidates)
             </ul>
           </div>
 
-         
+
 
           {/* <div style={{ display: "flex", clear: "both" }}>
             <h3> {acCoordinator} </h3>

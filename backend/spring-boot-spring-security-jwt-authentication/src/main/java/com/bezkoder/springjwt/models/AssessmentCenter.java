@@ -203,7 +203,7 @@ public class AssessmentCenter {
 		
 		// add in each new interviewer
 		for (Interviewer interviewer: interviewers) {
-			this.removeInterviewer(interviewer);
+			this.addInterviewer(interviewer);
 		}
 		
 		return;

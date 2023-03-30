@@ -1,49 +1,29 @@
-.Sidebar {
-  height: 100vh;
+img{
+  height:65px;
+  width: 130px;
+}
+
+.nav-container {
+  float: left;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-side {
   display: flex;
   flex-direction: column;
-  width: 15rem;
-  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
-  z-index: 1;
+  align-items: center;
+  width: 150px;
+  padding: 20px;
 }
 
-img{
-  display: block;
-  width: 100%;
-}
-
-
-.side-links {
-  height: auto;
-  padding: 0;
-  width: 100%;
-  margin: 0;
+.nav-links {
+  list-style: none;
+  padding: 20px;
+  margin: 30px 0 0;
   font-size: 30px;
-}
-
-aside{
-  height: 100%;
-  background: white;
-  position: fixed;
-  box-sizing: border-box;
-  width: 15rem;
-  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
-}
-
-aside .logo{
-  margin-left: 1rem;
-}
-
-aside .logo img{
-  width: 80%;
-  height: 80%;
-  padding: 0.8rem;
-}
-
-aside .side-links{
-  background: white;
-  flex-direction: column;
-  height: auto;
+  line-height: 1.5;
+  color: #333;
 }
 
 

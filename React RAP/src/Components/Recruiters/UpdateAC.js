@@ -53,7 +53,7 @@ const UpdateAC = () => {
 
   // Link to specific ac
   const { acId } = useParams();
-  const [ac, setAc] = useState([]);
+ 
 
 // AC Details
 const [title, setTitle] = useState('');
@@ -78,6 +78,7 @@ useEffect(() => {
       .then(result => setCurrentUser(result[localStorage.getItem('userId') - 1].recruiter.id))
   })).catch(error => console.log('error', error));
 }, []);
+                                                                                          
   //handle modal
   const [open, setOpen] = useState(false);
 
@@ -146,31 +147,18 @@ useEffect(() => {
       method: 'GET',
       redirect: 'follow',
     };
+   
+    fetch("http://localhost:8080/api/ac/" + acId + "/detailed", requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        setCurrentRecruiters(result.recruiters);
+        setCurrentCandidates(result.candidates);
+        setCurrentInterviewers(result.interviewers)
 
+      })
+      .catch(error => console.log('error', error));
 
-
-    Promise.all([
-      fetch("http://localhost:8080/api/ac/" + acId, requestOptions),
-      fetch("http://localhost:8080/api/ac/" + acId + "/showCandidates", requestOptions),
-      fetch("http://localhost:8080/api/ac/" + acId + "/showInterviewers", requestOptions),
-      fetch("http://localhost:8080/api/ac/" + acId + "/recruiters", requestOptions)
-
-
-    ]).then((responses => {
-      console.log(responses)
-      responses[0].json()
-        .then(data => { setAc(data) })
-      responses[1].json()
-        .then(data => { setCurrentCandidates(data) })
-      responses[2].json()
-        .then(data => { setCurrentInterviewers(data) })
-      responses[3].json()
-        .then(data => { setCurrentRecruiters(data.recruiters) })
-
-    })).catch(error => console.log('error', error));
-
-
-    console.log(title)
+  
 
   }, [recruiters]);
 
@@ -226,7 +214,7 @@ useEffect(() => {
   
   // Handle creating AC
   const handleSubmit = () => {
-    console.log(ac)
+    //console.log(ac)
     var salesIntCount = 0;
     var techIntCount = 0;
     for (var i = 0; i < interviewers.length; i++) {
@@ -276,7 +264,7 @@ useEffect(() => {
       }
       const recruiterString = recruiterIds.join(",");
 
-      console.log(candidateString)
+     
       // Update
       const body =
         JSON.stringify({
@@ -293,9 +281,13 @@ useEffect(() => {
         redirect: 'follow',
         headers: { 'content-type': 'application/json' }
       };
+      fetch("http://localhost:8080/api/ac", requestOptions)
+        .then(response => response.json())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
 
-      fetch("http://localhost:8080/api/updateac?interviewers=" + interviewerString +
-        "&recruiters=" + recruiterString + "&candidates=" + candidateString, requestOptions)
+      fetch("http://localhost:8080/api/ac/" + acId + "/updateLinkedInfo?interviewerIds=" + interviewerString +
+      "&recruiterIds=" + recruiterString + "&candidateIds=" + candidateString, requestOptions)
         .then(response => response.json())
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
@@ -308,12 +300,12 @@ useEffect(() => {
   };
 
   return (
-    <div style={{display: 'flex'}}>
+    <div>
       <NavBar />
       <div className="content" style={{ float: 'left', width: '80%' }}>
         <Container component="main">
           <div className="header" style={{ display: "flex" }}>
-            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Update '{ac.title}'</Typography>
+            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Update {title}</Typography>
             <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
               <NotificationsIcon fontSize="large" />
               <Avatar src="/broken-image.jpg" />
