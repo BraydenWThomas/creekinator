@@ -111,11 +111,11 @@ const ViewAC = () => {
     <div style={{display:'flex'}}>
       <NavBar />
 
-      <div className="content" style={{ float: 'left', width: '80%' }}>
-        <Container component="main">
+      <div className="content" style={{ float: 'left', width: '100%', paddingLeft:20, paddingRight:20 }}>
+        
           <div className="header" style={{ display: "flex" }}>
             <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Assessment Centre</Typography>
-            <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
+            <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "1%" }}>
               <NotificationsIcon fontSize="large" />
               <Avatar src="/broken-image.jpg" />
             </div>
@@ -167,8 +167,8 @@ const ViewAC = () => {
                 {value === 0 && (
                   <TextField
                     id="outlined-textarea"
-                    label="Multiline Placeholder"
-                    placeholder="Placeholder"
+                    label="Feedback"
+                    
                     fullWidth
                     multiline
                     rows={8} 
@@ -177,8 +177,8 @@ const ViewAC = () => {
                 {value === 1 && (
                   <TextField
                     id="outlined-textarea"
-                    label="Multiline Placeholder"
-                    placeholder="Placeholder"
+                    label="Feedback"
+                    
                     fullWidth
                     multiline
                     rows={8} 
@@ -187,8 +187,8 @@ const ViewAC = () => {
                 {value === 2 && (
                   <TextField
                     id="outlined-textarea"
-                    label="Multiline Placeholder"
-                    placeholder="Placeholder"
+                    label="Feedback"
+                    
                     fullWidth
                     multiline
                     rows={8}
@@ -197,8 +197,8 @@ const ViewAC = () => {
                 {value === 3 && (
                  <TextField
                   id="outlined-textarea"
-                  label="Multiline Placeholder"
-                  placeholder="Placeholder"
+                  label="Feedback"
+                  
                   fullWidth
                   multiline
                   rows={8} 
@@ -266,7 +266,7 @@ const ViewAC = () => {
               </div>
             </div>
           </Box>
-        </Container>
+        
       </div>
     </div>
   )

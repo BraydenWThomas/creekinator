@@ -96,8 +96,8 @@ const UpdateAC = () => {
     <div style={{display: 'flex'}}>
       <NavBar />
 
-      <div className="content" style={{ float: 'left', width: '80%' }}>
-        <Container component="main">
+      <div className="content" style={{ float: 'left', width: '100%', paddingLeft:20, paddingRight:20 }}>
+        
           <div className="header" style={{ display: "flex" }}>
             <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Update Assessment Centre Details</Typography>
             <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
@@ -181,7 +181,7 @@ const UpdateAC = () => {
               </Grid>
             </div>
           </Box>
-        </Container>
+
       </div>
     </div>
 

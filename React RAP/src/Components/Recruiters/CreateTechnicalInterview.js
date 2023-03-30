@@ -161,8 +161,8 @@ const CreateTechnicalInterview = () => {
     <div style={{ display: 'flex' }}>
       <NavBar />
 
-      <div className="Dashboard" style={{ float: 'left', width: '80%' }}>
-        <Container component="main">
+      <div className="content" style={{ float: 'left', width: '100%', paddingLeft:20, paddingRight:20 }}>
+        
           <div className="header" style={{ display: "flex" }}>
             <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Schedule Upcoming Assessment Centre</Typography>
             <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "3%" }}>
@@ -173,7 +173,6 @@ const CreateTechnicalInterview = () => {
             sx={{
               flexDirection: 'column',
               alignItems: 'center',
-              mt: 3,
             }}>
 
 
@@ -247,6 +246,7 @@ const CreateTechnicalInterview = () => {
                       <Grid item xs={2}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <TimePicker
+                            sx={{width:'100%'}}
                             label="Start Time"
                             format="hh:mm a"
                             minTime={formatStart}
@@ -254,8 +254,10 @@ const CreateTechnicalInterview = () => {
                             onChange={(newTime) => handleScheduleTime(newTime, index)} />
                         </LocalizationProvider>
                       </Grid>
-                      <Grid item xs={2} mt={1}>
+                      <Grid item xs={2}>
                         <Button
+                          sx={{height:'55px'}}
+                          fullWidth
                           variant="outlined"
                           onClick={() => handleSubmit(index)}>
                           Submit
@@ -288,7 +290,7 @@ const CreateTechnicalInterview = () => {
               </Link>
             
           </Box>
-        </Container>
+
       </div>
     </div>
   )
