@@ -9,12 +9,7 @@ import NavBar from "../NavBar";
 import TextArea from '../Extra/TextArea';
 
 // Material UI
-import { Backdrop, Container, Divider, Fade, Grid, Modal, TextField, Typography } from "@mui/material";
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import Avatar from '@mui/material/Avatar';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { Backdrop, Container, Divider, Fade, Grid, Modal, Typography } from "@mui/material";
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -106,7 +101,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
     setRecruitmentPhase(candidate.recruit_phase);
     setPastACResult(candidate.past_ac_result);
   }
-  
+
   const style = {
     editModal: {
       position: 'absolute',
@@ -192,17 +187,19 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                 alignItems: 'center',
                 mt: 3,
               }}>
+                
               <Divider sx={{ mt: 2, mb: 2 }} />
+
               <div className="details">
                 <Typography component="h2" variant="h4" mb={2}> Details </Typography>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sm={1.5}>
-                   <TextArea
-                      isTitle={true} 
+                  <Grid item xs={12} sm={2}>
+                    <TextArea
+                      isTitle={true}
                       label="Title"
                       textType={title}
                       canEdit={readOnly}
-                      onChange={setTitle}/>
+                      onChange={setTitle} />
                   </Grid>
                   <Grid item xs={12} sm={3.5}>
                     <TextArea
@@ -213,7 +210,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                       canEdit={readOnly}
                       onChange={setFirstName} />
                   </Grid>
-                  <Grid item xs={12} sm={3.5}>
+                  <Grid item xs={12} sm={3}>
                     <TextArea
                       label="Middle Name"
                       textType={middleName}
@@ -306,44 +303,24 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                     </Button>
                   </Grid>
                   <Grid item xs={6}>
-                    <FormControl fullWidth>
-                      <InputLabel id="applied-stream-select-label">Applied Stream</InputLabel>
-                      <Select
-                        labelId="applied-stream-select-label"
-                        id="applied-stream-select"
-                        label="Applied Stream"
-                        value={appliedStream}
-                        inputProps={{ readOnly: readOnly }}
-                        onChange={(event) => setAppliedStream(event.target.value)}
-                      >
-                        <MenuItem value="Business Analyst"> Business Analyst </MenuItem>
-                        <MenuItem value="Business Intelligence"> Business Intelligence </MenuItem>
-                        <MenuItem value="Cloud (AWS)"> Cloud (AWS) </MenuItem>
-                        <MenuItem value="Technical Analyst"> Technical Analyst </MenuItem>
-                        <MenuItem value="Software Development"> Software Development </MenuItem>
-                        <MenuItem value="Testing"> Testing </MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs sm={6}>
-                  <FormControl fullWidth>
-                      <InputLabel id="recruitment-phase-select-label">Recruitment Phase</InputLabel>
-                      <Select
-                        labelId="recruitment-phase-select-label"
-                        id="recruitment-phase-select"
-                        label="Recruitment Phase"
-                        value={recruitmentPhase}
-                        inputProps={{ readOnly: readOnly }}
-                        onChange={(event) => setRecruitmentPhase(event.target.value)}
-                      >
-                        <MenuItem value={"applied"}> Applied </MenuItem>
-                        <MenuItem value={"interviewed"}> Interviewed </MenuItem>
-                      </Select>
-                    </FormControl>
+                    <TextArea
+                      isStream={true}
+                      label="Applied Stream"
+                      textType={appliedStream}
+                      canEdit={readOnly}
+                      onChange={setAppliedStream} />
                   </Grid>
                   <Grid item xs sm={6}>
                     <TextArea
-                      label="Email"
+                      isRecruitPhase={true}
+                      label="Recruitment Phase"
+                      textType={recruitmentPhase}
+                      canEdit={readOnly}
+                      onChange={setRecruitmentPhase} />
+                  </Grid>
+                  <Grid item xs sm={6}>
+                    <TextArea
+                      label="Past AC Result"
                       textType={pastACResult}
                       canEdit={readOnly}
                       onChange={setPastACResult} />

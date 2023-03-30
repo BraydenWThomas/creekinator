@@ -1,8 +1,7 @@
-import { InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { InputLabel, MenuItem, Select, TextField, FormControl } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import React from "react";
-import { FormControl } from "react-bootstrap";
 
 const TextArea = (props) => {
   const handleChange = (e) => {
@@ -12,22 +11,22 @@ const TextArea = (props) => {
   if (props.isTitle) {
     return (
       <FormControl fullWidth>
-      <InputLabel label="title-select-label"> Title </InputLabel>
-      <Select
-        labelId="title-select-label"
-        id="title-select"
-        label={props.label}
-        value={props.textType}
-        inputProps={{ readOnly: props.canEdit }}
-        fullWidth
-        onChange={handleChange}>
+        <InputLabel label="title-select-label"> {props.label} </InputLabel>
+        <Select
+          labelId="title-select-label"
+          id="title-select"
+          label={props.label}
+          value={props.textType}
+          inputProps={{ readOnly: props.canEdit }}
+          fullWidth
+          onChange={(e) => handleChange(e.target.value)}>
           <MenuItem value={"Mr"}> Mr </MenuItem>
           <MenuItem value={"Ms"}> Ms </MenuItem>
           <MenuItem value={"Miss"}> Miss </MenuItem>
           <MenuItem value={"Mrs"}> Mrs </MenuItem>
           <MenuItem value={"Dr"}> Dr </MenuItem>
-      </Select>
-    </FormControl>
+        </Select>
+      </FormControl>
     )
   }
 
@@ -47,17 +46,51 @@ const TextArea = (props) => {
   }
 
   else if (props.isStream) {
-
+    return (
+      <FormControl fullWidth>
+        <InputLabel id="applied-stream-select-label"> {props.label} </InputLabel>
+        <Select
+          labelId="applied-stream-select-label"
+          id="applied-stream-select"
+          label={props.label}
+          value={props.textType}
+          inputProps={{ readOnly: props.canEdit }}
+          onChange={(e) => handleChange(e.target.value)}
+        >
+          <MenuItem value="Business Analyst"> Business Analyst </MenuItem>
+          <MenuItem value="Business Intelligence"> Business Intelligence </MenuItem>
+          <MenuItem value="Cloud (AWS)"> Cloud (AWS) </MenuItem>
+          <MenuItem value="Technical Analyst"> Technical Analyst </MenuItem>
+          <MenuItem value="Software Development"> Software Development </MenuItem>
+          <MenuItem value="Testing"> Testing </MenuItem>
+        </Select>
+      </FormControl>
+    )
   }
 
   else if (props.isRecruitPhase) {
-
+    return (
+      <FormControl fullWidth>
+        <InputLabel id="recruitment-phase-select-label"> {props.label} </InputLabel>
+        <Select
+          labelId="recruitment-phase-select-label"
+          id="recruitment-phase-select"
+          label={props.label}
+          value={props.textType}
+          inputProps={{ readOnly: props.canEdit }}
+          onChange={(e) => handleChange(e.target.value)}
+        >
+          <MenuItem value={"applied"}> Applied </MenuItem>
+          <MenuItem value={"interviewed"}> Interviewed </MenuItem>
+        </Select>
+      </FormControl>
+    )
   }
 
   else {
     return (
       (props.error
-        ? (props.textType.trim() === ""
+        ? (props.textType.toString().trim() === ""
           ? <TextField
             id="outlined-text-field"
             type="text"
