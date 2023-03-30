@@ -1,4 +1,3 @@
-
 package com.bezkoder.springjwt;
 
 import java.sql.Time;
@@ -174,19 +173,29 @@ public class Dataloader implements ApplicationRunner{
 		
 		// ASSESSMENT CENTERS 
 		List<AssessmentCenter> acList = new ArrayList<>();
+<<<<<<< HEAD
 		acList.add(new AssessmentCenter("AC Thursday 16/3",LocalDate.of(2023, 3, 16),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));//past
 		acList.add(new AssessmentCenter("AC Tuesday 21/3",LocalDate.of(2023, 3, 21),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));//future
 		acList.add(new AssessmentCenter("AC Thursday 23/3",LocalDate.of(2023, 3, 23),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));//future
+=======
+		acList.add(new AssessmentCenter("AC Thursday 16/3", "", LocalDate.of(2023, 3, 16),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),true));//past
+		acList.add(new AssessmentCenter("AC Tuesday 21/3", "", LocalDate.of(2023, 3, 21),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));//future
+		acList.add(new AssessmentCenter("AC Thursday 23/3", "", LocalDate.of(2023, 3, 23),LocalTime.of(14, 30, 0, 0),LocalTime.of(16, 30, 0, 0),false));//future
+>>>>>>> d4aeedec4f74ec3c64fd687006931448b75b27b9
 		
 		List<Recruiter> acRecruiter = new ArrayList<>();
 		acRecruiter.add(recruiterList.get(0));
 		acRecruiter.add(recruiterList.get(3));
 		acRecruiter.add(recruiterList.get(6));
+<<<<<<< HEAD
 		
 		
 		acList.get(0).setCoordinatorId(0);
 		acList.get(1).setCoordinatorId(1);
 		acList.get(2).setCoordinatorId(2);	
+=======
+			
+>>>>>>> d4aeedec4f74ec3c64fd687006931448b75b27b9
 		acList.get(0).setRecruiters(acRecruiter);
 		acList.get(1).setRecruiters(acRecruiter);
 		acList.get(2).setRecruiters(acRecruiter);
@@ -357,4 +366,3 @@ public class Dataloader implements ApplicationRunner{
 	}
 
 }
-

@@ -12,7 +12,9 @@ import com.bezkoder.springjwt.models.Interviewer;
 
 @Repository
 public interface InterviewsRepository extends JpaRepository<Interview, Integer> {
-
+	
+	public List<Interview> findByIdIn(List<Integer> ids);
+	
 	public List<Interview> findAllByAssessmentCenterAndInterviewer(AssessmentCenter assessmentCentre, Interviewer interviewer);
 	
 }

@@ -10,9 +10,10 @@ import { Typography,
          MenuItem } from '@mui/material';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 
-const StreamFilter = (props) => {
+const StreamFilter = ({ header }) => {
+  const [stream, setStream] = useState('');
+
   const streamOptions = [
-    "All",
     "Business Analyst",
     "Business Intelligence",
     "Cloud (AWS)",
@@ -21,13 +22,9 @@ const StreamFilter = (props) => {
     "Testing"
   ]
 
-  const handleChange = (e) => {
-    props.onFilterChange(e)
-  }
-
   return (
     <div style={{ display: 'flex', marginBottom: '2%' }}>
-      <Typography component="h2" variant="h4" sx={{ flex: 1 }}> {props.header} </Typography>
+      <Typography component="h2" variant="h4" sx={{ flex: 1 }}> {header} </Typography>
       <IconButton aria-label="alpha-sort">
         <SortByAlphaIcon fontSize='medium' />
       </IconButton>
@@ -37,8 +34,8 @@ const StreamFilter = (props) => {
           id="stream-select"
           label="Stream"
           required
-          value={props.stream}
-          onChange={(e) => handleChange(e.target.value)}>
+          value={stream}
+          onChange={(e) => setStream(e.target.value)}>
             {streamOptions.map((stream, index) =>
               <MenuItem key={index} value={stream}> {stream} </MenuItem>
             )}

@@ -13,7 +13,6 @@ import { blue } from '@mui/material/colors';
 import './Styling/LoginPageStyle.css'
 import { Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { Navbar } from '@mantine/core';
 
 const FDMtheme = createTheme({
   palette: {
@@ -80,8 +79,8 @@ const LoginPage = (props) => {
                 </Button>
               </Grid>
             </Grid>
-            <Grid item xs
-              sx={{ bottom: 10 }}>
+            <Grid item
+              sx={{ position: 'absolute', bottom: 75 }}>
               <img src={fdm} alt="FDM Logo" />
             </Grid>
           </Box>

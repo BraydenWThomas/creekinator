@@ -103,6 +103,24 @@ public class EntityController {
 				.orElseThrow(() -> new NotFoundException("Can't find AC with id: " + acId));
 	}
 
+	
+	// Get specific AC, with detailed info
+	@GetMapping("/ac/{acId}/detailed")
+	public HashMap<String, Object> getACbyIdDetailed(@PathVariable int acId) {
+		AssessmentCenter ac = 
+				assessmentCenterRepository.findById(acId).orElseThrow(()->new NotFoundException("Can't find AC with id: " +acId));
+		
+		HashMap<String, Object> output = new HashMap<String, Object>();
+		
+		output.put("ac info", ac);
+		output.put("interviewers", ac.getInterviewers());
+		output.put("interviews", ac.getInterviewers());
+		output.put("candidates", ac.getCandidates());
+		output.put("recruiters", ac.getRecruiters());
+		return output;
+	}
+	
+
 	// Delete AC
 	@DeleteMapping("/ac/{acId}")
 	public void deleteAcById(@PathVariable int acId) {
@@ -219,6 +237,72 @@ public class EntityController {
 		}
 		return assessmentCenterRepository.save(assessmentCenter);
 	}
+	
+	// update list of objects that AC holds
+	@PutMapping("/ac/{id}/updateLinkedInfo")
+	public void updateLinkedInfo(@RequestParam(required = false, name = "interviewerIds") List<Integer> interviewerIds,
+			@RequestParam(required = false, name = "interviewIds") List<Integer> interviewIds,
+			@RequestParam(required = false, name = "candidateIds") List<Integer> candidateIds,
+			@RequestParam(required = false, name = "recruiterIds") List<Integer> recruiterIds,
+			@PathVariable int id) {
+		
+		// get target ac
+		AssessmentCenter ac = assessmentCenterRepository.findById(id).orElseThrow(() -> 
+			new NotFoundException("Can't find AC with id: " + id));
+		
+		// update each list
+		if (interviewerIds != null) {
+			List<Interviewer> interviewers = interviewerRepository.findByIdIn(interviewerIds);
+			ac.replaceInterviewers(interviewers);
+			// assessmentCenterRepository.save(ac);
+			interviewerRepository.saveAll(interviewers);
+		}
+		if (interviewIds != null) {
+			List<Interview> interviews = interviewRepository.findAllById(interviewIds);
+			ac.replaceInterviews(interviews);
+			// assessmentCenterRepository.save(ac);
+			interviewRepository.saveAll(interviews);
+		}
+		if (candidateIds != null) {
+			List<Candidate> candidates = candidateRepository.findByIdIn(candidateIds);
+			ac.replaceCandidates(candidates);
+			// assessmentCenterRepository.save(ac);
+			candidateRepository.saveAll(candidates);
+		}
+		if (recruiterIds != null) {
+			List<Recruiter> recruiters = recruiterRepository.findByIdIn(recruiterIds);
+			/*
+			for (Recruiter tempRecruiter : recruiters) {
+				System.out.println(tempRecruiter.getId());
+			}
+			*/
+			List<Recruiter> originalRecruiters = ac.getRecruiters();
+			
+			ac.replaceRecruiters(recruiters);
+			for (Recruiter tempRecruiter : ac.getRecruiters()) {
+				System.out.println(tempRecruiter.getId());
+			}
+			//assessmentCenterRepository.save(ac);
+			// recruiterRepository.saveAll(originalRecruiters);
+			recruiterRepository.saveAll(recruiters);
+		}
+		
+		/*
+		System.out.println("just for experiemnt");
+		AssessmentCenter ac1 = assessmentCenterRepository.findById(id).orElseThrow(() -> 
+		new NotFoundException("Can't find AC with id: " + id)); 
+		for (Recruiter newRecruiter : ac1.getRecruiters()) {
+			System.out.println("recruiter with id: " + newRecruiter.getId());
+			for (AssessmentCenter tempAC:newRecruiter.getAssessmentCenters()) {
+				System.out.println("AC with id: " + tempAC.getId());
+			}
+		}
+		*/
+		
+		assessmentCenterRepository.save(ac);
+		
+		return;
+	}
 
 	// show all candidates in an specific ac
 	@GetMapping("/ac/{id}/showCandidates")
@@ -320,8 +404,25 @@ public class EntityController {
 		return interviewers;
 	}
 
-	// add new candidates with a specific ac, raise error if ac not exist or any id
-	// of candidate id list not existed in database
+	
+	// add new interviewer with a specific ac, raise error if ac not exist or any id of interviewer id list not existed in database
+	@PutMapping("/ac/{id}/addRecruiters")
+	public List<Recruiter> addACRecruiters(@PathVariable int id, 
+			@RequestParam(required = true, name = "recruiterIds") int[] recruiterIds) {
+		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find AC with id: " + id));
+		List<Recruiter> recruiters = new ArrayList<Recruiter>();
+		for (int recruiterId : recruiterIds) {
+			Recruiter recruiter = recruiterRepository.findById(recruiterId).orElseThrow(()->new NotFoundException("Can't find recruiter with id: " + recruiterId));
+			assessmentCenter.addRecruiter(recruiter);
+			recruiters.add(recruiter);
+			assessmentCenterRepository.save(assessmentCenter);
+			recruiterRepository.save(recruiter);
+		}
+		return recruiters;
+	}
+	
+	// add new candidates with a specific ac, raise error if ac not exist or any id of candidate id list not existed in database
+
 	@PutMapping("/ac/{id}/deleteCandidates")
 	public List<Candidate> deleteACCandidates(@PathVariable int id,
 			@RequestParam(required = true, name = "candidateIds") int[] candidatesIds) {
@@ -361,7 +462,24 @@ public class EntityController {
 		return interviewers;
 	}
 
-	// get ac by date
+	
+	// delete interviewers from an AC
+	@PutMapping("/ac/{id}/deleteRecruiters")
+	public List<Recruiter> deleteACRecruiters(@PathVariable int id, 
+			@RequestParam(required = true, name = "recruiterIds") int[] recruiterIds) {
+		AssessmentCenter assessmentCenter = assessmentCenterRepository.findById(id).orElseThrow(()->new NotFoundException("Can't find AC with id: " + id));
+		List<Recruiter> recruiters = new ArrayList<Recruiter>();
+		for (int recruiterId : recruiterIds) {
+			Recruiter recruiter = recruiterRepository.findById(recruiterId).orElseThrow(()->new NotFoundException("Can't find recruiter with id: " + recruiterId));
+			assessmentCenter.removeRecruiter(recruiter);
+			recruiters.add(recruiter);
+			assessmentCenterRepository.save(assessmentCenter);
+			recruiterRepository.save(recruiter);
+		}
+		return recruiters;
+	}
+	
+
 	@GetMapping("/ac/by-date")
 	public List<AssessmentCenter> findAllAssessmentCentersByDate(@RequestParam Integer year,
 			@RequestParam Integer month, @RequestParam Integer day) {

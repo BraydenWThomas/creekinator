@@ -1,13 +1,15 @@
 // React
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 // Components
 import TextArea from '../Extra/TextArea';
 
 // Material UI
-import { Backdrop, Box, Divider, Fade, Grid, Modal, TextField, Typography } from "@mui/material";
+import { Box, Divider, Grid, TextField, Typography } from "@mui/material";
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import Avatar from '@mui/material/Avatar';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -17,9 +19,10 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Container } from "@mui/system";
+// import { useAnimatedValue } from "react-native/types";
 
 
-const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) => {
+const UpdateCandidate = () => {
   // Candidate Details
   const [title, setTitle] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -39,11 +42,18 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
   const [pastACResult, setPastACResult] = useState('');
 
   // To Link to specific candidate
+  const { candidateId } = useParams();
   const [candidate, setCandidate] = useState([]);
   const [getName, setGetName] = useState([]);
 
   // Form Validation
   const [emptyError, setEmptyError] = useState(false);
+
+  // Go back to previous page
+  const navigate = useNavigate();
+  const goBack = () => {
+    navigate(-1);
+  }
 
   // Fetch specific candidate
   useEffect(() => {
@@ -84,21 +94,6 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
     setRecruitmentPhase(candidate.recruit_phase);
     setPastACResult(candidate.past_ac_result);
   }, [candidate])
-
-  const style = {
-    editModal: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      maxWidth: 800,
-      bgcolor: 'background.paper',
-      border: '2px solid #000',
-      borderRadius: '15px',
-      boxShadow: 24,
-      p: 4,
-    }
-  };
 
   // Handle update
   const handleSubmit = () => {
@@ -170,24 +165,15 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
   }
 
   return (
-    <Modal
-      aria-labelledby="edit-modal-title"
-      aria-describedby="edit-modal-description"
-      open={updateModalOpen}
-      onClose={handleUpdateModalClose}
-      closeAfterTransition
-      slots={{ backdrop: Backdrop }}
-      slotProps={{
-        backdrop: {
-          timeout: 500,
-        },
-      }}
-    >
-      <Fade in={updateModalOpen}>
-        <Box sx={style.editModal}>
-          <Container component="main">
-            <div className="header" style={{ display: "flex" }}>
-              <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>{pageTitle}</Typography>
+    <div className="update-candidate">
+      <NavBar />
+      <div className="content" style={{ float: 'left', width: '80%' }}>
+        <Container component="main">
+          <div className="header" style={{ display: "flex" }}>
+            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>{pageTitle}</Typography>
+            <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
+              <NotificationsIcon fontSize="large" />
+              <Avatar src="/broken-image.jpg" />
             </div>
             <Box
               sx={{
@@ -286,9 +272,10 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
                       onChange={setUniversity} />
                   </Grid>
                 </Grid>
-              </div>
+              </Grid>
+            </div>
 
-              <Divider sx={{ mt: 2, mb: 2 }} />
+            <Divider sx={{ mt: 2, mb: 2 }} />
 
               <div className="application-details">
                 <Typography component="h2" variant="h4" mb={2}> Application Details </Typography>
@@ -339,12 +326,41 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
                     </Button>
                   </Grid>
                 </Grid>
-              </div>
-            </Box>
-          </Container>
-        </Box>
-      </Fade>
-    </Modal>
+                <Grid item xs sm={6}>
+                  <TextField
+                    id="past-ac-result-input"
+                    label="Past AC Result"
+                    autoComplete="past-ac-result"
+                    fullWidth
+                    value={pastACResult}
+                    onChange={(event) => setPastACResult(event.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    fullWidth
+                    onClick={handleSubmit}>
+                    Update
+                  </Button>
+                </Grid>
+                <Grid item xs sm={12}>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    color="secondary"
+                    fullWidth
+                    onClick={goBack}>
+                    Back
+                  </Button>
+                </Grid>
+              </Grid>
+            </div>
+          </Box>
+        </Container >
+      </div >
+    </div >
   )
 }
 

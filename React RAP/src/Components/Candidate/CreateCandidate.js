@@ -6,7 +6,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import TextArea from "../Extra/TextArea";
 
 // Material UI
-import { Backdrop, Box, Container, Divider, Fade, Grid, Menu, Modal, TextField, Typography } from "@mui/material";
+import { Box, Container, Divider, Grid, Menu, TextField, Typography } from "@mui/material";
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import Avatar from '@mui/material/Avatar';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -16,7 +18,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-const CreateCandidate = ({ createModalOpen, setCreateModalOpen }) => {
+const CreateCandidate = () => {
   // Details
   const [title, setTitle] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -44,23 +46,8 @@ const CreateCandidate = ({ createModalOpen, setCreateModalOpen }) => {
     navigate(-1);
   }
 
-  const style = {
-    editModal: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      maxWidth: 800,
-      bgcolor: 'background.paper',
-      border: '2px solid #000',
-      borderRadius: '15px',
-      boxShadow: 24,
-      p: 4,
-    }
-  };
-
   const handleSubmit = () => {
-    setCreateModalOpen(false);
+    goBack();
 
     setTitle('');
     setFirstName('');
@@ -118,44 +105,16 @@ const CreateCandidate = ({ createModalOpen, setCreateModalOpen }) => {
     }
   }
 
-  const handleCreateModalClose = () => {
-    setCreateModalOpen(false);
-
-    setTitle('');
-    setFirstName('');
-    setMiddleName('');
-    setLastName('');
-    setMobilePhone('');
-    setEmail('');
-    setDob('');
-    setAddress('');
-    setGradYear('');
-    setDegree('');
-    setUniversity('');
-    setAppliedStream('');
-    setRecruitmentPhase('');
-    setPastACResult('');
-  }
-
   return (
-    <Modal
-      aria-labelledby="edit-modal-title"
-      aria-describedby="edit-modal-description"
-      open={createModalOpen}
-      onClose={handleCreateModalClose}
-      closeAfterTransition
-      slots={{ backdrop: Backdrop }}
-      slotProps={{
-        backdrop: {
-          timeout: 500,
-        },
-      }}
-    >
-      <Fade in={createModalOpen}>
-        <Box sx={style.editModal}>
-          <Container component="main">
-            <div className="header" style={{ display: "flex" }}>
-              <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Create Candidate</Typography>
+    <div className="create-candidate">
+      <NavBar />
+      <div className="content" style={{ float: 'left', width: '80%' }}>
+        <Container component="main">
+          <div className="header" style={{ display: "flex" }}>
+            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Create Candidate</Typography>
+            <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
+              <NotificationsIcon fontSize="large" />
+              <Avatar src="/broken-image.jpg" />
             </div>
             <Box
               sx={{
@@ -254,9 +213,58 @@ const CreateCandidate = ({ createModalOpen, setCreateModalOpen }) => {
                       onChange={setUniversity} />
                   </Grid>
                 </Grid>
-              </div>
-
-              <Divider sx={{ mt: 2, mb: 2 }} />
+                <Grid item xs={12} sm={10}>
+                  <TextField
+                    required
+                    id="outlined-address-input"
+                    label="Address"
+                    type="text"
+                    autoComplete="current-address"
+                    value={address}
+                    fullWidth
+                    onChange={(event) => setAddress(event.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <TextField
+                    required
+                    id="outlined-year-input"
+                    label="Graduation Year"
+                    type="text"
+                    autoComplete="current-year"
+                    value={gradYear}
+                    fullWidth
+                    onChange={(event) => setGradYear(event.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <TextField
+                    required
+                    id="outlined-degree-input"
+                    label="Degree"
+                    type="text"
+                    autoComplete="current-degree"
+                    value={degree}
+                    fullWidth
+                    onChange={(event) => setDegree(event.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <TextField
+                    required
+                    id="outlined-university-input"
+                    label="University"
+                    type="text"
+                    autoComplete="current-university"
+                    value={university}
+                    fullWidth
+                    onChange={(event) => setUniversity(event.target.value)}
+                  />
+                </Grid>
+              </Grid>
+            </div>
+            
+            <Divider sx={{ mt: 2, mb: 2 }} />
 
               <div className="application-details">
                 <Typography component="h2" variant="h4" mb={2}> Application Details </Typography>
@@ -285,29 +293,19 @@ const CreateCandidate = ({ createModalOpen, setCreateModalOpen }) => {
                     <Button
                       variant="contained"
                       component="label"
+                      color="secondary"
                       fullWidth
-                      onClick={handleSubmit}
-                      style={{ marginBottom: "16px" }}>
-                      Create
+                      onClick={goBack}>
+                      Cancel
                     </Button>
-                    <Link to={"/recruiter"}>
-                      <Button
-                        variant="contained"
-                        component="label"
-                        color="secondary"
-                        fullWidth
-                        onClick={handleCreateModalClose}>
-                        Cancel
-                      </Button>
-                    </Link>
-                  </Grid>
+                  </Link>
                 </Grid>
-              </div>
-            </Box>
-          </Container>
-        </Box>
-      </Fade>
-    </Modal>
+              </Grid>
+            </div>
+          </Box>
+        </Container>
+      </div>
+    </div>
   )
 }
 export default CreateCandidate;

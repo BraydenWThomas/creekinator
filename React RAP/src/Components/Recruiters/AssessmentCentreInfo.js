@@ -22,7 +22,6 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
 
   // Get AC + Recruiter info
   const [recruiters, setRecruiters] = useState([]);
-  const [acCoordinator, setAcCoordinator] = useState('');
 
   // For Material UI Menu
   const [anchorEl, setAnchorEl] = useState(null);
@@ -51,30 +50,29 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
       redirect: 'follow',
     };
 
-    Promise.all([
-      fetch("http://localhost:8080/api/ac/" + ac.id + "/showCandidates", requestOptions),
-      fetch("http://localhost:8080/api/ac/" + ac.id + "/showInterviewers", requestOptions),
-      fetch("http://localhost:8080/api/recruiter", requestOptions),
-    ]).then((responses => {
-      console.log(responses)
-      responses[0].json()
-        .then(data => { setCandidates(data) })
-      responses[1].json()
-        .then(data => { setInterviewers(data) })
-      responses[2].json()
-        .then(data => { setRecruiters(data) })
-    })).catch(error => console.log('error', error));
+
+
+    fetch("http://localhost:8080/api/ac/" + ac.id + "/detailed", requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        setRecruiters(result.recruiters);
+        setCandidates(result.candidates);
+        setInterviewers(result.interviewers)
+
+      })
+      .catch(error => console.log('error', error));
+
   }, [ac.id])
 
-  // Get AC Coordinator for AC
-  useEffect(() => {
-    for (var i = 0; i < recruiters.length; i++) {
-      if (recruiters[i].id === ac.coordinatorId) {
-        setAcCoordinator(recruiters[i].name);
-      };
-    };
-  }, [recruiters, ac.coordinatorId]);
-
+  // // Get AC Coordinator for AC
+  // useEffect(() => {
+  //   for (var i = 0; i < recruiters.length; i++) {
+  //     if (recruiters[i].id === ac.coordinatorId) {
+  //       setAcCoordinator(recruiters[i].name);
+  //     };
+  //   };
+  // }, [recruiters, ac.coordinatorId]);
+  console.log(candidates)
 
 
   return (
@@ -91,81 +89,14 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
         <div className="streamInfo">
           {statustype === "upcomingAC" ?
             <div className='menu'>
-            <div className='select-menu'>
-              <IconButton
-                id="basic-button"
-                aria-controls={open ? 'basic-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                onClick={handleClick}
-              >
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  'aria-labelledby': 'basic-button',
-                }}
-              >
-                <Link to={`ac/view-upcoming/${ac.id}`}>
-                  <MenuItem>
-                    View
-                  </MenuItem>
-                </Link>
-                <Link to={`ac/update/${ac.id}`}>
-                  <MenuItem>
-                    Update Details
-                  </MenuItem>
-                </Link>
-                <Link to={`ac/update/schedule/sales/${ac.id}`}>
-                  <MenuItem>
-                    Schedule Sales Interviews
-                  </MenuItem>
-                </Link>
-                <Link to={`ac/update/schedule/technical/${ac.id}`}>
-                  <MenuItem>
-                    Schedule Technical Interviews
-                  </MenuItem>
-                </Link>
-              </Menu>
-            </div>
-          </div> :
-            (statustype === "pastAC" ?
-            <div className='menu'>
-            <div className='select-menu'>
-              <IconButton
-                id="basic-button"
-                onClick={handleClick}>
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  'aria-labelledby': 'basic-button',
-                }}>
-                <Link to={`ac/view-past/${ac.id}`}>
-                  <MenuItem>
-                    View
-                  </MenuItem>
-                </Link>
-                <MenuItem>
-                  Delete
-                </MenuItem>
-              </Menu>
-            </div>
-          </div> :
-              (statustype === "interviewerAC" ?
-              <div className='menu'>
               <div className='select-menu'>
                 <IconButton
                   id="basic-button"
-                  onClick={handleClick}>
+                  aria-controls={open ? 'basic-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                  onClick={handleClick}
+                >
                   <MoreVertIcon />
                 </IconButton>
                 <Menu
@@ -175,15 +106,82 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
                   onClose={handleClose}
                   MenuListProps={{
                     'aria-labelledby': 'basic-button',
-                  }}>
-                  <Link to={`ac/view/${ac.id}`}>
+                  }}
+                >
+                  <Link to={`ac/view-upcoming/${ac.id}`}>
                     <MenuItem>
                       View
+                    </MenuItem>
+                  </Link>
+                  <Link to={`ac/update/${ac.id}`}>
+                    <MenuItem>
+                      Update Details
+                    </MenuItem>
+                  </Link>
+                  <Link to={`ac/update/schedule/sales/${ac.id}`}>
+                    <MenuItem>
+                      Schedule Sales Interviews
+                    </MenuItem>
+                  </Link>
+                  <Link to={`ac/update/schedule/technical/${ac.id}`}>
+                    <MenuItem>
+                      Schedule Technical Interviews
                     </MenuItem>
                   </Link>
                 </Menu>
               </div>
             </div> :
+            (statustype === "pastAC" ?
+              <div className='menu'>
+                <div className='select-menu'>
+                  <IconButton
+                    id="basic-button"
+                    onClick={handleClick}>
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      'aria-labelledby': 'basic-button',
+                    }}>
+                    <Link to={`ac/view-past/${ac.id}`}>
+                      <MenuItem>
+                        View
+                      </MenuItem>
+                    </Link>
+                    <MenuItem>
+                      Delete
+                    </MenuItem>
+                  </Menu>
+                </div>
+              </div> :
+              (statustype === "interviewerAC" ?
+                <div className='menu'>
+                  <div className='select-menu'>
+                    <IconButton
+                      id="basic-button"
+                      onClick={handleClick}>
+                      <MoreVertIcon />
+                    </IconButton>
+                    <Menu
+                      id="basic-menu"
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                      }}>
+                      <Link to={`ac/view/${ac.id}`}>
+                        <MenuItem>
+                          View
+                        </MenuItem>
+                      </Link>
+                    </Menu>
+                  </div>
+                </div> :
                 <></>
               )
             )
@@ -197,11 +195,23 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
           </div>
         </div>
         <div style={{ marginRight: "20px", marginLeft: "20px", backgroundColor: "white", paddingLeft: "20px" }}>
-          <div style={{ float: "left", width: "35%" }}>
+
+          <div style={{ float: "left", width: "25%" }}>
+            <h4> Recruiters </h4>
+            <ul style={{ marginLeft: "20px" }}>
+              {recruiters.map(recruiter => (
+                <li key={recruiter.id}>
+                  {recruiter.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div style={{ float: "left", width: "25%" }}>
             <h4> Sales Interviewers </h4>
             <ul style={{ marginLeft: "20px" }}>
               {interviewers.map(interview => (
-                (interview.tech === false) ?
+                (interview.tech == false) ?
                   <li key={interview.id}>
                     {interview.name}
                   </li>
@@ -209,11 +219,11 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
               ))}
             </ul>
           </div>
-          <div style={{ float: "left", width: "35%" }}>
+          <div style={{ float: "left", width: "25%" }}>
             <h4> Technical Interviewers </h4>
             <ul style={{ marginLeft: "20px" }}>
               {interviewers.map(interview => (
-                (interview.tech === true) ?
+                (interview.tech == true) ?
                   <li key={interview.id}>
                     {interview.name}
                   </li>
@@ -222,7 +232,7 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
             </ul>
           </div>
 
-          <div style={{ width: "30%", float: "left" }}>
+          <div style={{ width: "25%", float: "left" }}>
             <h4> Candidates Attending </h4>
             <ul style={{ marginLeft: "20px" }}>
               {candidates.map(candidate => (
@@ -233,9 +243,11 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
             </ul>
           </div>
 
-          <div style={{ display: "flex", clear: "both" }}>
+
+
+          {/* <div style={{ display: "flex", clear: "both" }}>
             <h3> {acCoordinator} </h3>
-          </div>
+          </div> */}
 
         </div>
       </Paper>

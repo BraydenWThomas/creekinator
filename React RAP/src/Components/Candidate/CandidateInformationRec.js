@@ -6,10 +6,14 @@ import { Link } from 'react-router-dom'
 
 // Components
 import NavBar from "../NavBar";
-import TextArea from '../Extra/TextArea';
 
 // Material UI
-import { Backdrop, Container, Divider, Fade, Grid, Modal, Typography } from "@mui/material";
+import { Container, Divider, Grid, TextField, Typography } from "@mui/material";
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import Avatar from '@mui/material/Avatar';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,7 +21,8 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Box } from "@mui/system";
 
-const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId }) => {
+
+const CandidateInformationRec = () => {
   // Candidate Details
   const [title, setTitle] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -37,6 +42,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
   const [pastACResult, setPastACResult] = useState('');
 
   // To Link to specific candidate
+  const { candidateId } = useParams();
   const [candidate, setCandidate] = useState([]);
 
   // Read status of Text Fields / Form validation
@@ -162,24 +168,15 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
   }
 
   return (
-    <Modal
-      aria-labelledby="edit-modal-title"
-      aria-describedby="edit-modal-description"
-      open={readModalOpen}
-      onClose={handleReadModalClose}
-      closeAfterTransition
-      slots={{ backdrop: Backdrop }}
-      slotProps={{
-        backdrop: {
-          timeout: 500,
-        },
-      }}
-    >
-      <Fade in={readModalOpen}>
-        <Box sx={style.editModal}>
-          <Container component="main">
-            <div className="header" style={{ display: "flex" }}>
-              <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>{pageTitle}</Typography>
+    <div className="candidate-info">
+      <NavBar />
+      <div className="content" style={{ float: 'left', width: '80%' }}>
+        <Container component="main">
+          <div className="header" style={{ display: "flex" }}>
+            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>{pageTitle}</Typography>
+            <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
+              <NotificationsIcon fontSize="large" />
+              <Avatar src="/broken-image.jpg" />
             </div>
             <Box
               sx={{
@@ -289,17 +286,109 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                       onChange={setUniversity} />
                   </Grid>
                 </Grid>
-              </div>
+                <Grid item xs={12} sm={10}>
+                  <TextField
+                    id="outlined-address-input"
+                    label="Address"
+                    type="text"
+                    value={address}
+                    InputProps={{
+                      readOnly: true
+                    }}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <TextField
+                    id="outlined-year-input"
+                    label="Graduation Year"
+                    type="number"
+                    value={gradYear}
+                    InputProps={{
+                      readOnly: true
+                    }}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <TextField
+                    id="outlined-degree-input"
+                    label="Degree"
+                    type="text"
+                    value={degree}
+                    InputProps={{
+                      readOnly: true
+                    }}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <TextField
+                    id="outlined-university-input"
+                    label="University"
+                    type="text"
+                    value={university}
+                    InputProps={{
+                      readOnly: true
+                    }}
+                    fullWidth
+                  />
+                </Grid>
+              </Grid>
+            </div>
 
-              <Divider sx={{ mt: 2, mb: 2 }} />
+            <Divider sx={{ mt: 2, mb: 2 }} />
 
-              <div className="application-details">
-                <Typography component="h2" variant="h4" mb={2}> Application Details </Typography>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <Button variant="outlined" component="label" fullWidth>
-                      View Resume
-                      <input hidden accept="image/*" multiple type="file" />
+            <div className="application-details">
+              <Typography component="h2" variant="h4" mb={2}> Application Details </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Button variant="outlined" component="label" fullWidth>
+                    View Resume
+                    <input hidden accept="image/*" multiple type="file" />
+                  </Button>
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    id="applied-stream-select"
+                    label="Applied Stream"
+                    type="text"
+                    value={appliedStream}
+                    InputProps={{
+                      readOnly: true
+                    }}
+                    fullWidth />
+                </Grid>
+                <Grid item xs sm={6}>
+                  <TextField
+                    id="recruitment-phase-select-label"
+                    label="Recruitment Phase"
+                    type="text"
+                    value={recruitmentPhase}
+                    InputProps={{
+                      readOnly: true
+                    }}
+                    fullWidth />
+                </Grid>
+                <Grid item xs sm={6}>
+                  <TextField
+                    id="past-ac-result-input"
+                    label="Past AC Result"
+                    type="text"
+                    value={pastACResult}
+                    InputProps={{
+                      readOnly: true
+                    }}
+                    fullWidth />
+                </Grid>
+                <Grid item xs sm={12}>
+                  <Link to={`/recruiter/candidate/update/${candidate.id}`}>
+                    <Button
+                      variant="contained"
+                      component="label"
+                      fullWidth
+                      style={{ marginBottom: "16px" }}>
+                      Update
                     </Button>
                   </Grid>
                   <Grid item xs={6}>
@@ -326,42 +415,23 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                       onChange={setPastACResult} />
                   </Grid>
                   <Grid item xs sm={12}>
-                    {readOnly
-                      ? <Button
-                        onClick={() => setReadOnly(false)}
-                        variant="contained"
-                        component="label"
-                        fullWidth
-                        style={{ marginBottom: "16px" }}>
-                        Update
-                      </Button>
-                      : <Button
-                        variant="contained"
-                        component="label"
-                        fullWidth
-                        style={{ marginBottom: "16px" }}
-                        onClick={handleSubmit}>
-                        Save
-                      </Button>
-                    }
-                    <Grid item xs sm={12}>
+                    <Link to="/recruiter">
                       <Button
                         variant="contained"
                         component="label"
                         color="secondary"
-                        fullWidth
-                        onClick={handleReadModalClose}>
-                        Close
+                        fullWidth>
+                        Back
                       </Button>
-                    </Grid>
+                    </Link>
                   </Grid>
                 </Grid>
-              </div>
-            </Box>
-          </Container>
-        </Box>
-      </Fade>
-    </Modal>
+              </Grid>
+            </div>
+          </Box>
+        </Container>
+      </div>
+    </div>
   )
 }
 

@@ -42,7 +42,7 @@ const Interviewer = () => {
   }
 
   return (
-    <div className="pageSection" style={{ display: 'flex' }}>
+    <div className="pageSection" >
 
       <NavBar />
 
@@ -78,7 +78,7 @@ const Interviewer = () => {
             <Typography
               component="h2"
               variant="h4"
-              style={{ marginLeft: 20 }}>
+              style={{ marginLeft: "160pt", flex: 1 }}>
               Upcoming
             </Typography>
           </div>
@@ -104,10 +104,10 @@ const Interviewer = () => {
           </Box>
 
           <div className='assessmentToolBar'>
-          <Typography
+            <Typography
               component="h2"
               variant="h4"
-              style={{ marginLeft: 20 }}>
+              style={{ marginLeft: "160pt", flex: 1 }}>
               Completed
             </Typography>
           </div>
