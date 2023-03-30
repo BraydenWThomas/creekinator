@@ -1,47 +1,46 @@
 // React + css
-import React, { useState, useEffect } from 'react';
-import { createBrowserRouter, RouterProvider, Navigate, useNavigate, Router } from 'react-router-dom';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./App.css";
 
 // Webpage Components
 // User dashboards
-import AdminDashboard from './Components/AdminDashboard';
-import Recruiter from './Components/Recruiters/Recruiter';
-import Interviewer from './Components/Interviewers/Interviewer';
-import Candidate from './Components/Candidate/Candidate'
+import AdminDashboard from "./Components/AdminDashboard";
+import Recruiter from "./Components/Recruiters/Recruiter";
+import Interviewer from "./Components/Interviewers/Interviewer";
+import Candidate from "./Components/Candidate/Candidate";
 // AC
-import ViewAC from './Components/Interviewers/ViewAC';
-import ViewUpcomingAC from './Components/Recruiters/ViewUpcomingAC';
-import ViewPastAC from './Components/Recruiters/ViewPastAC';
-import CreateAC from './Components/Recruiters/CreateAC';
-import UpdateAC from './Components/Recruiters/UpdateAC';
-import CreateSalesInterview from './Components/Recruiters/CreateSalesInterview'
-import CreateTechnicalInterview from './Components/Recruiters/CreateTechnicalInterview'
+import ViewAC from "./Components/Interviewers/ViewAC";
+import ViewUpcomingAC from "./Components/Recruiters/ViewUpcomingAC";
+import ViewPastAC from "./Components/Recruiters/ViewPastAC";
+import CreateAC from "./Components/Recruiters/CreateAC";
+import UpdateAC from "./Components/Recruiters/UpdateAC";
+import CreateSalesInterview from "./Components/Recruiters/CreateSalesInterview";
+import CreateTechnicalInterview from "./Components/Recruiters/CreateTechnicalInterview";
+
 // Candidate
-import CandidateInformationRec from './Components/Candidate/CandidateInformationRec';
-import CandidateInformationInterview from './Components/Candidate/CandidateInformationInterview';
-import CreateCandidate from './Components/Candidate/CreateCandidate';
-import UpdateCandidate from './Components/Candidate/UpdateCandidate';
-import CandidateApply from './Components/CandidateApply';
-import CandidateInfoReg from './Components/CandidateInfoReg';
-import DisplayForm from './Components/DisplayForm';
+import CandidateInformationRec from "./Components/Candidate/CandidateInformationRec";
+import CandidateInformationInterview from "./Components/Candidate/CandidateInformationInterview";
+import CreateCandidate from "./Components/Candidate/CreateCandidate";
+import UpdateCandidate from "./Components/Candidate/UpdateCandidate";
+import CandidateApply from "./Components/CandidateApply";
+import CandidateInfoReg from "./Components/CandidateInfoReg";
+import DisplayForm from "./Components/DisplayForm";
 
 // UI Functionality
-import LoginPage from './Components/LoginPage';
-import Calendar from './Components/Calendar';
+import LoginPage from "./Components/LoginPage";
+import Calendar from "./Components/Calendar";
 
 // NEW pages //
-import CreateACPage from './Components/New Pages/CreateACPage';
+import CreateACPage from "./Components/New Pages/CreateACPage";
 
 // Material UI
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { blue } from '@mui/material/colors';
-import { Button } from '@mui/material';
-import FormView from './Components/FormSelect'
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { blue } from "@mui/material/colors";
 
-import AssignQuestionPack from './Components/AssignQuestionPack';
-import PackView from './Components/PackView';
-import FormSelect from './Components/FormSelect';
+import AssignQuestionPack from "./Components/AssignQuestionPack";
+import PackView from "./Components/PackView";
+import FormSelect from "./Components/FormSelect";
 const FDMtheme = createTheme({
   typography: {
     fontFamily: "barlow",
@@ -49,221 +48,215 @@ const FDMtheme = createTheme({
 
   palette: {
     primary: {
-      main: '#6f00ff',
+      main: "#6f00ff",
     },
     secondary: blue,
   },
 });
 
 const App = () => {
-
   const [candidateName, setCandidateName] = useState({});
+  const [error, setError] = useState(false);
 
   const handleClick = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    const body =
-      JSON.stringify({
-        "username": data.get('username'),
-        "password": data.get('password')
-      });
+    const body = JSON.stringify({
+      username: data.get("username"),
+      password: data.get("password"),
+    });
 
     const requestOptions = {
-      headers: { 'content-type': 'application/json' },
+      headers: { "content-type": "application/json" },
       method: "POST",
       body: body,
-      redirect: 'follow'
+      redirect: "follow",
     };
 
     fetch(" http://localhost:8080/api/auth/signin", requestOptions)
-      .then(response => response.json())
-      .then(result => {
-
+      .then((response) => response.json())
+      .then((result) => {
         if (result.username) {
-
-          localStorage.setItem('status', result.roles[0])
-          localStorage.setItem('userId', result.id)
+          localStorage.setItem("status", result.roles[0]);
+          localStorage.setItem("userId", result.id);
 
           if (result.roles[0] == "ROLE_ADMIN") {
-            window.location.href="/admin"
+            window.location.href = "/admin";
+          } else if (result.roles[0] == "ROLE_RECRUITER") {
+            window.location.href = "/recruiter";
+          } else if (result.roles[0] == "ROLE_INTERVIEWER") {
+            window.location.href = "/interviewer";
+          } else if (result.roles[0] == "ROLE_CANDIDATE") {
+            window.location.href = "/candidate";
+            var requestOptions = {
+              headers: { "content-type": "application/json" },
+              method: "GET",
+              redirect: "follow",
+            };
+
+            fetch("http://localhost:8080/api/auth/user", requestOptions)
+              .then((response) => response.json())
+              .then((result) =>
+                localStorage.setItem(
+                  "candidateId",
+                  result[localStorage.getItem("userId") - 1].candidate.id
+                )
+              )
+              .catch((error) => console.log("error", error));
           }
-          else if (result.roles[0] == "ROLE_RECRUITER") {
-            window.location.href = "/recruiter"
-          }
-          else if (result.roles[0] == "ROLE_INTERVIEWER") {
-            window.location.href = "/interviewer"
-          }
-          else if (result.roles[0] == "ROLE_CANDIDATE") {
-
-
-            window.location.href = "/candidate"
-            {
-              var requestOptions = {
-                headers: { 'content-type': 'application/json' },
-                method: 'GET',
-                redirect: 'follow'
-              };
-
-              fetch("http://localhost:8080/api/auth/user", requestOptions)
-                .then(response => response.json())
-                .then(result => localStorage.setItem('candidateId', result[localStorage.getItem('userId') - 1].candidate.id))
-                .catch(error => console.log('error', error));
-
-            }
-          }
-
+        } else if (result.error) {
+          setError(result);
         }
       })
-      .catch(error => console.log('error', error));
+      .catch((error) => console.log("error", error));
   };
-
 
   const routes = [
     {
       path: "/",
-      element: <LoginPage onClick={handleClick} />
+      element: <LoginPage onClick={handleClick} error={error} />,
     },
     {
       path: "/apply",
-      element: <CandidateApply />
+      element: <CandidateApply />,
     },
     {
       path: "/candidate-register",
-      element: <CandidateInfoReg />
+      element: <CandidateInfoReg />,
     },
     {
       path: "/calendar",
-      element: <Calendar />
+      element: <Calendar />,
     },
     {
       path: "/questions",
-      element: <AssignQuestionPack />
+      element: <AssignQuestionPack />,
     },
     {
       path: "/pack",
-      element: <PackView />
+      element: <PackView />,
     },
     {
       path: "/formselect",
-      element: <FormSelect />
+      element: <FormSelect />,
     },
     {
       path: "/formview",
-      element: <DisplayForm />
-    }
-  ]
+      element: <DisplayForm />,
+    },
+  ];
 
-  if (localStorage.getItem('status') == "ROLE_ADMIN") {
-    routes.push(
-      {
-        path: "/admin",
-        element: <AdminDashboard />
-      }
-    )
+  if (localStorage.getItem("status") == "ROLE_ADMIN") {
+    routes.push({
+      path: "/admin",
+      element: <AdminDashboard />,
+    });
   }
 
-  if (localStorage.getItem('status') == "ROLE_RECRUITER") {
+  if (localStorage.getItem("status") == "ROLE_RECRUITER") {
     routes.push(
       {
-      path: "/recruiter",
-      element: <Recruiter />
+        path: "/recruiter",
+        element: <Recruiter />,
       },
       {
         path: "/recruiter/calendar",
-        element: <Calendar />
+        element: <Calendar />,
       },
       {
         path: "/recruiter/candidate/create",
-        element: <CreateCandidate />
+        element: <CreateCandidate />,
       },
       {
         path: "/recruiter/candidate/update/:candidateId",
-        element: <UpdateCandidate />
+        element: <UpdateCandidate />,
       },
       {
         path: "/recruiter/candidate/info/:candidateId",
-        element: <CandidateInformationRec />
+        element: <CandidateInformationRec />,
       },
       {
         path: "/recruiter/ac/view-upcoming/:acId",
-        element: <ViewUpcomingAC />
+        element: <ViewUpcomingAC />,
       },
       {
         path: "/recruiter/ac/update/:acId",
-        element: <UpdateAC />
+        element: <UpdateAC />,
       },
       {
         path: "/recruiter/ac/view-past/:acId",
-        element: <ViewPastAC />
+        element: <ViewPastAC />,
       },
-      {        
-path: "/recruiter/ac/create",
-        element: <CreateAC />
-      },
+      // {        
+      //   path: "/recruiter/ac/create",
+      //   element: <CreateAC />
+      // },
       {
-        path: "/create",
+        path: "/recruiter/ac/create",
         element: <CreateACPage />
       },
       {
         path: "/recruiter/ac/update/schedule/sales/:acId",
-        element: <CreateSalesInterview />
+        element: <CreateSalesInterview />,
       },
       {
         path: "/recruiter/ac/update/schedule/technical/:acId",
-        element: <CreateTechnicalInterview />
+        element: <CreateTechnicalInterview />,
       }
-    )
+    );
   }
 
-  if (localStorage.getItem('status') == "ROLE_INTERVIEWER") {
+  if (localStorage.getItem("status") == "ROLE_INTERVIEWER") {
     routes.push(
       {
-      path: "/interviewer",
-      element: <Interviewer />
+        path: "/interviewer",
+        element: <Interviewer />,
       },
       {
         path: "/interviewer/calendar",
-        element: <Calendar />
+        element: <Calendar />,
       },
       {
         path: "/interviewer/candidate/info/:candidateId",
-        element: <CandidateInformationInterview />
+        element: <CandidateInformationInterview />,
       },
       {
         path: "/interviewer/ac/view/:acId",
-        element: <ViewAC />
-      })
+        element: <ViewAC />,
+      }
+    );
   }
 
-  if (localStorage.getItem('status') == "ROLE_CANDIDATE") {
+  if (localStorage.getItem("status") == "ROLE_CANDIDATE") {
     routes.push(
       {
-      path: "/candidate",
-      element: <Candidate />
+        path: "/candidate",
+        element: <Candidate />,
       },
       {
         path: "/candidate/calendar",
-        element: <Calendar />
-      })
+        element: <Calendar />,
+      }
+    );
   }
 
   const routerPage = createBrowserRouter(routes);
 
   const getCalendar = () => {
-    window.location.href = "/calendar"
-  }
+    window.location.href = "/calendar";
+  };
 
   const getCandidate = () => {
-    window.location.href = "/candidate"
-  }
+    window.location.href = "/candidate";
+  };
 
   return (
     <ThemeProvider theme={FDMtheme}>
       {/* <Button onClick={getCandidate}>Candidate</Button> */}
       <RouterProvider router={routerPage} />
     </ThemeProvider>
-  )
-}
+  );
+};
 
 export default App;
