@@ -94,8 +94,7 @@ const UpdateCandidate = () => {
 
   // Handle update
   const handleSubmit = () => {
-    // Go back to previous page
-    goBack();
+    
 
     const body =
       JSON.stringify({
@@ -128,6 +127,9 @@ const UpdateCandidate = () => {
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
+      
+      handleUpdateModalClose();
+      window.location.reload();
   }
 
   var pageTitle = getName.first_name + " " + getName.last_name + "'s " + "Profile"
