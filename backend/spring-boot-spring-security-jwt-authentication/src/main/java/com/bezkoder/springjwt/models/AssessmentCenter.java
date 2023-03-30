@@ -63,8 +63,8 @@ public class AssessmentCenter {
 	
 	@ManyToMany
 	@JoinTable(name = "assessmentCenter_recruiter",
-				joinColumns = @JoinColumn(name = "recruiter_id"),
-				inverseJoinColumns = @JoinColumn(name = "AC_id"))
+				joinColumns = @JoinColumn(name = "ac_id"),
+				inverseJoinColumns = @JoinColumn(name = "recruiter_id"))
 	@JsonIgnore
 	private List<Recruiter> recruiters;
 	/* --- End of fields --- */
@@ -233,6 +233,21 @@ public class AssessmentCenter {
 		interviewer.getAssessmentCenters().remove(this);
 	}
 	
+	public void replaceInterviewers(List<Interviewer> interviewers) {
+		// remove all interviewers if there is any
+		while (this.interviewers.size() > 0) {
+			this.removeInterviewer(this.interviewers.get(this.interviewers.size() - 1)); // remove from last for better performance
+		}
+		
+		// add in each new interviewer
+		for (Interviewer interviewer: interviewers) {
+			this.removeInterviewer(interviewer);
+		}
+		
+		return;
+	}
+		
+	
 	// interview
 	public List<Interview> getInterviews() {
 		return interviews;
@@ -253,6 +268,20 @@ public class AssessmentCenter {
 		interview.setAssessmentCenter(null);
 	}
 	
+	public void replaceInterviews(List<Interview> interviews) {
+		// remove all interviews if there is any
+		while (this.interviews.size() > 0) {
+			this.removeInterview(this.interviews.remove(this.interviews.size() - 1));
+		}
+		
+		// add in each new interview
+		for (Interview interview: interviews) {
+			this.removeInterview(interview);
+		}
+		return;
+	}
+	
+	
 	// candidate
 	public List<Candidate> getCandidates() {
 		return candidates;
@@ -268,6 +297,17 @@ public class AssessmentCenter {
 		this.candidates.remove(candidate);
 		candidate.getAssessmentCenters().remove(this);
 	}
+	public void replaceCandidates(List<Candidate> candidates) {
+		while (this.candidates.size() > 0) {
+			this.removeCandidate(this.candidates.get(this.candidates.size() - 1));
+		}
+		for (Candidate candidate : candidates) {
+			this.addCandidate(candidate);
+		}
+		return;
+	}
+	
+	
 	
 	// Recruiter
 	public List<Recruiter> getRecruiters() {
@@ -284,5 +324,17 @@ public class AssessmentCenter {
 		this.recruiters.remove(recruiter);
 		recruiter.getAssessmentCenters().remove(this);
 	}
+	public void replaceRecruiters(List<Recruiter> recruiters) {
+		while (this.recruiters.size() > 0) {
+			this.removeRecruiter(this.recruiters.get(this.recruiters.size() - 1));
+		}
+		
+		for (Recruiter recruiter : recruiters) {
+			this.addRecruiter(recruiter);
+		}
+		
+		return;
+	}
+	
 	
 }

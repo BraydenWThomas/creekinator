@@ -219,6 +219,72 @@ public class EntityController {
 		}
 		return assessmentCenterRepository.save(assessmentCenter);
 	}
+	
+	// update list of objects that AC holds
+	@PutMapping("/ac/{id}/updateLinkedInfo")
+	public void updateLinkedInfo(@RequestParam(required = false, name = "interviewerIds") List<Integer> interviewerIds,
+			@RequestParam(required = false, name = "interviewIds") List<Integer> interviewIds,
+			@RequestParam(required = false, name = "candidateIds") List<Integer> candidateIds,
+			@RequestParam(required = false, name = "recruiterIds") List<Integer> recruiterIds,
+			@PathVariable int id) {
+		
+		// get target ac
+		AssessmentCenter ac = assessmentCenterRepository.findById(id).orElseThrow(() -> 
+			new NotFoundException("Can't find AC with id: " + id));
+		
+		// update each list
+		if (interviewerIds != null) {
+			List<Interviewer> interviewers = interviewerRepository.findByIdIn(interviewerIds);
+			ac.replaceInterviewers(interviewers);
+			// assessmentCenterRepository.save(ac);
+			interviewerRepository.saveAll(interviewers);
+		}
+		if (interviewIds != null) {
+			List<Interview> interviews = interviewRepository.findAllById(interviewIds);
+			ac.replaceInterviews(interviews);
+			// assessmentCenterRepository.save(ac);
+			interviewRepository.saveAll(interviews);
+		}
+		if (candidateIds != null) {
+			List<Candidate> candidates = candidateRepository.findByIdIn(candidateIds);
+			ac.replaceCandidates(candidates);
+			// assessmentCenterRepository.save(ac);
+			candidateRepository.saveAll(candidates);
+		}
+		if (recruiterIds != null) {
+			List<Recruiter> recruiters = recruiterRepository.findByIdIn(recruiterIds);
+			/*
+			for (Recruiter tempRecruiter : recruiters) {
+				System.out.println(tempRecruiter.getId());
+			}
+			*/
+			List<Recruiter> originalRecruiters = ac.getRecruiters();
+			
+			ac.replaceRecruiters(recruiters);
+			for (Recruiter tempRecruiter : ac.getRecruiters()) {
+				System.out.println(tempRecruiter.getId());
+			}
+			//assessmentCenterRepository.save(ac);
+			// recruiterRepository.saveAll(originalRecruiters);
+			recruiterRepository.saveAll(recruiters);
+		}
+		
+		/*
+		System.out.println("just for experiemnt");
+		AssessmentCenter ac1 = assessmentCenterRepository.findById(id).orElseThrow(() -> 
+		new NotFoundException("Can't find AC with id: " + id)); 
+		for (Recruiter newRecruiter : ac1.getRecruiters()) {
+			System.out.println("recruiter with id: " + newRecruiter.getId());
+			for (AssessmentCenter tempAC:newRecruiter.getAssessmentCenters()) {
+				System.out.println("AC with id: " + tempAC.getId());
+			}
+		}
+		*/
+		
+		assessmentCenterRepository.save(ac);
+		
+		return;
+	}
 
 	// show all candidates in an specific ac
 	@GetMapping("/ac/{id}/showCandidates")
