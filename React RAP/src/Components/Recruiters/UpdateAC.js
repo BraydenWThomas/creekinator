@@ -4,7 +4,7 @@ import NavBar from '../NavBar';
 // React
 import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom';
 
 // Material UI
 import {
@@ -302,8 +302,9 @@ useEffect(() => {
   return (
     <div>
       <NavBar />
-      <div className="content" style={{ float: 'left', width: '80%' }}>
-        <Container component="main">
+
+      <div className="content" style={{ float: 'left', width: '100%', paddingLeft:20, paddingRight:20 }}>
+        
           <div className="header" style={{ display: "flex" }}>
             <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Update {title}</Typography>
             <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
@@ -528,7 +529,7 @@ useEffect(() => {
 
             </Grid>
           </Box>
-        </Container>
+
       </div>
     </div>
   )

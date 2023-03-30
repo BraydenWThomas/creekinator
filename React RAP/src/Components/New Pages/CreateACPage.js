@@ -184,48 +184,13 @@ const CreateACPage = () => {
     <div>
       <NavBar />
 
-      <div className="content" style={{ float: 'left', width: '80%' }}>
-        <div className="header" style={{ display: "flex" }}>
-          <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}> Create Assessment Centre </Typography>
-        </div>
+      <div className="content" style={{ float: 'left', width: '100%', paddingLeft:20, paddingRight:20 }}>
+          <div className="header">
+            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}> Create Assessment Centre </Typography>
+          </div>
 
-        <Divider sx={{ mt: 2, mb:2 }} />
+          <Divider sx={{ mt: 2, mb: 2 }} />
 
-        <Grid2 container justify="center">
-          <Calendar
-            times={true}
-            scheduled={scheduledACs}
-            calendarSelected={calendarSelected}
-            setCalendarSelected={setCalendarSelected} />
-        </Grid2>
-
-        <Grid2 xs={12}>
-          <StartDatePicker date={calendarSelected} />
-        </Grid2>
-
-        <Grid2 xd={6}>
-          <TimeRange
-            error={timeError}
-            helperText={"Time is currently booked"}
-            label={"Start Time"}
-            hourOffset={0}
-            time={startTime}
-            onChange={setTimes}
-          />
-        </Grid2>
-
-        <Grid2 xd={6}>
-          <TimeRange
-            error={timeError}
-            label={"End Time"}
-            hourOffset={2}
-            time={endTime}
-            onChange={true}
-          />
-        </Grid2>
-
-        <div className="Interviewers">
-          <Typography component="h2" variant="h4" mb={2}> Interviewers </Typography>
           <Grid container spacing={2}>
             <Grid item xs sm={4}>
               <AttendeeCheckbox
@@ -269,8 +234,7 @@ const CreateACPage = () => {
                 <Button variant="contained" color='secondary' fullWidth> Cancel </Button>
               </Link>
             </Grid>
-          </Grid>
-        </div>
+          </div>
       </div>
     </div>
   )
