@@ -114,11 +114,11 @@ const Calendar = () => {
   }
 
   return (
-    <div className="pageSection" >
+    <div className="pageSection" style={{display:'flex'}}>
 
       <NavBar />
 
-      <div className='bodySection' style={{ width: "100%" }}>
+      <div className='bodySection' style={{ width: "auto" }}>
         <div className="header" style={{ display: "flex" }}>
           <h1 style={{ flex: 1, margin: '1%' }}>Calendar</h1>
           <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
