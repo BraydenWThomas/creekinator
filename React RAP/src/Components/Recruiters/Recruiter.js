@@ -18,7 +18,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import { FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { FormControl, IconButton, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import CreateCandidate from '../Candidate/CreateCandidate';
+import CandidateInformationRec from '../Candidate/CandidateInformationRec';
 
 const Recruiter = () => {
   // Change tab options
@@ -48,21 +50,19 @@ const Recruiter = () => {
       responses[1].json()
         .then(data => { setAcs(data) })
     })).catch(error => console.log('error', error));
-
-    
   }, [])
 
   // Change display to candidates or to assessment centres
   const changeDisplay = (value) => {
     setDisplayState(value);
   }
-  console.log(acs)
+
   return (
-    <div className="pageSection">
+    <div style={{ display: 'flex' }}>
 
       <NavBar />
 
-      <div className='bodySection'>
+      <div className="content" style={{ float: 'left', width: '100%' }}>
         <div className="header" style={{ display: "flex" }}>
           <Typography
             component="h1"
@@ -181,9 +181,14 @@ const Recruiter = () => {
                     )
                   ))}
                 </Box>
+
               </div>
             }
           </Box>
+          <CreateCandidate
+            createModalOpen={createModalOpen}
+            setCreateModalOpen={setCreateModalOpen}
+          />
         </div>
       </div>
     </div >
