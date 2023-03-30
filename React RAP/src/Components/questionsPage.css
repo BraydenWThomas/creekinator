@@ -1,0 +1,24 @@
+.page-details{
+    display:inline-block;
+    width: 100%;
+    background-color:rgb(41, 66, 229) ;
+}
+
+.interviewType{
+    margin: 10px;
+    padding: 10px;
+    width: fit-content;
+    float: right;
+}
+
+.stream{
+    margin: 10px;
+    padding: 10px;
+    float: left;
+   
+}
+
+.title{
+    padding-bottom: 10px;
+    text-align: center;
+}

@@ -1,44 +1,52 @@
 // React
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import dayjs from 'dayjs';
-import { Link } from 'react-router-dom'
+import dayjs from "dayjs";
+import { Link } from "react-router-dom";
 
 // Components
 import NavBar from "../NavBar";
+import TextArea from '../Extra/TextArea';
 
 // Material UI
-import { Backdrop, Container, Divider, Fade, Grid, Modal, TextField, Typography } from "@mui/material";
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import Avatar from '@mui/material/Avatar';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import Button from '@mui/material/Button';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import {
+  Backdrop,
+  Container,
+  Divider,
+  Fade,
+  Grid,
+  Modal,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import Button from "@mui/material/Button";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import { Box } from "@mui/system";
 
 const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId }) => {
   // Candidate Details
-  const [title, setTitle] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [middleName, setMiddleName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [mobilePhone, setMobilePhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [dob, setDob] = useState('');
-  const [address, setAddress] = useState('');
-  const [gradYear, setGradYear] = useState('');
-  const [degree, setDegree] = useState('');
-  const [university, setUniversity] = useState('');
+  const [title, setTitle] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [middleName, setMiddleName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [mobilePhone, setMobilePhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [dob, setDob] = useState("");
+  const [address, setAddress] = useState("");
+  const [gradYear, setGradYear] = useState("");
+  const [degree, setDegree] = useState("");
+  const [university, setUniversity] = useState("");
 
   // Candidate Application Details
-  const [appliedStream, setAppliedStream] = useState('');
-  const [recruitmentPhase, setRecruitmentPhase] = useState('');
-  const [pastACResult, setPastACResult] = useState('');
+  const [appliedStream, setAppliedStream] = useState("");
+  const [recruitmentPhase, setRecruitmentPhase] = useState("");
+  const [pastACResult, setPastACResult] = useState("");
 
   // To Link to specific candidate
   const [candidate, setCandidate] = useState([]);
@@ -49,15 +57,17 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
   // Fetch specific candidate
   useEffect(() => {
     const requestOptions = {
-      method: 'GET',
-      redirect: 'follow',
+      method: "GET",
+      redirect: "follow",
     };
 
     fetch("http://localhost:8080/api/candidate/" + candidateId, requestOptions)
-      .then(response => response.json())
-      .then(data => { setCandidate(data) })
-      .catch(error => console.log('error', error));
-  }, [candidateId])
+      .then((response) => response.json())
+      .then((data) => {
+        setCandidate(data);
+      })
+      .catch((error) => console.log("error", error));
+  }, [candidateId]);
 
   // Create new states to update Candidate details
   useEffect(() => {
@@ -78,67 +88,66 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
     setAppliedStream(candidate.applied_stream);
     setRecruitmentPhase(candidate.recruit_phase);
     setPastACResult(candidate.past_ac_result);
-  }, [candidate])
+  }, [candidate]);
 
-  const pageTitle = candidate.first_name + " " + candidate.last_name + "'s " + "Profile"
+  const pageTitle = candidate.first_name + " " + candidate.last_name + "'s " + "Profile";
 
   const handleReadModalClose = () => {
     setReadModalOpen(false);
     setReadOnly(true);
-  }
-  
+  };
+
   const style = {
     editModal: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
       maxWidth: 800,
-      bgcolor: 'background.paper',
-      border: '2px solid #000',
-      borderRadius: '15px',
+      bgcolor: "background.paper",
+      border: "2px solid #000",
+      borderRadius: "15px",
       boxShadow: 24,
       p: 4,
-    }
+    },
   };
 
   // Handle update
   const handleSubmit = () => {
-    const body =
-      JSON.stringify({
-        id: candidate.id,
-        title: title,
-        first_name: firstName,
-        middle_name: middleName,
-        last_name: lastName,
-        mobile_number: mobilePhone,
-        email: email,
-        date_of_birth: dob.format('YYYY-MM-DD'),
-        address: address,
-        graduation_year: gradYear,
-        degree: degree,
-        university: university,
-        resume: "resume-link",
-        applied_stream: appliedStream,
-        recruit_phase: recruitmentPhase,
-        past_ac_result: pastACResult
-      });
+    const body = JSON.stringify({
+      id: candidate.id,
+      title: title,
+      first_name: firstName,
+      middle_name: middleName,
+      last_name: lastName,
+      mobile_number: mobilePhone,
+      email: email,
+      date_of_birth: dob.format("YYYY-MM-DD"),
+      address: address,
+      graduation_year: gradYear,
+      degree: degree,
+      university: university,
+      resume: "resume-link",
+      applied_stream: appliedStream,
+      recruit_phase: recruitmentPhase,
+      past_ac_result: pastACResult,
+    });
 
     const requestOptions = {
-      method: 'PUT',
+      method: "PUT",
       body: body,
-      redirect: 'follow',
-      headers: { 'content-type': 'application/json' },
+      redirect: "follow",
+      headers: { "content-type": "application/json" },
     };
 
     fetch("http://localhost:8080/api/candidate", requestOptions)
-      .then(response => response.json())
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
-    
+      .then((response) => response.json())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+
     handleReadModalClose();
     window.location.reload();
-  }
+  };
 
   return (
     <Modal
@@ -152,23 +161,27 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
         backdrop: {
           timeout: 500,
         },
-      }}
-    >
+      }}>
       <Fade in={readModalOpen}>
         <Box sx={style.editModal}>
           <Container component="main">
             <div className="header" style={{ display: "flex" }}>
-              <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>{pageTitle}</Typography>
+              <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>
+                {pageTitle}
+              </Typography>
             </div>
             <Box
               sx={{
-                flexDirection: 'column',
-                alignItems: 'center',
+                flexDirection: "column",
+                alignItems: "center",
                 mt: 3,
               }}>
               <Divider sx={{ mt: 2, mb: 2 }} />
               <div className="details">
-                <Typography component="h2" variant="h4" mb={2}> Details </Typography>
+                <Typography component="h2" variant="h4" mb={2}>
+                  {" "}
+                  Details{" "}
+                </Typography>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={2}>
                     <FormControl fullWidth>
@@ -179,7 +192,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                         label="Title"
                         value={title}
                         inputProps={{
-                          readOnly: readOnly
+                          readOnly: readOnly,
                         }}
                         fullWidth
                         onChange={(event) => setTitle(event.target.value)}>
@@ -198,7 +211,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                       type="text"
                       value={firstName}
                       InputProps={{
-                        readOnly: readOnly
+                        readOnly: readOnly,
                       }}
                       fullWidth
                       onChange={(event) => setFirstName(event.target.value)}
@@ -211,7 +224,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                       type="text"
                       value={middleName}
                       InputProps={{
-                        readOnly: readOnly
+                        readOnly: readOnly,
                       }}
                       fullWidth
                       onChange={(e) => setMiddleName(e.target.value)}
@@ -224,7 +237,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                       type="text"
                       value={lastName}
                       InputProps={{
-                        readOnly: readOnly
+                        readOnly: readOnly,
                       }}
                       fullWidth
                       onChange={(e) => setLastName(e.target.value)}
@@ -237,7 +250,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                       type="text"
                       value={mobilePhone}
                       InputProps={{
-                        readOnly: readOnly
+                        readOnly: readOnly,
                       }}
                       fullWidth
                       onChange={(e) => setMobilePhone(e.target.value)}
@@ -250,7 +263,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                       type="text"
                       value={email}
                       InputProps={{
-                        readOnly: readOnly
+                        readOnly: readOnly,
                       }}
                       fullWidth
                       onChange={(e) => setEmail(e.target.value)}
@@ -268,7 +281,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                       fullWidth
                       onChange={(e) => setDob(e.target.value)}
                     /> */}
-                     <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
                         format="DD/MM/YYYY"
                         label="D.O.B"
@@ -286,7 +299,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                       type="text"
                       value={address}
                       InputProps={{
-                        readOnly: readOnly
+                        readOnly: readOnly,
                       }}
                       fullWidth
                       onChange={(e) => setAddress(e.target.value)}
@@ -299,7 +312,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                       type="text"
                       value={gradYear}
                       InputProps={{
-                        readOnly: readOnly
+                        readOnly: readOnly,
                       }}
                       fullWidth
                       onChange={(e) => setGradYear(e.target.value)}
@@ -312,7 +325,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                       type="text"
                       value={degree}
                       InputProps={{
-                        readOnly: readOnly
+                        readOnly: readOnly,
                       }}
                       fullWidth
                       onChange={(e) => setDegree(e.target.value)}
@@ -325,7 +338,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                       type="text"
                       value={university}
                       InputProps={{
-                        readOnly: readOnly
+                        readOnly: readOnly,
                       }}
                       fullWidth
                       onChange={(e) => setUniversity(e.target.value)}
@@ -337,7 +350,10 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
               <Divider sx={{ mt: 2, mb: 2 }} />
 
               <div className="application-details">
-                <Typography component="h2" variant="h4" mb={2}> Application Details </Typography>
+                <Typography component="h2" variant="h4" mb={2}>
+                  {" "}
+                  Application Details{" "}
+                </Typography>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Button variant="outlined" component="label" fullWidth>
@@ -354,8 +370,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                         label="Applied Stream"
                         value={appliedStream}
                         inputProps={{ readOnly: readOnly }}
-                        onChange={(event) => setAppliedStream(event.target.value)}
-                      >
+                        onChange={(event) => setAppliedStream(event.target.value)}>
                         <MenuItem value="Business Analyst"> Business Analyst </MenuItem>
                         <MenuItem value="Business Intelligence"> Business Intelligence </MenuItem>
                         <MenuItem value="Cloud (AWS)"> Cloud (AWS) </MenuItem>
@@ -366,7 +381,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                     </FormControl>
                   </Grid>
                   <Grid item xs sm={6}>
-                  <FormControl fullWidth>
+                    <FormControl fullWidth>
                       <InputLabel id="recruitment-phase-select-label">Recruitment Phase</InputLabel>
                       <Select
                         labelId="recruitment-phase-select-label"
@@ -374,8 +389,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                         label="Recruitment Phase"
                         value={recruitmentPhase}
                         inputProps={{ readOnly: readOnly }}
-                        onChange={(event) => setRecruitmentPhase(event.target.value)}
-                      >
+                        onChange={(event) => setRecruitmentPhase(event.target.value)}>
                         <MenuItem value={"Applied"}>Applied</MenuItem>
                         <MenuItem value={"Interviewed"}>Interviewed</MenuItem>
                       </Select>
@@ -388,14 +402,15 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                       type="text"
                       value={pastACResult}
                       InputProps={{
-                        readOnly: readOnly
+                        readOnly: readOnly,
                       }}
-                      fullWidth 
-                      onChange={(e) => setPastACResult(e.target.value)} />
+                      fullWidth
+                      onChange={(e) => setPastACResult(e.target.value)}
+                    />
                   </Grid>
                   <Grid item xs sm={12}>
-                    {readOnly
-                      ? <Button
+                    {readOnly ? (
+                      <Button
                         onClick={() => setReadOnly(false)}
                         variant="contained"
                         component="label"
@@ -403,7 +418,8 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                         style={{ marginBottom: "16px" }}>
                         Update
                       </Button>
-                      : <Button
+                    ) : (
+                      <Button
                         variant="contained"
                         component="label"
                         fullWidth
@@ -411,7 +427,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
                         onClick={handleSubmit}>
                         Save
                       </Button>
-                    }
+                    )}
                     <Grid item xs sm={12}>
                       <Button
                         variant="contained"
@@ -430,7 +446,7 @@ const CandidateInformationRec = ({ readModalOpen, setReadModalOpen, candidateId 
         </Box>
       </Fade>
     </Modal>
-  )
-}
+  );
+};
 
 export default CandidateInformationRec;

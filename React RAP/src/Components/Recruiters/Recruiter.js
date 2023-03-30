@@ -24,6 +24,7 @@ import CandidateInformationRec from '../Candidate/CandidateInformationRec';
 
 const Recruiter = () => {
   // Change tab options
+ 
   const [displayState, setDisplayState] = useState("Candidate");
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
