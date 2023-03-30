@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 
-// Webpage components
-import NavBar from "../NavBar";
+// Components
+import TextArea from "../Extra/TextArea";
 
 // Material UI
 import { Box, Container, Divider, Grid, Menu, TextField, Typography } from "@mui/material";
@@ -36,6 +36,9 @@ const CreateCandidate = () => {
   const [appliedStream, setAppliedStream] = useState('');
   const [recruitmentPhase, setRecruitmentPhase] = useState('');
   const [pastACResult, setPastACResult] = useState('');
+
+  // Form Validation
+  const [emptyError, setEmptyError] = useState(false);
 
   // Go back to previous page
   const navigate = useNavigate();
@@ -87,10 +90,19 @@ const CreateCandidate = () => {
       headers: { 'content-type': 'application/json' }
     };
 
-    fetch("http://localhost:8080/api/candidate", requestOptions)
-      .then(response => response.json())
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
+    if (firstName.trim() === "") {
+      setEmptyError(true)
+    } else if (lastName.trim() === "") {
+      setEmptyError(true)
+    } else {
+      fetch("http://localhost:8080/api/candidate", requestOptions)
+        .then(response => response.json())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+
+      handleCreateModalClose();
+      window.location.reload();
+    }
   }
 
   return (
@@ -104,104 +116,102 @@ const CreateCandidate = () => {
               <NotificationsIcon fontSize="large" />
               <Avatar src="/broken-image.jpg" />
             </div>
-          </div>
-          <Box
-            sx={{
-              flexDirection: 'column',
-              alignItems: 'center',
-              mt: 3,
-            }}>
-            <Divider sx={{ mt: 2, mb: 2 }} />
-            <div className="details">
-              <Typography component="h2" variant="h4" mb={2}> Details </Typography>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={2}>
-                  <FormControl required fullWidth >
-                    <InputLabel id="title-select-label">Title</InputLabel>
-                    <Select
-                      required
-                      labelId="title-select-label"
-                      id="title-select"
-                      value={title}
+            <Box
+              sx={{
+                flexDirection: 'column',
+                alignItems: 'center',
+                mt: 3,
+              }}>
+
+              <Divider sx={{ mt: 2, mb: 2 }} />
+
+              <div className="details">
+                <Typography component="h2" variant="h4" mb={2}> Details </Typography>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={2}>
+                    <TextArea
+                      isTitle={true}
                       label="Title"
-                      onChange={(event) => setTitle(event.target.value)}
-                    >
-                      <MenuItem value={"Mr"}>Mr</MenuItem>
-                      <MenuItem value={"Ms"}>Ms</MenuItem>
-                      <MenuItem value={"Miss"}>Miss</MenuItem>
-                      <MenuItem value={"Mrs"}>Mrs</MenuItem>
-                      <MenuItem value={"Dr"}>Dr</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                  <TextField
-                    required
-                    id="outlined-first-name-input"
-                    label="First Name"
-                    type="text"
-                    autoComplete="current-first-name"
-                    value={firstName}
-                    fullWidth
-                    onChange={(event) => setFirstName(event.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                  <TextField
-                    id="outlined-middle-name-input"
-                    label="Middle Name"
-                    type="text"
-                    autoComplete="current-middle-name"
-                    value={middleName}
-                    fullWidth
-                    onChange={(event) => setMiddleName(event.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <TextField
-                    required
-                    id="outlined-last-name-input"
-                    label="Last Name"
-                    type="text"
-                    autoComplete="current-last-name"
-                    value={lastName}
-                    fullWidth
-                    onChange={(event) => setLastName(event.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    id="outlined-mobile-input"
-                    label="Mobile Phone"
-                    type="text"
-                    autoComplete="current-mobile"
-                    value={mobilePhone}
-                    fullWidth
-                    onChange={(event) => setMobilePhone(event.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    id="outlined-email-input"
-                    label="Email"
-                    type="text"
-                    autoComplete="current-email"
-                    value={email}
-                    fullWidth
-                    onChange={(event) => setEmail(event.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={2}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      label="D.O.B *"
-                      format="DD/MM/YYYY"
-                      value={dob}
-                      onChange={(newDob) => setDob(newDob)}
-                    />
-                  </LocalizationProvider>
+                      textType={title}
+                      onChange={setTitle} />
+                  </Grid>
+                  <Grid item xs={12} sm={3}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="First Name"
+                      textType={firstName}
+                      onChange={setFirstName} />
+                  </Grid>
+                  <Grid item xs={12} sm={3}>
+                    <TextArea
+                      label="Middle Name"
+                      textType={middleName}
+                      onChange={setMiddleName} />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="Last Name"
+                      textType={lastName}
+                      onChange={setLastName} />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="Mobile Number"
+                      textType={mobilePhone}
+                      onChange={setMobilePhone} />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="Email"
+                      textType={email}
+                      onChange={setEmail} />
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <TextArea
+                      isDob={true}
+                      label="D.O.B"
+                      textType={dob}
+                      onChange={setDob} />
+                  </Grid>
+                  <Grid item xs={12} sm={10}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="Address"
+                      textType={address}
+                      onChange={setAddress} />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="Graduation Year"
+                      textType={gradYear}
+                      onChange={setGradYear} />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="Degree"
+                      textType={degree}
+                      onChange={setDegree} />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="University"
+                      textType={university}
+                      onChange={setUniversity} />
+                  </Grid>
                 </Grid>
                 <Grid item xs={12} sm={10}>
                   <TextField
@@ -256,59 +266,30 @@ const CreateCandidate = () => {
             
             <Divider sx={{ mt: 2, mb: 2 }} />
 
-            <div className="application-details">
-              <Typography component="h2" variant="h4" mb={2}> Application Details </Typography>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Button variant="outlined" component="label" fullWidth>
-                    Upload Resume
-                    <input hidden accept="image/*" multiple type="file" />
-                  </Button>
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControl required fullWidth>
-                    <InputLabel id="applied-stream-select-label">Applied Stream</InputLabel>
-                    <Select
-                      labelId="applied-stream-select-label"
-                      id="applied-stream-select"
-                      value={appliedStream}
+              <div className="application-details">
+                <Typography component="h2" variant="h4" mb={2}> Application Details </Typography>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Button variant="outlined" component="label" fullWidth>
+                      Upload Resume
+                      <input hidden accept="image/*" multiple type="file" />
+                    </Button>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextArea
+                      isStream={true}
                       label="Applied Stream"
-                      onChange={(event) => setAppliedStream(event.target.value)}
-                    >
-                      <MenuItem value="Business Analyst"> Business Analyst </MenuItem>
-                      <MenuItem value="Business Intelligence"> Business Intelligence </MenuItem>
-                      <MenuItem value="Cloud (AWS)"> Cloud (AWS) </MenuItem>
-                      <MenuItem value="Technical Analyst"> Technical Analyst </MenuItem>
-                      <MenuItem value="Software Development"> Software Development </MenuItem>
-                      <MenuItem value="Testing"> Testing </MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs sm={6}>
-                  <FormControl required fullWidth>
-                    <InputLabel id="recruitment-phase-select-label">Recruitment Phase</InputLabel>
-                    <Select
-                      labelId="recruitment-phase-select-label"
-                      id="recruitment-phase-select"
-                      value={recruitmentPhase}
+                      textType={appliedStream}
+                      onChange={setAppliedStream} />
+                  </Grid>
+                  <Grid item xs sm={6}>
+                    <TextArea
+                      isRecruitPhase={true}
                       label="Recruitment Phase"
-                      onChange={(event) => setRecruitmentPhase(event.target.value)}
-                    >
-                      <MenuItem value={"Applied"}>Applied</MenuItem>
-                      <MenuItem value={"Interviewed"}>Interviewed</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs sm={12}>
-                  <Button
-                    variant="contained"
-                    component="label"
-                    fullWidth
-                    onClick={handleSubmit}
-                    style={{ marginBottom: "16px" }}>
-                    Create
-                  </Button>
-                  <Link to={"/recruiter"}>
+                      textType={recruitmentPhase}
+                      onChange={setRecruitmentPhase} />
+                  </Grid>
+                  <Grid item xs sm={12}>
                     <Button
                       variant="contained"
                       component="label"

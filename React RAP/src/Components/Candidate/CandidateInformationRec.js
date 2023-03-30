@@ -45,6 +45,10 @@ const CandidateInformationRec = () => {
   const { candidateId } = useParams();
   const [candidate, setCandidate] = useState([]);
 
+  // Read status of Text Fields / Form validation
+  const [readOnly, setReadOnly] = useState(true);
+  const [emptyError, setEmptyError] = useState(false);
+
   // Fetch specific candidate
   useEffect(() => {
     const requestOptions = {
@@ -81,6 +85,88 @@ const CandidateInformationRec = () => {
 
   const pageTitle = candidate.first_name + " " + candidate.last_name + "'s " + "Profile"
 
+  const handleReadModalClose = () => {
+    setReadModalOpen(false);
+    setReadOnly(true);
+
+    // Reset Candidate Details
+    setTitle(candidate.title);
+    setFirstName(candidate.first_name);
+    setMiddleName(candidate.middle_name);
+    setLastName(candidate.last_name);
+    setMobilePhone(candidate.mobile_number);
+    setEmail(candidate.email);
+    setDob(dayjs(candidate.date_of_birth));
+    setAddress(candidate.address);
+    setGradYear(candidate.graduation_year);
+    setDegree(candidate.degree);
+    setUniversity(candidate.university);
+
+    // Reset Application Details
+    setAppliedStream(candidate.applied_stream);
+    setRecruitmentPhase(candidate.recruit_phase);
+    setPastACResult(candidate.past_ac_result);
+  }
+
+  const style = {
+    editModal: {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      maxWidth: 800,
+      bgcolor: 'background.paper',
+      border: '2px solid #000',
+      borderRadius: '15px',
+      boxShadow: 24,
+      p: 4,
+    }
+  };
+
+  // Handle update
+  const handleSubmit = () => {
+    const body =
+      JSON.stringify({
+        id: candidate.id,
+        title: title,
+        first_name: firstName,
+        middle_name: middleName,
+        last_name: lastName,
+        mobile_number: mobilePhone,
+        email: email,
+        date_of_birth: dob.format('YYYY-MM-DD'),
+        address: address,
+        graduation_year: gradYear,
+        degree: degree,
+        university: university,
+        resume: "resume-link",
+        applied_stream: appliedStream,
+        recruit_phase: recruitmentPhase,
+        past_ac_result: pastACResult
+      });
+
+    const requestOptions = {
+      method: 'PUT',
+      body: body,
+      redirect: 'follow',
+      headers: { 'content-type': 'application/json' },
+    };
+
+    if (firstName.trim() === "") {
+      setEmptyError(true)
+    } else if (lastName.trim() === "") {
+      setEmptyError(true)
+    } else {
+      fetch("http://localhost:8080/api/candidate", requestOptions)
+        .then(response => response.json())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+
+      handleReadModalClose();
+      window.location.reload();
+    }
+  }
+
   return (
     <div className="candidate-info">
       <NavBar />
@@ -92,100 +178,113 @@ const CandidateInformationRec = () => {
               <NotificationsIcon fontSize="large" />
               <Avatar src="/broken-image.jpg" />
             </div>
-          </div>
-          <Box
-            sx={{
-              flexDirection: 'column',
-              alignItems: 'center',
-              mt: 3,
-            }}>
-            <Divider sx={{ mt: 2, mb: 2 }} />
-            <div className="details">
-              <Typography component="h2" variant="h4" mb={2}> Details </Typography>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={2}>
-                  <TextField
-                    id="title_select"
-                    label="Title"
-                    type="text"
-                    value={title}
-                    InputProps={{
-                      readOnly: true
-                    }}
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                  <TextField
-                    id="outlined-first-name-input"
-                    label="First Name"
-                    type="text"
-                    value={firstName}
-                    InputProps={{
-                      readOnly: true
-                    }}
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                  <TextField
-                    id="outlined-middle-name-input"
-                    label="Middle Name"
-                    type="text"
-                    value={middleName}
-                    InputProps={{
-                      readOnly: true
-                    }}
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <TextField
-                    id="outlined-last-name-input"
-                    label="Last Name"
-                    type="text"
-                    value={lastName}
-                    InputProps={{
-                      readOnly: true
-                    }}
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    id="outlined-mobile-input"
-                    label="Mobile Phone"
-                    type="number"
-                    value={mobilePhone}
-                    InputProps={{
-                      readOnly: true
-                    }}
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    id="outlined-email-input"
-                    label="Email"
-                    type="text"
-                    value={email}
-                    InputProps={{
-                      readOnly: true
-                    }}
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12} sm={2}>
-                  <TextField
-                    id="outlined-date-input"
-                    label="D.O.B"
-                    type="text"
-                    value={dob}
-                    InputProps={{
-                      readOnly: true
-                    }}
-                    fullWidth
-                  />
+            <Box
+              sx={{
+                flexDirection: 'column',
+                alignItems: 'center',
+                mt: 3,
+              }}>
+                
+              <Divider sx={{ mt: 2, mb: 2 }} />
+
+              <div className="details">
+                <Typography component="h2" variant="h4" mb={2}> Details </Typography>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={2}>
+                    <TextArea
+                      isTitle={true}
+                      label="Title"
+                      textType={title}
+                      canEdit={readOnly}
+                      onChange={setTitle} />
+                  </Grid>
+                  <Grid item xs={12} sm={3.5}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="First Name"
+                      textType={firstName}
+                      canEdit={readOnly}
+                      onChange={setFirstName} />
+                  </Grid>
+                  <Grid item xs={12} sm={3}>
+                    <TextArea
+                      label="Middle Name"
+                      textType={middleName}
+                      canEdit={readOnly}
+                      onChange={setMiddleName} />
+                  </Grid>
+                  <Grid item xs={12} sm={3.5}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="Last Name"
+                      textType={lastName}
+                      canEdit={readOnly}
+                      onChange={setLastName} />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="Mobile Number"
+                      textType={mobilePhone}
+                      canEdit={readOnly}
+                      onChange={setMobilePhone} />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="Email"
+                      textType={email}
+                      canEdit={readOnly}
+                      onChange={setEmail} />
+                  </Grid>
+                  <Grid item xs={12} sm={3}>
+                    <TextArea
+                      isDob={true}
+                      label="D.O.B"
+                      textType={dob}
+                      canEdit={readOnly}
+                      onChange={setDob} />
+                  </Grid>
+                  <Grid item xs={12} sm={9}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="Address"
+                      textType={address}
+                      canEdit={readOnly}
+                      onChange={setAddress} />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="Graduation Year"
+                      textType={gradYear}
+                      canEdit={readOnly}
+                      onChange={setGradYear} />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="Degree"
+                      textType={degree}
+                      canEdit={readOnly}
+                      onChange={setDegree} />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
+                      label="University"
+                      textType={university}
+                      canEdit={readOnly}
+                      onChange={setUniversity} />
+                  </Grid>
                 </Grid>
                 <Grid item xs={12} sm={10}>
                   <TextField
@@ -291,7 +390,30 @@ const CandidateInformationRec = () => {
                       style={{ marginBottom: "16px" }}>
                       Update
                     </Button>
-                  </Link>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextArea
+                      isStream={true}
+                      label="Applied Stream"
+                      textType={appliedStream}
+                      canEdit={readOnly}
+                      onChange={setAppliedStream} />
+                  </Grid>
+                  <Grid item xs sm={6}>
+                    <TextArea
+                      isRecruitPhase={true}
+                      label="Recruitment Phase"
+                      textType={recruitmentPhase}
+                      canEdit={readOnly}
+                      onChange={setRecruitmentPhase} />
+                  </Grid>
+                  <Grid item xs sm={6}>
+                    <TextArea
+                      label="Past AC Result"
+                      textType={pastACResult}
+                      canEdit={readOnly}
+                      onChange={setPastACResult} />
+                  </Grid>
                   <Grid item xs sm={12}>
                     <Link to="/recruiter">
                       <Button
