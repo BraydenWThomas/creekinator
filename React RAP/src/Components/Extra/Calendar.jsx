@@ -41,6 +41,8 @@ const Calendar = (props) => {
         <Grid2 xs={12} sm={12} md={12} lg={8} className="datecalendar-wrapper">
           <DateCalendar
             size="xl"
+            minDate={new Date()}
+            excludeDate={(date) => date.getDay() === 0 || date.getDay() === 6}
             getDayProps={(date) => ({
               selected: dayjs(date).isSame(props.calendarSelected, "date"),
               onClick: () => handleSelect(date),

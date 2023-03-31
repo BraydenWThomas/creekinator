@@ -220,7 +220,7 @@ const ViewUpcomingAC = () => {
     formatEnd.format("LT")
   
   return (
-    <div style={{display:'flex'}}>
+    <div style={{display:'flex', paddingBottom:20}}>
       <NavBar />
       <div className="content" style={{ float: 'left', width: '100%', paddingLeft:20, paddingRight:20 }}>
         

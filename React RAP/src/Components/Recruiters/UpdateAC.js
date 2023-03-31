@@ -3,13 +3,8 @@ import NavBar from '../NavBar';
 
 // React
 import React, { useEffect, useState } from 'react';
-<<<<<<< HEAD
 import dayjs from 'dayjs';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-=======
-import dayjs, { Dayjs } from 'dayjs';
-import { useNavigate, useParams } from 'react-router-dom';
->>>>>>> f10350da1950d32931ee501ea58c5458315569ae
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 // Material UI
 import {
@@ -305,11 +300,9 @@ useEffect(() => {
   };
 
   return (
-    <div>
+    <div style={{display:'flex', paddingBottom:20}}>
       <NavBar />
-
-      <div className="content" style={{ float: 'left', width: '80%' }}>
-        <Container component="main">
+      <div className="content" style={{ float: 'left', width: '100%', paddingLeft:20, paddingRight:20 }}>
           <div className="header" style={{ display: "flex" }}>
             <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Update {title}</Typography>
             <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
@@ -534,7 +527,6 @@ useEffect(() => {
 
             </Grid>
           </Box>
-        </Container>
       </div>
     </div>
   )

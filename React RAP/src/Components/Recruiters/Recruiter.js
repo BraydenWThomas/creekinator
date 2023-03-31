@@ -135,7 +135,7 @@ const Recruiter = () => {
                   </Typography>
                   <div className='add-ac' >
                     <IconButton>
-                    <Link to={"/create"}>
+                    <Link to={"ac/create"}>
                       <AddIcon fontSize='large' />
                     </Link>
                     </IconButton>

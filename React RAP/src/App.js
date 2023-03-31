@@ -200,12 +200,12 @@ const App = () => {
         element: <ViewPastAC />
       },
       {        
-path: "/recruiter/ac/create",
-        element: <CreateAC />
+        path: "/recruiter/ac/create",
+        element: <CreateACPage />
       },
       {
         path: "/create",
-        element: <CreateACPage />
+        element: <CreateAC />
       },
       {
         path: "/recruiter/ac/update/schedule/sales/:acId",

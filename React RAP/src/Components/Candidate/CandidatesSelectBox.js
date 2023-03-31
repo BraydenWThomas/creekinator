@@ -87,9 +87,9 @@ const CandidateSelectBox = ({ candidate }) => {
 
         <List>
           <ListItem disablePadding sx={{marginLeft:'10px', marginBottom:'1%'}}>
-            <ListItemIcon>
+            <ListItemIcon onClick={() => setReadModalOpen(true)}>
               <Avatar>
-                <AccountBoxIcon />
+                <AccountBoxIcon/>
               </Avatar>
             </ListItemIcon>
             <ListItemText sx={{marginLeft:'8px', fontSize:'25px', fontWeight:'bold'}} disableTypography primary={candidate.first_name + " " + candidate.last_name} />
