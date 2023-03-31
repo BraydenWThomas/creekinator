@@ -148,8 +148,9 @@ const PackView = () => {
     }
 
     return (
-        <div className="pageSection" >
-            <div className="bodySection"   >
+        <div className="pageSection" style={{display:'flex'}}>
+            <NavBar />
+            <div className="content" style={{ float: 'left', width: '100%', paddingLeft:20, paddingRight:20 }}>
                 <div className="header" style={{ display: "flex" }}>
                     <Typography
                         component="h1"

@@ -114,19 +114,19 @@ const Calendar = () => {
   }
 
   return (
-    <div className="pageSection" >
+    <div className="pageSection" style={{display:'flex'}}>
 
       <NavBar />
 
-      <div className='bodySection' style={{ width: "100%" }}>
+      <div className="content" style={{ float: 'left', width: '85%', paddingLeft:20, paddingRight:20 }}>
         <div className="header" style={{ display: "flex" }}>
-          <h1 style={{ flex: 1, margin: '1%' }}>Calendar</h1>
-          <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
+        <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}> Calendar </Typography>
+          <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "1%" }}>
             <NotificationsIcon fontSize="large" />
             <Avatar src="/broken-image.jpg" />
           </div>
         </div>
-        <hr />
+        <Divider />
         <div className="monthsToolBar">
           <Box display="flex"
             justifyContent="center"
@@ -141,6 +141,7 @@ const Calendar = () => {
             </Tabs>
           </Box>
         </div>
+        <Divider />
         <div className="daysToolBar" >
           <Box display="flex"
             justifyContent="center"
@@ -157,7 +158,7 @@ const Calendar = () => {
           </Box>
         </div>
 
-        <hr />
+        <Divider />
 
         <div>
           <Button onClick={showToday} variant="contained" component="label" sx={{ m: 5 }}><TodayIcon />Today</Button>

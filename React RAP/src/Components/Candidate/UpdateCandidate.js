@@ -1,18 +1,13 @@
 // React
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 
+// Components
+import TextArea from '../Extra/TextArea';
+
 // Material UI
-import { Backdrop, Box, Divider, Fade, Grid, Modal, TextField, Typography } from "@mui/material";
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { Backdrop, Box, Divider, Fade, Grid, Modal, Typography } from "@mui/material";
 import Button from '@mui/material/Button';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import { Container } from "@mui/system";
 
 
@@ -38,6 +33,9 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
   // To Link to specific candidate
   const [candidate, setCandidate] = useState([]);
   const [getName, setGetName] = useState([])
+
+  // Form Validation
+  const [emptyError, setEmptyError] = useState(false);
 
   // Fetch specific candidate
   useEffect(() => {
@@ -96,8 +94,6 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
 
   // Handle update
   const handleSubmit = () => {
-    
-
     const body =
       JSON.stringify({
         id: candidate.id,
@@ -125,13 +121,19 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
       headers: { 'content-type': 'application/json' },
     };
 
-    fetch("http://localhost:8080/api/candidate", requestOptions)
-      .then(response => response.json())
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
-      
+    if (firstName.trim() === "") {
+      setEmptyError(true)
+    } else if (lastName.trim() === "") {
+      setEmptyError(true)
+    } else {
+      fetch("http://localhost:8080/api/candidate", requestOptions)
+        .then(response => response.json())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+
       handleUpdateModalClose();
       window.location.reload();
+    }
   }
 
   var pageTitle = getName.first_name + " " + getName.last_name + "'s " + "Profile"
@@ -139,20 +141,23 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
   const handleUpdateModalClose = () => {
     setUpdateModalOpen(false);
 
-    setTitle('');
-    setFirstName('');
-    setMiddleName('');
-    setLastName('');
-    setMobilePhone('');
-    setEmail('');
-    setDob('');
-    setAddress('');
-    setGradYear('');
-    setDegree('');
-    setUniversity('');
-    setAppliedStream('');
-    setRecruitmentPhase('');
-    setPastACResult('');
+    // Reset Candidate Details
+    setTitle(candidate.title);
+    setFirstName(candidate.first_name);
+    setMiddleName(candidate.middle_name);
+    setLastName(candidate.last_name);
+    setMobilePhone(candidate.mobile_number);
+    setEmail(candidate.email);
+    setDob(dayjs(candidate.date_of_birth));
+    setAddress(candidate.address);
+    setGradYear(candidate.graduation_year);
+    setDegree(candidate.degree);
+    setUniversity(candidate.university);
+
+    // Reset Application Details
+    setAppliedStream(candidate.applied_stream);
+    setRecruitmentPhase(candidate.recruit_phase);
+    setPastACResult(candidate.past_ac_result);
   }
 
 
@@ -187,130 +192,88 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
                 <Typography component="h2" variant="h4" mb={2}> Details </Typography>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={2}>
-                    <FormControl fullWidth>
-                      <InputLabel id="title-select-label"> Title </InputLabel>
-                      <Select
-                        labelId="title-select-label"
-                        id="title-select"
-                        label="Title"
-                        value={title}
-                        onChange={(event) => setTitle(event.target.value)}>
-                        <MenuItem value={"Mr"}> Mr </MenuItem>
-                        <MenuItem value={"Ms"}> Ms </MenuItem>
-                        <MenuItem value={"Miss"}> Miss </MenuItem>
-                        <MenuItem value={"Mrs"}> Mrs </MenuItem>
-                        <MenuItem value={"Dr"}> Dr </MenuItem>
-                      </Select>
-                    </FormControl>
+                    <TextArea
+                      isTitle={true}
+                      label="Title"
+                      textType={title}
+                      onChange={setTitle} />
                   </Grid>
-                  <Grid item xs={12} sm={3}>
-                    <TextField
-                      id="outlined-first-name-input"
+                  <Grid item xs={12} sm={3.5}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
                       label="First Name"
-                      type="text"
-                      autoComplete="current-first-name"
-                      fullWidth
-                      value={firstName}
-                      onChange={(event) => setFirstName(event.target.value)}
-                    />
+                      textType={firstName}
+                      onChange={setFirstName} />
                   </Grid>
                   <Grid item xs={12} sm={3}>
-                    <TextField
-                      id="outlined-middle-name-input"
+                    <TextArea
                       label="Middle Name"
-                      type="text"
-                      autoComplete="current-middle-name"
-                      fullWidth
-                      value={middleName}
-                      onChange={(event) => setMiddleName(event.target.value)}
-                    />
+                      textType={middleName}
+                      onChange={setMiddleName} />
                   </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <TextField
-                      id="outlined-last-name-input"
+                  <Grid item xs={12} sm={3.5}>
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
                       label="Last Name"
-                      type="text"
-                      autoComplete="current-last-name"
-                      fullWidth
-                      value={lastName}
-                      onChange={(event) => setLastName(event.target.value)}
-                    />
+                      textType={lastName}
+                      onChange={setLastName} />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <TextField
-                      id="outlined-mobile-input"
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
                       label="Mobile Number"
-                      type="number"
-                      autoComplete="current-mobile"
-                      fullWidth
-                      value={mobilePhone}
-                      onChange={(event) => setMobilePhone(event.target.value)}
-                    />
+                      textType={mobilePhone}
+                      onChange={setMobilePhone} />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <TextField
-                      id="outlined-email-input"
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
                       label="Email"
-                      type="text"
-                      autoComplete="current-email"
-                      fullWidth
-                      value={email}
-                      onChange={(event) => setEmail(event.target.value)}
-                    />
+                      textType={email}
+                      onChange={setEmail} />
                   </Grid>
                   <Grid item xs={12} sm={2}>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        format="DD/MM/YYYY"
-                        label="D.O.B"
-                        value={dob}
-                        onChange={(newDob) => setDob(newDob)}
-                      />
-                    </LocalizationProvider>
+                    <TextArea
+                      isDob={true}
+                      label="D.O.B"
+                      textType={dob}
+                      onChange={setDob} />
                   </Grid>
                   <Grid item xs={12} sm={10}>
-                    <TextField
-                      id="outlined-address-input"
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
                       label="Address"
-                      type="text"
-                      autoComplete="current-address"
-                      fullWidth
-                      value={address}
-                      onChange={(event) => setAddress(event.target.value)}
-                    />
+                      textType={address}
+                      onChange={setAddress} />
                   </Grid>
                   <Grid item xs={12} sm={4}>
-                    <TextField
-                      id="outlined-year-input"
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
                       label="Graduation Year"
-                      type="number"
-                      autoComplete="current-year"
-                      fullWidth
-                      value={gradYear}
-                      onChange={(event) => setGradYear(event.target.value)}
-                    />
+                      textType={gradYear}
+                      onChange={setGradYear} />
                   </Grid>
                   <Grid item xs={12} sm={4}>
-                    <TextField
-                      id="outlined-degree-input"
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
                       label="Degree"
-                      type="text"
-                      autoComplete="current-degree"
-                      fullWidth
-                      value={degree}
-                      onChange={(event) => setDegree(event.target.value)}
-                    />
+                      textType={degree}
+                      onChange={setDegree} />
                   </Grid>
                   <Grid item xs={12} sm={4}>
-                    <TextField
-                      id="outlined-university-input"
+                    <TextArea
+                      error={emptyError}
+                      helperText={"Required field"}
                       label="University"
-                      type="text"
-                      autoComplete="current-university"
-                      fullWidth
-                      value={university}
-                      onChange={(event) => setUniversity(event.target.value)}
-                    />
+                      textType={university}
+                      onChange={setUniversity} />
                   </Grid>
                 </Grid>
               </div>
@@ -327,48 +290,24 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
                     </Button>
                   </Grid>
                   <Grid item xs={6}>
-                    <FormControl fullWidth>
-                      <InputLabel id="applied-stream-select-label">Applied Stream</InputLabel>
-                      <Select
-                        labelId="applied-stream-select-label"
-                        id="applied-stream-select"
-                        label="Applied Stream"
-                        value={appliedStream}
-                        onChange={(event) => setAppliedStream(event.target.value)}
-                      >
-                        <MenuItem value="Business Analyst"> Business Analyst </MenuItem>
-                        <MenuItem value="Business Intelligence"> Business Intelligence </MenuItem>
-                        <MenuItem value="Cloud (AWS)"> Cloud (AWS) </MenuItem>
-                        <MenuItem value="Technical Analyst"> Technical Analyst </MenuItem>
-                        <MenuItem value="Software Development"> Software Development </MenuItem>
-                        <MenuItem value="Testing"> Testing </MenuItem>
-                      </Select>
-                    </FormControl>
+                    <TextArea
+                      isStream={true}
+                      label="Applied Stream"
+                      textType={appliedStream}
+                      onChange={setAppliedStream} />
                   </Grid>
                   <Grid item xs sm={6}>
-                    <FormControl fullWidth>
-                      <InputLabel id="recruitment-phase-select-label">Recruitment Phase</InputLabel>
-                      <Select
-                        labelId="recruitment-phase-select-label"
-                        id="recruitment-phase-select"
-                        label="Recruitment Phase"
-                        value={recruitmentPhase}
-                        onChange={(event) => setRecruitmentPhase(event.target.value)}
-                      >
-                        <MenuItem value={"Applied"}>Applied</MenuItem>
-                        <MenuItem value={"Interviewed"}>Interviewed</MenuItem>
-                      </Select>
-                    </FormControl>
+                    <TextArea
+                      isRecruitPhase={true}
+                      label="Recruitment Phase"
+                      textType={recruitmentPhase}
+                      onChange={setRecruitmentPhase} />
                   </Grid>
                   <Grid item xs sm={6}>
-                    <TextField
-                      id="past-ac-result-input"
+                    <TextArea
                       label="Past AC Result"
-                      autoComplete="past-ac-result"
-                      fullWidth
-                      value={pastACResult}
-                      onChange={(event) => setPastACResult(event.target.value)}
-                    />
+                      textType={pastACResult}
+                      onChange={setPastACResult} />
                   </Grid>
                   <Grid item xs={12} sm={12}>
                     <Button

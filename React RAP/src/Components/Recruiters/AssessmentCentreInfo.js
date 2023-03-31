@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
 // Material UI
-import { Box, Paper, Menu, MenuItem, IconButton, Typography } from '@mui/material';
+import { Box, Paper, Menu, MenuItem, IconButton, Typography, Card } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
@@ -85,7 +85,7 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
           height: 300
         }
       }} >
-      <Paper className='assessmentCentreInfo' style={{ borderRadius: 10 }}>
+      <Card className='assessmentCentreInfo' >
         <div className="streamInfo">
           {statustype === "upcomingAC" ?
             <div className='menu'>
@@ -250,7 +250,7 @@ const AssessmentCentreInfo = ({ statustype, ac }) => {
           </div> */}
 
         </div>
-      </Paper>
+      </Card>
     </Box>
   )
 }

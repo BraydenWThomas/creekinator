@@ -31,18 +31,38 @@ const TextArea = (props) => {
   }
 
   else if (props.isDob) {
-    return (
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          format="DD/MM/YYYY"
-          label={props.label}
-          value={props.textType}
-          readOnly={props.canEdit}
-          fullWidth
-          onChange={(newDob) => handleChange(newDob)}
-        />
-      </LocalizationProvider>
-    )
+    if (props.error) {
+      return (
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            onError={props.error}
+            helperText={props.helperText}
+            format="DD/MM/YYYY"
+            label={props.label}
+            value={props.textType}
+            readOnly={props.canEdit}
+            fullWidth
+            onChange={(newDob) => handleChange(newDob)}
+          />
+        </LocalizationProvider>
+      )
+    }
+
+    else {
+      return (
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            format="DD/MM/YYYY"
+            label={props.label}
+            value={props.textType}
+            readOnly={props.canEdit}
+            fullWidth
+            onChange={(newDob) => handleChange(newDob)}
+          />
+        </LocalizationProvider>
+      )
+    }
+    
   }
 
   else if (props.isStream) {

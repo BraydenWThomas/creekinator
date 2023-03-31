@@ -199,17 +199,13 @@ const CreateACPage = () => {
   const onCandidateFilterChange = (e) => {
     const filter = e;
     setSelection(filter);
+
     let temp = candidates;
-    console.log(selection);
-    console.log(filter);
     if (filter === "All") {
       setFilteredCandidates(candidates);
-      console.log(isCheckedCandidates);
     } else {
       temp = candidates.filter(candidate => candidate.applied_stream === filter)
       setFilteredCandidates(temp);
-      
-      console.log(isCheckedCandidates);
     }
 
     if (temp.length > 1) {
@@ -303,11 +299,11 @@ const CreateACPage = () => {
   }, [calendarSelected])
 
   return (
-    <div style={{display: 'flex'}}>
+    <div style={{display:'flex', paddingBottom:20}}>
       <NavBar />
 
-      <div className="content" style={{ float: 'left', width: '80%' }}>
-        <Container component="main">
+      <div className="content" style={{ float: 'left', width: '100%', paddingLeft:20, paddingRight:20 }}>
+        
           <div className="header">
             <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}> Create Assessment Centre </Typography>
           </div>
@@ -452,7 +448,7 @@ const CreateACPage = () => {
               </Grid>
             </Grid>
           </div>
-        </Container>
+
       </div>
     </div>
   )

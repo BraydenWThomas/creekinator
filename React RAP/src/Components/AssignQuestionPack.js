@@ -24,6 +24,7 @@ import {
     DialogActions
 } from "@mui/material";
 import { Title } from '@mui/icons-material';
+import NavBar from './NavBar';
 
 
 const AssignQuestionPack = () => {
@@ -77,7 +78,10 @@ const AssignQuestionPack = () => {
     
 
     return (
-        <Box>
+        <div style={{display:'flex', paddingBottom:20}}>
+            
+            <NavBar />
+            <div className="content" style={{ float: 'left', width: '100%', paddingLeft:20, paddingRight:20 }}>
             <header>
                 <div className='page-details'>
                     <h1 className='stream'>{stream}</h1>
@@ -140,7 +144,8 @@ const AssignQuestionPack = () => {
                     </Button>
                 </DialogActions>
             </Dialog >
-        </Box>
+            </div>
+        </div>
 
     );
 };

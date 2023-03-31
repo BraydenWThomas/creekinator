@@ -1,8 +1,12 @@
 .candidateSelectBox-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(735px, 0));
+    grid-template-columns: repeat(auto-fit, minmax(730px, 0));
     grid-gap: 16px;
   }
+
+.candidateSelectBox :hover{
+    background-color: #e0defc;
+}
 
 .candidateDelete{
     float: right;
@@ -38,12 +42,10 @@
 }
 
 .streamInfo{
-    background-color: rgb(214, 214, 214);
+    background-color: #e0defc;
     padding: 10px;
     border: solid;
-    border-color: rgb(136, 136, 136);
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
+    border-color: #8273f3;
 }
 
 .menu{

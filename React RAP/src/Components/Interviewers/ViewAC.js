@@ -108,10 +108,10 @@ const ViewAC = () => {
 
   return (
 
-    <div>
+    <div style={{display:'flex'}}>
       <NavBar />
 
-      <div className="content" style={{ float: 'left', width: '80%' }}>
+      <div className="content" style={{ float: 'left', width: '100%', paddingLeft:20, paddingRight:20 }}>
         <Container component="main">
           <div className="header" style={{ display: "flex" }}>
             <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Assessment Centre</Typography>
@@ -155,10 +155,10 @@ const ViewAC = () => {
                 centered
                 variant="fullWidth"
               >
-                {candidatesDummy.map((user, index) =>
+                {candidates.map((candidate, index) =>
                   <Tab
                     value={index}
-                    label={user}
+                    label={candidate.first_name + " " + candidate.last_name}
                     style={{ fontWeight: 'bold', fontSize: "20px", textTransform: "none" }}
                     key={index} />
                 )}
@@ -195,6 +195,16 @@ const ViewAC = () => {
                     sx={{ marginTop: "10pt" }} />
                 )}
                 {value === 3 && (
+                 <TextField
+                  id="outlined-textarea"
+                  label="Multiline Placeholder"
+                  placeholder="Placeholder"
+                  fullWidth
+                  multiline
+                  rows={8} 
+                  sx={{ marginTop: "10pt" }} />
+                )}
+                {value === 4 && (
                  <TextField
                   id="outlined-textarea"
                   label="Multiline Placeholder"
