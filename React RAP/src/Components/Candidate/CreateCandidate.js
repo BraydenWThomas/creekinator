@@ -2,12 +2,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 
-<<<<<<< HEAD
-=======
-// Components
-import TextArea from "../Extra/TextArea";
-
->>>>>>> f10350da1950d32931ee501ea58c5458315569ae
 // Material UI
 import { Backdrop, Box, Container, Divider, Fade, Grid, Menu, Modal, TextField, Typography } from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -37,9 +31,6 @@ const CreateCandidate = ({ createModalOpen, setCreateModalOpen }) => {
   const [appliedStream, setAppliedStream] = useState('');
   const [recruitmentPhase, setRecruitmentPhase] = useState('');
   const [pastACResult, setPastACResult] = useState('');
-
-  // Form Validation
-  const [emptyError, setEmptyError] = useState(false);
 
   // Go back to previous page
   const navigate = useNavigate();
@@ -106,22 +97,12 @@ const CreateCandidate = ({ createModalOpen, setCreateModalOpen }) => {
       headers: { 'content-type': 'application/json' }
     };
 
-    if (firstName.trim() === "") {
-      setEmptyError(true)
-    } else if (lastName.trim() === "") {
-      setEmptyError(true)
-    } else {
-      fetch("http://localhost:8080/api/candidate", requestOptions)
-        .then(response => response.json())
-        .then(result => console.log(result))
-        .catch(error => console.log('error', error));
-
-      handleCreateModalClose();
-      window.location.reload();
-    }
+    fetch("http://localhost:8080/api/candidate", requestOptions)
+      .then(response => response.json())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
   }
 
-<<<<<<< HEAD
   const handleCreateModalClose = () => {
     setCreateModalOpen(false);
 
@@ -312,169 +293,6 @@ const CreateCandidate = ({ createModalOpen, setCreateModalOpen }) => {
 
               <Divider sx={{ mt: 2, mb: 2 }} />
 
-=======
-  return (
-    <div className="create-candidate">
-      <NavBar />
-      <div className="content" style={{ float: 'left', width: '80%' }}>
-        <Container component="main">
-          <div className="header" style={{ display: "flex" }}>
-            <Typography component="h1" variant="h3" mt={2} sx={{ flex: 1 }}>Create Candidate</Typography>
-            <div className="right-header" style={{ display: 'flex', paddingRight: "2%", paddingTop: "2%" }}>
-              <NotificationsIcon fontSize="large" />
-              <Avatar src="/broken-image.jpg" />
-            </div>
-            <Box
-              sx={{
-                flexDirection: 'column',
-                alignItems: 'center',
-                mt: 3,
-              }}>
-
-              <Divider sx={{ mt: 2, mb: 2 }} />
-
-              <div className="details">
-                <Typography component="h2" variant="h4" mb={2}> Details </Typography>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={2}>
-                    <TextArea
-                      isTitle={true}
-                      label="Title"
-                      textType={title}
-                      onChange={setTitle} />
-                  </Grid>
-                  <Grid item xs={12} sm={3}>
-                    <TextArea
-                      error={emptyError}
-                      helperText={"Required field"}
-                      label="First Name"
-                      textType={firstName}
-                      onChange={setFirstName} />
-                  </Grid>
-                  <Grid item xs={12} sm={3}>
-                    <TextArea
-                      label="Middle Name"
-                      textType={middleName}
-                      onChange={setMiddleName} />
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <TextArea
-                      error={emptyError}
-                      helperText={"Required field"}
-                      label="Last Name"
-                      textType={lastName}
-                      onChange={setLastName} />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextArea
-                      error={emptyError}
-                      helperText={"Required field"}
-                      label="Mobile Number"
-                      textType={mobilePhone}
-                      onChange={setMobilePhone} />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextArea
-                      error={emptyError}
-                      helperText={"Required field"}
-                      label="Email"
-                      textType={email}
-                      onChange={setEmail} />
-                  </Grid>
-                  <Grid item xs={12} sm={2}>
-                    <TextArea
-                      isDob={true}
-                      label="D.O.B"
-                      textType={dob}
-                      onChange={setDob} />
-                  </Grid>
-                  <Grid item xs={12} sm={10}>
-                    <TextArea
-                      error={emptyError}
-                      helperText={"Required field"}
-                      label="Address"
-                      textType={address}
-                      onChange={setAddress} />
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <TextArea
-                      error={emptyError}
-                      helperText={"Required field"}
-                      label="Graduation Year"
-                      textType={gradYear}
-                      onChange={setGradYear} />
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <TextArea
-                      error={emptyError}
-                      helperText={"Required field"}
-                      label="Degree"
-                      textType={degree}
-                      onChange={setDegree} />
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <TextArea
-                      error={emptyError}
-                      helperText={"Required field"}
-                      label="University"
-                      textType={university}
-                      onChange={setUniversity} />
-                  </Grid>
-                </Grid>
-                <Grid item xs={12} sm={10}>
-                  <TextField
-                    required
-                    id="outlined-address-input"
-                    label="Address"
-                    type="text"
-                    autoComplete="current-address"
-                    value={address}
-                    fullWidth
-                    onChange={(event) => setAddress(event.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <TextField
-                    required
-                    id="outlined-year-input"
-                    label="Graduation Year"
-                    type="text"
-                    autoComplete="current-year"
-                    value={gradYear}
-                    fullWidth
-                    onChange={(event) => setGradYear(event.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <TextField
-                    required
-                    id="outlined-degree-input"
-                    label="Degree"
-                    type="text"
-                    autoComplete="current-degree"
-                    value={degree}
-                    fullWidth
-                    onChange={(event) => setDegree(event.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <TextField
-                    required
-                    id="outlined-university-input"
-                    label="University"
-                    type="text"
-                    autoComplete="current-university"
-                    value={university}
-                    fullWidth
-                    onChange={(event) => setUniversity(event.target.value)}
-                  />
-                </Grid>
-              </Grid>
-            </div>
-            
-            <Divider sx={{ mt: 2, mb: 2 }} />
-
->>>>>>> f10350da1950d32931ee501ea58c5458315569ae
               <div className="application-details">
                 <Typography component="h2" variant="h4" mb={2}> Application Details </Typography>
                 <Grid container spacing={2}>
@@ -485,7 +303,6 @@ const CreateCandidate = ({ createModalOpen, setCreateModalOpen }) => {
                     </Button>
                   </Grid>
                   <Grid item xs={6}>
-<<<<<<< HEAD
                     <FormControl required fullWidth>
                       <InputLabel id="applied-stream-select-label">Applied Stream</InputLabel>
                       <Select
@@ -518,20 +335,6 @@ const CreateCandidate = ({ createModalOpen, setCreateModalOpen }) => {
                         <MenuItem value={"Interviewed"}>Interviewed</MenuItem>
                       </Select>
                     </FormControl>
-=======
-                    <TextArea
-                      isStream={true}
-                      label="Applied Stream"
-                      textType={appliedStream}
-                      onChange={setAppliedStream} />
-                  </Grid>
-                  <Grid item xs sm={6}>
-                    <TextArea
-                      isRecruitPhase={true}
-                      label="Recruitment Phase"
-                      textType={recruitmentPhase}
-                      onChange={setRecruitmentPhase} />
->>>>>>> f10350da1950d32931ee501ea58c5458315569ae
                   </Grid>
                   <Grid item xs sm={12}>
                     <Button

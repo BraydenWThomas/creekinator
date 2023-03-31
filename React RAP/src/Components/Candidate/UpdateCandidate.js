@@ -3,12 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 
-<<<<<<< HEAD
-=======
-// Components
-import TextArea from '../Extra/TextArea';
-
->>>>>>> f10350da1950d32931ee501ea58c5458315569ae
 // Material UI
 import { Backdrop, Box, Divider, Fade, Grid, Modal, TextField, Typography } from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -43,10 +37,7 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
 
   // To Link to specific candidate
   const [candidate, setCandidate] = useState([]);
-  const [getName, setGetName] = useState([]);
-
-  // Form Validation
-  const [emptyError, setEmptyError] = useState(false);
+  const [getName, setGetName] = useState([])
 
   // Fetch specific candidate
   useEffect(() => {
@@ -105,6 +96,7 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
 
   // Handle update
   const handleSubmit = () => {
+    
 
     const body =
       JSON.stringify({
@@ -133,19 +125,13 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
       headers: { 'content-type': 'application/json' },
     };
 
-    if (firstName.trim() === "") {
-      setEmptyError(true)
-    } else if (lastName.trim() === "") {
-      setEmptyError(true)
-    } else {
-      fetch("http://localhost:8080/api/candidate", requestOptions)
-        .then(response => response.json())
-        .then(result => console.log(result))
-        .catch(error => console.log('error', error));
-
+    fetch("http://localhost:8080/api/candidate", requestOptions)
+      .then(response => response.json())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+      
       handleUpdateModalClose();
       window.location.reload();
-    }
   }
 
   var pageTitle = getName.first_name + " " + getName.last_name + "'s " + "Profile"
@@ -153,7 +139,6 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
   const handleUpdateModalClose = () => {
     setUpdateModalOpen(false);
 
-<<<<<<< HEAD
     setTitle('');
     setFirstName('');
     setMiddleName('');
@@ -171,27 +156,6 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
   }
 
 
-=======
-    // Reset Candidate Details
-    setTitle(candidate.title);
-    setFirstName(candidate.first_name);
-    setMiddleName(candidate.middle_name);
-    setLastName(candidate.last_name);
-    setMobilePhone(candidate.mobile_number);
-    setEmail(candidate.email);
-    setDob(dayjs(candidate.date_of_birth));
-    setAddress(candidate.address);
-    setGradYear(candidate.graduation_year);
-    setDegree(candidate.degree);
-    setUniversity(candidate.university);
-
-    // Reset Application Details
-    setAppliedStream(candidate.applied_stream);
-    setRecruitmentPhase(candidate.recruit_phase);
-    setPastACResult(candidate.past_ac_result);
-  }
-
->>>>>>> f10350da1950d32931ee501ea58c5458315569ae
   return (
     <Modal
       aria-labelledby="edit-modal-title"
@@ -218,18 +182,11 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
                 alignItems: 'center',
                 mt: 3,
               }}>
-<<<<<<< HEAD
               <Divider sx={{ mt: 2, mb: 2 }} />
-=======
-
-              <Divider sx={{ mt: 2, mb: 2 }} />
-
->>>>>>> f10350da1950d32931ee501ea58c5458315569ae
               <div className="details">
                 <Typography component="h2" variant="h4" mb={2}> Details </Typography>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={2}>
-<<<<<<< HEAD
                     <FormControl fullWidth>
                       <InputLabel id="title-select-label"> Title </InputLabel>
                       <Select
@@ -357,94 +314,6 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
                   </Grid>
                 </Grid>
               </div>
-=======
-                    <TextArea
-                      isTitle={true}
-                      label="Title"
-                      textType={title}
-                      onChange={setTitle} />
-                  </Grid>
-                  <Grid item xs={12} sm={3}>
-                    <TextArea
-                      error={emptyError}
-                      helperText={"Required field"}
-                      label="First Name"
-                      textType={firstName}
-                      onChange={setFirstName} />
-                  </Grid>
-                  <Grid item xs={12} sm={3}>
-                    <TextArea
-                      label="Middle Name"
-                      textType={middleName}
-                      onChange={setMiddleName} />
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <TextArea
-                      error={emptyError}
-                      helperText={"Required field"}
-                      label="Last Name"
-                      textType={lastName}
-                      onChange={setLastName} />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextArea
-                      error={emptyError}
-                      helperText={"Required field"}
-                      label="Mobile Number"
-                      textType={mobilePhone}
-                      onChange={setMobilePhone} />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextArea
-                      error={emptyError}
-                      helperText={"Required field"}
-                      label="Email"
-                      textType={email}
-                      onChange={setEmail} />
-                  </Grid>
-                  <Grid item xs={12} sm={2}>
-                    <TextArea
-                      isDob={true}
-                      label="D.O.B"
-                      textType={dob}
-                      onChange={setDob} />
-                  </Grid>
-                  <Grid item xs={12} sm={10}>
-                    <TextArea
-                      error={emptyError}
-                      helperText={"Required field"}
-                      label="Address"
-                      textType={address}
-                      onChange={setAddress} />
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <TextArea
-                      error={emptyError}
-                      helperText={"Required field"}
-                      label="Graduation Year"
-                      textType={gradYear}
-                      onChange={setGradYear} />
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <TextArea
-                      error={emptyError}
-                      helperText={"Required field"}
-                      label="Degree"
-                      textType={degree}
-                      onChange={setDegree} />
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <TextArea
-                      error={emptyError}
-                      helperText={"Required field"}
-                      label="University"
-                      textType={university}
-                      onChange={setUniversity} />
-                  </Grid>
-                </Grid>
-              </Grid>
-            </div>
->>>>>>> f10350da1950d32931ee501ea58c5458315569ae
 
               <Divider sx={{ mt: 2, mb: 2 }} />
 
@@ -458,7 +327,6 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
                     </Button>
                   </Grid>
                   <Grid item xs={6}>
-<<<<<<< HEAD
                     <FormControl fullWidth>
                       <InputLabel id="applied-stream-select-label">Applied Stream</InputLabel>
                       <Select
@@ -501,26 +369,6 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
                       value={pastACResult}
                       onChange={(event) => setPastACResult(event.target.value)}
                     />
-=======
-                    <TextArea
-                      isStream={true}
-                      label="Applied Stream"
-                      textType={appliedStream}
-                      onChange={setAppliedStream} />
-                  </Grid>
-                  <Grid item xs sm={6}>
-                    <TextArea
-                      isRecruitPhase={true}
-                      label="Recruitment Phase"
-                      textType={recruitmentPhase}
-                      onChange={setRecruitmentPhase} />
-                  </Grid>
-                  <Grid item xs sm={6}>
-                    <TextArea
-                      label="Past AC Result"
-                      textType={pastACResult}
-                      onChange={setPastACResult} />
->>>>>>> f10350da1950d32931ee501ea58c5458315569ae
                   </Grid>
                   <Grid item xs={12} sm={12}>
                     <Button
@@ -542,50 +390,12 @@ const UpdateCandidate = ({ updateModalOpen, setUpdateModalOpen, candidateId }) =
                     </Button>
                   </Grid>
                 </Grid>
-<<<<<<< HEAD
               </div>
             </Box>
           </Container>
         </Box>
       </Fade>
     </Modal>
-=======
-                <Grid item xs sm={6}>
-                  <TextField
-                    id="past-ac-result-input"
-                    label="Past AC Result"
-                    autoComplete="past-ac-result"
-                    fullWidth
-                    value={pastACResult}
-                    onChange={(event) => setPastACResult(event.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={12}>
-                  <Button
-                    variant="contained"
-                    component="label"
-                    fullWidth
-                    onClick={handleSubmit}>
-                    Update
-                  </Button>
-                </Grid>
-                <Grid item xs sm={12}>
-                  <Button
-                    variant="contained"
-                    component="label"
-                    color="secondary"
-                    fullWidth
-                    onClick={goBack}>
-                    Back
-                  </Button>
-                </Grid>
-              </Grid>
-            </div>
-          </Box>
-        </Container >
-      </div >
-    </div >
->>>>>>> f10350da1950d32931ee501ea58c5458315569ae
   )
 }
 
